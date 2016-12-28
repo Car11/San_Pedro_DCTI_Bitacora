@@ -15,15 +15,17 @@ class DATA {
         try {
             if(!isset(self::$conn)) {
                 $config = parse_ini_file('ini/config.ini'); 
-                self::$conn = new PDO('mysql:host='. $config['host'] .';dbname='.$config['dbname'].';charset=utf8',           $config['username'], $config['password']); 
+                self::$conn = new PDO('mysql:host='. $config['host'] .';dbname='.$config['dbname'].';charset=utf8',           $config['username'],          $config['password']); 
+                //self::$conn ->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 //print "dbname: ".$config['dbname'];
                 return self::$conn;
             }
         } catch (PDOException $e) {
             //print "Error!: " . $e->getMessage() . "<br/>";
-            header('Location: Error.html?id='.$e->getMessage());
-            return false;
-            die();
+            header('Location: Error.html?w=conectar&id='.$e->getMessage());
+            exit;
+            //return false;
+            //die();
         }
     }
     
@@ -36,9 +38,10 @@ class DATA {
             //
             return  $st->fetchAll();    
         } catch (Exception $e) {
-            header('Location: Error.html?id='.$e->getMessage());
-            return false;
-            die();
+            header('Location: Error.html?w=ejecutar&id='.$e->getMessage());
+            exit;
+            //return false;
+            //die();
         }
     }
     

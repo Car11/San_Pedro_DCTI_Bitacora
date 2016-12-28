@@ -30,7 +30,7 @@
                 </div>
             </form>
         </div>
-         <div id="ingreso">Ingreso</div>
+<!--        <div  id="ingreso">Ingreso</div>-->
     </article>
 </body>
 </html>

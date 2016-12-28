@@ -1,7 +1,6 @@
 $(document).ready(inicio);
 var r=false;
 function inicio(){	
-    $(".detalle").hide();
     $("#enviar").click(onValidaIndex);
     $("#enviarPerfil").click(onValidaPerfil);
 }
@@ -57,7 +56,7 @@ function onValidaPerfil(){
     
 }
 
-function MuestraDetalle(){
+/*function MuestraDetalle(){
     if(!r){
         $(".detalle").addClass("Muestradetalle");
         $(".detalle").fadeIn(1000);
@@ -71,7 +70,7 @@ function MuestraDetalle(){
             
         return true;
     }    
-}
+}*/
 
 /*function onCorre(){
 	$("#ingreso").animate({left:'50px', opacity:1},5000, onRegresa);	

@@ -95,6 +95,12 @@ span.required{
     top: 220px;
 }
 
+#salidaDetalle{
+    position: absolute;
+    left: 900px;
+    top: 320px;
+}
+
 .Muestradetalle{  
     display: block;
     
