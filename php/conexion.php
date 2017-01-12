@@ -13,8 +13,10 @@ class DATA {
     
     public static function Conectar(){
         try {
+        	//print "iniciando conexion";
             if(!isset(self::$conn)) {
                 $config = parse_ini_file('ini/config.ini'); 
+				print "dbname: ".$config['host'];
                 self::$conn = new PDO('mysql:host='. $config['host'] .';dbname='.$config['dbname'].';charset=utf8',           $config['username'],          $config['password']); 
                 //self::$conn ->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 //print "dbname: ".$config['dbname'];

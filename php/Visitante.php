@@ -13,6 +13,7 @@ class Visitante{
     }
 	
 	function Existe(){
+		//print "iniciando existe";
         //require_once("conexion.php");
         try {
             $sql='SELECT * FROM visitante where cedula=:cedula';
@@ -26,7 +27,7 @@ class Visitante{
                 $param= array(':cedula'=>$this->cedula);
                 $result = DATA::Ejecutar($sql,$param);
                 if ( count($result) ) { 
-                    //es una salida, muestra campo detalle y luego guarda
+                    //es una salida, trae campo detalle y luego guarda
                     //print "vis: ". $this->detalle."----";
                     if($this->detalle=="NULL"){
                         header('Location: index.php?ins=2&id='.$this->cedula);
@@ -34,8 +35,9 @@ class Visitante{
                     }else{
                         //print "nooooo: ". $this->detalle;
                         //ya tiene detalle (puede ser espacio en blanco), realiza salida
+						date_default_timezone_set('America/Costa_Rica');
                         $sql='UPDATE bitacora SET salida= :salida , detalle=:detalle WHERE cedula= :cedula and salida is NULL';
-                        $param= array(':salida'=>date('Y-m-d H:i:s') , ':detalle'=>$this->detalle,  ':cedula'=>$this->cedula);
+                        $param= array(':salida'=>date('Y-m-d H:i:s',time()) , ':detalle'=>$this->detalle,  ':cedula'=>$this->cedula);
                         $result = DATA::Ejecutar($sql,$param);
                         //
                         header('Location: index.php?ins=1');

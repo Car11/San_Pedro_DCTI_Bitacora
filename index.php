@@ -25,10 +25,10 @@
             <div id="error">Formato de cedula: 9 digitos sin guiones ni espacios</div>
             <h2>Número de cédula</h2>
             <form  action="EnviaVisitante.php" method="POST">
-                <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0-0000-0000" title="Número de cédula separado con CEROS"   onkeypress="return isNumber(event)"/>
+                <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"   onkeypress="return isNumber(event)"/>
                 <div class="detalle">
-                    <h3>Detalle</h3>
-                    <textarea type="text" class="textarea-field"  id = "detalle" name="detalle"  title="Detalle del trabajo realizado">NULL</textarea>
+                    <h3>Detalle de la Visita</h3>
+                    <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  #RFC" ></textarea>
                 </div>
                 <div>
                     <input type="submit" value="Enviar" id="enviar" />
@@ -46,10 +46,10 @@
     if(id=="0"){
         $( "#ingreso" ).hide();
         $("#salidaDetalle").hide();
-        $(".detalle").hide();        
+        //$(".detalle").hide();        
     }
     else if (id=="1"){
-        $(".detalle").hide();
+        //$(".detalle").hide();
         $("#salidaDetalle").hide();
         $( "#ingreso" ).fadeIn("slow", function(){
              $( "#ingreso" ).fadeOut(4000);
