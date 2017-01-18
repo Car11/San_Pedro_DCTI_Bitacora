@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 class Visitante{
 	public $cedula;
 	public $nombre;
@@ -13,46 +13,47 @@ class Visitante{
     }
 	
 	function Existe(){
-		//print "iniciando existe";
-        //require_once("conexion.php");
         try {
             $sql='SELECT * FROM visitante where cedula=:cedula';
             $param= array(':cedula'=>$this->cedula);
             $result = DATA::Ejecutar($sql,$param);
             //
-            if ( count($result) ) { 
+            if (count($result)) { 
                 //si el visitante existe, 1. ingresa 2. sale.
                 //Si la cedula tiene una entrada sin salida (NULL), registra la salida.
                 $sql='SELECT * FROM bitacora where cedula=:cedula and salida IS NULL';
                 $param= array(':cedula'=>$this->cedula);
                 $result = DATA::Ejecutar($sql,$param);
-                if ( count($result) ) { 
-                    //es una salida, trae campo detalle y luego guarda
-                    //print "vis: ". $this->detalle."----";
-                    if($this->detalle=="NULL"){
-                        header('Location: index.php?ins=2&id='.$this->cedula);
-                        exit;
+				//
+			    if ( count($result) ) { 
+                    //es una salida, trae campo detalle y luego guarda                    
+                    if (!isset($_SESSION['id'.$this->cedula])) {
+							$_SESSION['id'.$this->cedula] = "IN";
+							//print 'siempre in';
+							//$_SESSION[$this->cedula] = "OUT";
+							//exit;
+					}	
+                    if($_SESSION['id'.$this->cedula]=="IN"){ 
+                        $_SESSION["TYPE"]="OUT";
+						$_SESSION['id'.$this->cedula] = "OUT";
+						if($this->detalle!="")
+							$_SESSION["DETALLE"]= $result[0]['DETALLE'] . "\n\n" . $this->detalle ;
+						else $_SESSION["DETALLE"]= $result[0]['DETALLE'];
+                    	header('Location: index.php?id='.$this->cedula);
+                    	exit;
                     }else{
-                        //print "nooooo: ". $this->detalle;
-                        //ya tiene detalle (puede ser espacio en blanco), realiza salida
-						date_default_timezone_set('America/Costa_Rica');
-                        $sql='UPDATE bitacora SET salida= :salida , detalle=:detalle WHERE cedula= :cedula and salida is NULL';
-                        $param= array(':salida'=>date('Y-m-d H:i:s',time()) , ':detalle'=>$this->detalle,  ':cedula'=>$this->cedula);
-                        $result = DATA::Ejecutar($sql,$param);
-                        //
-                        header('Location: index.php?ins=1');
-                        exit;
+                    	unset($_SESSION['id'.$this->cedula]);	
+						//session_destroy();
+                        $this->BitacoraSalida();
                     }                        
                 }
-                else //la cedula no esta ingresada, agrega entrada
-                    $this->BitacoraEntrada();
-                //foreach($result as $row) {
-                //print_r($row);
-                //}
-                //registrar ingreso                
+                else //la cedula no esta ingresada en bitacora, agrega entrada
+                {
+					$this->BitacoraEntrada();
+                }                        
             } else {
                 // si la cedula no está regisrada, debe mostrar formulario de ingreso
-                header('Location: perfil.php?w=Visitante-Existe&id='.$this->cedula);
+                header('Location: perfil.php?id='.$this->cedula);
                 exit;
             }
         }     
@@ -80,12 +81,31 @@ class Visitante{
     function BitacoraEntrada(){
         //require_once("conexion.php");
         try {
-            $sql='INSERT INTO bitacora (cedula) VALUES (:cedula)';
-            $param= array(':cedula'=>$this->cedula);
+            $sql='INSERT INTO bitacora (cedula,detalle) VALUES (:cedula, :detalle)';
+            $param= array(':cedula'=>$this->cedula, ':detalle'=>$this->detalle);
             $result = DATA::Ejecutar($sql,$param);
-            //if ( count($result) ) 
-            header('Location: index.php?ins=1');
+			//
+			$_SESSION["TYPE"] = "IN";
+            header('Location: index.php');
             exit;
+        }     
+        catch(Exception $e) {
+            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+	 function BitacoraSalida(){
+        //require_once("conexion.php");
+        try {
+           	date_default_timezone_set('America/Costa_Rica');
+	        $sql='UPDATE bitacora SET salida= :salida , detalle=:detalle WHERE cedula= :cedula and salida is NULL';
+	        $param= array(':salida'=>date('Y-m-d H:i:s',time()) , ':detalle'=>$this->detalle,  ':cedula'=>$this->cedula);
+	        $result = DATA::Ejecutar($sql,$param);
+	        //
+	        $_SESSION["TYPE"] = "NULL";
+	        header('Location: index.php');
+	        exit;
         }     
         catch(Exception $e) {
             header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
