@@ -13,5 +13,8 @@
         $v->nombre=$_POST['nombre'];
     }
     else header('Location: Error.html');
+    if (isset($_POST['detalle'])) {
+        $v->detalle=$_POST['detalle'];
+    }
     $v->Agregar();
 ?>

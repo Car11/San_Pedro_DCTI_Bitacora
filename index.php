@@ -1,12 +1,21 @@
 <?php
-    $ingreso="0";
-    if (isset($_GET['ins'])) {
-        $ingreso=$_GET['ins'];
-    }
+	if (!isset($_SESSION))
+		session_start();
+	if (!isset($_SESSION['TYPE'])) {
+		$_SESSION['TYPE'] = "NULL";
+	}
+	$type= $_SESSION['TYPE'];
     $cedula="";
+	$detalle="";
     if (isset($_GET['id'])) {
         $cedula=$_GET['id'];
     }
+	if (isset($_SESSION['DETALLE'])) {
+        $detalle= $_SESSION['DETALLE'];
+    }
+	/*print $type."<br>";
+	print $cedula."<br>";
+	print $detalle."<br>";*/
 ?>
 <html>
 <head>
@@ -39,34 +48,36 @@
         <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo" /> </div>
     </article>
 <script>
-    var id = '<?php print $ingreso ?>';
     var cedula = '<?php print $cedula ?>';
+    var type = '<?php print $type ?>';
     $("#cedula").focus();
-    //alert(id);
-    if(id=="0"){
+    //
+    if(type == "NULL")
+    {
+    	//Oculta los iconos de mensajes
         $( "#ingreso" ).hide();
         $("#salidaDetalle").hide();
-        //$(".detalle").hide();        
     }
-    else if (id=="1"){
-        //$(".detalle").hide();
-        $("#salidaDetalle").hide();
+    else if(type == "IN")
+    {    	
+    	$("#salidaDetalle").hide();
+    	//mensaje bienvenida
         $( "#ingreso" ).fadeIn("slow", function(){
              $( "#ingreso" ).fadeOut(4000);
-        });
+        });        
     }
-    else {
-        //alert(id);
-        $( "#ingreso" ).hide();
-        $("#salidaDetalle").show();
+    else if(type == "OUT")
+    {
+    	$( "#ingreso" ).hide();
+        $("#salidaDetalle").show(); // MENSAJE editar detalle Y DAR OTRO CLIC ENVIAR
         var f = document.getElementById('salidaDetalle');
         setInterval(function() {
             f.style.display = (f.style.display == 'none' ? '' : 'none');
         }, 850); 
         //
-        document.getElementById("detalle").value="";
+        document.getElementById("detalle").value= '<?php  print $detalle ?>';
         document.getElementById("cedula").value=cedula;
-        document.getElementById("cedula").readOnly = true;
+        //document.getElementById("cedula").readOnly = true;
         $("#detalle").fadeIn(1000);
         $("#detalle").focus();
     }
