@@ -36,9 +36,13 @@ class Visitante{
                     if($_SESSION['id'.$this->cedula]=="IN"){ 
                         $_SESSION["TYPE"]="OUT";
 						$_SESSION['id'.$this->cedula] = "OUT";
-						if($this->detalle!="")
-							$_SESSION["DETALLE"]= $result[0]['DETALLE'] . "\n\n" . $this->detalle ;
-						else $_SESSION["DETALLE"]= $result[0]['DETALLE'];
+						if($this->detalle=="" && $result[0]['DETALLE']=="")
+                            $_SESSION["DETALLE"]="";
+                        else if($this->detalle=="")
+							$_SESSION["DETALLE"]= $result[0]['DETALLE'];
+						else if ($result[0]['DETALLE']=="")
+                            $_SESSION["DETALLE"]= $this->detalle;
+                        else $_SESSION["DETALLE"]= $result[0]['DETALLE'] . ". " . $this->detalle ;
                     	header('Location: index.php?id='.$this->cedula);
                     	exit;
                     }else{
