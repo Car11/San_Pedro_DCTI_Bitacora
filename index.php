@@ -29,7 +29,7 @@
 <body>
     <header>
         <h1>BITÁCORA DE INGRESO</h1>
-        <div id="login"></div>
+        <div id="login">Admin</div>
     </header>
         <div class="contenido" >
             <div id="error">Formato de cedula: 9 digitos sin guiones ni espacios</div>           

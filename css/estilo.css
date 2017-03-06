@@ -10,7 +10,7 @@ auxiliar: #401801
 header, article, footer, section, nav, aside{
 	display:block;
 	margin:0;
-	padding:0;
+	padding:0; 
 }
 html{
 	margin:0;
@@ -67,9 +67,11 @@ span.required{
 #login{
     display: block;
     float: right;
-    width: 50;
+    width: 65;
     height: 30px;
-    background: white;
+    color: white;
+    font-size: 20;
+    margin-right: 30px;
 }
 
 #error{  
@@ -83,6 +85,7 @@ span.required{
 #form{
     float:left;
     display: block;
+    padding-top: 100;
     padding-left: 310;
     padding-right: 10;
     height:auto;
@@ -95,18 +98,16 @@ span.required{
     width: 292px;
     height: 350px;
     margin-left: 5px;
-    
-    
 }
 #checkingreso{
 	display:block;
 	float: left;
-    margin-top: 63;
+    margin-top: 163;
 }
 
 #salidaDetalle{
     display: block;
-	margin-top: 223;
+	margin-top: 330;
 }
 
 .input-field{
