@@ -7,13 +7,18 @@
     $type= $_SESSION['TYPE'];
     $cedula="";
 	$detalle="";
+    $nombre="";
     if (isset($_GET['id'])) {
         $cedula=$_GET['id'];
     }
 	if (isset($_SESSION['DETALLE'])) {
         $detalle= $_SESSION['DETALLE'];
     }
-	/*print $_SESSION['TYPE']."<br>";
+    if (isset($_SESSION['NOMBREVISITANTE'])) {
+        $nombre= $_SESSION['NOMBREVISITANTE'];
+    }
+
+    /*print $_SESSION['TYPE']."<br>";
 	print $cedula."<br>";
 	print $detalle."<br>";
 	exit;*/
@@ -53,7 +58,8 @@
 <script> 	    
     var cedula = '<?php print $cedula ?>';
     var type = '<?php print $type ?>';
-    alert(cedula);
+    var nombre = '<?php print $nombre ?>';
+    //
     $("#cedula").focus();
     //
     if(type == "NULL")
@@ -63,7 +69,15 @@
         $("#salidaDetalle").hide();
     }
     else if(type == "IN")
-    {    	
+    {   
+        $("#textomensaje").text("Bienvenido, " + nombre );
+      	$("#mensaje").css("visibility", "visible"); 
+        $("#mensaje").css("background-color", "greenyellow"); 
+        $("#mensaje").css("color", "white"); 
+    	$( "#mensaje" ).slideDown( "slow" ,  function(){
+             $( "#mensaje" ).slideUp(2500);
+        });       	
+        //
     	$("#salidaDetalle").hide();
     	//mensaje bienvenida
         $( "#checkingreso" ).fadeIn("slow", function(){
@@ -73,7 +87,17 @@
     else if(type == "OUT")
     {
     	$( "#checkingreso" ).hide();
-        $("#salidaDetalle").show(); // MENSAJE editar detalle Y DAR OTRO CLIC ENVIAR
+        $("#salidaDetalle").show(); 
+        // MENSAJE editar detalle Y DAR OTRO CLIC ENVIAR
+        $("#textomensaje").text("Edite o agregue el detalle de su visita.");
+      	$("#mensaje").css("visibility", "visible"); 
+        $("#mensaje").css("background-color", "#ff9800"); 
+        $("#mensaje").css("color", "white"); 
+    	$( "#mensaje" ).slideDown( "slow" );
+        /*,  function(){
+             $( "#mensaje" ).slideUp(5000);
+        });*/       	
+        //
         var f = document.getElementById('salidaDetalle');
         setInterval(function() {
             f.style.display = (f.style.display == 'none' ? '' : 'none');
@@ -91,7 +115,10 @@
         $("#textomensaje").text("Visitante Registrado... Bienvenido!");
       	$("#mensaje").css("visibility", "visible"); 
         $("#mensaje").css("background-color", "greenyellow"); 
-    	$( "#mensaje" ).slideDown( "slow" );
+        $("#mensaje").css("color", "white"); 
+    	$( "#mensaje" ).slideDown( "slow" ,  function(){
+             $( "#mensaje" ).slideUp(2500);
+        });       
   		//
         $("#cedula").focus();
     }

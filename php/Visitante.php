@@ -18,6 +18,7 @@ class Visitante{
             $sql='SELECT * FROM visitante where cedula=:cedula';
             $param= array(':cedula'=>$this->cedula);
             $result = DATA::Ejecutar($sql,$param);
+            $_SESSION["NOMBREVISITANTE"]= $result[0]['NOMBRE'];
             //
             if (count($result)) { 
                 //si el visitante existe, 1. ingresa 2. sale.
@@ -87,11 +88,13 @@ class Visitante{
             $sql='INSERT INTO bitacora (cedula,detalle) VALUES (:cedula, :detalle)';
             $param= array(':cedula'=>$this->cedula, ':detalle'=>$this->detalle);
             $result = DATA::Ejecutar($sql,$param);
-			//
+            //
             $this->EnviareMail("Ingreso");
             $nextpage = "index.php";
-            if ($_SESSION["TYPE"]=="REGISTRO")
+            if ($_SESSION["NUEVOVISITANTE"]=="SI"){
                 $nextpage= "index.php?id=REGISTRO";
+                unset($_SESSION["NUEVOVISITANTE"]);
+            }                
 			$_SESSION["TYPE"] = "IN";
             header('Location: '. $nextpage);
             exit;

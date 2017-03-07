@@ -9,6 +9,7 @@
     if (isset($_SESSION['DETALLE'])) {
         $detalle= $_SESSION['DETALLE'];
     }
+    $_SESSION['NUEVOVISITANTE']="SI";
 ?>
 <html>
 <head>
