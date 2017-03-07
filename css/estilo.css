@@ -57,11 +57,14 @@ label{
 span.required{
     color:red;
 }
+span.campoperfil{
+	margin-left: 310;
+}
 .contenido {    
-    padding:50px;
-	margin:10px auto;
+    padding:0 50 50 50 50;
+	margin: 0px auto;
 	height:  500px;
-    width: 900;
+    width: 900;5
 }
 
 #login{
@@ -74,13 +77,23 @@ span.required{
     margin-right: 30px;
 }
 
-#error{  
-    display: block;
-    visibility:collapse;
-    color: #FFD83A;
+#mensaje{  
+    padding: 10px;
+    margin-top: 0;
+    display: none;
+    color: aliceblue;
     text-align: center;
     font-size: 25px;
-    border:1px solid #FFD83A;
+    /*border:2px solid #FFD83A;*/
+    background-color: firebrick;
+    /*opacity: 1;
+    transition: opacity 0.6s;*/
+    height: 30;
+    /*margin-bottom: 15px;*/
+}
+#perfilheader{
+	margin-top:75;
+	margin-bottom:75;
 }
 #form{
     float:left;
@@ -94,20 +107,24 @@ span.required{
 #mensajes{
     float:right;
     margin: 0;
-    height: 350px;
-    width: 292px;
+    padding-right: 200;
+    /*height: 350px;
+    width: 180px;*/
     height: 350px;
     margin-left: 5px;
 }
 #checkingreso{
 	display:block;
 	float: left;
-    margin-top: 163;
+    margin-top: 163px;
+    
 }
-
+#enviarPerfil{
+    margin-left: 310;
+}
 #salidaDetalle{
     display: block;
-	margin-top: 330;
+	margin-top: 300px;
 }
 
 .input-field{

@@ -13,8 +13,11 @@
         $v->nombre=$_POST['nombre'];
     }
     else header('Location: Error.html');
-    if (isset($_POST['detalle'])) {
-        $v->detalle=$_POST['detalle'];
-    }        
+    //
+    if (!isset($_SESSION))
+		session_start();
+    if (isset($_SESSION['DETALLE'])) {
+        $v->detalle=$_SESSION['DETALLE'];
+    }     
     $v->Agregar();
 ?>

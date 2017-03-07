@@ -4,7 +4,7 @@
 	if (!isset($_SESSION['TYPE'])) {
 		$_SESSION['TYPE'] = "NULL";
 	}
-	$type= $_SESSION['TYPE'];
+    $type= $_SESSION['TYPE'];
     $cedula="";
 	$detalle="";
     if (isset($_GET['id'])) {
@@ -13,7 +13,7 @@
 	if (isset($_SESSION['DETALLE'])) {
         $detalle= $_SESSION['DETALLE'];
     }
-	/*print $type."<br>";
+	/*print $_SESSION['TYPE']."<br>";
 	print $cedula."<br>";
 	print $detalle."<br>";
 	exit;*/
@@ -32,7 +32,10 @@
         <div id="login">Admin</div>
     </header>
         <div class="contenido" >
-            <div id="error">Formato de cedula: 9 digitos sin guiones ni espacios</div>           
+           <!--Formato de cedula: 9 digitos sin guiones ni espacios-->
+            <div id="mensaje">
+                <span id="textomensaje"></span>  
+            </div>      
             <div id="form">
                 <h2>Número de cédula</h2>
                 <form  action="EnviaVisitante.php" method="POST">  
@@ -47,13 +50,13 @@
                 <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
             </div>
         </div>    
-<script> 	
-    var cedula = '<?php print $cedula; ?>';
-    var type = '<?php print $type; ?>'; 		
-    //
+<script> 	    
+    var cedula = '<?php print $cedula ?>';
+    var type = '<?php print $type ?>';
+    alert(cedula);
     $("#cedula").focus();
     //
-   if(type == "NULL")
+    if(type == "NULL")
     {
     	//Oculta los iconos de mensajes
         $( "#checkingreso" ).hide();
@@ -75,13 +78,22 @@
         setInterval(function() {
             f.style.display = (f.style.display == 'none' ? '' : 'none');
         }, 850); 
-        var tDetalle= '<?php print json_encode($detalle); ?>';
-        tDetalle= tDetalle.replace(/"/g,'');
-        document.getElementById("detalle").value= tDetalle;
+        //
+        document.getElementById("detalle").value= '<?php  print $detalle ?>';
         document.getElementById("cedula").value=cedula;
-        document.getElementById("cedula").readOnly = true;
+        //document.getElementById("cedula").readOnly = true;
         $("#detalle").fadeIn(1000);
         $("#detalle").focus();
+    }
+    //REGISTRO DE NUEVO VISITANTE CORRECTO!
+    if( cedula== "REGISTRO")
+    {
+        $("#textomensaje").text("Visitante Registrado... Bienvenido!");
+      	$("#mensaje").css("visibility", "visible"); 
+        $("#mensaje").css("background-color", "greenyellow"); 
+    	$( "#mensaje" ).slideDown( "slow" );
+  		//
+        $("#cedula").focus();
     }
 </script>
 </body>

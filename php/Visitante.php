@@ -30,9 +30,6 @@ class Visitante{
                     //es una salida, trae campo detalle y luego guarda                    
                     if (!isset($_SESSION['id'.$this->cedula])) {
 							$_SESSION['id'.$this->cedula] = "IN";
-							//print 'siempre in';
-							//$_SESSION[$this->cedula] = "OUT";
-							//exit;
 					}	
                     if($_SESSION['id'.$this->cedula]=="IN"){ 
                         $_SESSION["TYPE"]="OUT";
@@ -58,6 +55,7 @@ class Visitante{
                 }                        
             } else {
                 // si la cedula no está regisrada, debe mostrar formulario de ingreso
+                $_SESSION["DETALLE"]= $this->detalle;
                 header('Location: perfil.php?id='.$this->cedula);
                 exit;
             }
@@ -91,8 +89,11 @@ class Visitante{
             $result = DATA::Ejecutar($sql,$param);
 			//
             $this->EnviareMail("Ingreso");
+            $nextpage = "index.php";
+            if ($_SESSION["TYPE"]=="REGISTRO")
+                $nextpage= "index.php?id=REGISTRO";
 			$_SESSION["TYPE"] = "IN";
-            header('Location: index.php');
+            header('Location: '. $nextpage);
             exit;
         }     
         catch(Exception $e) {

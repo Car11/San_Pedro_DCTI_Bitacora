@@ -1,5 +1,5 @@
 $(document).ready(inicio);
-var r=false;
+var r = false;
 function inicio(){	
     $("#enviar").click(onValidaIndex);
     $("#enviarPerfil").click(onValidaPerfil);
@@ -11,17 +11,17 @@ function onValidaIndex(){
         $("#cedula").focus();
         return false;
     }    
-    else if(cedula.length<9) {
-        $("#error").css("visibility", "visible"); 
-        //$("#error").fadeIn(5000);
+    else if(cedula.length<9) {      	
+      	$("#textomensaje").text("Formato de cedula: 9 digitos sin guiones ni espacios");
+      	$("#mensaje").css("visibility", "visible"); 
+    	$( "#mensaje" ).slideDown( "slow" );
+  		//
         $("#cedula").focus();
         return false;
-    }        
-    //almacena ingreso y valida si es salida
-    //require('Visitante.php');
-    //$visitante= new Visitante();
-    //$visitante-> Existe();
-    //muestra el campo detalle
+    } else {
+		$("#mensaje").hide();
+		return true;
+	}
     
 }
 
@@ -36,8 +36,10 @@ function onValidaPerfil(){
         formlisto=false;
     }    
     else if(cedula.length<9) {
-        $("#error").css("visibility", "visible"); 
-        //$("#error").fadeIn(5000);
+        $("#textomensaje").text("Formato de cedula: 9 digitos sin guiones ni espacios");
+      	$("#mensaje").css("visibility", "visible"); 
+    	$( "#mensaje" ).slideDown( "slow" );
+  		//
         $("#cedula").focus();
         formlisto=false;
     }        
