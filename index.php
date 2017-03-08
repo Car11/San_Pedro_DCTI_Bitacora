@@ -33,8 +33,10 @@
 </head>
 <body>
     <header>
-        <h1>BITÁCORA DE INGRESO</h1>
-        <div id="login">Admin</div>
+        <h1>BITÁCORA DE INGRESO</h1>        
+        <div id="logo"><img src="img/logoice.png" height="75" > </div>
+        <div id="fechahora"><span id="date"></span></div>
+       <!-- <div id="login">Admin</div>-->
     </header>
         <div class="contenido" >
            <!--Formato de cedula: 9 digitos sin guiones ni espacios-->
@@ -46,7 +48,7 @@
                 <form  action="EnviaVisitante.php" method="POST">  
                     <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"   onkeypress="return isNumber(event)"/>
                     <h3>Detalle de la Visita</h3>
-                    <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  #RFC" ></textarea>	                
+                    <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" ></textarea>	                
                     <input type="submit" value="Enviar" id="enviar" />
                 </form>
             </div>
@@ -55,14 +57,34 @@
                 <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
             </div>
         </div>    
-<script> 	    
+<script> 	 
     var cedula = '<?php print $cedula ?>';
     var type = '<?php print $type ?>';
     var nombre = '<?php print $nombre ?>';
     //
     $("#cedula").focus();
     //
-    if(type == "NULL")
+    if(cedula == "END")
+    {
+        $("#checkingreso" ).hide();
+        $("#salidaDetalle").hide();
+        $("#textomensaje").text("GRACIAS POR SU VISITA!");
+      	$("#mensaje").css("visibility", "visible"); 
+        $("#mensaje").css("background-color", "greenyellow"); 
+        $("#mensaje").css("color", "white"); 
+    	$( "#mensaje" ).slideDown( "slow" ).delay(3000).slideUp("slow");
+    } else if( cedula== "REGISTRO")    //REGISTRO DE NUEVO VISITANTE CORRECTO!
+    {
+        $("#checkingreso" ).hide();
+        $("#salidaDetalle").hide();
+        $("#textomensaje").text("Visitante Registrado... Bienvenido!");
+      	$("#mensaje").css("visibility", "visible"); 
+        $("#mensaje").css("background-color", "greenyellow"); 
+        $("#mensaje").css("color", "white"); 
+        $( "#mensaje" ).slideDown( "slow" ).delay(3000).slideUp("slow");
+        //
+        $("#cedula").focus();
+    } else if(type == "NULL")
     {
     	//Oculta los iconos de mensajes
         $( "#checkingreso" ).hide();
@@ -74,9 +96,7 @@
       	$("#mensaje").css("visibility", "visible"); 
         $("#mensaje").css("background-color", "greenyellow"); 
         $("#mensaje").css("color", "white"); 
-    	$( "#mensaje" ).slideDown( "slow" ,  function(){
-             $( "#mensaje" ).slideUp(2500);
-        });       	
+    	$( "#mensaje" ).slideDown( "slow" ).delay(3000).slideUp("slow");
         //
     	$("#salidaDetalle").hide();
     	//mensaje bienvenida
@@ -94,9 +114,6 @@
         $("#mensaje").css("background-color", "#ff9800"); 
         $("#mensaje").css("color", "white"); 
     	$( "#mensaje" ).slideDown( "slow" );
-        /*,  function(){
-             $( "#mensaje" ).slideUp(5000);
-        });*/       	
         //
         var f = document.getElementById('salidaDetalle');
         setInterval(function() {
@@ -105,22 +122,9 @@
         //
         document.getElementById("detalle").value= '<?php  print $detalle ?>';
         document.getElementById("cedula").value=cedula;
-        //document.getElementById("cedula").readOnly = true;
+        document.getElementById("cedula").readOnly = true;
         $("#detalle").fadeIn(1000);
         $("#detalle").focus();
-    }
-    //REGISTRO DE NUEVO VISITANTE CORRECTO!
-    if( cedula== "REGISTRO")
-    {
-        $("#textomensaje").text("Visitante Registrado... Bienvenido!");
-      	$("#mensaje").css("visibility", "visible"); 
-        $("#mensaje").css("background-color", "greenyellow"); 
-        $("#mensaje").css("color", "white"); 
-    	$( "#mensaje" ).slideDown( "slow" ,  function(){
-             $( "#mensaje" ).slideUp(2500);
-        });       
-  		//
-        $("#cedula").focus();
     }
 </script>
 </body>

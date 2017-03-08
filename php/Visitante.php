@@ -115,7 +115,7 @@ class Visitante{
 	        //
             $this->EnviareMail("Salida");
 	        $_SESSION["TYPE"] = "NULL";
-	        header('Location: index.php');
+	        header('Location: index.php?id=END');
 	        exit;
         }     
         catch(Exception $e) {

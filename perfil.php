@@ -21,7 +21,9 @@
 </head>
 <body>
     <header>
-        <h1>BITÁCORA DE INGRESO</h1>        
+        <h1>BITÁCORA DE INGRESO</h1>  
+        <div id="logo"><img src="img/logoice.png" height="75" > </div>
+        <div id="fechahora"><span id="date"></span></div>      
     </header>
         <div class="contenido">
             <div id="mensaje">

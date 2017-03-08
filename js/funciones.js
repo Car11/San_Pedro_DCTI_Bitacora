@@ -1,9 +1,26 @@
 $(document).ready(inicio);
 var r = false;
-function inicio(){	
+function inicio(){
+    //var fecha = new Date();    
+    //document.getElementById('fechahora').innerHTML=fecha.getHours() + ":" + fecha.getMinutes()+ ":" + fecha.getSeconds();    
+    //
+    display_ct();
     $("#enviar").click(onValidaIndex);
     $("#enviarPerfil").click(onValidaPerfil);
 }
+
+function display_c(){
+    var refresh=1000; // Refresh rate in milli seconds
+    mytime=setTimeout('display_ct()',refresh)
+}
+
+function display_ct() {
+    var strcount;
+    var x = new Date();
+    document.getElementById('fechahora').innerHTML = x.getHours() + ":" + x.getMinutes();
+    tt=display_c();
+}
+
 function onValidaIndex(){
     var cedula= document.getElementById('cedula').value;
     if(cedula=="") {
@@ -12,6 +29,7 @@ function onValidaIndex(){
         return false;
     }    
     else if(cedula.length<9) {      	
+        $("#mensaje").css("background-color", "firebrick"); 
       	$("#textomensaje").text("Formato de cedula: 9 digitos sin guiones ni espacios");
       	$("#mensaje").css("visibility", "visible"); 
     	$( "#mensaje" ).slideDown( "slow" );
@@ -21,8 +39,7 @@ function onValidaIndex(){
     } else {
 		$("#mensaje").hide();
 		return true;
-	}
-    
+	}    
 }
 
 function onValidaPerfil(){
@@ -36,6 +53,7 @@ function onValidaPerfil(){
         formlisto=false;
     }    
     else if(cedula.length<9) {
+        $("#mensaje").css("background-color", "firebrick"); 
         $("#textomensaje").text("Formato de cedula: 9 digitos sin guiones ni espacios");
       	$("#mensaje").css("visibility", "visible"); 
     	$( "#mensaje" ).slideDown( "slow" );
