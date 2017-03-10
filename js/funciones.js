@@ -1,24 +1,25 @@
 $(document).ready(inicio);
 var r = false;
 function inicio(){
-    //var fecha = new Date();    
-    //document.getElementById('fechahora').innerHTML=fecha.getHours() + ":" + fecha.getMinutes()+ ":" + fecha.getSeconds();    
-    //
-    display_ct();
+    startTime();
     $("#enviar").click(onValidaIndex);
     $("#enviarPerfil").click(onValidaPerfil);
 }
 
-function display_c(){
-    var refresh=1000; // Refresh rate in milli seconds
-    mytime=setTimeout('display_ct()',refresh)
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('date').innerHTML = h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 500);
 }
 
-function display_ct() {
-    var strcount;
-    var x = new Date();
-    document.getElementById('fechahora').innerHTML = x.getHours() + ":" + x.getMinutes();
-    tt=display_c();
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
 }
 
 function onValidaIndex(){
@@ -75,29 +76,6 @@ function onValidaPerfil(){
     else return false;
     
 }
-
-/*function MuestraDetalle(){
-    if(!r){
-        $(".detalle").addClass("Muestradetalle");
-        $(".detalle").fadeIn(1000);
-        $(".textarea-field").focus();
-        r=true;
-        return false      
-    }
-    else {
-        //$("#ingreso").css("visibility", "visible");
-        //$("#ingreso").slideUp( 300 ).delay( 800 ).fadeIn( 400 );
-            
-        return true;
-    }    
-}*/
-
-/*function onCorre(){
-	$("#ingreso").animate({left:'50px', opacity:1},5000, onRegresa);	
-}
-function onRegresa(){
-	$("#ingreso").animate({left:'900px', opacity:1},5000);	
-}*/
     
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;

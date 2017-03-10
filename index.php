@@ -17,11 +17,6 @@
     if (isset($_SESSION['NOMBREVISITANTE'])) {
         $nombre= $_SESSION['NOMBREVISITANTE'];
     }
-
-    /*print $_SESSION['TYPE']."<br>";
-	print $cedula."<br>";
-	print $detalle."<br>";
-	exit;*/
 ?>
 <html>
 <head>
@@ -36,10 +31,8 @@
         <h1>BITÁCORA DE INGRESO</h1>        
         <div id="logo"><img src="img/logoice.png" height="75" > </div>
         <div id="fechahora"><span id="date"></span></div>
-       <!-- <div id="login">Admin</div>-->
     </header>
         <div class="contenido" >
-           <!--Formato de cedula: 9 digitos sin guiones ni espacios-->
             <div id="mensaje">
                 <span id="textomensaje"></span>  
             </div>      
@@ -70,7 +63,7 @@
         $("#salidaDetalle").hide();
         $("#textomensaje").text("GRACIAS POR SU VISITA!");
       	$("#mensaje").css("visibility", "visible"); 
-        $("#mensaje").css("background-color", "greenyellow"); 
+        $("#mensaje").css("background-color", "60E800"); 
         $("#mensaje").css("color", "white"); 
     	$( "#mensaje" ).slideDown( "slow" ).delay(3000).slideUp("slow");
     } else if( cedula== "REGISTRO")    //REGISTRO DE NUEVO VISITANTE CORRECTO!
@@ -79,7 +72,7 @@
         $("#salidaDetalle").hide();
         $("#textomensaje").text("Visitante Registrado... Bienvenido!");
       	$("#mensaje").css("visibility", "visible"); 
-        $("#mensaje").css("background-color", "greenyellow"); 
+        $("#mensaje").css("background-color", "#60E800"); 
         $("#mensaje").css("color", "white"); 
         $( "#mensaje" ).slideDown( "slow" ).delay(3000).slideUp("slow");
         //
@@ -94,7 +87,7 @@
     {   
         $("#textomensaje").text("Bienvenido, " + nombre );
       	$("#mensaje").css("visibility", "visible"); 
-        $("#mensaje").css("background-color", "greenyellow"); 
+        $("#mensaje").css("background-color", "#60E800"); 
         $("#mensaje").css("color", "white"); 
     	$( "#mensaje" ).slideDown( "slow" ).delay(3000).slideUp("slow");
         //

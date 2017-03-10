@@ -10,7 +10,7 @@ class Visitante{
         require_once("conexion.php");
         error_reporting(E_ALL);
         // Always in development, disabled in production
-        ini_set('display_errors', 1);
+        ini_set('display_errors', 0);
     }
 	
 	function Existe(){
@@ -46,7 +46,6 @@ class Visitante{
                     	exit;
                     }else{
                     	unset($_SESSION['id'.$this->cedula]);	
-						//session_destroy();
                         $this->BitacoraSalida();
                     }                        
                 }
@@ -68,7 +67,6 @@ class Visitante{
     }
     
     function Agregar(){
-        //require_once("conexion.php");
         try {
             $sql='INSERT INTO visitante (nombre, cedula, empresa)VALUES (:nombre, :cedula, :empresa)';
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa);
@@ -83,7 +81,6 @@ class Visitante{
     }
     
     function BitacoraEntrada(){
-        //require_once("conexion.php");
         try {
             $sql='INSERT INTO bitacora (cedula,detalle) VALUES (:cedula, :detalle)';
             $param= array(':cedula'=>$this->cedula, ':detalle'=>$this->detalle);
@@ -106,7 +103,6 @@ class Visitante{
     }
 
 	 function BitacoraSalida(){
-        //require_once("conexion.php");
         try {
            	date_default_timezone_set('America/Costa_Rica');
 	        $sql='UPDATE bitacora SET salida= :salida , detalle=:detalle WHERE cedula= :cedula and salida is NULL';
@@ -125,7 +121,6 @@ class Visitante{
     }
     
      function ConsultaBitacora(){
-	 	//require_once("conexion.php");
         try {
 			require_once("conexion.php");
 			$sql = "SELECT * FROM bitacora";
