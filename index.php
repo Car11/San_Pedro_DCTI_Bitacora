@@ -32,24 +32,28 @@
         <div id="logo"><img src="img/logoice.png" height="75" > </div>
         <div id="fechahora"><span id="date"></span></div>
     </header>
-        <div class="contenido" >
-            <div id="mensaje">
-                <span id="textomensaje"></span>  
-            </div>      
-            <div id="form">
-                <h2>Número de cédula</h2>
-                <form  action="EnviaVisitante.php" method="POST">  
-                    <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"   onkeypress="return isNumber(event)"/>
-                    <h3>Detalle de la Visita</h3>
-                    <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" ></textarea>	                
-                    <input type="submit" value="Enviar" id="enviar" />
-                </form>
-            </div>
-            <div id="mensajes">
-                <div id="checkingreso"><img src="img/Check.png" height="50"  alt="logo"></div>
-                <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
-            </div>
-        </div>    
+    <div class="contenido" >
+        <div id="mensaje">
+            <span id="textomensaje"></span>  
+        </div>      
+        <div id="form">
+            <h2>Número de cédula</h2>
+            <form  action="EnviaVisitante.php" method="POST">  
+                <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"   onkeypress="return isNumber(event)"/>
+                <h3>Detalle de la Visita</h3>
+                <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" ></textarea> <div id="acceso">
+                    <h4><input type="checkbox" class="chkbox" name="sala1" value="sala1" checked> Sala 1</h4>
+                    <h4><input type="checkbox" class="chkbox" name="sala2" value="sala2"> Sala 2</h4>
+                    <h4><input type="checkbox" class="chkbox" name="sala3" value="sala3"> Sala 3</h4>
+                </div>    	                
+                <input type="submit" value="Enviar" id="enviar" />
+            </form>
+        </div>
+        <div id="mensajes">
+            <div id="checkingreso"><img src="img/Check.png" height="50"  alt="logo"></div>
+            <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
+        </div>
+    </div>
 <script> 	 
     var cedula = '<?php print $cedula ?>';
     var type = '<?php print $type ?>';
