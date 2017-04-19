@@ -34,11 +34,11 @@
             	<!--<h2><i>Por favor ingrese sus datos</i></h2>-->
             </div>              
             <form class="perfil" method="POST" action="EnviaPerfil.php">
-                <label for="cedula"><span class="campoperfil">Cédula <span class="required">*</span></span>
+                <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
                     <input type="text" maxlength="9" id="cedula" value= "<?php print $nuevaCedula ?>" class="input-field" name="cedula" placeholder="0-0000-0000" title="Número de cédula separado con CEROS" autofocus  onkeypress="return isNumber(event)"/>
                 </label>                
-                <label for="empresa"><span class="campoperfil">Empresa <span class="required">*</span></span><input type="text" class="input-field" name="empresa" value="" id="empresa"/></label>
-                <label for="nombre"><span class="campoperfil">Nombre<span class="required">*</span></span><input type="text" class="input-field" name="nombre" value="" id="nombre"/></label>
+                <label for="empresa"><span class="campoperfil">Empresa / Dependencia <span class="required">*</span></span><input type="text" class="input-field" name="empresa" value="" id="empresa"/></label>
+                <label for="nombre"><span class="campoperfil">Nombre Completo<span class="required">*</span></span><input  type="text" class="input-field" name="nombre" value="" id="nombre"/></label>
                 <div>
                     <input type="submit" value="Enviar" id="enviarPerfil" />
                 </div>

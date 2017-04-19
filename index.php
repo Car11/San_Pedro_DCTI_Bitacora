@@ -17,7 +17,19 @@
     if (isset($_SESSION['NOMBREVISITANTE'])) {
         $nombre= $_SESSION['NOMBREVISITANTE'];
     }
+    //salas
+    include("php/sala.php");    
+    $sala= new Sala();
+    $salas=$sala->Disponibles();
+    //login
+    include("php/usuario.php");    
+    /*for($i=0; $i<count($result); $i++){
+        print($i.': '. $result[$i][1]   .'<br>' );
+    }
+    print ('total de registros: '. count($result));
+    exit;*/   
 ?>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -32,24 +44,41 @@
         <div id="logo"><img src="img/logoice.png" height="75" > </div>
         <div id="fechahora"><span id="date"></span></div>
     </header>
-        <div class="contenido" >
-            <div id="mensaje">
-                <span id="textomensaje"></span>  
-            </div>      
-            <div id="form">
-                <h2>Número de cédula</h2>
-                <form  action="EnviaVisitante.php" method="POST">  
-                    <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"   onkeypress="return isNumber(event)"/>
-                    <h3>Detalle de la Visita</h3>
-                    <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" ></textarea>	                
-                    <input type="submit" value="Enviar" id="enviar" />
-                </form>
-            </div>
-            <div id="mensajes">
-                <div id="checkingreso"><img src="img/Check.png" height="50"  alt="logo"></div>
-                <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
-            </div>
-        </div>    
+    <div class="contenido" >
+        <div class="login">    
+            <form  name="Usuario" action="EnviaUsuario.php" method="POST">  
+                <input type="text" id="username" class="input-field" name="username" placeholder="USUARIO" maxlength="20" /><br>
+                <input type="password" id="password" class="input-field" name="password" placeholder="CONTRASEÑA" maxlength="20" />
+                <input type="submit" value="Ingresar" id="login" />
+            </form>      
+        </div>
+        <div id="mensaje">
+            <span id="textomensaje"></span>  
+        </div>      
+        <div id="form">
+            <h2>Cédula / Identificación</h2>
+            <form  action="EnviaVisitante.php" method="POST">  
+                <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número decédula separado con CEROS"  onkeypress="return isNumber(event)"/>
+                <h3>Motivo de la Visita</h3>
+                <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" ></textarea>                 
+                <div class="sala">
+                    <input type="text" id="sala" name="test" placeholder="SELECCIONE LA SALA" class="field" readonly="readonly" />
+                    <ul class="list">
+                       <?php
+                        for($i=0; $i<count($salas); $i++){
+                            print('<li>'.$salas[$i][1].'</li>');                            
+                        }
+                        ?>                        
+                    </ul>
+                </div>       	                
+                <input type="submit" value="Enviar" id="enviar" />
+            </form>
+        </div>
+        <div id="mensajes">
+            <!--<div id="checkingreso"><img src="img/Check.png" height="50"  alt="logo"></div>
+            <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
+        </div>-->
+    </div>
 <script> 	 
     var cedula = '<?php print $cedula ?>';
     var type = '<?php print $type ?>';
@@ -118,7 +147,43 @@
         document.getElementById("cedula").readOnly = true;
         $("#detalle").fadeIn(1000);
         $("#detalle").focus();
+        //
+        $(".size").slideUp("slow");
     }
+    
+    
+(function($){
+	$.fn.styleddropdown = function(){
+		return this.each(function(){
+			var obj = $(this)
+			obj.find('.field').click(function() { //onclick event, 'list' fadein
+			obj.find('.list').fadeIn(400);
+			
+			$(document).keyup(function(event) { //keypress event, fadeout on 'escape'
+				if(event.keyCode == 27) {
+				obj.find('.list').fadeOut(400);
+				}
+			});
+			
+			obj.find('.list').hover(function(){ },
+				function(){
+					$(this).fadeOut(400);
+				});
+			});
+			
+			obj.find('.list li').click(function() { //onclick event, change field value with selected 'list' item and fadeout 'list'
+			obj.find('.field')
+				.val($(this).html())
+				.css({
+					'background':'#fff',
+					'color':'#333'
+				});
+			obj.find('.list').fadeOut(400);
+			});
+		});
+	};
+})(jQuery);
+    
 </script>
 </body>
 </html>
