@@ -12,6 +12,9 @@
     if (isset($_POST['detalle'])) {
         $visitante->detalle=$_POST['detalle'];
     }
+    if (isset($_POST['test'])) {
+        $visitante->sala=$_POST['test'];
+    }
     //
     $visitante->Existe();
 ?>

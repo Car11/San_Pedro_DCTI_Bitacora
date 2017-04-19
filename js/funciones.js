@@ -4,6 +4,9 @@ function inicio(){
     startTime();
     $("#enviar").click(onValidaIndex);
     $("#enviarPerfil").click(onValidaPerfil);
+    $("#logo").click(onShowLogin);
+    // COMBOBOX
+    $('.sala').styleddropdown();
 }
 
 function startTime() {
@@ -22,8 +25,18 @@ function checkTime(i) {
     return i;
 }
 
+function onShowLogin(){
+    if($(".login").is(":hidden")){
+        $(".login").css("visibility", "visible"); 
+        $(".login").slideDown(1000);    
+    }else { 
+        $(".login").slideUp(1000);            
+    }
+}
+
 function onValidaIndex(){
     var cedula= document.getElementById('cedula').value;
+    var sala= document.getElementById('sala').value;
     if(cedula=="") {
         $("#cedula").attr({placeholder:"REQUERIDO"});
         $("#cedula").focus();
@@ -37,10 +50,23 @@ function onValidaIndex(){
   		//
         $("#cedula").focus();
         return false;
-    } else {
+    } /*else if(sala=="" && type!="OUT") 
+    {
+        $("#mensaje").css("background-color", "firebrick"); 
+      	$("#textomensaje").text("Seleccione la sala a visitar");
+      	$("#mensaje").css("visibility", "visible"); 
+        //$(".field").css("background", "firebrick"); 
+        setInterval(function(){
+            $(".field").toggleClass("emptyfield");
+        },1000);
+    	$( "#mensaje" ).slideDown( "slow" );
+        //
+        return false;
+    }*/ else {
 		$("#mensaje").hide();
 		return true;
 	}    
+    
 }
 
 function onValidaPerfil(){
@@ -85,3 +111,37 @@ function isNumber(evt) {
     }
     return true;
 }
+
+/********COMBO BOX********/
+
+(function($){
+	$.fn.styleddropdown = function(){
+		return this.each(function(){
+			var obj = $(this)
+			obj.find('.field').click(function() { //onclick event, 'list' fadein
+			obj.find('.list').fadeIn(400);
+			
+			$(document).keyup(function(event) { //keypress event, fadeout on 'escape'
+				if(event.keyCode == 27) {
+				obj.find('.list').fadeOut(400);
+				}
+			});
+			
+			obj.find('.list').hover(function(){ },
+				function(){
+					$(this).fadeOut(400);
+				});
+			});
+			
+			obj.find('.list li').click(function() { //onclick event, change field value with selected 'list' item and fadeout 'list'
+			obj.find('.field')
+				.val($(this).html())
+				.css({
+					'background':'#fff',
+					'color':'#333'
+				});
+			obj.find('.list').fadeOut(400);
+			});
+		});
+	};
+})(jQuery);
