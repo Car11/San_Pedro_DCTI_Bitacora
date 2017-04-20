@@ -18,7 +18,8 @@ class usuario{
             header('Location: ConsultaBitacora.php');
             exit;
         } else 
-        {   print('<br>Resutado no <br>');
+        {   
+            print('<br>Resutado no <br>');
             exit;
         }
     }

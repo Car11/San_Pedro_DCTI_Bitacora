@@ -4,6 +4,10 @@
 	if (!isset($_SESSION['TYPE'])) {
 		$_SESSION['TYPE'] = "NULL";
 	}
+    if (isset($_SESSION['NULLDETALLE'])) {
+		$nulldetalle= $_SESSION['NULLDETALLE'];
+	}
+    //
     $type= $_SESSION['TYPE'];
     $cedula="";
 	$detalle="";
@@ -61,16 +65,16 @@
                 <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número decédula separado con CEROS"  onkeypress="return isNumber(event)"/>
                 <h3>Motivo de la Visita</h3>
                 <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" ></textarea>                 
-                <div class="sala">
+                <!--<div class="sala">
                     <input type="text" id="sala" name="test" placeholder="SELECCIONE LA SALA" class="field" readonly="readonly" />
                     <ul class="list">
                        <?php
-                        for($i=0; $i<count($salas); $i++){
+                        /*for($i=0; $i<count($salas); $i++){
                             print('<li>'.$salas[$i][1].'</li>');                            
-                        }
+                        }*/
                         ?>                        
                     </ul>
-                </div>       	                
+                </div>-->       	                
                 <input type="submit" value="Enviar" id="enviar" />
             </form>
         </div>
@@ -83,10 +87,21 @@
     var cedula = '<?php print $cedula ?>';
     var type = '<?php print $type ?>';
     var nombre = '<?php print $nombre ?>';
+    var nulldetalle = '<?php print $nulldetalle ?>';
     //
     $("#cedula").focus();
-    //
-    if(cedula == "END")
+    //si el detalle es nulo en entrada debe ser requerido
+    if(nulldetalle=="NULL")
+    {
+        document.getElementById("cedula").value=cedula;
+        $("#mensaje").css("background-color", "firebrick"); 
+      	$("#textomensaje").text("El campo: Motivo de la visita, es REQUERIDO, 8 caracteres.");
+      	$("#mensaje").css("visibility", "visible"); 
+    	$( "#mensaje" ).slideDown( "slow" );
+  		//
+        $("#detalle").focus();
+    }
+    else if(cedula == "END")
     {
         $("#checkingreso" ).hide();
         $("#salidaDetalle").hide();
@@ -142,7 +157,7 @@
             f.style.display = (f.style.display == 'none' ? '' : 'none');
         }, 850); 
         //
-        document.getElementById("detalle").value= '<?php  print $detalle ?>';
+        document.getElementById("detalle").value= '<?php  print $detalle  ?>' + '. ';
         document.getElementById("cedula").value=cedula;
         document.getElementById("cedula").readOnly = true;
         $("#detalle").fadeIn(1000);

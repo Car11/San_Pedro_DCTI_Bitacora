@@ -53,13 +53,35 @@ class Visitante{
                 }
                 else //la cedula no esta ingresada en bitacora, agrega entrada
                 {
-					$this->BitacoraEntrada();
+                    //detalle es requerido en Entrada
+                    if($this->detalle=="" | strlen($this->detalle)<8)
+                    {  
+                        $_SESSION["NULLDETALLE"] = "NULL";
+                        header('Location: index.php?id='.$this->cedula);
+                        exit;
+                    }
+                    else 
+                    {
+                        $_SESSION["NULLDETALLE"] = "LISTO";
+                        $this->BitacoraEntrada();   
+                    }					   
                 }                        
             } else {
                 // si la cedula no está regisrada, debe mostrar formulario de ingreso
-                $_SESSION["DETALLE"]= $this->detalle;
-                header('Location: perfil.php?id='.$this->cedula);
-                exit;
+                //detalle es requerido en Entrada
+                    if($this->detalle=="" | strlen($this->detalle)<8)
+                    {  
+                        $_SESSION["NULLDETALLE"] = "NULL";
+                        header('Location: index.php?id='.$this->cedula);
+                        exit;
+                    }
+                    else 
+                    {
+                        $_SESSION["NULLDETALLE"] = "LISTO";
+                        $_SESSION["DETALLE"]= $this->detalle;
+                        header('Location: perfil.php?id='.$this->cedula);
+                        exit;
+                    }
             }
         }     
         catch(Exception $e) {

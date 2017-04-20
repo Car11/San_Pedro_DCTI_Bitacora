@@ -1,7 +1,7 @@
 $(document).ready(inicio);
 var r = false;
 function inicio(){
-    startTime();
+    //startTime();
     $("#enviar").click(onValidaIndex);
     $("#enviarPerfil").click(onValidaPerfil);
     $("#logo").click(onShowLogin);
@@ -36,7 +36,8 @@ function onShowLogin(){
 
 function onValidaIndex(){
     var cedula= document.getElementById('cedula').value;
-    var sala= document.getElementById('sala').value;
+    //var sala= document.getElementById('sala').value;
+    //var detalle= document.getElementById('detalle').value;
     if(cedula=="") {
         $("#cedula").attr({placeholder:"REQUERIDO"});
         $("#cedula").focus();
@@ -50,7 +51,8 @@ function onValidaIndex(){
   		//
         $("#cedula").focus();
         return false;
-    } /*else if(sala=="" && type!="OUT") 
+    }
+    /*else if(sala=="" && type!="OUT") 
     {
         $("#mensaje").css("background-color", "firebrick"); 
       	$("#textomensaje").text("Seleccione la sala a visitar");
@@ -62,11 +64,11 @@ function onValidaIndex(){
     	$( "#mensaje" ).slideDown( "slow" );
         //
         return false;
-    }*/ else {
+    }*/
+    else {
 		$("#mensaje").hide();
 		return true;
-	}    
-    
+	}  
 }
 
 function onValidaPerfil(){
@@ -95,6 +97,15 @@ function onValidaPerfil(){
     }    
     if(nombre=="") {
         $("#nombre").attr({placeholder:"REQUERIDO"});
+        $("#nombre").focus();
+        formlisto=false;
+    }
+    else if(nombre.length<10){
+        $("#mensaje").css("background-color", "firebrick"); 
+        $("#textomensaje").text("El Nombre debe tener mínimo 10 caracteres");
+      	$("#mensaje").css("visibility", "visible"); 
+    	$( "#mensaje" ).slideDown( "slow" );
+  		//
         $("#nombre").focus();
         formlisto=false;
     }

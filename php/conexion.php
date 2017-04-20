@@ -59,7 +59,7 @@ class DATA {
         try{
             //conecta a BD
             DATA::ConectarSQL();     
-            echo $sql;
+            //echo $sql;
             $result= odbc_exec(self::$connSql, $sql);            
             //odbc_close(self::$connSql);
             //
