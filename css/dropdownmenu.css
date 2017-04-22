@@ -1,24 +1,28 @@
 .dropdownmenu ul, .dropdownmenu li {
 	margin: 2px;
-	padding: 0;
     
+	padding: 0;
 }
 .dropdownmenu ul {
 	background: #1e5799;
 	list-style: none;
 	width: 100%;
+    text-align: center;
 }
 .dropdownmenu li {
 	float: left;
 	position: relative;
 	width:auto;
+    left:36%;
+    
+    
 }
 .dropdownmenu a {
-	background: #000000;
+	background: #52BE80;
 	color: #FFFFFF;
 	display: block;
 	font: bold 14px/20px sans-serif;
-	padding: 15px 60px;
+	padding: 12px 60px;
 	text-align: center;
 	text-decoration: none;
 	-webkit-transition: all .25s ease;
@@ -27,9 +31,11 @@
 	-o-transition: all .25s ease;
 	transition: all .25s ease;
     border-radius: 5px;
+    
 }
 .dropdownmenu li:hover a {
 	background: #73A5FF;
+    
   
 }
 #submenu {
@@ -58,6 +64,16 @@ li:hover ul#submenu {
   
 }
 #submenu a {
-	background-color:#000000;
+	background-color:#7DCEA0;
 }
 
+table{
+	float: none;
+	width: 100%;
+
+}
+
+th {
+	
+    margin-left: 200px;    
+}

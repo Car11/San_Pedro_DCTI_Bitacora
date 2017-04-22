@@ -21,7 +21,14 @@
         <div id="logo"><img src="img/logoice.png" height="75" > </div>
         <div id="fechahora"><span id="date"></span></div>
     </header>
-        <nav class="dropdownmenu">
+    
+    
+<table class="table">
+  <tr>
+    <th style="dropdownmenu">
+    
+        
+    <nav class="dropdownmenu">
           <ul>
             <li><a href="http://www.jochaho.com/wordpress/">Consulta Bitacora</a></li>
 
@@ -34,7 +41,15 @@
               </ul>
             </li>
           </ul>
-        </nav>
+        </nav>        
+        
+      
+    </th>
+  </tr>
+</table>
+    
+    
+
 
 </body>
 </html>
