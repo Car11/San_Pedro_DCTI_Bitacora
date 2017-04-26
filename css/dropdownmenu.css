@@ -1,0 +1,79 @@
+.dropdownmenu ul, .dropdownmenu li {
+	margin: 2px;
+    
+	padding: 0;
+}
+.dropdownmenu ul {
+	background: #1e5799;
+	list-style: none;
+	width: 100%;
+    text-align: center;
+}
+.dropdownmenu li {
+	float: left;
+	position: relative;
+	width:auto;
+    left:36%;
+    
+    
+}
+.dropdownmenu a {
+	background: #52BE80;
+	color: #FFFFFF;
+	display: block;
+	font: bold 14px/20px sans-serif;
+	padding: 12px 60px;
+	text-align: center;
+	text-decoration: none;
+	-webkit-transition: all .25s ease;
+	-moz-transition: all .25s ease;
+	-ms-transition: all .25s ease;
+	-o-transition: all .25s ease;
+	transition: all .25s ease;
+    border-radius: 5px;
+    
+}
+.dropdownmenu li:hover a {
+	background: #73A5FF;
+    
+  
+}
+#submenu {
+	left: 0;
+	opacity: 0;
+	position: absolute;
+	top: 35px;
+	visibility: hidden;
+	z-index: 1;
+  
+}
+li:hover ul#submenu {
+	opacity: 1;
+	top: 50px;	/* adjust this as per top nav padding top & bottom comes */
+	visibility: visible;
+    display: inline-block;
+    float: inherit;
+}
+#submenu li {
+	float: none;
+	width: 100%;
+  
+}
+#submenu a:hover {
+	background: #73A5FF;
+  
+}
+#submenu a {
+	background-color:#7DCEA0;
+}
+
+table{
+	float: none;
+	width: 100%;
+
+}
+
+th {
+	
+    margin-left: 200px;    
+}
