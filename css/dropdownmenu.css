@@ -1,3 +1,8 @@
+.dropdownmenu{
+    margin: 0 auto;
+    background: blue;
+}
+
 .dropdownmenu ul, .dropdownmenu li {
 	margin: 2px;
     
@@ -8,14 +13,13 @@
 	list-style: none;
 	width: 100%;
     text-align: center;
+    
 }
 .dropdownmenu li {
 	float: left;
 	position: relative;
-	width:auto;
-    left:36%;
-    
-    
+	width:295;
+        
 }
 .dropdownmenu a {
 	background: #52BE80;
@@ -67,13 +71,9 @@ li:hover ul#submenu {
 	background-color:#7DCEA0;
 }
 
-table{
-	float: none;
-	width: 100%;
-
-}
-
-th {
-	
-    margin-left: 200px;    
+.log {
+    
+    width: 600px;
+    height: 50px;
+    margin: 0 auto;
 }
