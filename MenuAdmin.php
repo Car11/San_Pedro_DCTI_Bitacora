@@ -23,31 +23,24 @@
     </header>
     
     
-<table class="table">
-  <tr>
-    <th style="dropdownmenu">
-    
+    <div class="log">
         
-    <nav class="dropdownmenu">
+        <nav class="dropdownmenu">
           <ul>
-            <li><a href="http://www.jochaho.com/wordpress/">Consulta Bitacora</a></li>
+            <li><a href="ConsultaBitacora.php">Consulta Bitacora</a></li>
 
             <li><a href="#">Mantenimiento</a>
               <ul id="submenu">
-                <li><a href="http://www.jochaho.com/wordpress/difference-between-svg-vs-canvas/">Responsables</a></li>
-                <li><a href="http://www.jochaho.com/wordpress/new-features-in-html5/">Pool Tarjetas</a></li>
-                <li><a href="http://www.jochaho.com/wordpress/creating-links-to-sections-within-a-webpage/">Visitantes</a></li>
-                        <li><a href="http://www.jochaho.com/wordpress/creating-links-to-sections-within-a-webpage/">Salas</a></li>
+                <li><a href="">Responsables</a></li>
+                <li><a href="">Pool Tarjetas</a></li>
+                <li><a href="">Visitantes</a></li>
+                <li><a href="">Salas</a></li>
               </ul>
             </li>
           </ul>
-        </nav>        
-        
-      
-    </th>
-  </tr>
-</table>
-    
+                
+        </nav>
+    </div>
     
 
 
