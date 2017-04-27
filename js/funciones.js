@@ -1,23 +1,30 @@
 $(document).ready(inicio);
 var r = false;
 function inicio(){
-    //startTime();
+    startTime();
     $("#enviar").click(onValidaIndex);
     $("#enviarPerfil").click(onValidaPerfil);
     $("#logo").click(onShowLogin);
+    //    
     // COMBOBOX
-    $('.sala').styleddropdown();
+    //$('.sala').styleddropdown();
 }
+
 
 function startTime() {
     var today = new Date();
     var h = today.getHours();
     var m = today.getMinutes();
     var s = today.getSeconds();
+    h= checkTime(h);
     m = checkTime(m);
     s = checkTime(s);
-    document.getElementById('date').innerHTML = h + ":" + m + ":" + s;
+    //
+    curtime= h + ":" + m + ":" + s;
+    document.getElementById('date').innerHTML = curtime;
     var t = setTimeout(startTime, 500);
+    //alert(curtime);
+    //if(curtime)
 }
 
 function checkTime(i) {

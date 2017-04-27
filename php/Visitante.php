@@ -47,6 +47,7 @@ class Visitante{
                     	header('Location: index.php?id='.$this->cedula);
                     	exit;
                     }else{
+                        $_SESSION["NULLDETALLE"] = "LISTO";
                     	unset($_SESSION['id'.$this->cedula]);	
                         $this->BitacoraSalida();
                     }                        
@@ -57,6 +58,7 @@ class Visitante{
                     if($this->detalle=="" | strlen($this->detalle)<8)
                     {  
                         $_SESSION["NULLDETALLE"] = "NULL";
+                        $_SESSION["DETALLE"]= $this->detalle;                        
                         header('Location: index.php?id='.$this->cedula);
                         exit;
                     }
@@ -72,6 +74,7 @@ class Visitante{
                     if($this->detalle=="" | strlen($this->detalle)<8)
                     {  
                         $_SESSION["NULLDETALLE"] = "NULL";
+                        $_SESSION["DETALLE"]= $this->detalle;
                         header('Location: index.php?id='.$this->cedula);
                         exit;
                     }

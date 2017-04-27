@@ -4,10 +4,12 @@
 	if (!isset($_SESSION['TYPE'])) {
 		$_SESSION['TYPE'] = "NULL";
 	}
-    if (isset($_SESSION['NULLDETALLE'])) {
-		$nulldetalle= $_SESSION['NULLDETALLE'];
+   
+    if (!isset($_SESSION['NULLDETALLE'])) {
+        $_SESSION['NULLDETALLE']="LISTO";
 	}
     //
+    $nulldetalle=$_SESSION['NULLDETALLE'];
     $type= $_SESSION['TYPE'];
     $cedula="";
 	$detalle="";
@@ -32,6 +34,7 @@
     }
     print ('total de registros: '. count($result));
     exit;*/   
+
 ?>
 
 <html>
@@ -61,10 +64,10 @@
         </div>      
         <div id="form">
             <h2>Cédula / Identificación</h2>
-            <form  action="EnviaVisitante.php" method="POST">  
+            <form name="datos" action="EnviaVisitante.php" method="POST">  
                 <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número decédula separado con CEROS"  onkeypress="return isNumber(event)"/>
                 <h3>Motivo de la Visita</h3>
-                <textarea type="text" class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" ></textarea>                 
+                <input type=text  class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" >                
                 <!--<div class="sala">
                     <input type="text" id="sala" name="test" placeholder="SELECCIONE LA SALA" class="field" readonly="readonly" />
                     <ul class="list">
@@ -83,23 +86,37 @@
             <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
         </div>-->
     </div>
-<script> 	 
+<script> 
     var cedula = '<?php print $cedula ?>';
     var type = '<?php print $type ?>';
     var nombre = '<?php print $nombre ?>';
     var nulldetalle = '<?php print $nulldetalle ?>';
     //
+
+/*$("#detalle").keypress(function (e) {
+        if(e.which == 13) {
+            //submit form via ajax, this is not JS but server side scripting so not showing here
+            alert("s");
+            $(this).closest("form").submit();
+            e.preventDefault();
+            return false;
+        }
+    });
+*/
+    //
     $("#cedula").focus();
     //si el detalle es nulo en entrada debe ser requerido
     if(nulldetalle=="NULL")
     {
+        var detalle = '<?php print $detalle ?>';
         document.getElementById("cedula").value=cedula;
+        document.getElementById("detalle").value=detalle;
         $("#mensaje").css("background-color", "firebrick"); 
       	$("#textomensaje").text("El campo: Motivo de la visita, es REQUERIDO, 8 caracteres.");
       	$("#mensaje").css("visibility", "visible"); 
-    	$( "#mensaje" ).slideDown( "slow" );
+    	$("#mensaje" ).slideDown( "slow" );
   		//
-        $("#detalle").focus();
+        $("#detalle").focus();        
     }
     else if(cedula == "END")
     {
@@ -121,12 +138,7 @@
         $( "#mensaje" ).slideDown( "slow" ).delay(3000).slideUp("slow");
         //
         $("#cedula").focus();
-    } else if(type == "NULL")
-    {
-    	//Oculta los iconos de mensajes
-        $( "#checkingreso" ).hide();
-        $("#salidaDetalle").hide();
-    }
+    } 
     else if(type == "IN")
     {   
         $("#textomensaje").text("Bienvenido, " + nombre );
@@ -164,6 +176,11 @@
         $("#detalle").focus();
         //
         $(".size").slideUp("slow");
+    }else if(type == "NULL")
+    {
+    	//Oculta los iconos de mensajes
+        $( "#checkingreso" ).hide();
+        $("#salidaDetalle").hide();
     }
     
     
