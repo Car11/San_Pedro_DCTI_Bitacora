@@ -167,6 +167,11 @@ span.campoperfil{
     text-align: center;
     margin: 0 auto;
 }
+
+#detalle{
+    text-align:justify;
+}
+
 .textarea-field{
     width: 100%;
     display: block;
