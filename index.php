@@ -92,17 +92,6 @@
     var nombre = '<?php print $nombre ?>';
     var nulldetalle = '<?php print $nulldetalle ?>';
     //
-
-/*$("#detalle").keypress(function (e) {
-        if(e.which == 13) {
-            //submit form via ajax, this is not JS but server side scripting so not showing here
-            alert("s");
-            $(this).closest("form").submit();
-            e.preventDefault();
-            return false;
-        }
-    });
-*/
     //
     $("#cedula").focus();
     //si el detalle es nulo en entrada debe ser requerido
@@ -181,6 +170,8 @@
     	//Oculta los iconos de mensajes
         $( "#checkingreso" ).hide();
         $("#salidaDetalle").hide();
+        $("#mensaje").css("visibility", "hidden"); 
+        
     }
     
     

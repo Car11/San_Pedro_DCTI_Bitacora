@@ -10,6 +10,7 @@
         $detalle= $_SESSION['DETALLE'];
     }
     $_SESSION['NUEVOVISITANTE']="SI";
+    
 ?>
 <html>
 <head>
@@ -18,6 +19,12 @@
     <link href="css/estilo.css" rel="stylesheet"/>
     <script src="js/jquery.js"></script>
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
+     <script>
+    function onVuelve(){
+        location.href = "index.php";
+        <?php $_SESSION["TYPE"] = "NULL"; ?>
+    }
+    </script>
 </head>
 <body>
     <header>
@@ -41,6 +48,7 @@
                 <label for="nombre"><span class="campoperfil">Nombre Completo<span class="required">*</span></span><input  type="text" class="input-field" name="nombre" value="" id="nombre"/></label>
                 <div>
                     <input type="submit" value="Enviar" id="enviarPerfil" />
+                    <button type="button" onclick="onVuelve()" id="enviarPerfil" >Volver   </button>
                 </div>
             </form>
         </div>

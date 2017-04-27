@@ -36,10 +36,10 @@ exit;
 
 
 /*
-create event selectVisitantes
+ALTER event selectVisitantes
 on SCHEDULE EVERY 1 HOUR 
 DO
 UPDATE bitacora 
-set SALIDA= now() , detalle= detalle+ '. SALIDA AUTOMATICA' 
+set SALIDA= now() , detalle= concat( detalle , '. SALIDA AUTOMATICA') 
 WHERE  SALIDA IS NULL AND((time_to_sec(timediff(NOW(), ENTRADA )) /3600)>1 )
 */
