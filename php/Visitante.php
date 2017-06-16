@@ -77,5 +77,33 @@ class Visitante{
             exit;
         }
     }
+    
+    function ConsultaBitacora(){
+        try {
+           require_once("conexion.php");
+           $sql = "SELECT * FROM bitacora";
+           $result = DATA::Ejecutar($sql);
+           return $result;                                 
+        }catch(Exception $e) {
+            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }                                     
+    }
+    
+    function FormularioIngresoConsultaVisitante(){
+        try {
+           require_once("conexion.php");
+           $sql = "SELECT cedula, nombre, empresa FROM visitante";
+           $result = DATA::Ejecutar($sql);
+           return $result;                                 
+        }catch(Exception $e) {
+            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }                                     
+    }
+
+    
+    
+
 }
 ?>
