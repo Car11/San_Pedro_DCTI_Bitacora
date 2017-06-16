@@ -1,0 +1,534 @@
+*{margin: 0px;padding: 0px;}
+
+#imgdelete{
+    height: 17px;
+    text-align: center;
+    margin-left: 50px;
+}
+
+#general{
+    margin: auto;
+    margin-top: 0px;
+    width: 100%;
+    height: 670px;
+}
+
+#izq{
+    width: 25%;
+    height: 600px;
+    float: left;
+}
+
+#centro{
+    width: 50%;
+    height: 600px;
+    float: left;
+}
+
+#der{
+    
+    width: 25%;
+    height: 600px;
+    float: left;
+}
+
+#abajo{
+    
+    width: 100%;
+    height: 70px;
+    float: left;
+    text-align: center;
+}
+
+#titulocentro{
+    width: 100%;
+    height: 80px;
+    float: left;
+}
+
+#ingreso{
+    float: left;
+    width: 50%;
+    height: 140px;
+}
+
+#salida{
+    float: left;
+    width: 50%;
+    height: 140px;
+}
+
+#gridvisitante{
+    width: 100%;
+    height: 380px;
+    float: left;
+    background: gray;
+}
+
+#infoextra{
+    width: 100%;
+    height: 140px;
+    float: left;
+}
+
+#tablavisitante{
+    width: 95%;
+    height: 240px;
+    float: left;
+    overflow:scroll;
+}
+
+#botonestabla{
+    width: 5%;
+    height: 240px;
+    float: left;
+}
+
+#grid{
+    width: 550px;
+    height: 270px;
+}
+
+#gridnombre{
+    width: 200px;
+    height: 25px;
+    text-align: left;
+}
+
+#gridcedula{
+    width: 200px;
+    height: 25px;
+    text-align: left;
+}
+
+#gridempresa{
+    width: 150px;
+    height: 25px;
+    text-align: left;
+}
+
+#gridrows{
+    margin-top: 0px; 
+}
+
+#boton:hover{
+    background: #1478b1;
+}
+
+#letraboton{
+    text-align: center;
+    color:#fff; 
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#tituloizquierda{
+    width: 400px;
+    height: 100px;
+    float: left;
+}
+
+#cuerpoizq{
+    margin-top: 0px;
+    margin-left: 50px;
+    width: 300px;
+    height: 550px;
+    float: left;    
+}
+
+
+#etiqueta{
+    
+    margin-bottom: auto;
+}
+
+/*DISEÑO FROMULARIO*/
+
+.cbp-mc-form {
+	position: relative;
+}
+
+/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.cbp-mc-form:before, 
+.cbp-mc-form:after { 
+	content: " "; display: table; 
+}
+
+.cbp-mc-form:after { 
+	clear: both; 
+}
+
+.cbp-mc-column {
+	width: 25%;
+	padding: 25px 25px;
+	float: left;
+}
+
+.cbp-mc-form label {
+	display: block;
+	padding: 5px 5px;
+	font-size: 15px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	cursor: pointer;
+}
+
+#motivovisita{
+    height: 80px;
+}
+
+.cbp-mc-form input,
+.cbp-mc-form textarea,
+.cbp-mc-form select {
+	font-family: 'Lato', Calibri, Arial, sans-serif;
+	line-height: 1;
+	font-size: 15px;
+	padding: 5px 5px;
+	color: darkslateblue;
+	display: block;
+	width: 90%;
+	background: white;
+}
+
+.cbp-mc-form input,
+.cbp-mc-form textarea {
+	border: 2px solid #fff;
+}
+
+/*TAMAÑO MINIMO TEXTAREA*/
+.cbp-mc-form textarea {
+	min-height: 100px;
+}
+
+/*CUANDO SE DA CLICK AL LABEL CAMBIA EL BORDE DEL INPUT Y  EL TEXTAREA Y PONE EL CURSOR*/
+.cbp-mc-form input:focus,
+.cbp-mc-form textarea:focus,
+.cbp-mc-form label:active + input,
+.cbp-mc-form label:active + textarea {
+	outline: none;
+	border: 3px solid #73A5FF;
+}
+
+.cbp-mc-form select:focus {
+	outline: none;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #10689a;
+    font-style: italic;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #10689a;
+    font-style: italic;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #10689a;
+    font-style: italic;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #10689a;
+    font-style: italic;
+}
+
+
+.cbp-mc-form input.cbp-mc-submit {
+	background: #10689a;
+	border: none;
+	color: #fff;
+	width: auto;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	border-radius: 2px;
+	letter-spacing: 1px;
+    margin-top: 10px;
+}
+
+.cbp-mc-form input.cbp-mc-submit:hover {
+	background: #1478b1;
+}
+
+@media screen and (max-width: 70em) {
+	.cbp-mc-column {
+		width: 50%;
+	}
+	.cbp-mc-column:nth-child(3) {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 48em) {
+	.cbp-mc-column {
+		width: 100%;
+		padding: 100px;
+	}
+}
+
+
+
+/*GRID VISITANTES*/
+
+#titulogrid{
+    color: black;
+    margin-top: 2px;
+}
+
+#headgridvisitante1{
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    width: 32%;
+    height: 35px;
+    background: #a4a4a1;
+    float: left;
+}
+
+#headgridvisitante2{
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    width: 34%;
+    height: 35px;
+    background: #a4a4a2;
+    float: left;
+}
+
+#headgridvisitante3{
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    width: 34%;
+    height: 35px;
+    background: #a4a4a3;
+    float:left
+}
+
+#txtnombre{
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+	line-height: 1;
+	font-size: 15px;
+	padding: 5px 5px;
+	color: black;
+	display: block;
+	width: 100%;
+	background: #fff;
+    float: left;
+}
+
+#txtcedula{
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+	line-height: 1;
+	font-size: 15px;
+	padding: 5px 5px;
+	color: black;
+	display: block;
+	width: 100%;
+	background: #fff;
+    float: left;
+}
+
+#txtempresa{
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+	line-height: 1;
+	font-size: 15px;
+	padding: 5px 5px;
+	color: black;
+	display: block;
+	width: 100%;
+	background: #fff;
+    float: left;
+}
+
+#myBtn{
+    width: 100%;
+    height: 38px;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+	display: inline-block;
+    border-radius: 2px;
+    background: #10689a;
+    float: left;
+}
+
+/**************************VENTANA MODAL*******************/
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+/* Modal Content */
+
+.modal-content {
+    position: relative;
+    background-color: #1e5799;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+/* Add Animation */
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+/* The Close Button */
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #73A5FF;
+    color: white;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #73A5FF;
+    color: white;
+}
+
+/***********BOX SALA*/
+.sala {
+    background: blue;
+    margin: 0 auto;
+    margin-top: 20;
+    width: 350;
+}
+
+.sala .field {
+    width:100%; 
+    background:#EC6603; 
+    color:#fff;     
+    padding:5px; border:none; cursor:pointer;
+                font-family:'lucida sans unicode',sans-serif; font-size:1.2em;
+                border:solid 1px #EC6603;
+                -webkit-transition: all .4s ease-in-out;
+                transition: all .4s ease-in-out;
+}
+
+.sala .field:hover {
+    border: solid 1px #fff;
+    -moz-box-shadow: 0 0 5px #999;
+    -webkit-box-shadow: 0 0 5px #999;
+    box-shadow: 0 0 5px #999
+}
+
+.sala>ul.list {
+    display: none;
+    position: absolute;
+    /*left: 30px;
+    top: -30px;*/
+    z-index: 999;
+    width: 15%;
+    margin: 0;
+    padding: 10px;
+    list-style: none;
+    background: #fff;
+    color: #333;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 0 5px #999;
+    -webkit-box-shadow: 0 0 5px #999;
+    box-shadow: 0 0 5px #999;
+}
+
+.sala>ul.list li {
+    padding: 10px;
+    border-bottom: solid 1px #ccc;
+}
+
+.sala>ul.list li:hover {
+    background: #EC6603;
+    color: #fff;
+}
+
+.sala>ul.list li:last-child {
+    border: none
+}
+
+.field::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: white;
+    text-align: center;
+}
+
+.field::-moz-placeholder {
+    /* Firefox 19+ */
+    color: white;
+    text-align: center;
+}
+
+.emptyfield {
+    background-color: firebrick !important;
+}
+
+.fullfield {
+    background-color: #ccc;
+}

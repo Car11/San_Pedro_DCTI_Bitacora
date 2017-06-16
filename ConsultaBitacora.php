@@ -11,10 +11,7 @@ $data= $visitante->ConsultaBitacora();
     
     
     
-    <link href="css/estilo.css" rel="stylesheet"/>
-    
-    <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
-    
+    <link href="css/estilo.css" rel="stylesheet"/>        
     <!-- CONSULTA BITACORA -->
      
     <script src="js/jquery.js" type="text/jscript"></script>
@@ -25,6 +22,8 @@ $data= $visitante->ConsultaBitacora();
 <body> 
 	<header>
 	<h1>BITÁCORA DE INGRESO</h1>
+        <div id="logo"><img src="img/logoice.png" height="75" > </div>
+        <div id="fechahora"><span id="date"></span></div>
 	</header>
 	<div>    
 	<script>
@@ -37,7 +36,6 @@ $data= $visitante->ConsultaBitacora();
 	print "<table id='bitacora'class='display'>";
 	print "<thead>";
 	print "<tr>";
-	/*print "<th>Id</th>";*/
 	print "<th bgcolor='gray'>Cedula</th>";
 	print "<th bgcolor='gray'>Entrada</th>";
 	print "<th bgcolor='gray'>Salida</th>";
@@ -46,10 +44,8 @@ $data= $visitante->ConsultaBitacora();
 	print "</thead>";	
 	
 	print "<tbody>";
-	for($i=2; $i<count($data); $i++){
+	for($i=1; $i<count($data); $i++){
 	       print "<tr>";
-	       
-	       /*print "<td>".$data[$i][1]."</td>";*/
 		   print "<td>".$data[$i][2]."</td>";
 		   print "<td>".$data[$i][3]."</td>";
 		   print "<td>".$data[$i][4]."</td>";
