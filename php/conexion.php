@@ -5,7 +5,7 @@ class DATA {
 	private static $usuario = "Admin";
 	private static $clave = "12345";
 	private static $db = "registroingreso";*/
-	private static $conn;
+	public static $conn;
     private static $connSql;
 	
 	public function __construct(){
