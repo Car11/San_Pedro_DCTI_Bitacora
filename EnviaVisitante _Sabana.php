@@ -10,12 +10,12 @@
         header('Location: Error.php');
         exit;
     }
-    /*if (isset($_POST['detalle'])) {
+    if (isset($_POST['detalle'])) {
         $visitante->detalle=$_POST['detalle'];    
     }
     if (isset($_POST['sala'])) {
         $visitante->sala=$_POST['sala'];
-    }*/
+    }
     //
     $visitante->ValidaID();
 ?>

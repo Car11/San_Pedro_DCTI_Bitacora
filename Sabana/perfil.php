@@ -15,10 +15,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>
-    <link href="css/estilo.css" rel="stylesheet"/>
-    <script src="js/jquery.js"></script>
-    <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
+    <title>Bitácora de Ingreso DCTI Sabana</title>
+    <link href="../css/estilo.css" rel="stylesheet"/>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/funciones.js" languaje="javascript" type="text/javascript"></script>
      <script>
     function onVuelve(){
         location.href = "index.php";

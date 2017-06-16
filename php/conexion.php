@@ -15,7 +15,14 @@ class DATA {
     public static function Conectar(){
         try {
             if(!isset(self::$conn)) {
-                $config = parse_ini_file('ini/config.ini'); 
+                $config="";
+                if (file_exists('ini/config.ini')) {
+                    $config = parse_ini_file('ini/config.ini'); 
+                    //printf('ini: '. $config['host']);exit;
+                } else {
+                    $config = parse_ini_file('../ini/config.ini'); 
+                    //printf('../ini: '. $config['host']);exit;
+                }
                 self::$conn = new PDO('mysql:host='. $config['host'] .';dbname='.$config['dbname'].';charset=utf8', $config['username'],   $config['password']); 
                 return self::$conn;
             }
@@ -29,8 +36,8 @@ class DATA {
         try {           
             if(!isset(self::$connSql)) {
                 $config = parse_ini_file('ini/config.ini'); 
-                self::$connSql =  odbc_connect("Driver={SQL Server Native Client 10.0};Server=". $config['hostsql'] . ";Database=". $config['dbnamesql'].";", "dbaadmin","dbaadmin");
-                return self::$connSql;   
+                self::$connSql = new PDO("odbc:sqlserver", 'dbaadmin', 'dbaadmin'); 
+                return self::$connSql;
             }
         } catch (PDOException $e) {
             print('<br>'. $e);exit;
@@ -55,21 +62,13 @@ class DATA {
         }
     }
     
-    public static function EjecutarSQL($sql) {
+    public static function EjecutarSQL($sql, $param=NULL) {
         try{
             //conecta a BD
-            DATA::ConectarSQL();     
-            //echo $sql;
-            $result= odbc_exec(self::$connSql, $sql);            
-            //odbc_close(self::$connSql);
-            //
-            //echo '<br>:'. $result;
-            //echo '<br> nombre: '. odbc_result($result, "codigo");
-            /*while(odbc_fetch_row($result)){
-                $name = odbc_result($result, 1);
-                print("$name");
-            }*/
-            return $result;
+            DATA::ConectarSQL();    
+            $st=DATA::$connSql->prepare($sql);
+            $st->execute($param);
+            return $st->fetchAll();
         } catch (Exception $e) {
             header('Location: Error.html?w=ejecutar&id='.$e->getMessage());
             exit;

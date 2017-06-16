@@ -11,17 +11,15 @@ class usuario{
         //ini_set('display_errors', 1);
     }
 	
-    function Conectar(){       
-        $sql= sprintf("SELECT codigo FROM USUARIO where CODIGO= '%s'  AND CLAVE= '%s' ", $this->username , $this->password);
-        $result = DATA::EjecutarSQL($sql);
-        if ( odbc_num_rows($result) ) { 
-            header('Location: ConsultaBitacora.php');
-            exit;
-        } else 
-        {   
-            print('<br>Resutado no <br>');
-            exit;
-        }
+    function Validar(){    
+        $sql='SELECT codigo FROM USUARIO where CODIGO=:codigo AND CLAVE=:clave';
+        $param= array(':codigo'=>$this->username, ':clave'=>$this->password);        
+        $result = DATA::EjecutarSQL($sql,$param);
+        if (count($result) ) {
+            return true;
+        }else {        
+            return false;           
+        }        
     }
 }
 ?>

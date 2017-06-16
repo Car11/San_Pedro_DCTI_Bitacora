@@ -1,0 +1,20 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+       "php.validate.executablePath": "C:\\xampp\\php\\php.exe",
+       // Controls if quick suggestions should show up while typing
+    "editor.quickSuggestions": true,
+
+    // Controls if suggestions should be accepted with "Enter" - in addition to "Tab". Helps to avoid ambiguity between inserting new lines and accepting suggestions.
+    "editor.acceptSuggestionOnEnter": "smart",
+
+    // Controls the delay in ms after which quick suggestions will show up.
+    "editor.quickSuggestionsDelay": 10,
+
+    // Enable word based suggestions
+    "editor.wordBasedSuggestions": true,
+
+    // Enable parameter hints
+    "editor.parameterHints": true,
+    // MINIMAP 
+    "editor.minimap.enabled": false
+}
