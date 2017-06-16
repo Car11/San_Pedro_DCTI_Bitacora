@@ -1,6 +1,7 @@
 <?php
-    include("php/Visitante.php");
+    include("Visitante.php");
     $v= new Visitante(); 
+    $v->sala="SABANA";
     if (isset($_POST['cedula'])) {
         $v->cedula=$_POST['cedula'];
     }

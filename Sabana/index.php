@@ -22,43 +22,26 @@
     }
     if (isset($_SESSION['NOMBREVISITANTE'])) {
         $nombre= $_SESSION['NOMBREVISITANTE'];
-    }
-    //salas
-    include("php/sala.php");    
-    $sala= new Sala();
-    $salas=$sala->Disponibles();
-    //login
-    include("php/usuario.php");    
-    /*for($i=0; $i<count($result); $i++){
-        print($i.': '. $result[$i][1]   .'<br>' );
-    }
-    print ('total de registros: '. count($result));
-    exit;*/   
-
+    }    
+    
 ?>
 
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>
-    <link href="css/estilo.css" rel="stylesheet"/>
-    <script src="js/jquery.js" type="text/jscript"></script>
-    <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
+    <title>Bitácora de Ingreso DCTI Sabana</title>
+    <link href="../css/estilo.css" rel="stylesheet"/>
+    <script src="../js/jquery.js" type="text/jscript"></script>
+    <script src="../js/funciones.js" languaje="javascript" type="text/javascript"></script>
 </head>
 <body>
     <header>
-        <h1>BITÁCORA DE INGRESO</h1>        
-        <div id="logo"><img src="img/logoice.png" height="75" > </div>
+        <h1>BITÁCORA DE ENTRADA SABANA</h1>        
+        <div id="logo"><img src="../img/logoice.png" height="75" > </div>
         <div id="fechahora"><span id="date"></span></div>
     </header>
     <div class="contenido" >
-        <div class="login">    
-            <form  name="Usuario" action="EnviaUsuario.php" method="POST">  
-                <input type="text" id="username" class="input-field" name="username" placeholder="USUARIO" maxlength="20" /><br>
-                <input type="password" id="password" class="input-field" name="password" placeholder="CONTRASEÑA" maxlength="20" />
-                <input type="submit" value="Ingresar" id="login" />
-            </form>      
-        </div>
+        
         <div id="mensaje">
             <span id="textomensaje"></span>  
         </div>      
@@ -68,23 +51,13 @@
                 <input type="text" maxlength="9" id="cedula" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número decédula separado con CEROS"  onkeypress="return isNumber(event)"/>
                 <h3>Motivo de la Visita</h3>
                 <input type=text  class="textarea-field"  id = "detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC" >                
-                <!--<div class="sala">
-                    <input type="text" id="sala" name="test" placeholder="SELECCIONE LA SALA" class="field" readonly="readonly" />
-                    <ul class="list">
-                       <?php
-                        /*for($i=0; $i<count($salas); $i++){
-                            print('<li>'.$salas[$i][1].'</li>');                            
-                        }*/
-                        ?>                        
-                    </ul>
-                </div>-->       	                
+                      	                
                 <input type="submit" value="Enviar" id="enviar" />
             </form>
         </div>
         <div id="mensajes">
-            <!--<div id="checkingreso"><img src="img/Check.png" height="50"  alt="logo"></div>
-            <div id="salidaDetalle"><img src="img/detalle.png" height="50"  alt="logo"/></div>   
-        </div>-->
+             
+        </div>
     </div>
 <script> 
     var cedula = '<?php print $cedula ?>';
@@ -92,17 +65,6 @@
     var nombre = '<?php print $nombre ?>';
     var nulldetalle = '<?php print $nulldetalle ?>';
     //
-
-/*$("#detalle").keypress(function (e) {
-        if(e.which == 13) {
-            //submit form via ajax, this is not JS but server side scripting so not showing here
-            alert("s");
-            $(this).closest("form").submit();
-            e.preventDefault();
-            return false;
-        }
-    });
-*/
     //
     $("#cedula").focus();
     //si el detalle es nulo en entrada debe ser requerido
@@ -181,6 +143,8 @@
     	//Oculta los iconos de mensajes
         $( "#checkingreso" ).hide();
         $("#salidaDetalle").hide();
+        $("#mensaje").css("visibility", "hidden"); 
+        
     }
     
     

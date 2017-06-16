@@ -1,4 +1,14 @@
 <?php 
+if (!isset($_SESSION))
+    session_start();
+//
+include("php/sesion.php");
+$sesion = new sesion();
+if(!$sesion->estadoLogin()){
+    header("location:index.php");
+    exit;
+}
+//
 include("php/Visitante.php");
 $visitante= new Visitante();
 $data= $visitante->ConsultaBitacora();
