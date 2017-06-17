@@ -4,7 +4,6 @@ var r = false;
 function inicio() {
     startTime();
     $("#avisoFormulario").click(onClickIDFormulario);
-    //$("#logo").click(onShowLogin);
     // COMBOBOX
     $('.sala').styleddropdown();
 }
@@ -38,6 +37,8 @@ this.onShowLogin = function () {
     } else {
         window.location.href = "login.php";                    
     } */   
+    
+    window.location.href = "login.php";                    
 };
 
 function startTime() {
@@ -55,9 +56,10 @@ function startTime() {
 }
 
 function checkTime(i) {
+    // add zero in front of numbers < 10
     if (i < 10) {
         i = "0" + i
-    }; // add zero in front of numbers < 10
+    }; 
     return i;
 }
 
@@ -68,7 +70,6 @@ function onMuestraFormulario(id) {
 }
 
 function onClickIDFormulario() {
-    //$("#cedula").text("12");
     document.getElementById('cedula').value = $("#avisoFormulario")[0].innerText;
     document.getElementById("datos").submit();
     //elimina elemento de archivo.
@@ -108,98 +109,3 @@ function onClickIDFormulario() {
         });
     };
 })(jQuery);
-/*
-function onValidaInicio() {
-    var cedula = document.getElementById('cedula').value;
-    //var sala= document.getElementById('sala').value;
-    //var detalle= document.getElementById('detalle').value;
-    if (cedula == "") {
-        $("#cedula").attr({
-            placeholder: "REQUERIDO"
-        });
-        $("#cedula").focus();
-        return false;
-    } else if (cedula.length < 9) {
-        $("#mensaje").css("background-color", "firebrick");
-        $("#textomensaje").text("Formato de cedula: 9 digitos sin guiones ni espacios");
-        $("#mensaje").css("visibility", "visible");
-        $("#mensaje").slideDown("slow");
-        //
-        $("#cedula").focus();
-        return false;
-    }*/
-/* else if(sala=="" && type!="OUT") 
- {
-     $("#mensaje").css("background-color", "firebrick"); 
-   	$("#textomensaje").text("Seleccione la sala a visitar");
-   	$("#mensaje").css("visibility", "visible"); 
-     //$(".field").css("background", "firebrick"); 
-     setInterval(function(){
-         $(".field").toggleClass("emptyfield");
-     },1000);
- 	$( "#mensaje" ).slideDown( "slow" );
-     //
-     return false;
- }*/
-/*
-    else {
-        $("#mensaje").hide();
-        return true;
-    }
-}*/
-/*
-function onValidaPerfil() {
-    var formlisto = true;
-    var cedula = document.getElementById('cedula').value;
-    var empresa = document.getElementById('empresa').value;
-    var nombre = document.getElementById('nombre').value;
-    if (cedula == "") {
-        $("#cedula").attr({
-            placeholder: "REQUERIDO"
-        });
-        $("#cedula").focus();
-        formlisto = false;
-    } else if (cedula.length < 9) {
-        $("#mensaje").css("background-color", "firebrick");
-        $("#textomensaje").text("Formato de cedula: 9 digitos sin guiones ni espacios");
-        $("#mensaje").css("visibility", "visible");
-        $("#mensaje").slideDown("slow");
-        //
-        $("#cedula").focus();
-        formlisto = false;
-    }
-    if (empresa == "") {
-        $("#empresa").attr({
-            placeholder: "REQUERIDO"
-        });
-        $("#empresa").focus();
-        formlisto = false;
-    }
-    if (nombre == "") {
-        $("#nombre").attr({
-            placeholder: "REQUERIDO"
-        });
-        $("#nombre").focus();
-        formlisto = false;
-    } else if (nombre.length < 10) {
-        $("#mensaje").css("background-color", "firebrick");
-        $("#textomensaje").text("El Nombre debe tener mínimo 10 caracteres");
-        $("#mensaje").css("visibility", "visible");
-        $("#mensaje").slideDown("slow");
-        //
-        $("#nombre").focus();
-        formlisto = false;
-    }
-    if (formlisto) return true;
-    else return false;
-
-}
-
-function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
-    }
-    return true;
-}*/

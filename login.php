@@ -14,7 +14,7 @@ if (isset($_GET['ID'])) {
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
      <script>
         function onVuelve() {
-            location.href = "inicio.php";
+            location.href = "index.php";
         }
         
     </script>
@@ -33,7 +33,7 @@ if (isset($_GET['ID'])) {
        <h2>Ingrese su usuario y contraseña</h2>
         <div id="form">
             <div class="login">    
-                <form  name="Usuario" action="EnviaUsuario.php" method="POST">                      
+                <form  name="Usuario" action="request/EnviaUsuario.php" method="POST">                      
                     <input type="text" id="username" class="input-field" name="username" placeholder="USUARIO" maxlength="20" /><br>
                     <input type="password" id="password" class="input-field" name="password" placeholder="CONTRASEÑA" maxlength="20" />
                     <nav class="btnfrm">

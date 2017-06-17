@@ -2,14 +2,14 @@
 if (!isset($_SESSION))
     session_start();
 //
-include("php/sesion.php");
+include("class/sesion.php");
 $sesion = new sesion();
 if(!$sesion->estadoLogin()){
     header("location:index.php");
     exit;
 }
 //
-include("php/Visitante.php");
+include("class/Visitante.php");
 $visitante= new Visitante();
 $data= $visitante->ConsultaBitacora();
 ?>

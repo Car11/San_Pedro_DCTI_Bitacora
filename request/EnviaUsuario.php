@@ -1,6 +1,6 @@
 <?php 
-    include("php/usuario.php");
-    include("php/sesion.php");
+    include("../class/usuario.php");
+    include("../class/sesion.php");
     $usuario= new usuario();
     $sesion = new sesion();
     //
@@ -10,18 +10,18 @@
         if($usuario->Validar())
         {
             $sesion->inicioLogin($usuario->username);
-            header('Location: MenuAdmin.php'); 
+            header('Location: ../MenuAdmin.php'); 
             exit;
         }
         else //usuario denegado
         {
             $sesion->finLogin();
-            header('Location: login.php?ID=invalid');
+            header('Location: ../login.php?ID=invalid');
             exit;
         }
     }
     else {
-		header("location:inicio.php?ID=NOUP");
+		header('Location: ../login.php?ID=error');
 		exit;
     }
     //

@@ -12,23 +12,23 @@ class Visitante{
     
     function BitacoraEntrada(){
         try {
-            $sql='INSERT INTO bitacora (cedula,detalle, idsala) VALUES (:cedula, :detalle, 
+            /*$sql='INSERT INTO bitacora (cedula,detalle, idsala) VALUES (:cedula, :detalle, 
                 (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :sala))';
             $param= array(':cedula'=>$this->cedula, ':detalle'=>$this->detalle, ':sala'=>$this->sala);
             $result = DATA::Ejecutar($sql,$param);
             //
             $this->EnviareMail("Ingreso");
-            $nextpage = "index.php";
+            $nextpage = "../index.php";
             if ($_SESSION["NUEVOVISITANTE"]=="SI"){
                 $nextpage= "index.php?id=REGISTRO";
                 unset($_SESSION["NUEVOVISITANTE"]);
             }                
 			$_SESSION["TYPE"] = "IN";
-            header('Location: '. $nextpage);
+            header('Location: '. $nextpage);*/
             exit;
         }     
         catch(Exception $e) {
-            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }
     }

@@ -8,9 +8,9 @@ class Visitante{
 	
 	function __construct(){
         require_once("conexion.php");
-        error_reporting(E_ALL);
+        //error_reporting(E_ALL);
         // Always in development, disabled in production
-        ini_set('display_errors', 1);
+        //ini_set('display_errors', 1);
     }
     
     function ValidaID(){
@@ -24,13 +24,13 @@ class Visitante{
                 // ...
             }
             else { //la ID no existe en bd, muestra nuevo perfil
-                header('Location: nuevoperfil.php?id='.$this->cedula);
+                $_SESSION['link']="true";
+                header('Location: ../nuevoperfil.php?id='.$this->cedula);
                 exit;
             }
         }
         catch(Exception $e) {
-            $_SESSION['errmsg']= $e->getMessage();
-            header('Location: Error.php');
+            header('Location: ../Error.php?w=conectar&id');
             exit;
         }
     }
@@ -45,8 +45,7 @@ class Visitante{
             else return false;
         }     
         catch(Exception $e) {
-            $_SESSION['errmsg']= $e->getMessage();
-            header('Location: Error.php');
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
     }
@@ -59,8 +58,7 @@ class Visitante{
             return $data;
         }
         catch(Exception $e) {
-            $_SESSION['errmsg']= $e->getMessage();
-            header('Location: Error.php');
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
     }
@@ -71,9 +69,8 @@ class Visitante{
             $data= DATA::Ejecutar($sql);
             return $data;
         }
-        catch(Exception $e) {
-            $_SESSION['errmsg']= $e->getMessage();
-            header('Location: Error.php');
+        catch(Exception $e) {            
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
     }
@@ -85,7 +82,7 @@ class Visitante{
            $result = DATA::Ejecutar($sql);
            return $result;                                 
         }catch(Exception $e) {
-            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }                                     
     }
@@ -97,7 +94,7 @@ class Visitante{
            $result = DATA::Ejecutar($sql);
            return $result;                                 
         }catch(Exception $e) {
-            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }                                     
     }

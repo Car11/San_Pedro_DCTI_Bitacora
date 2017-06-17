@@ -3,7 +3,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 //
-include("php/sesion.php");
+include("class/sesion.php");
 $sesion = new sesion();
 //
 $cedula="";
@@ -12,18 +12,12 @@ $cedula="";
 if (isset($_GET['id'])) {
     $cedula=$_GET['id'];
 }
-    /*if (isset($_SESSION['DETALLE'])) {
-        $detalle= $_SESSION['DETALLE'];
-    }
-    if (isset($_SESSION['NOMBREVISITANTE'])) {
-        $nombre= $_SESSION['NOMBREVISITANTE'];
-    }*/
-    //salas
-    include("php/sala.php");
-    $sala= new Sala();
-    $salas=$sala->Disponibles();
-    //login
-    include("php/usuario.php");
+//salas
+//include("class/sala.php");
+//$sala= new Sala();
+//$salas=$sala->Disponibles();
+//login
+include("class/usuario.php");
 ?><html>
 
 <head>
@@ -65,7 +59,7 @@ if (isset($_GET['id'])) {
     <section>
         <div id="form">
             <h2>Cédula / Identificación</h2>
-            <form name="datos" id="datos" action="EnviaVisitante.php" method="POST">
+            <form name="datos" id="datos" action="request/EnviaVisitante.php" method="POST">
                 <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
                 <input type="submit" value="Enviar" id="enviar" />
             </form>

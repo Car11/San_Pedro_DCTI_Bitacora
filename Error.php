@@ -16,7 +16,7 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            location.href = "inicio.php";
+            location.href = "index.php";
         }
     </script>
 </head>

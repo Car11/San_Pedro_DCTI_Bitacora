@@ -1,9 +1,15 @@
 <?php   
+    if (!isset($_SESSION))
+		session_start();
+    //valida el link
+    if (!isset($_SESSION['link'])){
+        header('Location: index.php');
+        exit; 
+    }
     $id="";
     if (isset($_GET['id'])) {
         $id=$_GET['id'];
-    } else {
-        $_SESSION['errmsg']= "NuevoPerfil.php: No GET ID";
+    } else {        
         header('Location: Error.php');
         exit;  
     }
@@ -19,8 +25,7 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            location.href = "inicio.php";
-            <?php //$_SESSION["TYPE"] = "NULL"; ?>
+            location.href = "index.php";            
         }
     </script>
 </head>
@@ -39,7 +44,7 @@
     <section>
         <div id="form">
             <h1>Datos del Visitante</h1>
-            <form name="perfil" method="POST" action="EnviaNuevoPerfil.php">
+            <form name="perfil" method="POST" action="request/EnviaNuevoPerfil.php">
                 <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
                     <input readonly type="text" maxlength="9" id="cedula" value= "<?php print $id ?>" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)"/>
                 </label>

@@ -1,13 +1,12 @@
 <?php 
-    include("php/Visitante.php");
+    include("../class/Visitante.php");
     $visitante= new Visitante();
     //
     if (isset($_POST['cedula'])) { 
         $visitante->cedula=$_POST['cedula'];        
     }
     else {
-        $_SESSION['errmsg']= "No post cedula.";
-        header('Location: Error.php');
+        header('Location: ../Error.php');
         exit;
     }
     /*if (isset($_POST['detalle'])) {

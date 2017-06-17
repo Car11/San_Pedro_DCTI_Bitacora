@@ -1,16 +1,16 @@
 <?php 
-include("php/Visitante.php");
+include("class/Visitante.php");
 $visitante= new Visitante();
 $data= $visitante->FormularioIngresoConsultaVisitante();
 
-include("php/sala.php");    
+include("class/sala.php");    
     $sala= new Sala();
     $salas=$sala->Disponibles();
 ?>
 
 <html>
 <head>
-        <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>Bitácora de Ingreso DCTI San Pedro</title>   
     <link href="css/estilo.css" rel="stylesheet"/>        
     <!-- CONSULTA BITACORA -->
@@ -28,7 +28,7 @@ include("php/sala.php");
     <div id="logo"><img src="img/logoice.png" height="75" > </div>
 	</header>
     <div id="general">
-        <form class="cbp-mc-form" method="POST" action="EnviaFormulario.php" onSubmit="EnviaVisitante()">
+        <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="EnviaVisitante()">
             <div id="izq">    
             </div>
             <div id="centro">

@@ -67,7 +67,7 @@ class Formulario{
             header('Location:FormularioIngreso.php');
         }     
         catch(Exception $e) {
-            header('Location: Error.html?w=visitante-agregar&id='.$e->getMessage());
+            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
             exit;
         }
     }
@@ -75,12 +75,11 @@ class Formulario{
     //Consulta formulario para llenar tabla 
     function ConsultaFormulario(){
         try {
-			require_once("conexion.php");
 			$sql = "SELECT id,fechasolicitud,fechaingreso,fechasalida,estado,motivovisita FROM formulario";
 			$result = DATA::Ejecutar($sql);
 			return $result;			
 		}catch(Exception $e) {
-            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }		 	
 	 } 
@@ -94,7 +93,7 @@ class Formulario{
         // Buzón: OperacionesTI@ice.go.cr
         try{
             //consulta datos del visitante
-            include("php/Visitante.php");        
+            include("Visitante.php");        
             $visitante= new Visitante();
             $data= $visitante->Cargar($idvisitante);     
             //
@@ -125,11 +124,11 @@ class Formulario{
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
             $headers .= "From: ".$from."\r\n"; 
             //
-            mail($to, $asunto, $mensaje,$headers);
+            //mail($to, $asunto, $mensaje,$headers);            
         }     
         catch(Exception $e) {
             $_SESSION['errmsg']= $e->getMessage() . " Notificar a Operaciones";
-            header('Location: Error.php');
+            header('Location: ../Error.php');
             exit;
         }
     }
@@ -148,12 +147,15 @@ class Formulario{
             $param= array(':idvisitante'=>$visitante,':idformulario'=>$this->id);
             $data=  DATA::Ejecutar($sql,$param);       
             $this->EnviareMail($visitante);
-            header('Location: inicio.php?id='. $visitante);
+            // elimina sesion link para evitar redirec a paginas anteriores.
+            unset($_SESSION['link']);  
+            session_destroy();
+            header('Location: ../index.php?id='.$visitante.'&type=Pendiente');
             exit;
         }     
         catch(Exception $e) {
             $_SESSION['errmsg']= $e->getMessage();
-            header('Location: Error.php');
+            header('Location: ../Error.php');
             exit;
         }
     }

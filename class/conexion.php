@@ -16,18 +16,20 @@ class DATA {
         try {
             if(!isset(self::$conn)) {
                 $config="";
-                if (file_exists('ini/config.ini')) {
+                if (file_exists('../ini/config.ini')) {
+                    $config = parse_ini_file('../ini/config.ini'); 
+                    //printf('ini: '. $config['host']);exit;
+                } 
+                else if (file_exists('ini/config.ini')) {
                     $config = parse_ini_file('ini/config.ini'); 
                     //printf('ini: '. $config['host']);exit;
-                } else {
-                    $config = parse_ini_file('../ini/config.ini'); 
-                    //printf('../ini: '. $config['host']);exit;
-                }
+                } 
+                //
                 self::$conn = new PDO('mysql:host='. $config['host'] .';dbname='.$config['dbname'].';charset=utf8', $config['username'],   $config['password']); 
                 return self::$conn;
             }
         } catch (PDOException $e) {
-            header('Location: Error.html?w=conectar&id='.$e->getMessage());
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
     }
@@ -35,13 +37,13 @@ class DATA {
     public static function ConectarSQL(){
         try {           
             if(!isset(self::$connSql)) {
-                $config = parse_ini_file('ini/config.ini'); 
+                $config = parse_ini_file('../ini/config.ini'); 
                 self::$connSql = new PDO("odbc:sqlserver", 'dbaadmin', 'dbaadmin'); 
                 return self::$connSql;
             }
         } catch (PDOException $e) {
             print('<br>'. $e);exit;
-            header('Location: Error.html?w=conectar&id='.$e->getMessage());
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
     }
@@ -57,7 +59,7 @@ class DATA {
             	return  $st->fetchAll();
 			else return $st;    
         } catch (Exception $e) {
-            header('Location: Error.html?w=ejecutar&id='.$e->getMessage());
+            header('Location: ../Error.php?w=ejecutar&id='.$e->getMessage());
             exit;
         }
     }
@@ -70,14 +72,13 @@ class DATA {
             $st->execute($param);
             return $st->fetchAll();
         } catch (Exception $e) {
-            header('Location: Error.html?w=ejecutar&id='.$e->getMessage());
+            header('Location: ../Error.php?w=ejecutar&id='.$e->getMessage());
             exit;
         }
     }
     
 	private static function Close(){
-		mysqli_close(self::$conn);	
-		print "Cerrar la conexion en forma exitosa<br>";
+		mysqli_close(self::$conn);			
 	}
 }
 ?>

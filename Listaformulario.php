@@ -1,5 +1,5 @@
 <?php 
-include("php/Formulario.php");
+include("class/Formulario.php");
 $formulario= new Formulario();
 $data= $formulario->ConsultaFormulario();
 ?>

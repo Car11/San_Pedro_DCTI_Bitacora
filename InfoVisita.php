@@ -1,16 +1,20 @@
-<?php   
+<?php
     if (!isset($_SESSION))
 		session_start();
+    //valida el link
+    if (!isset($_SESSION['link'])){
+        header('Location: index.php');
+        exit; 
+    }
     $id="";
     if (isset($_GET['id'])) {
         $id=$_GET['id'];
     } else {
-        $_SESSION['errmsg']= "infoVisita.php: No GET ID";
         header('Location: Error.php');
         exit;   
     }  
     //salas
-    include("php/sala.php");    
+    include("class/sala.php");    
     $sala= new Sala();
     $salas=$sala->Disponibles();
 ?>
@@ -26,9 +30,7 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            location.href = "inicio.php";
-            //
-            <?php /*$_SESSION["TYPE"] = "NULL";*/ ?>
+            location.href = "index.php";            
         }
     </script>
 </head>
@@ -48,7 +50,7 @@
         <div id="form">
             <h1>Información de Ingreso</h1>
             <h3>Cédula / Identificación</h3>
-            <form name="datos" action="EnviaInfoVisita.php" method="POST">
+            <form name="datos" action="request/EnviaInfoVisita.php" method="POST">
                 <input readonly type="text" id="cedula" class="input-field" name="cedula" value="<?php print $id ?>" title="Número decédula separado con CEROS" onkeypress="return isNumber(event)" />
                 <h3>Motivo de la Visita</h3>
                 <input type=text autofocus class="textarea-field" id="detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC">
