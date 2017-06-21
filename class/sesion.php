@@ -38,6 +38,13 @@ class Sesion{
 	public function estadoLogin(){
 		return $this->login;
 	}
-	
 }
+/*
+function estadoLogin(){
+	
+	$sesion = new sesion();
+	//return estadoLogin();
+	print estadoLogin();exit;
+}*/
+
 ?>

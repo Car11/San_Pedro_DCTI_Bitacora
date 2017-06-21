@@ -116,7 +116,7 @@ section {
 }
 
 aside {
-    background: yellow;
+    /*background: yellow;*/
     height: 700;
     width: 20%;
     float: left;

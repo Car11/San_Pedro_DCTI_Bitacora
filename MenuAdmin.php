@@ -1,9 +1,14 @@
 <?php
-	if (!isset($_SESSION))
-		session_start();
-	if (!isset($_SESSION['TYPE'])) {
-		$_SESSION['TYPE'] = "NULL";
-	}
+  if (!isset($_SESSION))
+    session_start();
+  // Sesion de usuario
+  include("class/sesion.php");
+  $sesion = new sesion();
+  if (!$sesion->estadoLogin())
+  {
+    header('Location: login.php');
+    exit;
+  }
 ?>
 
 <html>

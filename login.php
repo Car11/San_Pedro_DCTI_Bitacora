@@ -16,7 +16,11 @@ if (isset($_GET['ID'])) {
         function onVuelve() {
             location.href = "index.php";
         }
-        
+        //
+        $('#username').attr("autocomplete", "off");
+        $('#password').attr("autocomplete", "off");
+        setTimeout('$("#username").val("");', 100);
+        setTimeout('$("#password").val("");', 100);
     </script>
 
 </head>

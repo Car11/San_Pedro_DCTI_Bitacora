@@ -1,8 +1,15 @@
 <?php 
+include("class/sesion.php");
+$sesion = new sesion();
+if(!$sesion->estadoLogin()){
+    header("location:login.php");
+    exit;
+}
+//
 include("class/Visitante.php");
 $visitante= new Visitante();
 $data= $visitante->FormularioIngresoConsultaVisitante();
-
+//
 include("class/sala.php");    
     $sala= new Sala();
     $salas=$sala->Disponibles();

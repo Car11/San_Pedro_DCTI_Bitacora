@@ -5,16 +5,19 @@ if (!isset($_SESSION)) {
 // Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();
+$login = $sesion->estadoLogin();
 //login
 include("class/usuario.php");
 //GET
 $id="";
 $nombre="";
 $msg="NULL";
-if (isset($_GET['id'])) 
+if (isset($_GET['id'])) {
     $id=$_GET['id'];
-if (isset($_GET['msg'])) 
+}
+if (isset($_GET['msg'])) {
     $msg=$_GET['msg'];
+}
 ?>
 
 <html>
@@ -29,19 +32,34 @@ if (isset($_GET['msg']))
     
 </head>
 
+<script>
+    this.onShowLogin= function () {
+        var login= '<?php print $login; ?>';
+        if(login)
+        {
+            //muestra menu
+            location.href= 'menuadmin.php';
+        }
+        else{
+            //muestra login
+            location.href= 'login.php';
+        }
+    };
+
+</script>
 <body>
     <header>
         <h1>BITÁCORA DCTI</h1>
-        <div id="logo"><img src="img/logoice.png" height="75" onclick="onShowLogin()"> </div>  
+        <div id="logo"><img src="img/logoice.png" height="75" onclick="onShowLogin()" > </div>  
         <div id="fechahora"><span id="date"></span></div>
         <div id="signin">
             <span>Usuario: 
                 <?php
-                    if ($sesion->estadoLogin()==true) {
-                        print $_SESSION['username'];
-                    } else {
-                        print "Seguridad";
-                    }
+                if ($login==true) {
+                    print $_SESSION['username'];
+                } else {
+                    print "Seguridad";
+                }
                 ?>
             </span>
         </div>
@@ -68,8 +86,7 @@ if (isset($_GET['msg']))
             <!--ID DEL VISITANTE ACEPTADO EN EL FORMULARIO-->
         </div>
         <div id= "mensajespersonales"  >
-            <!--MENSAJES DE OPERACIONES-->
-            
+            <!--MENSAJES DE OPERACIONES-->            
         </div>
         
     </aside>
@@ -80,4 +97,5 @@ if (isset($_GET['msg']))
 <script>
     CapturaMensajeFormulario();
     MensajeriaHtml('<?php print $msg; ?>');
+    
 </script>

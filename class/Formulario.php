@@ -116,7 +116,7 @@ class Formulario{
             $mensaje .= "<tr><td><strong>Nombre:</strong> </td><td>" .  $nombre  . "</td></tr>";
             $mensaje .= "<tr><td><strong>Empresa:</strong> </td><td>" . $empresa . "</td></tr>";
             $mensaje .= "<tr><td><strong>Detalle:</strong> </td><td>" . $this->detalle . "</td></tr>";
-            $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.149.20.26:8000//san_pedro_dcti_bitacora/formulario/tempform.php?ID=" . $this->id . "</td></tr>";
+            $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.149.20.26:8000//san_pedro_dcti_bitacora/formularioingreso.php?ID=" . $this->id . "</td></tr>";
             $mensaje .= "</table>";
             $mensaje .= "</body></html>";
             //
@@ -124,7 +124,9 @@ class Formulario{
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
             $headers .= "From: ".$from."\r\n"; 
             //
-            //mail($to, $asunto, $mensaje,$headers);            
+            //mail($to, $asunto, $mensaje,$headers);         
+            print    "http://10.149.20.26:8000//san_pedro_dcti_bitacora/formularioingreso.php?ID=" . $this->id ;
+            exit;
         }     
         catch(Exception $e) {
             $_SESSION['errmsg']= $e->getMessage() . " Notificar a Operaciones";
