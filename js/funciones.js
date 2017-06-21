@@ -1,9 +1,20 @@
 $(document).ready(inicio);
 var r = false;
+var formularioID= [];
 
 function inicio() {
     startTime();
-    $("#avisoFormulario").click(onClickIDFormulario);
+    /*$(".avisoFormulario").click( function(){
+        //document.getElementById('cedula').value = $(this).innerText;
+        alert("aa");
+        
+        //document.getElementById("datos").submit();
+        //elimina elemento de archivo.
+        //$.get("filemanager.php");
+    });*/
+    $(".mensajeria").click( function(){
+        $(this).toggle("fadeOut");
+    });
     // COMBOBOX
     $('.sala').styleddropdown();
 }
@@ -11,13 +22,18 @@ function inicio() {
 this.CapturaMensajeFormulario = function () {
     //pushed server data
     if (typeof (EventSource) !== "undefined") {
-        var source = new EventSource("envianotificaciondinamica.php");
+        var source = new EventSource("Pruebas/envianotificaciondinamica.php");
         source.onmessage = function (event) {
             onMuestraFormulario(event.data);
         };
     } else {
         document.getElementById("avisoFormulario").innerHTML = "Sorry, your browser does not support server-sent events...";
     }
+};
+
+this.MensajeriaHtml = function(mensaje){
+    if(mensaje!="NULL")
+        onMuestraMensaje(mensaje);
 };
 
 this.onShowLogin = function () {
@@ -64,13 +80,44 @@ function checkTime(i) {
 }
 
 function onMuestraFormulario(id) {
-    document.getElementById("avisoFormulario").innerText = id;
-    $("#avisoFormulario").css("visibility", "visible");
-    $("#avisoFormulario").slideDown(150000);
+    var divId=+ new Date(); 
+    id= id.split("-");
+    //lista de id's en pantalla
+    var data={
+        "id":id[1]
+    };
+    //
+    var result = $.grep(formularioID, function(e){  return e.id== data.id; });
+    if (result.length  == 0)// si esta en el arreglo, por lo tanto ya está en pantalla
+    {
+        //agrega al arreglo
+        formularioID.push(data); 
+        //muestra en pantalla
+        var htmltext= "<div class=avisoFormulario id=" + divId + ">" + id[1] + "</div>";    
+        $("#IDsformulario").append(htmltext);
+        $("#"+divId).toggle("fadeIn");
+        $("#"+divId).click(onClickIDFormulario); 
+    }
+    
+}
+
+function onMuestraMensaje(msg) {        
+    if(msg=="pendiente")
+        msg="Formulario Enviado!<br>Por favor espere";
+    //elimina espacios en blanco para crear id unico de DIV
+    var divId=+ new Date();
+    var htmltext= "<div class=mensajeria id=" + divId + ">" + msg + "</div>";    
+    $("#mensajespersonales").append(htmltext);
+    $("#"+divId).toggle("fadeIn");
 }
 
 function onClickIDFormulario() {
-    document.getElementById('cedula').value = $("#avisoFormulario")[0].innerText;
+    //elimina ID del arreglo
+    formularioID.splice(
+        formularioID.findIndex(x => x.id === $(this)[0].innerText)
+        ,1);
+    //ejecuta form con la cedula
+    document.getElementById('cedula').value = $(this)[0].innerText;
     document.getElementById("datos").submit();
     //elimina elemento de archivo.
     $.get("filemanager.php");

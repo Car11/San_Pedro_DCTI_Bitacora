@@ -2,23 +2,22 @@
 if (!isset($_SESSION)) {
     session_start();
 }
-//
+// Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();
-//
-$cedula="";
-//$detalle="";
-//$nombre="";
-if (isset($_GET['id'])) {
-    $cedula=$_GET['id'];
-}
-//salas
-//include("class/sala.php");
-//$sala= new Sala();
-//$salas=$sala->Disponibles();
 //login
 include("class/usuario.php");
-?><html>
+//GET
+$id="";
+$nombre="";
+$msg="NULL";
+if (isset($_GET['id'])) 
+    $id=$_GET['id'];
+if (isset($_GET['msg'])) 
+    $msg=$_GET['msg'];
+?>
+
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -27,9 +26,7 @@ include("class/usuario.php");
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
-    <script>
-        CapturaMensajeFormulario();
-    </script>
+    
 </head>
 
 <body>
@@ -67,11 +64,20 @@ include("class/usuario.php");
     </section>
 
     <aside>
-        <div id="avisoFormulario" name="avisoFormulario">
+        <div  id="IDsformulario" >
             <!--ID DEL VISITANTE ACEPTADO EN EL FORMULARIO-->
         </div>
+        <div id= "mensajespersonales"  >
+            <!--MENSAJES DE OPERACIONES-->
+            
+        </div>
+        
     </aside>
 
 </body>
 
 </html>
+<script>
+    CapturaMensajeFormulario();
+    MensajeriaHtml('<?php print $msg; ?>');
+</script>

@@ -133,11 +133,12 @@ class Formulario{
         }
     }
     
-        function AgregarTemporal($visitante){
+    function AgregarTemporal($visitante){
         try {
             //agrega infomación del formulario temporal
-            $sql='insert into FORMULARIO (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD) VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY),NOW())';
-            DATA::Ejecutar($sql);
+            $sql='insert into FORMULARIO (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD,IDSALA) VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :idsala)  )';
+            $param= array(':idsala'=>$this->idsala);            
+            $result = DATA::Ejecutar($sql,$param);
             //busca id de formulario agregado
             $sql='SELECT LAST_INSERT_ID() as ID';
             $data= DATA::Ejecutar($sql);
@@ -147,10 +148,10 @@ class Formulario{
             $param= array(':idvisitante'=>$visitante,':idformulario'=>$this->id);
             $data=  DATA::Ejecutar($sql,$param);       
             $this->EnviareMail($visitante);
-            // elimina sesion link para evitar redirec a paginas anteriores.
+            // elimina sesion link para evitar redirect a paginas anteriores.
             unset($_SESSION['link']);  
             session_destroy();
-            header('Location: ../index.php?id='.$visitante.'&type=Pendiente');
+            header('Location: ../index.php?id='.$visitante.'&msg=pendiente');
             exit;
         }     
         catch(Exception $e) {

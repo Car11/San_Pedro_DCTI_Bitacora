@@ -14,13 +14,15 @@ function sendMsg($msg)
 }
 
 if (!empty($msg)) {
-    $fp = fopen("_chat.txt", 'a');
+    $id = uniqid();
+    $msg =  $id .  '-' . $msg;
+    $fp = fopen("../_chat.txt", 'a');
     fwrite($fp, $msg . PHP_EOL);
     fclose($fp);
 }
 
-if (file_exists("_chat.txt") && filesize("_chat.txt") > 0) {
-    $arrhtml=array_reverse(file("_chat.txt"));
+if (file_exists("../_chat.txt") && filesize("../_chat.txt") > 0) {
+    $arrhtml=file("../_chat.txt");
     $html=$arrhtml[0];
 }
 if(isset($html))

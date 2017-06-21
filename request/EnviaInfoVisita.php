@@ -21,8 +21,9 @@
         header('Location: ../Error.php');
         exit; 
     }
+    //if (isset($_POST['sala'])) {        
     if (isset($_POST['sala'])) {
-        $formulario->sala=$_POST['sala'];
+        $formulario->idsala=$_POST['sala'];
     }
     else {
         $_SESSION['errmsg']= "No post sala.";

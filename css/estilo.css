@@ -60,29 +60,52 @@ header {
 }
 
 
-#avisoFormulario{
+.avisoFormulario{
+    display: block;  
+    position: relative;  
     background: #FF8500;;
     height: 50px;
     color: aliceblue;
     font-size: 30px;
     text-align: center;
-    padding-top: 20;
-    cursor: pointer;
-    margin-right: 0  auto;
-    margin-top: 150%;
+    padding: 20 0 15 0;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    margin-top: 10px;
+    cursor: pointer;    
     box-shadow: 1px 1px 4px #DADADA;
     -moz-box-shadow: 1px 1px 4px #DADADA;
     -webkit-box-shadow: 1px 1px 4px #DADADA;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
-    /*display: none;*/
-    visibility: hidden;
+    display: none;
+    
 }
 
-#avisoFormulario:hover{
+.avisoFormulario:hover{
     background: #FFAB49;
     color: #fff;
+}
+
+.mensajeria{
+    display: block;
+    background: #19FF3F;
+    height: auto;
+    color: aliceblue;
+    font-size: 30px;
+    text-align: center;
+    padding: 20 0  15 0;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    cursor: pointer;
+    box-shadow: 1px 1px 4px #DADADA;
+    -moz-box-shadow: 1px 1px 4px #DADADA;
+    -webkit-box-shadow: 1px 1px 4px #DADADA;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    display: none;
 }
 
 section {
@@ -93,7 +116,7 @@ section {
 }
 
 aside {
-    /*background: yellow;*/
+    background: yellow;
     height: 700;
     width: 20%;
     float: left;
