@@ -1,11 +1,12 @@
 {
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "JS",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost/san_pedro_dcti_bitacora/inicio.php",
+            "url": "http://localhost/san_pedro_dcti_bitacora/index.php",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}",
 
