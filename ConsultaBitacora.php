@@ -5,7 +5,7 @@ if (!isset($_SESSION))
 include("class/sesion.php");
 $sesion = new sesion();
 if(!$sesion->estadoLogin()){
-    header("location:index.php");
+    header("location:login.php");
     exit;
 }
 //

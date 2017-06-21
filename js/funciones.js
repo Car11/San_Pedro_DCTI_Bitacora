@@ -36,27 +36,6 @@ this.MensajeriaHtml = function(mensaje){
         onMuestraMensaje(mensaje);
 };
 
-this.onShowLogin = function () {
-    alert("iniciando");
-    //var i="";
-    /*if ($(".login").is(":hidden")) {
-        $(".login").css("visibility", "visible");
-        $(".login").slideDown(1000);
-    } else {
-        $(".login").slideUp(1000);
-    }*/
-    var sesion= '<?php print "no"?>';
-    //'<?php include("php/sesion.php"); $sesion = new sesion();  print  $sesion->estadoLogin(); ?>';
-    alert(sesion);
-    /*if (sesion==true) {
-        window.location.href = "MenuAdmin.php";
-    } else {
-        window.location.href = "login.php";                    
-    } */   
-    
-    window.location.href = "login.php";                    
-};
-
 function startTime() {
     var today = new Date();
     var h = today.getHours();

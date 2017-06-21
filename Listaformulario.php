@@ -1,5 +1,11 @@
 <!-- CONSULTA FORMULARIO -->
 <?php 
+include("class/sesion.php");
+$sesion = new sesion();
+if(!$sesion->estadoLogin()){
+    header("location:login.php");
+    exit;
+}
 include("class/Formulario.php");
 $formulario= new Formulario();
 $data= $formulario->ConsultaFormulario();
