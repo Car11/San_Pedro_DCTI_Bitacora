@@ -75,7 +75,9 @@ class Formulario{
     //Consulta formulario para llenar tabla 
     function ConsultaFormulario(){
         try {
-			$sql = "SELECT id,fechasolicitud,fechaingreso,fechasalida,estado,motivovisita FROM formulario";
+			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitador,
+            idautorizador,idresponsable,idsala,placavehiculo,detalleequipo
+            FROM formulario";
 			$result = DATA::Ejecutar($sql);
 			return $result;			
 		}catch(Exception $e) {

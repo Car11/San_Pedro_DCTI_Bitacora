@@ -1,3 +1,4 @@
+<!-- FORMUALRIO INGRESO -->
 <?php 
 include("class/Visitante.php");
 $visitante= new Visitante();
@@ -11,16 +12,14 @@ include("class/sala.php");
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>   
+    <title>Bitácora de Ingreso DCTI San Pedro</title>       
+    <!-- CSS -->
     <link href="css/estilo.css" rel="stylesheet"/>        
-    <!-- CONSULTA BITACORA -->
-     
-    <script src="js/jquery.js" type="text/jscript"></script>
-    <link rel="stylesheet" type="text/css" href="DataTables/datatables.css">
- 	<script type="text/javascript" charset="utf8" src="DataTables/datatables.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <link href="css/divs.css" rel="stylesheet"/>
-    
-
+    <!-- JS  -->
+    <script src="js/jquery.js" type="text/jscript"></script>
+ 	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
 </head>
 <body> 
     <header>
@@ -50,6 +49,7 @@ include("class/sala.php");
                     <input type="datetime-local" id="fechasalida" name="fechasalida">
                 </div>
                 <div id="tablavisitante">
+                    <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL FORMULARIO-->
                     <?php
                     print "<table border='1' id='tblvisitantes' class='display'>";
                     print "<tr>";
@@ -73,25 +73,26 @@ include("class/sala.php");
                             <h2>Seleccione los Visitantes a Autorizar</h2>
                         </div>
                         <div class="modal-body">
+                            <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
                             <?php 
-                                print "<table id='bitacora'class='display'>";
-                                print "<thead>";
-                                print "<tr>";
-                                print "<th>Cedula</th>";
-                                print "<th>Nombre</th>";
-                                print "<th>Empresa</th>";
-                                print "</tr>";
-                                print "</thead>";	
-                                print "<tbody>";
-                                for($i=0; $i<count($data); $i++){
-                                       print "<tr>";
-                                       print "<td>".$data[$i][0]."</td>";
-                                       print "<td>".$data[$i][1]."</td>";
-                                       print "<td>".$data[$i][2]."</td>";
-                                       print "</tr>";
-                                }
-                                print "</tbody>";
-                                print "</table>";
+                            print "<table id='bitacora'class='display'>";
+                            print "<thead>";
+                            print "<tr>";
+                            print "<th>Cedula</th>";
+                            print "<th>Nombre</th>";
+                            print "<th>Empresa</th>";
+                            print "</tr>";
+                            print "</thead>";	
+                            print "<tbody>";
+                            for($i=0; $i<count($data); $i++){
+                                   print "<tr>";
+                                   print "<td>".$data[$i][0]."</td>";
+                                   print "<td>".$data[$i][1]."</td>";
+                                   print "<td>".$data[$i][2]."</td>";
+                                   print "</tr>";
+                            }
+                            print "</tbody>";
+                            print "</table>";
                             ?> 
                         </div>
                         <div class="modal-footer">
@@ -153,17 +154,15 @@ include("class/sala.php");
                 modal.style.display = "none";
             }
         }
-        
+        // OBTIENE EL CSS PARA LOS TABLES
         $(document).ready( function () {
             $('#bitacora').DataTable();
         } );
-        
         $(document).ready( function () {
             $('#tblvisitantes').DataTable();
         } );
         
-// ************************* SELECION DE LAS LINEAS DEL MODAL **********************/
-        /*Arreglo de Visitantes*/            
+// **** SELECION DE LAS LINEAS DEL MODAL **********************/            
         var jVisitante=[];             
         $('#bitacora tr').on('click', function(){        
             $(this).toggleClass('selected');
@@ -173,7 +172,7 @@ include("class/sala.php");
                 "empresa":$(this).find('td:nth-child(3)').html()
             };
             var result = $.grep(jVisitante, function(e){  return e.id== data.id; });
-            if (result.length  == 0) { // el visitante no esta en la lista
+            if (result.length  == 0) { // El visitante no esta en la lista
                 jVisitante.push(data); 
                 var tr="<tr>";
                 var td1="<td>"+jVisitante[jVisitante.length-1].id +"</td>";
@@ -182,30 +181,29 @@ include("class/sala.php");
                 var td4="<td><img id=imgdelete src=img/file_delete.png class=borrar></td></tr>";
                 $("#tblvisitantes").append(tr+td1+td2+td3+td4); 
             }
-            else { // el visitante esta en la lista y debe borrarse
+            else { // El visitante esta en la lista y debe borrarse
                 var i = jVisitante.findIndex(x => x.id === data.id);
                 jVisitante.splice(i,1);
                 document.getElementById("tblvisitantes").deleteRow(i+1);
             }   
         });
-        
+//***** CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
         function EnviaVisitante() {
-            /*var visitantearray=jVisitante.toString();*/
             for (var index = 0; index < jVisitante.length; index++) {
                 var element = jVisitante[index].id;
             document.getElementById("visitantearray").value += element + ",";    
             }          
         }
         
+//***** BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
         $(document).on('click', '.borrar', function (event) {
             event.preventDefault();
             var i = $(this).closest('tr').index();
             $(this).closest('tr').remove();
             jVisitante.splice(i-1,1);
-        });
-        
+        });        
     </script>
-
+    
 </body>
 </html>
 

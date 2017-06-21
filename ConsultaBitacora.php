@@ -25,8 +25,8 @@ $data= $visitante->ConsultaBitacora();
     <!-- CONSULTA BITACORA -->
      
     <script src="js/jquery.js" type="text/jscript"></script>
-    <link rel="stylesheet" type="text/css" href="DataTables/datatables.css">
- 	<script type="text/javascript" charset="utf8" src="DataTables/datatables.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/datatables.css">
+ 	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
 
 </head>
 <body> 
