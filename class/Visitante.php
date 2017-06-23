@@ -2,7 +2,7 @@
 if (!isset($_SESSION))
     session_start();
 class Visitante{
-	public $cedula;
+	public $cedula;//id
 	public $nombre;
 	public $empresa;
 	
@@ -21,7 +21,37 @@ class Visitante{
             if (count($data)) { //la ID existe en bd
                 $this->nombre=$data[0]['NOMBRE'];
                 //Valida formulario de Ingreso
-                // ...
+                $sql="SELECT f.id as ID , f.fechaingreso , f.idsala , f.estado ".
+                    " FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario ".
+                    " where vf.idvisitante= :idvisitante";
+                $param= array(':idvisitante'=>$this->cedula);
+                $data = DATA::Ejecutar($sql,$param);
+                if (count($data)) {
+                    // valida si el estado del formulario, debe mostrar información del formulario.
+                    $estado= $data[0]['estado'];
+                    if($estado=="0"){
+                        // formulario pendiente = 0.
+                        header('Location: ../index.php?msg=0');
+                        exit;
+                    }if($estado=="1"){
+                        // formulario aceptado = 1.
+                        // busca #carnet y asocia con el id del visitante.
+                        // ...
+                        header('Location: ../index.php?msg=1');
+                        exit;
+                    }else{
+                        // formulario denegado = 2
+                        header('Location: ../index.php?msg=2');
+                        exit;
+                    }                   
+                    
+                } else {
+                    // el visitante existe pero no tiene formulario.
+                    //Muestra pagina de ingreso se informacion de visita
+                    $_SESSION['link']="true";                    
+                    header('Location: ../InfoVisita.php?id='. $this->cedula);
+                    exit;
+                }
             }
             else { //la ID no existe en bd, muestra nuevo perfil
                 $_SESSION['link']="true";
@@ -77,7 +107,6 @@ class Visitante{
     
     function ConsultaBitacora(){
         try {
-           require_once("conexion.php");
            $sql = "SELECT * FROM bitacora";
            $result = DATA::Ejecutar($sql);
            return $result;                                 
@@ -89,7 +118,6 @@ class Visitante{
     
     function FormularioIngresoConsultaVisitante(){
         try {
-           require_once("conexion.php");
            $sql = "SELECT cedula, nombre, empresa FROM visitante";
            $result = DATA::Ejecutar($sql);
            return $result;                                 

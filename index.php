@@ -95,7 +95,9 @@ if (isset($_GET['msg'])) {
 
 </html>
 <script>
+    // captura mensajes en línea de estado de formularios temporales.
     CapturaMensajeFormulario();
+    // Captura mensajes personalizados.
     MensajeriaHtml('<?php print $msg; ?>');
-    
+
 </script>

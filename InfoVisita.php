@@ -1,12 +1,6 @@
 <?php
     if (!isset($_SESSION))
-		session_start();
-    include("class/sesion.php");
-    $sesion = new sesion();
-    if(!$sesion->estadoLogin()){
-        header("location:login.php");
-        exit;
-    }
+		session_start();    
     //valida el link
     if (!isset($_SESSION['link'])){
         header('Location: index.php');
