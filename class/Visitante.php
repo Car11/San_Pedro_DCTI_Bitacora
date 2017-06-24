@@ -1,6 +1,7 @@
 <?php 
 if (!isset($_SESSION))
     session_start();
+    /*** ULTIMA VERSION ****/
 class Visitante{
 	public $cedula;//id
 	public $nombre;

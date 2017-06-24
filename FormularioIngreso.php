@@ -1,7 +1,7 @@
 <?php 
 if (!isset($_SESSION)) 
     session_start();
-
+/*** ULTIMA VERSION ****/
 //include("class/sesion.php");
 //$sesion = new sesion();
 /*
