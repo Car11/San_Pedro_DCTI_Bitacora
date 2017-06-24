@@ -2,10 +2,12 @@
 <?php 
 include("class/sesion.php");
 $sesion = new sesion();
+/*
 if(!$sesion->estadoLogin()){
     header("location:login.php");
     exit;
-}
+}*/
+
 include("class/Formulario.php");
 $formulario= new Formulario();
 $data= $formulario->ConsultaFormulario();
@@ -80,7 +82,7 @@ $data= $formulario->ConsultaFormulario();
 //***** AL DAR CLICK EN MODIFICAR, CARGAR LOS DATOS DE LA FILA EN UN ARREGLO Y ABRIR           ******* FORMULARIOINGRESO.PHP Y CARGAR LOS DATOS DEL ARREGLO.
         var jVisitante=[]; 
         $(document).on('click', '.modificar', function (event) {
-            event.preventDefault();
+            //event.preventDefault();
             //Cargar Arreglo
             
             var children = $("tr td")[0].innerHTML;

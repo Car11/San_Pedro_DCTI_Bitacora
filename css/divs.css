@@ -17,21 +17,52 @@
     width: 25%;
     height: 600px;
     float: left;
+    background: blue;
 }
 
 #centro{
     width: 50%;
     height: 600px;
     float: left;
+    background: yellow;
 }
 
+#der{    
+    width: 25%;
+    height: 600px;
+    float: left;
+    background: black;
+}
+
+
+#botonenviaform{
+    width: 40%;
+    height: 100px;
+    float: left;
+    background: red;
+}
+
+#estadosform{
+    width: 30%;
+    height: 100px;
+    float: left;
+    background: yellow;
+}
+
+#numeroform{
+    width: 30%;
+    height: 100px;
+    float: left;
+    background: red;
+}
+
+/*LISTA VISITANTE*/
 #botonnew{
     width: 100%;
     height: 40px;
-    background: white;
     float: left;
+    background: black;
 }
-
 #listavisitante{
     margin-top: 100px;
     width: 100%;
@@ -40,43 +71,35 @@
     background: red;
 }
 
-#der{    
-    width: 25%;
-    height: 600px;
-    float: left;
-}
 
 #abajo{
     
     width: 100%;
-    height: 70px;
+    height: 100px;
     float: left;
     text-align: center;
+    background: white;
 }
 
 #titulocentro{
     width: 100%;
     height: 80px;
     float: left;
+    background: green;
 }
 
 #ingreso{
     float: left;
     width: 50%;
     height: 140px;
+    background: red;
 }
 
 #salida{
     float: left;
     width: 50%;
     height: 140px;
-}
-
-#gridvisitante{
-    width: 100%;
-    height: 380px;
-    float: left;
-    background: gray;
+    background: purple;
 }
 
 #infoextra{
@@ -98,10 +121,6 @@
     float: left;
 }
 
-#grid{
-    width: 550px;
-    height: 270px;
-}
 
 #gridnombre{
     width: 200px;
@@ -362,15 +381,14 @@
 }
 
 #myBtn{
-    width: 100%;
-    height: 38px;
+    width: 85%;
+    height: 32px;
     color: #fff;
     cursor: pointer;
     text-transform: uppercase;
 	display: inline-block;
-    border-radius: 2px;
+    /*border-radius: 2px;*/
     background: #10689a;
-    float: left;
 }
 
 /**************************VENTANA MODAL*******************/
