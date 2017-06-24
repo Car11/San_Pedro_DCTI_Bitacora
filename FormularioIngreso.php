@@ -1,11 +1,9 @@
-<!-- FORMUALRIO INGRESO -->
 <?php 
-if (!isset($_SESSION)) {
+if (!isset($_SESSION)) 
     session_start();
-}
 
-include("class/sesion.php");
-$sesion = new sesion();
+//include("class/sesion.php");
+//$sesion = new sesion();
 /*
 if(!$sesion->estadoLogin()){
     header("location:login.php");
@@ -19,7 +17,10 @@ $data= $visitante->FormularioIngresoConsultaVisitante();
 //Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
 $id="";
-if (isset($_GET['ID'])) {$id=$_GET['ID'];}
+if (isset($_GET['ID'])) {
+    $id=$_GET['ID'];
+}
+//
 $formulario = new Formulario();
 $formulario->id=$id;
 $formdata= $formulario->Cargar();
