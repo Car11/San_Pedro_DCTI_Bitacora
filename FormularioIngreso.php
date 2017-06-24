@@ -1,16 +1,8 @@
 <!-- FORMUALRIO INGRESO -->
 <?php 
-if (!isset($_SESSION)) {
-    session_start();
-}
-
 include("class/sesion.php");
 $sesion = new sesion();
-/*
-if(!$sesion->estadoLogin()){
-    header("location:login.php");
-    exit;
-}*/
+
 //
 include("class/Visitante.php");
 $visitante= new Visitante();

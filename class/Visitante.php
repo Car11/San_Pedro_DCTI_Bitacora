@@ -9,7 +9,7 @@ class Visitante{
 
 	function __construct(){
         require_once("conexion.php");
-        include("formulario.php");
+        
         //error_reporting(E_ALL);
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
@@ -30,6 +30,7 @@ class Visitante{
                 $data = DATA::Ejecutar($sql,$param);
                 if (count($data)) {
                     // valida si el estado del formulario, debe mostrar información del formulario.
+                    include("Formulario.php");
                     $formulario= new formulario();
                     $formulario->estado= $data[0]['estado'];
                     if($formulario->estado=="0"){
