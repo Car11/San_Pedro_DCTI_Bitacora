@@ -12,7 +12,7 @@ class Formulario{
     public $detalleequipo;
     public $motivovisita;
     public $visitante;
-    public $idtramitador;
+    public $idtramitante;
     public $idautorizador;
     public $idresponsable;
     	
@@ -75,7 +75,7 @@ class Formulario{
     //Consulta formulario para llenar tabla 
     function ConsultaFormulario(){
         try {
-			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitador,
+			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
             idautorizador,idresponsable,idsala,placavehiculo,detalleequipo
             FROM formulario";
 			$result = DATA::Ejecutar($sql);
@@ -117,7 +117,7 @@ class Formulario{
             $mensaje .= "<tr style='background: #eee;'><td><strong>ID:</strong> </td><td>". $idvisitante ."</td></tr>";
             $mensaje .= "<tr><td><strong>Nombre:</strong> </td><td>" .  $nombre  . "</td></tr>";
             $mensaje .= "<tr><td><strong>Empresa:</strong> </td><td>" . $empresa . "</td></tr>";
-            $mensaje .= "<tr><td><strong>Detalle:</strong> </td><td>" . $this->detalle . "</td></tr>";
+            $mensaje .= "<tr><td><strong>Detalle:</strong> </td><td>" . $this->motivovisita . "</td></tr>";
             $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.149.20.26:8000//san_pedro_dcti_bitacora/formularioingreso.php?ID=" . $this->id . "</td></tr>";
             $mensaje .= "</table>";
             $mensaje .= "</body></html>";
@@ -137,9 +137,17 @@ class Formulario{
     
     function AgregarTemporal($visitante){
         try {
+            //idtramitador hard coded
+            $this->idtramitante=0;
             //agrega infomación del formulario temporal
-            $sql='insert into FORMULARIO (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD,IDSALA) VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :idsala)  )';
-            $param= array(':idsala'=>$this->idsala);            
+            $sql='insert into FORMULARIO (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD,IDSALA, MOTIVOVISITA, IDTRAMITANTE ) '.
+                ' VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :idsala)  '.
+                ' , :motivovisita, :idtramitante )';
+            $param= array(
+                ':idsala'=>$this->idsala,
+                ':motivovisita'=>$this->motivovisita,
+                ':idtramitante'=>$this->idtramitante
+            );            
             $result = DATA::Ejecutar($sql,$param);
             //busca id de formulario agregado
             $sql='SELECT LAST_INSERT_ID() as ID';

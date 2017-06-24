@@ -14,7 +14,7 @@
         exit;
     }
     if (isset($_POST['detalle'])) {
-        $formulario->detalle=$_POST['detalle'];
+        $formulario->motivovisita=$_POST['detalle'];
     }
     else {
         $_SESSION['errmsg']= "No post detalle.";
