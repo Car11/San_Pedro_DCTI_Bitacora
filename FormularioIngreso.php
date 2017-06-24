@@ -2,15 +2,26 @@
 <?php 
 include("class/sesion.php");
 $sesion = new sesion();
+/*
 if(!$sesion->estadoLogin()){
     header("location:login.php");
     exit;
-}
+}*/
 //
 include("class/Visitante.php");
 $visitante= new Visitante();
 $data= $visitante->FormularioIngresoConsultaVisitante();
-//
+
+//Cargar Datos en Formulario Ingreso para Modificar
+include("class/Formulario.php");
+$id="";
+if (isset($_GET['ID'])) {$id=$_GET['ID'];}
+$formulario = new Formulario();
+$formulario->id=$id;
+$formdata= $formulario->Cargar();
+//print_r ($formdata[0][1]);
+//$fechasolicitud = new DateTime($formdata[0][1]);
+
 include("class/sala.php");    
     $sala= new Sala();
     $salas=$sala->Disponibles();
@@ -35,22 +46,34 @@ include("class/sala.php");
 	</header>
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="EnviaVisitante()">
-            <div id="izq">    
+            <div id="izq"> 
+                <div class="sala">
+                    <input type="text" id="sala" name="sala" placeholder="SELECCIONE LA SALA" class="field" readonly="readonly" />
+                    <ul class="list">
+                        <?php
+                            for($i=0; $i<count($salas); $i++){
+                                print('<li>'.$salas[$i][1].'</li>');                            
+                            }
+                        ?>
+                    </ul>
+                </div>
+   
             </div>
             <div id="centro">
-                <div id="titulocentro">
-                    <H3 id="etiqueta">TRAMITE VISITANTE</H3>
+                <div id="titulocentro">                    
+                    <H3 id="etiqueta">TRAMITE VISITANTE</H3>                                       
                 </div>
                <div id="ingreso">
                     <label for="idsala">Seleccione la Sala</label>
-                    <input type="text" id="idsala" name="idsala" value="">
+                    <input type="text" id="idsala" name="idsala" value="<?php if (isset($_GET['ID'])) {print $formdata[0][9];}?>">
                     
                     <label for="fechaingreso">Fecha y hora Ingreso</label>
                     <input type="datetime-local" id="fechaingreso" name="fechaingreso">
                 </div>
                 <div id="salida">
                     <label for="fechasolicitud">Fecha y hora Solicitud</label>
-                    <input type="datetime-local" id="fechasolicitud" name="fechasolicitud">                    
+                    <input type="datetime-local" id="fechasolicitud" name="fechasolicitud" 
+                    value="">                    
                     
                     <label for="fechasalida">Fecha y hora Salida</label>
                     <input type="datetime-local" id="fechasalida" name="fechasalida">
@@ -113,25 +136,41 @@ include("class/sala.php");
                 <div id="infoextra">
                     <div id="ingreso">
                         <label for="placavehiculo">Placas Vehículos</label>
-                        <input type="text" id="placavehiculo" name="placavehiculo">
+                        <input type="text" id="placavehiculo" name="placavehiculo" value="<?php if (isset($_GET['ID'])) {print $formdata[0][10];}?>">
                         <label for="detalleequipo">Detalle Equipo</label>
-                        <input type="text" id="detalleequipo" name="detalleequipo">
+                        <input type="text" id="detalleequipo" name="detalleequipo" value="<?php if (isset($_GET['ID'])) {print $formdata[0][11];}?>">
                     </div>
                     <div id="salida">
                         <label>Motivo Visita</label>
-                        <textarea id="motivovisita" name="motivovisita" placeholder="Prueba"></textarea>                
+                        <textarea id="motivovisita" name="motivovisita" placeholder="Prueba">
+                        <?php if (isset($_GET['ID'])) {print $formdata[0][3];}?>
+                        </textarea>                
                     </div>    
                 </div>
+                
+                <div id="abajo">
+                    <div id="botonenviaform">
+                    <input class="cbp-mc-submit" type="submit" value="Enviar Formulario de Ingreso">
+                    <input id=visitantearray name=visitantearray type=hidden></div>
+                    <div id="estadosform">
+                    <form>
+                        <input type="radio" name="estadoformulario" value="0" checked>Pendiente
+                      <input type="radio" name="estadoformulario" value="1">Aprobado
+                      <input type="radio" name="estadoformulario" value="2">Denegado
+                    </form>     
+                    </div>
+                    <div id="numeroform">
+                        <h4>#Formulario</h4>
+                        <label id="formnum"></br><?php if (isset($_GET['ID'])) {echo $formdata[0][0];}?></label></div>  
+                </div>
+                
                 
             </div>
             <div id="der">
                 
             </div>
             
-            <div id="abajo">
-                <input id=visitantearray name=visitantearray type=hidden>
-                <input class="cbp-mc-submit" type="submit" value="Enviar Formulario de Ingreso">
-            </div>
+
         </form>
            
         
@@ -164,10 +203,20 @@ include("class/sala.php");
         // OBTIENE EL CSS PARA LOS TABLES
         $(document).ready( function () {
             $('#bitacora').DataTable();
-        } );
-        $(document).ready( function () {
             $('#tblvisitantes').DataTable();
+            
         } );
+        /*$(document).ready( function () {
+            $('#tblvisitantes').DataTable();
+        } );*/
+        
+        function NumFormulario(){
+            if (isset($_GET['ID'])) {
+                document.getElementById("formnum").className = '';    
+            }else{
+                document.getElementById("formnum").className = 'hidden';    
+            }
+        }
         
 // **** SELECION DE LAS LINEAS DEL MODAL **********************/            
         var jVisitante=[];             
@@ -204,11 +253,46 @@ include("class/sala.php");
         
 //***** BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
         $(document).on('click', '.borrar', function (event) {
+            
             event.preventDefault();
             var i = $(this).closest('tr').index();
             $(this).closest('tr').remove();
             jVisitante.splice(i-1,1);
-        });        
+            
+        });     
+//***** COMBO SALAS *********/
+        (function ($) {
+        $.fn.styleddropdown = function () {
+            return this.each(function () {
+                var obj = $(this)
+                obj.find('.field').click(function () { //onclick event, 'list' fadein
+                    obj.find('.list').fadeIn(400);
+
+                    $(document).keyup(function (event) { //keypress event, fadeout on 'escape'
+                        if (event.keyCode == 27) {
+                            obj.find('.list').fadeOut(400);
+                        }
+                    });
+
+                    obj.find('.list').hover(function () {},
+                        function () {
+                            $(this).fadeOut(400);
+                        });
+                });
+
+                obj.find('.list li').click(function () { //onclick event, change field value with selected 'list' item and fadeout 'list'
+                    obj.find('.field')
+                        .val($(this).html())
+                        .css({
+                            'background': '#fff',
+                            'color': '#333'
+                        });
+                    obj.find('.list').fadeOut(400);
+                });
+            });
+        };
+})(jQuery);
+  
     </script>
     
 </body>
