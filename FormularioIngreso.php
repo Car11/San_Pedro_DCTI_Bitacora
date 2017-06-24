@@ -1,5 +1,9 @@
 <!-- FORMUALRIO INGRESO -->
 <?php 
+if (!isset($_SESSION)) {
+    session_start();
+}
+
 include("class/sesion.php");
 $sesion = new sesion();
 /*
