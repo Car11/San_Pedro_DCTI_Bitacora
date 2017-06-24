@@ -64,7 +64,7 @@ class Formulario{
             }
             
             print '<script language="javascript">alert("Formulario Insertado Correctamente!");</script>';
-            header('Location:FormularioIngreso.php');
+            header('Location:../FormularioIngreso.php');
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
@@ -84,7 +84,23 @@ class Formulario{
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }		 	
-	 } 
+    } 
+    
+    function Cargar(){
+        try {
+			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
+            idautorizador,idresponsable,idsala,placavehiculo,detalleequipo
+            FROM formulario WHERE id = :identificador";
+            
+            $param= array(':identificador'=>$this->id);            
+            $result = DATA::Ejecutar($sql,$param);
+            
+			return $result;			
+		}catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }		 	
+	} 
     
     function EnviareMail($idvisitante){
         // smtpapl.correo.ice
