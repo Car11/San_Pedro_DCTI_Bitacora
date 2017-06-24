@@ -4,15 +4,21 @@ var formularioID= [];
 
 function inicio() {
     startTime();
-    /*$(".avisoFormulario").click( function(){
-        //document.getElementById('cedula').value = $(this).innerText;
-        alert("aa");
-        
-        //document.getElementById("datos").submit();
-        //elimina elemento de archivo.
-        //$.get("filemanager.php");
-    });*/
-    $(".mensajeria").click( function(){
+    //
+    $(".mensajeriaInfo").click( function(){
+        // Cierra div
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaAdvertencia").click( function(){
+        // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaError").click( function(){
+        // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaOk").click( function(){
+        // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.
         $(this).toggle("fadeOut");
     });
     // COMBOBOX
@@ -80,12 +86,27 @@ function onMuestraFormulario(id) {
     
 }
 
-function onMuestraMensaje(msg) {        
-    if(msg=="pendiente")
-        msg="Formulario Enviado!<br>Por favor espere";
-    //elimina espacios en blanco para crear id unico de DIV
+function onMuestraMensaje(msg) {       
+    var htmltext= ""; 
+    // Identificador del tag.
     var divId=+ new Date();
-    var htmltext= "<div class=mensajeria id=" + divId + ">" + msg + "</div>";    
+    // msg= pendiente; cuando se envió el formulaio temporal
+    if(msg=="pendiente")
+    {
+        msg="Formulario Enviado!<br>Por favor espere";
+        htmltext= "<div class=mensajeriaInfo id=" + divId + ">" + msg + "</div>";    
+    }else if(msg=="0") // msg=0; pendiente por autorizar.
+    {
+        msg="Formulario pendiente <br>por Autorizar.";
+        htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + msg + "</div>";    
+    }else if(msg=="1"){
+        msg="### carnet ###";
+        htmltext= "<div class=mensajeriaOk id=" + divId + ">" + msg + "</div>";
+    }else if(msg=="2"){
+        msg="Formulario Denegado.";
+        htmltext= "<div class=mensajeriaError id=" + divId + ">" + msg + "</div>";
+    }
+    //
     $("#mensajespersonales").append(htmltext);
     $("#"+divId).toggle("fadeIn");
 }
