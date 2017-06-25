@@ -10,4 +10,7 @@
         exit;
     }
     $visitante->ValidaID();
+    //
+    //$array = $visitante->formulario;
+    //print $array;exit;
 ?>

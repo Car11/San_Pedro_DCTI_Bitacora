@@ -1,8 +1,8 @@
 <?php 
 if (!isset($_SESSION))
     session_start();
-class Formulario{
 
+class Formulario{
     public $id;
     public $fechaingreso;
 	public $fechasalida;
@@ -16,6 +16,7 @@ class Formulario{
     public $idtramitante;
     public $idautorizador;
     public $idresponsable;
+    public $estado;
     	
 	function __construct(){
         require_once("conexion.php");
@@ -86,11 +87,11 @@ class Formulario{
             $param= array(':identificador'=>$this->id);            
             $result = DATA::Ejecutar($sql,$param);
             
-			return $result;			
+			return $result;		
 		}catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
-        }		 	
+        }	 	
 	} 
     
     function EnviareMail($idvisitante){
@@ -100,7 +101,7 @@ class Formulario{
         // ICETEL\OperTI
         // Clave: Icetel2017
         // Buzón: OperacionesTI@ice.go.cr
-        try{
+       try{
             //consulta datos del visitante
             include("Visitante.php");        
             $visitante= new Visitante();
@@ -133,7 +134,8 @@ class Formulario{
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
             $headers .= "From: ".$from."\r\n"; 
             //
-            //mail($to, $asunto, $mensaje,$headers);                     
+            //mail($to, $asunto, $mensaje,$headers);      
+                       
         }     
         catch(Exception $e) {
             $_SESSION['errmsg']= $e->getMessage() . " Notificar a Operaciones";
@@ -143,7 +145,7 @@ class Formulario{
     }
     
     function AgregarTemporal($visitante){
-        try {
+       try {
             //idtramitador hard coded
             $this->idtramitante=0;
             //agrega infomación del formulario temporal
@@ -168,7 +170,7 @@ class Formulario{
             // elimina sesion link para evitar redirect a paginas anteriores.
             unset($_SESSION['link']);  
             session_destroy();
-            header('Location: ../index.php?id='.$visitante.'&msg=pendiente');
+            header('Location: ../index.php?msg=pendiente');
             exit;
         }     
         catch(Exception $e) {

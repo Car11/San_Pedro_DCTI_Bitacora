@@ -1,6 +1,6 @@
 $(document).ready(inicio);
-var r = false;
-var formularioID= [];
+var formularioConsultado='NULL'; // formulario consultado por medio de la cedula del visitante en punto de seguridad.
+var formularioID= []; // formularios temporales aprobado/Denegado en tiempo real por operaciones.
 
 function inicio() {
     startTime();
@@ -37,9 +37,10 @@ this.CapturaMensajeFormulario = function () {
     }
 };
 
-this.MensajeriaHtml = function(mensaje){
+this.MensajeriaHtml = function(mensaje, id){
+    formularioConsultado = id;    
     if(mensaje!="NULL")
-        onMuestraMensaje(mensaje);
+        onMuestraEstadoFormulario(mensaje);
 };
 
 function startTime() {
@@ -86,25 +87,32 @@ function onMuestraFormulario(id) {
     
 }
 
-function onMuestraMensaje(msg) {       
+function onMuestraEstadoFormulario(estado) { // id del formulario a consultar       
     var htmltext= ""; 
     // Identificador del tag.
     var divId=+ new Date();
-    // msg= pendiente; cuando se envió el formulaio temporal
-    if(msg=="pendiente")
+    // estado= pendiente; cuando se envió el formulaio temporal
+    if(estado=="pendiente")
     {
-        msg="Formulario Enviado!<br>Por favor espere";
-        htmltext= "<div class=mensajeriaInfo id=" + divId + ">" + msg + "</div>";    
-    }else if(msg=="0") // msg=0; pendiente por autorizar.
+        estado="Formulario Enviado!<br>Por favor espere";
+        htmltext= "<div class=mensajeriaInfo id=" + divId + ">" + estado + "</div>";    
+    }else if(estado=="0") // estado=0; pendiente por autorizar.
     {
-        msg="Formulario pendiente <br>por Autorizar.";
-        htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + msg + "</div>";    
-    }else if(msg=="1"){
-        msg="### carnet ###";
-        htmltext= "<div class=mensajeriaOk id=" + divId + ">" + msg + "</div>";
-    }else if(msg=="2"){
-        msg="Formulario Denegado.";
-        htmltext= "<div class=mensajeriaError id=" + divId + ">" + msg + "</div>";
+        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Pendiente por Autorizar.";
+        htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";    
+    }else if(estado=="1"){
+        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Autorizado.";
+        htmltext= "<div class=mensajeriaOk id=" + divId + ">" + estado + "</div>";
+    }else if(estado=="2"){
+        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado.";
+        htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
+    }else if(estado=="3"){
+        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado, Tiempo de visita excedido.";
+        htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
+    }
+    else if(estado=="4"){
+        estado= estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>No hay tarjetas de visitante disponibles.";
+        htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
     }
     //
     $("#mensajespersonales").append(htmltext);

@@ -1,14 +1,13 @@
 <?php 
 if (!isset($_SESSION)) 
     session_start();
-/*** ULTIMA VERSION ****/
-//include("class/sesion.php");
-//$sesion = new sesion();
-/*
-if(!$sesion->estadoLogin()){
-    header("location:login.php");
+// Sesion de usuario
+include("class/sesion.php");
+$sesion = new sesion();
+if (!$sesion->estado){
+    header('Location: login.php');
     exit;
-}*/
+}
 
 //VISITANTE
 include("class/Visitante.php");
@@ -42,7 +41,7 @@ $responsables= $responsable->Consulta();
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>       
+    <title>Control de Accesos</title>       
     <!-- CSS -->
     <link href="css/estilo.css" rel="stylesheet"/>        
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
@@ -50,10 +49,11 @@ $responsables= $responsable->Consulta();
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
  	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+
 </head>
 <body> 
     <header>
-	<h1>FORMULARIO INGRESO</h1>
+	<h1>FORMULARIO DE INGRESO</h1>        
     <div id="logo"><img src="img/logoice.png" height="75" > </div>
 	</header>
     <div id="general">
