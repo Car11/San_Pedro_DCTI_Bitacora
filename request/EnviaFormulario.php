@@ -17,8 +17,8 @@
     }
     else header('Location: ../Error.php');
     
-    if (isset($_POST['idsala'])) {              
-        $v->idsala=$_POST['idsala'];
+    if (isset($_POST['sala'])) {              
+        $v->nombresala=$_POST['sala'];
     } 
     else header('Location: ../Error.php');
     

@@ -23,7 +23,7 @@
     }
     //if (isset($_POST['sala'])) {        
     if (isset($_POST['sala'])) {
-        $formulario->idsala=$_POST['sala'];
+        $formulario->nombresala=$_POST['sala'];
     }
     else {
         $_SESSION['errmsg']= "No post sala.";

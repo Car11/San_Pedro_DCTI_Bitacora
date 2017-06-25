@@ -9,7 +9,7 @@ class Sala{
 
     function Disponibles(){
         try {
-            $sql='SELECT ID, NOMBRE FROM registroingreso.sala order by nombre asc';
+            $sql='SELECT ID, NOMBRE FROM controlaccesocdc_dbp.sala order by nombre asc';
             $result = DATA::Ejecutar($sql);
             return $result;
         }     

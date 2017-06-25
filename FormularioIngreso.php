@@ -9,28 +9,35 @@ if(!$sesion->estadoLogin()){
     header("location:login.php");
     exit;
 }*/
-//
+
+//VISITANTE
 include("class/Visitante.php");
 $visitante= new Visitante();
 $data= $visitante->FormularioIngresoConsultaVisitante();
 
-//Cargar Datos en Formulario Ingreso para Modificar
+//FORMULARIO - Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
 $id="";
 if (isset($_GET['ID'])) {
     $id=$_GET['ID'];
 }
-//
 $formulario = new Formulario();
 $formulario->id=$id;
 $formdata= $formulario->Cargar();
-//print_r ($formdata[0][1]);
 //$fechasolicitud = new DateTime($formdata[0][1]);
 
+//SALA 
 include("class/sala.php");    
-    $sala= new Sala();
-    $salas=$sala->Disponibles();
+$sala= new Sala();
+$salas=$sala->Disponibles();
+
+//RESPONSABLE
+include("class/responsable.php");  
+$responsable= new Responsable();
+$responsables= $responsable->Consulta();
+
 ?>
+
 
 <html>
 <head>
@@ -61,8 +68,51 @@ include("class/sala.php");
                             }
                         ?>
                     </ul>
+                    </br>
+                </div>   
+                <div>
+                    <input type="text" id="responsable" name="responsable" placeholder="SELECCIONE RESPONSABLE" class="field" readonly="readonly" />
+
+                    <!-- MODAL RESPONSABLE -->
+                    <div id="ModalResponsable" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="close">&times;</span>
+                            <h2>Seleccione el Responsable</h2>
+                        </div>
+                        <div class="modal-body">
+                            <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR RESPONSABLES -->
+                            <?php 
+                            print "<table id='tblresponsable'class='display'>";
+                            print "<thead>";
+                            print "<tr>";
+                            print "<th>Nombre</th>";
+                            print "<th>Cedula</th>";
+                            print "<th>Empresa</th>";
+                            print "</tr>";
+                            print "</thead>";	
+                            print "<tbody>";
+                            for($i=0; $i<count($responsables); $i++){
+                                   print "<tr>";
+                                   print "<td>".$responsables[$i][0]."</td>";
+                                   print "<td>".$responsables[$i][1]."</td>";
+                                   print "<td>".$responsables[$i][2]."</td>";
+                                   print "</tr>";
+                            }
+                            print "</tbody>";
+                            print "</table>";
+                            ?> 
+                        </div>
+                        <div class="modal-footer">
+                        <br>
+                        </div>
+                    </div><!--FINAL MODAL-->
+
+                    <input type="text" id="tramitante" name="tramitante" placeholder="TRAMITANTE" class="field" readonly="readonly" />
+                    <input type="text" id="autorizador" name="autorizador" placeholder="AUTORIZADOR" class="field" readonly="readonly" />
                 </div>
-   
+
             </div>
             <div id="centro">
                 <div id="titulocentro">                    
@@ -99,8 +149,8 @@ include("class/sala.php");
                 <div id="botonestabla">
                     <input type="button" id="myBtn" value="+">  
                     
-                    <!-- The Modal -->
-                    <div id="myModal" class="modal">
+                    <!-- VISITANTES Modal -->
+                    <div id="ModalVisitante" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -133,7 +183,7 @@ include("class/sala.php");
                         <div class="modal-footer">
                         <br>
                         </div>
-                    </div>
+                    </div><!--FINAL MODAL-->
 
                 </div>
                 <!-- END MODAL -->
@@ -155,8 +205,8 @@ include("class/sala.php");
                 
                 <div id="abajo">
                     <div id="botonenviaform">
-                    <input class="cbp-mc-submit" type="submit" value="Enviar Formulario de Ingreso">
-                    <input id=visitantearray name=visitantearray type=hidden></div>
+                        <input class="cbp-mc-submit" type="submit" value="Enviar Formulario de Ingreso">
+                        <input id=visitantearray name=visitantearray type=hidden></div>
                     <div id="estadosform">
                     <form>
                         <input type="radio" name="estadoformulario" value="0" checked>Pendiente
@@ -182,39 +232,42 @@ include("class/sala.php");
     </div>
     
     <script>
-        // Get the modal
-        var modal = document.getElementById('myModal');         
-        // Get the button that opens the modal
+        // Obtiene el MODAL
+        var modalVisitante = document.getElementById('ModalVisitante');    
+        var modalResponsable = document.getElementById('ModalResponsable');     
+        // Botón que abre el MODAL
         var btn = document.getElementById("myBtn");
-        // Get the <span> element that closes the modal
+        var inputResponsable = document.getElementById("responsable");
+        // Obtiene el <span> que  cierra el MODAL
         var span = document.getElementsByClassName("close")[0];
         
-        // When the user clicks the button, open the modal 
+        // Evento click que abre el MODAL
         btn.onclick = function() {
-            modal.style.display = "block";
+            modalVisitante.style.display = "block";
         }
-
-        // When the user clicks on <span> (x), close the modal
+        inputResponsable.onclick = function() {
+            modalVisitante.style.display = "block";
+        }
+        // Cierra el MODAL en la X
         span.onclick = function() {
-            modal.style.display = "none";
+            modalVisitante.style.display = "none";
         }
 
-        // When the user clicks anywhere outside of the modal, close it
+        // CIerra el MODAL en cualquier parte de la ventana
         window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+            if (event.target == modalVisitante) {
+                modalVisitante.style.display = "none";
             }
         }
+
         // OBTIENE EL CSS PARA LOS TABLES
         $(document).ready( function () {
+            // COMBOBOX
+            $('.sala').styleddropdown();
             $('#bitacora').DataTable();
             $('#tblvisitantes').DataTable();
-            
         } );
-        /*$(document).ready( function () {
-            $('#tblvisitantes').DataTable();
-        } );*/
-        
+         
         function NumFormulario(){
             if (isset($_GET['ID'])) {
                 document.getElementById("formnum").className = '';    
@@ -296,7 +349,10 @@ include("class/sala.php");
                 });
             });
         };
-})(jQuery);
+        })(jQuery);
+
+//***** MODAL RESPONSABLES ********/
+
   
     </script>
     

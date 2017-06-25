@@ -8,6 +8,7 @@ class Formulario{
 	public $fechasalida;
 	public $fechasolicitud;
     public $idsala;
+    public $nombresala;
     public $placavehiculo;
     public $detalleequipo;
     public $motivovisita;
@@ -26,22 +27,11 @@ class Formulario{
     //Agrega formulario 
     function AgregarFormulario(){
         try {                    
-            $sql='INSERT INTO formulario(fechaingreso,
-                                        idsala, 
-                                        fechasolicitud,
-                                        fechasalida,
-                                        placavehiculo,
-                                        detalleequipo,
-                                        motivovisita) 
-                                        VALUES (:fechaingreso,
-                                                :idsala,
-                                                :fechasolicitud,
-                                                :fechasalida,
-                                                :placavehiculo,
-                                                :detalleequipo,
-                                                :motivovisita)';
+            $sql='INSERT INTO formulario(fechaingreso,idsala,fechasolicitud,fechasalida,placavehiculo,detalleequipo,motivovisita)'. 
+                'VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasolicitud,:fechasalida,:placavehiculo,'.
+                ':detalleequipo,:motivovisita)';
             $param= array(':fechaingreso'=>$this->fechaingreso,
-                          ':idsala'=>$this->idsala,
+                          ':nombresala'=>$this->nombresala,
                           ':fechasolicitud'=>$this->fechasolicitud,
                           ':fechasalida'=>$this->fechasalida,
                           ':placavehiculo'=>$this->placavehiculo,
@@ -63,14 +53,15 @@ class Formulario{
                 $result = DATA::Ejecutar($sql,$param);
             }
             
-            print '<script language="javascript">alert("Formulario Insertado Correctamente!");</script>';
             header('Location:../FormularioIngreso.php');
+            exit;
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
             exit;
         }
     }
+    
     
     //Consulta formulario para llenar tabla 
     function ConsultaFormulario(){
@@ -157,10 +148,10 @@ class Formulario{
             $this->idtramitante=0;
             //agrega infomación del formulario temporal
             $sql='insert into FORMULARIO (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD,IDSALA, MOTIVOVISITA, IDTRAMITANTE ) '.
-                ' VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :idsala)  '.
+                ' VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala)  '.
                 ' , :motivovisita, :idtramitante )';
             $param= array(
-                ':idsala'=>$this->idsala,
+                ':nombresala'=>$this->nombresala,
                 ':motivovisita'=>$this->motivovisita,
                 ':idtramitante'=>$this->idtramitante
             );            
