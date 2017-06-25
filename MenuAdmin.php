@@ -1,14 +1,13 @@
 <?php
-  if (!isset($_SESSION))
-    session_start();
-  // Sesion de usuario
-  include("class/sesion.php");
-  $sesion = new sesion();
-  if (!$sesion->estadoLogin())
-  {
+if (!isset($_SESSION))
+  session_start();
+// Sesion de usuario
+include("class/sesion.php");
+$sesion = new sesion();
+if (!$sesion->estado){
     header('Location: login.php');
     exit;
-  }
+}
 ?>
 
 <html>

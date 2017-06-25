@@ -1,19 +1,19 @@
 <?php
-if (!isset($_SESSION)) {
+if (!isset($_SESSION)) 
     session_start();
-}
 // Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();
-$login = $sesion->estadoLogin();
-//login
-include("class/usuario.php");
+if (!$sesion->estado){
+    header('Location: login.php');
+    exit;
+}
 //GET
-$id="";
+$idformulario="";
 $nombre="";
 $msg="NULL";
-if (isset($_GET['id'])) {
-    $id=$_GET['id'];
+if (isset($_GET['idformulario'])) { 
+    $idformulario=$_GET['idformulario'];
 }
 if (isset($_GET['msg'])) {
     $msg=$_GET['msg'];
@@ -24,7 +24,7 @@ if (isset($_GET['msg'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>
+    <title>Control de Accesos</title>
     <link href="css/estilo.css" rel="stylesheet" />
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
@@ -34,32 +34,30 @@ if (isset($_GET['msg'])) {
 
 <script>
     this.onShowLogin= function () {
-        var login= '<?php print $login; ?>';
+        var login= '<?php print $sesion->estado; ?>';
         if(login)
         {
-            //muestra menu
-            location.href= 'menuadmin.php';
+            // valida el rol del usuario para mostrar el menu, el index o el formulario.
+            location.href= 'index.php';
         }
-        else{
+        //else{
             //muestra login
-            location.href= 'login.php';
-        }
+        //    location.href= 'login.php';
+        //}
     };
 
 </script>
 <body>
     <header>
-        <h1>BITÁCORA DCTI</h1>
+        <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
         <div id="logo"><img src="img/logoice.png" height="75" onclick="onShowLogin()" > </div>  
         <div id="fechahora"><span id="date"></span></div>
         <div id="signin">
             <span>Usuario: 
                 <?php
-                if ($login==true) {
+                if ($sesion->estado) {
                     print $_SESSION['username'];
-                } else {
-                    print "Seguridad";
-                }
+                } 
                 ?>
             </span>
         </div>
@@ -97,7 +95,6 @@ if (isset($_GET['msg'])) {
 <script>
     // captura mensajes en línea de estado de formularios temporales.
     CapturaMensajeFormulario();
-    // Captura mensajes personalizados.
-    MensajeriaHtml('<?php print $msg; ?>');
-
+    // Captura estados del formulario. msg o estado del formulario. Id del formulario
+    MensajeriaHtml('<?php print $msg; ?>', '<?php print $idformulario; ?>');
 </script>

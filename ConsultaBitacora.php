@@ -2,12 +2,13 @@
 if (!isset($_SESSION))
     session_start();
 //
-/*include("class/sesion.php");
+// Sesion de usuario
+include("class/sesion.php");
 $sesion = new sesion();
-if(!$sesion->estadoLogin()){
-    header("location:login.php");
+if (!$sesion->estado){
+    header('Location: login.php');
     exit;
-}*/
+}
 //
 include("class/Visitante.php");
 $visitante= new Visitante();

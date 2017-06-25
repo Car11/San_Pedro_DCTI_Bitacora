@@ -15,7 +15,7 @@
     }  
     //salas
     include("class/sala.php");    
-    $sala= new Sala();
+    $sala= new sala();
     $salas=$sala->Disponibles();
 ?>
 
@@ -23,7 +23,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>
+    <title>Control de Acceso</title>
     <link href="css/estilo.css" rel="stylesheet" />
     <script src="js/jquery.js"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
@@ -37,7 +37,7 @@
 
 <body>
     <header>
-        <h1>BITÁCORA DE INGRESO</h1>
+        <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
         <div id="logo"><img src="img/logoice.png" height="75"> </div>
         <div id="fechahora"><span id="date"></span></div>
     </header>

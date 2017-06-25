@@ -1,14 +1,13 @@
 <?php 
 if (!isset($_SESSION)) 
     session_start();
-/*** ULTIMA VERSION ****/
-//include("class/sesion.php");
-//$sesion = new sesion();
-/*
-if(!$sesion->estadoLogin()){
-    header("location:login.php");
+// Sesion de usuario
+include("class/sesion.php");
+$sesion = new sesion();
+if (!$sesion->estado){
+    header('Location: login.php');
     exit;
-}*/
+}
 //
 include("class/Visitante.php");
 $visitante= new Visitante();
@@ -28,14 +27,14 @@ $formdata= $formulario->Cargar();
 //$fechasolicitud = new DateTime($formdata[0][1]);
 
 include("class/sala.php");    
-    $sala= new Sala();
-    $salas=$sala->Disponibles();
+$sala= new Sala();
+$salas=$sala->Disponibles();
 ?>
 
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>       
+    <title>Control de Accesos</title>       
     <!-- CSS -->
     <link href="css/estilo.css" rel="stylesheet"/>        
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
@@ -43,10 +42,11 @@ include("class/sala.php");
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
  	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+
 </head>
 <body> 
     <header>
-	<h1>FORMULARIO INGRESO</h1>
+	<h1>FORMULARIO DE INGRESO</h1>        
     <div id="logo"><img src="img/logoice.png" height="75" > </div>
 	</header>
     <div id="general">
@@ -207,6 +207,8 @@ include("class/sala.php");
         }
         // OBTIENE EL CSS PARA LOS TABLES
         $(document).ready( function () {
+            // COMBOBOX
+            $('.sala').styleddropdown();
             $('#bitacora').DataTable();
             $('#tblvisitantes').DataTable();
             

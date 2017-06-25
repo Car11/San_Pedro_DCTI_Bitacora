@@ -1,50 +1,45 @@
 <?php
 class Sesion{
-	private $login=false;
+	public $estado=false;
 	public $username;
+	public $rol;
 	
 	function __construct(){
         if (!isset($_SESSION))
 		  session_start();
-		$this->verificaLogin();
-		if($this->login){
+		$this->Verifica();
+		/*if($this->login){
             return true;
 		} else {
             return false;
-		}
+		}*/
 	}
 	
-	private function verificaLogin(){
+	private function Verifica(){
 		if(isset($_SESSION["username"])){
 			$this->username = $_SESSION["username"];            
-			$this->login = true;            
+			$this->rol = $_SESSION["rol"];            
+			$this->estado = true;            
 		} else {
 			unset($this->username);
-			$this->login = false;            
+			unset($this->rol);
+			$this->estado = false;            
 		}
 	}
 	
-	public function inicioLogin($u){
-        $this->username = $_SESSION["username"] = $u;
-        $this->login = true;	
+	public function Inicio($username, $rol){
+        $this->username = $_SESSION["username"] = $username;
+		$this->rol = $_SESSION["rol"] = $rol;
+        $this->estado = true;	
 	}
 	
-	public function finLogin(){
+	public function Fin(){  /******************* PROBAR EL FINAL DEL LOGIN ****************************/
 		unset($_SESSION["username"]);
 		unset($this->username);
-		$this->login = false;
-	}
-	
-	public function estadoLogin(){
-		return $this->login;
+		unset($_SESSION["rol"]);
+		unset($this->rol);
+		$this->estado = false;
 	}
 }
-/*
-function estadoLogin(){
-	
-	$sesion = new sesion();
-	//return estadoLogin();
-	print estadoLogin();exit;
-}*/
 
 ?>
