@@ -1,21 +1,20 @@
 <?php 
 //session_start();
 class usuario{
-	public $username;
-	public $password;
+	public $usuario;
+	public $contrasena;
+    public $idrol;
 	
 	function __construct(){
         require_once("conexion.php");
-        //error_reporting(E_ALL);
-        // Always in development, disabled in production
-        //ini_set('display_errors', 1);
     }
 	
     function Validar(){    
-        $sql='SELECT codigo FROM USUARIO where CODIGO=:codigo AND CLAVE=:clave';
-        $param= array(':codigo'=>$this->username, ':clave'=>$this->password);        
-        $result = DATA::EjecutarSQL($sql,$param);
-        if (count($result) ) {
+        $sql='SELECT USUARIO, IDROL FROM USUARIO where CONTRASENA=:contrasena  AND USUARIO=:usuario';
+        $param= array(':usuario'=>$this->usuario, ':contrasena'=>$this->contrasena);        
+        $data = DATA::Ejecutar($sql,$param);
+        if (count($data) ) {
+            $this->idrol= $data[0]['IDROL'];
             return true;
         }else {        
             return false;           

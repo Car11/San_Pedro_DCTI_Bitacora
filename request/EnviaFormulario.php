@@ -42,8 +42,7 @@
     }
     else header('Location: ../Error.php');
 
-    if (!isset($_SESSION))
-		session_start();
+
 
     $v->AgregarFormulario();
     

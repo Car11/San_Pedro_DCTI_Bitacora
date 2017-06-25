@@ -1,13 +1,14 @@
-<!-- CONSULTA FORMULARIO -->
 <?php 
+if (!isset($_SESSION)) 
+    session_start();
+// Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();
-/*
-if(!$sesion->estadoLogin()){
-    header("location:login.php");
+if (!$sesion->estado){
+    header('Location: login.php');
     exit;
-}*/
-
+}
+//
 include("class/Formulario.php");
 $formulario= new Formulario();
 $data= $formulario->ConsultaFormulario();
@@ -16,7 +17,7 @@ $data= $formulario->ConsultaFormulario();
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bitácora de Ingreso DCTI San Pedro</title>
+    <title>Control de Acceso</title>
     <!-- CSS -->
     <link href="css/estilo.css" rel="stylesheet"/>
     <link href="css/divs.css" rel="stylesheet"/>
@@ -27,7 +28,7 @@ $data= $formulario->ConsultaFormulario();
 </head>
 <body> 
 	<header>
-	<h1>FORMULARIOS DE INGRESO</h1>
+    <h1>Control de Acceso - Centros de Datos Corporativos</h1> 
         <div id="logo"><img src="img/logoice.png" height="75" > </div>
 	</header>
     <div id="general">
