@@ -26,8 +26,7 @@
         exit;
     }
     //Agrega el nuevo perfil y pide datos de ingreso, para notificación a OP.
-    $data = $visitante->Agregar();
-    if ( count($data) ) { 
+    if ( $visitante->Agregar() )  { 
         //Muestra pagina de ingreso se informacion de visita
         header('Location: ../InfoVisita.php?id='. $visitante->cedula);
         exit;

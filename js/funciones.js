@@ -1,9 +1,22 @@
 $(document).ready(inicio);
 var formularioConsultado='NULL'; // formulario consultado por medio de la cedula del visitante en punto de seguridad.
 var formularioID= []; // formularios temporales aprobado/Denegado en tiempo real por operaciones.
+var modal;
 
-function inicio() {
+function inicio() {    
+    // Cierra el MODAL en cualquier parte de la ventana
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            $("#cedula").focus();
+        }
+    };
+    
     startTime();
+    // COMBOBOX
+    $('.sala').styleddropdown();
+    //modal index
+    modal = document.getElementById('modal-index'); 
     //
     $(".mensajeriaInfo").click( function(){
         // Cierra div
@@ -18,12 +31,109 @@ function inicio() {
         $(this).toggle("fadeOut");
     });
     $(".mensajeriaOk").click( function(){
-        // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.
+        // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.        
+        modal.style.display = "block";
+        $("#btnsalida").hide();    
+        $("#btncontinuar").show();
+        // desaparece div mensaje y elimina registro _chat.txt
         $(this).toggle("fadeOut");
+        $.get("filemanager.php");
     });
-    // COMBOBOX
-    $('.sala').styleddropdown();
+
+    $("#closemodal").click( function(){
+        // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
+        modal.style.display = "none";
+        $("#cedula").focus();
+    });
+
+    this.onCancelar= function(){
+         modal.style.display = "none";
+         $("#cedula").focus();
+    };
+
+    
+    this.MensajeTop= function(msg){
+        $("#textomensaje").text(msg);
+        $("#mensajetop").css("background-color", "60E800");
+        $("#mensajetop").css("color", "white");    
+        $("#mensajetop").css("visibility", "visible");
+        $("#mensajetop").slideDown("slow");
+        $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+        //
+        //$("#cedula").focus();
+
+    };
+
+    $('#btnsalida').click(function() {
+        $.ajax({
+            type: "POST",
+            url: "class/Bitacora.php",
+            data: { 
+                accion: 'salida',                
+                idtarjeta:  document.getElementById('idtarjeta').value,
+                idformulario: document.getElementById('idformulario').value,
+                cedula: document.getElementById('modal-cedula').value 
+            }
+        })
+        .done(function( e ) {
+            // mensaje de visitante salida correcta.
+            modal.style.display = "none";
+            //alert("Salida ok:"+ e + " ... "  + document.getElementById('modal-cedula').value  + 'f-'+ document.getElementById('idformulario').value +'v-' + document.getElementById('idtarjeta').value );
+            //MensajeTop(e);
+            $("#textomensaje").text(e);
+            $("#mensajetop").css("background-color", "60E800");
+            $("#mensajetop").css("color", "white");    
+            $("#mensajetop").css("visibility", "visible");
+            $("#mensajetop").slideDown("slow");
+            $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+        })    
+        .fail(function(msg){
+            modal.style.display = "none";
+            //alert("Salida ERROR:"  + document.getElementById('modal-cedula').value );
+            //MensajeTop(e);
+            $("#textomensaje").text(e);
+            $("#mensajetop").css("background-color", "firebrick");
+            $("#mensajetop").css("color", "white");    
+            $("#mensajetop").css("visibility", "visible");
+            $("#mensajetop").slideDown("slow");
+            $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+        });
+    });
+
+     $('#btncontinuar').click(function() {
+        $.ajax({
+            type: "POST",
+            url: "class/Bitacora.php",
+            data: { 
+                accion: 'entrada',                
+                cedula: document.getElementById('modal-cedula').value ,
+                idtarjeta:  document.getElementById('idtarjeta').value,
+                idformulario: document.getElementById('idformulario').value
+            }
+        })
+        .done(function( e ) {
+            // mensaje de visitante salida correcta.
+            modal.style.display = "none";
+            $("#textomensaje").text(e);
+            $("#mensajetop").css("background-color", "60E800");
+            $("#mensajetop").css("color", "white");    
+            $("#mensajetop").css("visibility", "visible");
+            $("#mensajetop").slideDown("slow");
+            $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+        })    
+        .fail(function(msg){
+            modal.style.display = "none";
+            $("#textomensaje").text(e);
+            $("#mensajetop").css("background-color", "firebrick");
+            $("#mensajetop").css("color", "white");    
+            $("#mensajetop").css("visibility", "visible");
+            $("#mensajetop").slideDown("slow");
+            $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+        });
+    });
+
 }
+
 
 this.CapturaMensajeFormulario = function () {
     //pushed server data
@@ -39,8 +149,11 @@ this.CapturaMensajeFormulario = function () {
 
 this.MensajeriaHtml = function(mensaje, id){
     formularioConsultado = id;    
-    if(mensaje!="NULL")
-        onMuestraEstadoFormulario(mensaje);
+    if(mensaje!="NULL"){
+        if(mensaje=="fin")
+            onMuestraPerfilSalida();
+        else onMuestraEstadoFormulario(mensaje);
+    }
 };
 
 function startTime() {
@@ -85,6 +198,16 @@ function onMuestraFormulario(id) {
         $("#"+divId).click(onClickIDFormulario); 
     }
     
+}
+
+// Muestra modal de información del visitante y formulario para realizar salida.
+function onMuestraPerfilSalida() { 
+    //alert(formularioConsultado);    
+    modal = document.getElementById('modal-index');  
+    modal.style.display = "block";
+    $("#btnsalida").show();    
+    $("#btncontinuar").hide();
+    $("#btnsalida").css("background", "#990000");
 }
 
 function onMuestraEstadoFormulario(estado) { // id del formulario a consultar       

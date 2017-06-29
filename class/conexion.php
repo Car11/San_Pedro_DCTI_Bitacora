@@ -25,6 +25,7 @@ class DATA {
                     //printf('ini: '. $config['host']);exit;
                 } 
                 //
+                //self::$conn = new PDO('mysql:host='. $config['host'] . ';port='. $config['port'] .';dbname='.$config['dbname'].';charset=utf8', $config['username'],   $config['password']); 
                 self::$conn = new PDO('mysql:host='. $config['host'] .';dbname='.$config['dbname'].';charset=utf8', $config['username'],   $config['password']); 
                 return self::$conn;
             }
