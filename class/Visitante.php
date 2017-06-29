@@ -18,10 +18,24 @@ class Visitante{
             $data = DATA::Ejecutar($sql,$param);
             if (count($data)) { //la ID existe en bd
                 $this->nombre=$data[0]['NOMBRE']; // nombre del visitante.
-                //Valida formulario de Ingreso
-                $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida, f.idsala , f.estado, f.motivovisita, f.detalleequipo, f.placavehiculo, f.idautorizador ".
-                    " FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario ".
-                    " where vf.idvisitante= :idvisitante";
+                // Valida si el visitante está saliendo.
+                $sql= "SELECT idformulario
+                    FROM visitanteporformulario 
+                    where idvisitante= :idvisitante and salida is null and entrada is not null";
+                $param= array(':idvisitante'=>$this->cedula);
+                $data = DATA::Ejecutar($sql,$param);                
+                if (count($data)) {                                        
+                    // existe un visitante ingresado en bitacora. se debe hacer la salida.
+                    $idformulario = $data[0]['idformulario'];
+                    $_SESSION["cedula"]=$this->cedula;
+                    header('Location: ../index.php?msg=fin&idformulario='.$idformulario);
+                    exit;
+                } 
+                //si el visitnate no ha ingresado, Valida formulario.
+                $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida, f.idsala , f.estado, f.motivovisita, f.detalleequipo, f.placavehiculo, f.idautorizador 
+                    FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
+                    where vf.idvisitante= :idvisitante and entrada is null
+                      order by f.id desc limit 1 ";
                 $param= array(':idvisitante'=>$this->cedula);
                 $data = DATA::Ejecutar($sql,$param);
                 if (count($data)) {                    
@@ -44,23 +58,9 @@ class Visitante{
                         if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($fechasalida)){
                             // formulario correcto!
                             // busca #carnet y asocia con el id del visitante.
+                            $_SESSION["cedula"]=$this->cedula;
                             header('Location: ../index.php?msg=1&idformulario='.$idformulario);
-                            exit;
-                            /*$sql='Select * from tarjeta
-                                where estado=0 and idsala=:idsala
-                                order by id limit 1';
-                            $param= array(':idsala'=>$idsala);
-                            $data = DATA::Ejecutar($sql,$param);
-                            if (count($data)) {
-                                // tarjeta disponible.
-                                $idtarjeta = $data[0]['id'];                                
-                                header('Location: ../index.php?msg=1&id='.$idformulario);
-                                exit;
-                            } else {
-                                // no hay tarjetas disponibles. = 4
-                                header('Location: ../index.php?msg=4&id='.$idformulario);
-                                exit;
-                            }*/
+                            exit;                            
                         } else // tiempo expirado
                         {
                             // Razón de porqué fue denegado: tiempo expirado. = 3
@@ -98,7 +98,7 @@ class Visitante{
         try {
             $sql='INSERT INTO visitante (nombre, cedula, empresa) VALUES (:nombre, :cedula, :empresa)';
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa);
-            $data = DATA::Ejecutar($sql,$param);
+            $data = DATA::Ejecutar($sql,$param,true);
             if($data)
                 return true;
             else return false;
@@ -114,6 +114,10 @@ class Visitante{
             $sql='SELECT * FROM visitante where cedula=:cedula';
             $param= array(':cedula'=>$ID);
             $data= DATA::Ejecutar($sql,$param);
+            //
+            $this->nombre= $data[0]['NOMBRE'];
+            $this->empresa= $data[0]['EMPRESA'];
+            //
             return $data;
         }
         catch(Exception $e) {

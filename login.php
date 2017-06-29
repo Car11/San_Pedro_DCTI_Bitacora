@@ -5,7 +5,7 @@
     }
 ?>
 
-<html>|
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Control de Acceso</title>

@@ -9,8 +9,7 @@ if (!$sesion->estado){
     exit;
 }
 //GET
-$idformulario="";
-$nombre="";
+$idformulario="NULL";
 $msg="NULL";
 if (isset($_GET['idformulario'])) { 
     $idformulario=$_GET['idformulario'];
@@ -18,6 +17,35 @@ if (isset($_GET['idformulario'])) {
 if (isset($_GET['msg'])) {
     $msg=$_GET['msg'];
 }
+// Busca información del formulario para desplegar en pantalla.
+$formulario="NULL";
+$tarjeta="NULL";
+if($idformulario!="NULL")
+{
+    // Carga info del formulario.
+    include("class/formulario.php");
+    $formulario= new Formulario();
+    $formulario->id= $idformulario;
+    $formulario->Cargar();    
+    // Carga info tarjeta
+    include("class/tarjeta.php");
+    $tarjeta= new tarjeta();
+    if($msg!="fin"){
+        // Carga tarjeta asiganada si es un ingreso, no salida (fin) 
+        $tarjeta->nombresala= $formulario->nombresala;
+        $tarjeta->Asignar();
+    }
+    else {
+        // Carga la tarjeta asigana al visitante.
+        $tarjeta->CargaTarjetaAsignada($_SESSION['cedula'] , $formulario->id);
+    }
+    // Carga Info VISITANTE
+    include("class/Visitante.php");
+    $visitante= new Visitante();
+    $visitante->Cargar($_SESSION['cedula']);
+}
+
+
 ?>
 
 <html>
@@ -38,15 +66,11 @@ if (isset($_GET['msg'])) {
         if(login)
         {
             // valida el rol del usuario para mostrar el menu, el index o el formulario.
-            location.href= 'index.php';
+            location.href= 'menuAdmin.php';
         }
-        //else{
-            //muestra login
-        //    location.href= 'login.php';
-        //}
-    };
-
+    };  
 </script>
+
 <body>
     <header>
         <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
@@ -89,6 +113,56 @@ if (isset($_GET['msg'])) {
         
     </aside>
 
+    <!-- MODAL FORMULARIO -->
+    <div class="modal" id="modal-index">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" id="closemodal">&times;</span>
+                <h2>Información del Formulario</h2>
+                <input readonly  id="idformulario" name="idformulario" class="input-field-readonly" value= "<?php if($formulario!="NULL") print $formulario->id; ?>"  >
+                
+            </div>
+        
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form name="datos" id="datos" action="class/Bitacora.php" method="POST">
+                    <div class='modal-izq'>
+                        <h3>Cédula</h3>
+                        <input type="text" readonly id='modal-cedula' name="cedula" class="input-field" value= "<?php if($formulario!="NULL") echo $_SESSION['cedula']; ?>" >
+                        <h3>Nombre Completo</h3>
+                        <input type="text" readonly id='nombre' name="nombre" class="input-field" value= "<?php if($formulario!="NULL") echo $visitante->nombre; ?>" >
+                        <h3>Empresa/Dependencia</h3>
+                        <input type="text" readonly id='empresa' name="empresa" class="input-field" value= "<?php if($formulario!="NULL") echo $visitante->empresa; ?>" >
+                        <h3>Placa del Vehículo</h3>
+                        <input type="text" readonly id='placavehiculo' name='placavehiculo' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->placavehiculo; ?>" >
+                        <h3>Detalle del equipo</h3>
+                        <input type="text" readonly id='detalleequipo' name='detalleequipo' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->detalleequipo; ?>" >
+                    </div>
+                    <div class='modal-der'>
+                        <h3>Tarjeta</h3>
+                        <input readonly id='idtarjeta' name='idtarjeta' class='input-field-readonly' value= "<?php if($tarjeta!="NULL") { if($tarjeta->id==-1) print 'NO DISPONIBLE'; else print $tarjeta->id; } ?>" >
+                        <h3>Autoriza</h3>
+                        <input type="text" readonly id='idautorizador' name='idautorizador' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->nombreautorizador; ?>" >
+                        <h3>Fecha de la solicitud</h3>
+                        <input id='fechasolicitud'readonly name='fechasolicitud' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->fechasolicitud; ?>" >
+                    </div>
+                    <nav class="btnfrm">
+                        <ul>
+                            <li><button type="button" value="entrada" id="btncontinuar" >Entrada</button></li>
+                            <li><button type="button" value="salida" id="btnsalida" >Salida</button></li>
+                            <li><button type="button"  onclick="onCancelar()" >Cancelar</button> </li>
+                        </ul>
+                    </nav>
+                     
+                </form> 
+            </div>
+            
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>                    
+                    
 </body>
 
 </html>
@@ -96,5 +170,7 @@ if (isset($_GET['msg'])) {
     // captura mensajes en línea de estado de formularios temporales.
     CapturaMensajeFormulario();
     // Captura estados del formulario. msg o estado del formulario. Id del formulario
-    MensajeriaHtml('<?php print $msg; ?>', '<?php print $idformulario; ?>');
+    MensajeriaHtml('<?php print $msg; ?>', '<?php print $idformulario; ?>');  
+    
+
 </script>
