@@ -8,35 +8,30 @@ if (!$sesion->estado){
     header('Location: login.php');
     exit;
 }
-//GET
-$idformulario="NULL";
-$msg="NULL";
-if (isset($_GET['idformulario'])) { 
-    $idformulario=$_GET['idformulario'];
-}
-if (isset($_GET['msg'])) {
-    $msg=$_GET['msg'];
+//POST
+$estado="NULL";
+if (isset($_SESSION['estado'])) {
+    $estado=$_SESSION['estado'];
 }
 // Busca información del formulario para desplegar en pantalla.
 $formulario="NULL";
 $tarjeta="NULL";
-if($idformulario!="NULL")
-{
+if (isset($_SESSION['idformulario'])) {     
     // Carga info del formulario.
     include("class/formulario.php");
     $formulario= new Formulario();
-    $formulario->id= $idformulario;
+    $formulario->id=$_SESSION['idformulario'];
     $formulario->Cargar();    
     // Carga info tarjeta
     include("class/tarjeta.php");
     $tarjeta= new tarjeta();
-    if($msg!="fin"){
-        // Carga tarjeta asiganada si es un ingreso, no salida (fin) 
+    if($estado!="fin"){
+        // Carga tarjeta asiganada si es un ingreso, no salida 
         $tarjeta->nombresala= $formulario->nombresala;
         $tarjeta->Asignar();
     }
     else {
-        // Carga la tarjeta asigana al visitante.
+        // Carga la tarjeta asigana al visitante. (fin) 
         $tarjeta->CargaTarjetaAsignada($_SESSION['cedula'] , $formulario->id);
     }
     // Carga Info VISITANTE
@@ -44,7 +39,6 @@ if($idformulario!="NULL")
     $visitante= new Visitante();
     $visitante->Cargar($_SESSION['cedula']);
 }
-
 
 ?>
 
@@ -98,7 +92,7 @@ if($idformulario!="NULL")
             <h2>Cédula / Identificación</h2>
             <form name="datos" id="datos" action="request/EnviaVisitante.php" method="POST">
                 <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
-                <input type="submit" value="Enviar" id="enviar" />
+                <input type="submit" value="Consultar" id="enviar" />
             </form>
         </div>
     </section>
@@ -137,8 +131,7 @@ if($idformulario!="NULL")
                         <h3>Placa del Vehículo</h3>
                         <input type="text" readonly id='placavehiculo' name='placavehiculo' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->placavehiculo; ?>" >
                         <h3>Detalle del equipo</h3>
-                        <input type="text" readonly id='detalleequipo' name='detalleequipo' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->detalleequipo; ?>" >
-                        <!--<input type=hidden readonly id='motivovisita' name='motivovisita' value= "<?php /*if($formulario!="NULL") print $formulario->motivovisita;*/ ?>" >-->
+                        <input type="text" readonly id='detalleequipo' name='detalleequipo' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->detalleequipo; ?>" >                        
                     </div>
                     <div class='modal-der'>
                         <h3>Tarjeta</h3>
@@ -152,7 +145,7 @@ if($idformulario!="NULL")
                         <ul>
                             <li><button type="button" value="entrada" id="btncontinuar" >Entrada</button></li>
                             <li><button type="button" value="salida" id="btnsalida" >Salida</button></li>
-                            <li><button type="button"  onclick="onCancelar()" >Cancelar</button> </li>
+                            <!--<li><button type="button"  onclick="onCancelar()" id="btnvolver" >Volver</button> </li>-->
                         </ul>
                     </nav>
                      
@@ -170,8 +163,8 @@ if($idformulario!="NULL")
 <script>
     // captura mensajes en línea de estado de formularios temporales.
     CapturaMensajeFormulario();
-    // Captura estados del formulario. msg o estado del formulario. Id del formulario
-    MensajeriaHtml('<?php print $msg; ?>', '<?php print $idformulario; ?>');  
+    // Captura estados del formulario. estado del formulario. Id del formulario
+    MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->id; else print "NULL" ?>');  
     
 
 </script>

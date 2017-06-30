@@ -23,18 +23,16 @@ function inicio() {
         $(this).toggle("fadeOut");
     });
     $(".mensajeriaAdvertencia").click( function(){
-        // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
         $(this).toggle("fadeOut");
     });
     $(".mensajeriaError").click( function(){
-        // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
         $(this).toggle("fadeOut");
     });
     $(".mensajeriaOk").click( function(){
         // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.        
         modal.style.display = "block";
-        $("#btnsalida").hide();    
-        $("#btncontinuar").show();
+        $("#btncontinuar").toggle("fadeIn");
+        $("#btnsalida").hide();
         // desaparece div mensaje y elimina registro _chat.txt
         $(this).toggle("fadeOut");
         $.get("filemanager.php");
@@ -207,8 +205,8 @@ function onMuestraPerfilSalida() {
     //alert(formularioConsultado);    
     modal = document.getElementById('modal-index');  
     modal.style.display = "block";
-    $("#btnsalida").show();    
     $("#btncontinuar").hide();
+    $("#btnsalida").toggle("fadeIn");
     $("#btnsalida").css("background", "#990000");
 }
 

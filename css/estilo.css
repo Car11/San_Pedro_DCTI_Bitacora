@@ -111,7 +111,7 @@ header {
 
 .mensajeriaInfo{
     display: block;
-    background: #6699ff;
+    background: none;
     height: auto;
     color: aliceblue;
     font-size: 30px;
@@ -257,20 +257,8 @@ label {
     display: block;
     text-align: center;
     margin: 0 auto;
-    
-    /*box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    border-bottom: 1px solid #C2C2C2;
-    box-shadow: 1px 1px 4px #EBEBEB;
-    -moz-box-shadow: 1px 1px 4px #EBEBEB;
-    -webkit-box-shadow: 1px 1px 4px #EBEBEB;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;*/
-    
-    padding: 7px;
-    outline: none;
+    border:none;
+    padding: 7px;    
     font-size: 40px;
     font-family: fantasy;
     color: aliceblue;
@@ -298,6 +286,12 @@ label {
 [type=button]:hover {
     background: #FFAB49;
     color: #fff;
+}
+
+#btncontinuar, #btnsalida{
+    width: 200%;
+    margin-bottom: 30px;
+    display: none;
 }
 
 .textarea-field {

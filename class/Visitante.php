@@ -26,12 +26,14 @@ class Visitante{
                 $param= array(':idvisitante'=>$this->cedula);
                 $data = DATA::Ejecutar($sql,$param);                
                 if (count($data)) {                                        
-                    // existe un visitante ingresado en bitacora. se debe hacer la salida.
+                    // existe un visitante ingresado en bitacora. se debe hacer la SALIDA.
                     $idformulario = $data[0]['idformulario'];
-                    header('Location: ../index.php?msg=fin&idformulario='.$idformulario);
+                    $_SESSION['estado']='fin';
+                    $_SESSION['idformulario']=$idformulario;
+                    header('Location: ../index.php');
                     exit;
                 } 
-                //si el visitnate no ha ingresado, Valida formulario.
+                //si el visitnate no ha ingresado, Valida formulario. ENTRADA.
                 $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida, f.idsala , f.estado, f.motivovisita, f.detalleequipo, f.placavehiculo, f.idautorizador 
                     FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
                     where vf.idvisitante= :idvisitante and entrada is null
@@ -41,12 +43,10 @@ class Visitante{
                 if (count($data)) {                    
                     $idformulario = $data[0]['ID'];
                     $estado = $data[0]['estado'];                    
+                    $_SESSION['idformulario']=$idformulario;
                     //  valida si el estado del formulario.
-                    if($estado=="0"){
-                        // formulario pendiente = 0.
-                        header('Location: ../index.php?msg=0&idformulario='.$idformulario);
-                        exit;
-                    }if($estado=="1"){
+                    $_SESSION['estado']=$estado;
+                    if($estado=="1"){
                         // formulario aceptado = 1.
                         // valida fecha y hora de ingreso.                        
                         $fechaingreso= $data[0]['fechaingreso'];
@@ -55,23 +55,13 @@ class Visitante{
                         // flexibilidad de hora de entrada, 1h antes.
                         $fechaanticipada  = new DateTime($fechaingreso);
                         date_sub($fechaanticipada ,  date_interval_create_from_date_string('1 hour') );
-                        if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($fechasalida)){
-                            // formulario correcto!
-                            header('Location: ../index.php?msg=1&idformulario='.$idformulario);
-                            exit;                            
-                        } else // tiempo expirado
-                        {
-                            // Razón de porqué fue denegado: tiempo expirado. = 3
-                            header('Location: ../index.php?msg=3&idformulario='.$idformulario);
-                            exit;
-                        }                        
-                    }else{
-                        // formulario denegado = 2
-                        // Razón de porqué fue denegado.
-                        header('Location: ../index.php?msg=2&idformulario='.$idformulario);
-                        exit;
-                    }                   
-                    
+                        //  Tiempo expirado. = 3
+                        if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) >  time() || time() > strtotime($fechasalida))
+                            $_SESSION['estado']='3';
+                    }     
+                    //             
+                    header('Location: ../index.php');
+                    exit;                            
                 } else {
                     // el visitante existe pero no tiene formulario.
                     //Muestra pagina de ingreso se informacion de visita

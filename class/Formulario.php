@@ -141,8 +141,9 @@ class Formulario{
                 include_once("email.php");
                 email::Enviar($idvisitante,  $this->id , "Formulario de Ingreso Pendiente", "FORMULARIO DE INGRESO PENDIENTE");
                 // elimina sesion link para evitar redirect a paginas anteriores.
-                unset($_SESSION['link']);              
-                header('Location: ../index.php?msg=pendiente');
+                unset($_SESSION['link']);       
+                $_SESSION['estado']='pendiente';       
+                header('Location: ../index.php');
                 exit;
             }        
             else {
