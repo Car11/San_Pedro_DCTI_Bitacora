@@ -138,6 +138,7 @@ if($idformulario!="NULL")
                         <input type="text" readonly id='placavehiculo' name='placavehiculo' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->placavehiculo; ?>" >
                         <h3>Detalle del equipo</h3>
                         <input type="text" readonly id='detalleequipo' name='detalleequipo' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->detalleequipo; ?>" >
+                        <!--<input type=hidden readonly id='motivovisita' name='motivovisita' value= "<?php /*if($formulario!="NULL") print $formulario->motivovisita;*/ ?>" >-->
                     </div>
                     <div class='modal-der'>
                         <h3>Tarjeta</h3>

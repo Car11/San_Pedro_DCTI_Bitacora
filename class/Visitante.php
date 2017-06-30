@@ -13,6 +13,7 @@ class Visitante{
     
     function ValidaID(){
         try{
+            $_SESSION["cedula"]=$this->cedula;
             $sql='SELECT * FROM visitante where cedula=:cedula';
             $param= array(':cedula'=>$this->cedula);
             $data = DATA::Ejecutar($sql,$param);
@@ -27,7 +28,6 @@ class Visitante{
                 if (count($data)) {                                        
                     // existe un visitante ingresado en bitacora. se debe hacer la salida.
                     $idformulario = $data[0]['idformulario'];
-                    $_SESSION["cedula"]=$this->cedula;
                     header('Location: ../index.php?msg=fin&idformulario='.$idformulario);
                     exit;
                 } 
@@ -57,8 +57,6 @@ class Visitante{
                         date_sub($fechaanticipada ,  date_interval_create_from_date_string('1 hour') );
                         if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($fechasalida)){
                             // formulario correcto!
-                            // busca #carnet y asocia con el id del visitante.
-                            $_SESSION["cedula"]=$this->cedula;
                             header('Location: ../index.php?msg=1&idformulario='.$idformulario);
                             exit;                            
                         } else // tiempo expirado
@@ -115,6 +113,7 @@ class Visitante{
             $param= array(':cedula'=>$ID);
             $data= DATA::Ejecutar($sql,$param);
             //
+            $this->cedula= $data[0]['CEDULA'];
             $this->nombre= $data[0]['NOMBRE'];
             $this->empresa= $data[0]['EMPRESA'];
             //

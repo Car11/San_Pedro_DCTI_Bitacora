@@ -72,7 +72,8 @@ function inicio() {
                 accion: 'salida',                
                 idtarjeta:  document.getElementById('idtarjeta').value,
                 idformulario: document.getElementById('idformulario').value,
-                cedula: document.getElementById('modal-cedula').value 
+                cedula: document.getElementById('modal-cedula').value
+                //motivovisita: document.getElementById('motivovisita').value
             }
         })
         .done(function( e ) {
@@ -109,6 +110,7 @@ function inicio() {
                 cedula: document.getElementById('modal-cedula').value ,
                 idtarjeta:  document.getElementById('idtarjeta').value,
                 idformulario: document.getElementById('idformulario').value
+                //motivovisita: document.getElementById('motivovisita').value
             }
         })
         .done(function( e ) {
