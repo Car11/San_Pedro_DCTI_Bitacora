@@ -85,8 +85,8 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput">
                         <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
-                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="inputformat"
-                        placeholder="<? if (isset($_GET['ID'])) {echo $fechaingreso;}?>">
+                        <input type="datetime-local" name="fechaingreso" class="inputformat"
+                        value="<?php if (isset($_GET['ID'])) {print $formulario->fechaingreso;}?>">
                     </div>
                     <div id="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
@@ -330,12 +330,7 @@ $rol=$_SESSION['rol'];
         $('#tblresponsable').DataTable();          
         $('#tblsala').DataTable();
         MuestraEstados();
-        CargarFecha();
     } );
-
-    function CargarFecha() {
-        document.getElementById("fechaingreso").value = "<? echo $fechaingreso; ?>";
-    }
     
     // Obtiene el MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    

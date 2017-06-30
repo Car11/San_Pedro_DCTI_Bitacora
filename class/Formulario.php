@@ -20,13 +20,7 @@ class Formulario{
     public $idresponsable;
     public $nombreresponsable;
     public $estado;
-    public $nombreresponsable;
-    public $nombretramitante;
-    public $nombreautorizador;
     public $rfc;
-    public $cedulav;
-    public $nombrev;
-    public $empresav;
     	
 	function __construct(){
         require_once("conexion.php");
@@ -139,7 +133,7 @@ class Formulario{
     function Cargar(){
         try {
 
-			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,(
+			$sql = "SELECT id,fechasolicitud,estado,motivovisita, DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,fechasalida,(
                 SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id
                 where f.id=:identificador)as nombretramitante , (
                 SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id
@@ -148,7 +142,7 @@ class Formulario{
                 where f.id=:identificador) as nombreresponsable,(
                 SELECT sa.nombre FROM sala sa inner join formulario fo on sa.id=fo.idsala 
                 where fo.id=:identificador) as nombresala ,
-            placavehiculo,detalleequipo
+            placavehiculo,detalleequipo, rfc
             FROM formulario WHERE id = :identificador";            
 
             $param= array(':identificador'=>$this->id);            
@@ -165,6 +159,7 @@ class Formulario{
             $this->nombresala= $data[0]['nombresala'];
             $this->placavehiculo= $data[0]['placavehiculo'];
             $this->detalleequipo= $data[0]['detalleequipo'];
+            $this->rfc= $data[0]['rfc'];
 			//
             return $data;		
 		}catch(Exception $e) {
