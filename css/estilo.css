@@ -63,7 +63,7 @@ header {
 .avisoFormulario{
     display: block;  
     position: relative;  
-    background: #FF8500;;
+    background: none;
     height: 50px;
     color: aliceblue;
     font-size: 30px;
@@ -90,7 +90,7 @@ header {
 
 .mensajeriaOk{
     display: block;
-    background: #19FF3F;
+    background: #009933;
     height: auto;
     color: aliceblue;
     font-size: 30px;
@@ -111,7 +111,7 @@ header {
 
 .mensajeriaInfo{
     display: block;
-    background: blue;
+    background: none;
     height: auto;
     color: aliceblue;
     font-size: 30px;
@@ -132,7 +132,7 @@ header {
 
 .mensajeriaError{
     display: block;
-    background: red;
+    background: #990000;
     height: auto;
     color: aliceblue;
     font-size: 30px;
@@ -153,7 +153,7 @@ header {
 
 .mensajeriaAdvertencia{
     display: block;
-    background: yello;
+    background:  #cc9900;
     height: auto;
     color: aliceblue;
     font-size: 30px;
@@ -253,8 +253,20 @@ label {
     color: grey;
 }
 
+.input-field-readonly {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    border:none;
+    padding: 7px;    
+    font-size: 40px;
+    font-family: fantasy;
+    color: aliceblue;
+    background: none;
+}
+
 [type=submit],
-[type=button] {
+[type=button] {    
     border: none;
     padding: 9px 17px 10px 17px;
     background: #FF8500;
@@ -274,6 +286,12 @@ label {
 [type=button]:hover {
     background: #FFAB49;
     color: #fff;
+}
+
+#btncontinuar, #btnsalida{
+    width: 200%;
+    margin-bottom: 30px;
+    display: none;
 }
 
 .textarea-field {
@@ -459,4 +477,110 @@ nav.btnfrm li {
 
 .fullfield {
     background-color: #ccc;
+}
+
+/**************************VENTANA MODAL*******************/
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+/* Modal Content */
+
+.modal-content {
+    position: relative;
+    background-color: #1e5799;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+/* Add Animation */
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+/* The Close Button */
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #73A5FF;
+    color: white;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #73A5FF;
+    color: white;
+}
+
+.modal-izq{
+    float: left;    
+    width: 50%;
+    margin-bottom: 100px;
+}
+
+.modal-der{
+    float: right;
+    width: 50%;
+    margin-bottom: 100px;
 }
