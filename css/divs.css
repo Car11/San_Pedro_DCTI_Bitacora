@@ -305,7 +305,7 @@
 
 
 /*GRID VISITANTES*/
-
+/*
 #titulogrid{
     color: black;
     margin-top: 2px;
@@ -356,6 +356,8 @@
     float: left;
 }
 
+
+
 #txtcedula{
     font-family: 'Lato', Calibri, Arial, sans-serif;
 	line-height: 1;
@@ -380,6 +382,8 @@
     float: left;
 }
 
+*/
+/*Boton + para agregar visitantes al formulario*/
 #myBtn{
     width: 85%;
     height: 32px;
@@ -387,10 +391,8 @@
     cursor: pointer;
     text-transform: uppercase;
 	display: inline-block;
-    /*border-radius: 2px;*/
     background: #10689a;
 }
-
 /**************************VENTANA MODAL*******************/
 
 .modal {
@@ -483,4 +485,42 @@
     padding: 2px 16px;
     background-color: #73A5FF;
     color: white;
+}
+/*tabla vistante*/
+#tblvisitanteform {
+    border-collapse: collapse;
+    width: 100%;
+    font-family:"Helvetica";
+    background: whitesmoke;
+    border-bottom: 1px solid #ddd;
+}
+
+#tblvisitanteform, td{
+	text-align: center;
+    padding: 12px;
+}
+
+.fila:hover{
+	background-color: #f5f5f5;
+}
+
+#titulocedula{
+	width:15%;
+    border: 1px solid black;
+    height: 40px;	
+}
+#titulonombre{
+	width:40%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#tituloempresa{
+	width:30%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#tituloeliminar{
+	width:15%;	
+    border: 1px solid black;
+    height: 40px;
 }

@@ -5,6 +5,7 @@ function inicio() {
     $("#enviar").click(onValidaInicio);
     $("#EnviaNuevoPerfil").click(onValidaNuevoPerfil);
     $("#EnviaInfoVisita").click(onValidaInfoVisita);
+    $("#EnviaFormulario").click(onValidaFormulario);
    
 }
 
@@ -16,6 +17,58 @@ function isNumber(evt) {
     }
     return true;
 }
+
+function onValidaFormulario() {
+    var sala = document.getElementById('selectsala').value;
+    var responsable = document.getElementById('txtresponsable').value;
+    var motivo = document.getElementById("motivovisita").value;
+    var placa =  document.getElementById('placavehiculo').value;
+    var equipo = document.getElementById('detalleequipo').value;
+    var rfc = document.getElementById('txtrfc').value;
+    var visitante = document.getElementById("visitantelargo").value;
+
+    /*altert(visitante);
+    if(visitante.length==0){
+        alert("Debe de insertar al menos un Visitante!");
+        return false;        
+    }*/
+
+
+    if (responsable == ""){
+        alert("Debe de asignar un responsable!");
+        return false;
+    }
+    if (sala == ""){
+        alert("Debe de seleccionar una SALA!");
+        return false;
+    }
+    if (motivo == ""){
+        alert("El motivo no puede estar vacío");
+        return false;
+    }
+    if (motivo.length<8){
+        alert("El motivo debe contener mínimo 8 caracteres");
+        return false;
+    }
+    if(motivo.length>1000){
+        alert("El motivo no puede exceder de 1000 caracteres!");    
+        return false;
+    }
+    if(placa.length>200){
+        alert("La placa no puede exceder de 200 caracteres!");    
+        return false;
+    }
+    if(equipo.length>200){
+        alert("El detalle de los equipos no puede exceder de 200 caracteres!");    
+        return false;
+    }
+    if(rfc.length>200){
+        alert("El RFC no puede exceder de 10 caracteres!");    
+        return false;
+    }
+}
+
+
 
 function onValidaInicio() {
     var cedula = document.getElementById('cedula').value;
@@ -112,7 +165,7 @@ function onValidaInfoVisita() {
         $("#detalle").attr({
             placeholder: "REQUERIDO"
         });
-        $("#empresa").focus();
+        $("#detalle").focus();
         formlisto = false;
     } 
     //

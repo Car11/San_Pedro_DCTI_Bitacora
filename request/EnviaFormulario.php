@@ -1,49 +1,66 @@
 <?php
     include("../class/Formulario.php");
-    $v= new Formulario(); 
+    $formulario= new Formulario(); 
 
     if (isset($_POST['fechaingreso'])) {
-        $v->fechaingreso=$_POST['fechaingreso'];
+        $formulario->fechaingreso=$_POST['fechaingreso'];
     }
     else header('Location: ../Error.php');
     
     if (isset($_POST['fechasalida'])) {
-        $v->fechasalida=$_POST['fechasalida'];
+        $formulario->fechasalida=$_POST['fechasalida'];
     }
     else header('Location: ../Error.php');
-
-    if (isset($_POST['fechasolicitud'])) {
-        $v->fechasolicitud=$_POST['fechasolicitud'];
-    }
-    else header('Location: ../Error.php');
-    
-    if (isset($_POST['sala'])) {              
-        $v->nombresala=$_POST['sala'];
+    if (isset($_POST['selectsala'])) {              
+        $formulario->nombresala=$_POST['selectsala'];
     } 
     else header('Location: ../Error.php');
     
     if (isset($_POST['placavehiculo'])) {
-        $v->placavehiculo=$_POST['placavehiculo'];
+        $formulario->placavehiculo=$_POST['placavehiculo'];
     }
     else header('Location: ../Error.php');
     
     if (isset($_POST['detalleequipo'])) {
-        $v->detalleequipo=$_POST['detalleequipo'];
+        $formulario->detalleequipo=$_POST['detalleequipo'];
     }
     else header('Location: ../Error.php');
-
     if (isset($_POST['motivovisita'])) {
-        $v->motivovisita=$_POST['motivovisita'];
+        $formulario->motivovisita=$_POST['motivovisita'];
     }
     else header('Location: ../Error.php');
     
     if (isset($_POST['visitantearray'])) {  
-        $v->visitante=$_POST['visitantearray'];
+        $formulario->visitante=$_POST['visitantearray'];
+    }
+    else header('Location: ../Error.php');
+    if (isset($_POST['txtresponsable'])) {  
+        $formulario->nombreresponsable=$_POST['txtresponsable'];
+    }
+    else header('Location: ../Error.php');
+    if (isset($_POST['txttramitante'])) {  
+        $formulario->nombretramitante=$_POST['txttramitante'];
+    }
+    else header('Location: ../Error.php');
+    if (isset($_POST['txtautorizador'])) {  
+        $formulario->nombreautorizador=$_POST['txtautorizador'];
+    }
+    else header('Location: ../Error.php');
+    if (isset($_POST['estadoformulario'])) {  
+        $formulario->estado=$_POST['estadoformulario'];
+    }
+    else header('Location: ../Error.php');
+    if (isset($_POST['txtrfc'])) {  
+        $formulario->rfc=$_POST['txtrfc'];
     }
     else header('Location: ../Error.php');
 
+    if (isset($_POST['lblnumeroform'])) {  
+        $formulario->id=$_POST['lblnumeroform'];
+        $formulario->Modificar();
+    }
+    else header('Location: ../Error.php');
 
-
-    $v->AgregarFormulario();
+    $formulario->AgregarFormulario();
     
 ?>

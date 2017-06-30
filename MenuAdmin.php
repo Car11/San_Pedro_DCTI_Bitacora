@@ -35,7 +35,7 @@ if (!$sesion->estado){
 
             <li><a href="#">Mantenimiento</a>
               <ul id="submenu">
-                <li><a href="FormularioIngreso.php">Formulario Ingreso</a></li>
+                <li><a href="Listaformulariox.php">Formulario</a></li>
                   <li><a href="">Responsables</a></li>
                 <li><a href="">Pool Tarjetas</a></li>
                 <li><a href="">Visitantes</a></li>
