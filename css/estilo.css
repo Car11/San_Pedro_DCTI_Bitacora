@@ -63,7 +63,7 @@ header {
 .avisoFormulario{
     display: block;  
     position: relative;  
-    background: #FF8500;;
+    background: none;
     height: 50px;
     color: aliceblue;
     font-size: 30px;
