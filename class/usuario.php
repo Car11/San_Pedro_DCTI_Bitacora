@@ -4,6 +4,7 @@ class usuario{
 	public $usuario;
 	public $contrasena;
     public $idrol;
+    public $nombre;
 	
 	function __construct(){
         require_once("conexion.php");
@@ -15,6 +16,17 @@ class usuario{
         $data = DATA::Ejecutar($sql,$param);
         if (count($data) ) {
             $this->idrol= $data[0]['IDROL'];
+            return true;
+        }else {        
+            return false;           
+        }        
+    }
+    function Cargar(){    
+        $sql='SELECT NOMBRE FROM USUARIO WHERE usuario=:usuario';
+        $param= array(':usuario'=>$_SESSION['username']);        
+        $data = DATA::Ejecutar($sql,$param);
+        if (count($data) ) {
+            $this->nombre= $data[0]['NOMBRE'];
             return true;
         }else {        
             return false;           

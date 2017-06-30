@@ -1,0 +1,414 @@
+#general{
+    width: 100%;
+    height: 84%;
+    margin-top: 0px;
+}
+
+#izquierda{
+    width: 11%;
+    height: 600px;
+    float:left;
+}
+
+#principal{
+    width: 78%;
+    height: 600px;
+    float: left;
+}
+
+#derecha{
+    width: 11%;
+    height: 600px;
+    float: left;
+}
+/*CONTENEDORES DE PRINCIPAL*/
+#superior{
+    width: 100%;
+    height: 26%;
+    float: lef;
+}
+#medio{
+    width: 100%;
+    height: 48%;
+    float: left;
+}
+#inferior{
+    width: 100%;
+    height: 26%;
+    float: left;
+}
+#arriba{
+    width: 100%;
+    height: 20%;
+    float: left;
+}
+/*DIVS CONTENEDORES DE INPUTS*/
+#caja{
+    width: 33.33%;
+    height: 100%;
+    float: left;
+}
+#tabla{
+    width: 66.66%;
+    height: 100%;
+    float: left;
+}
+#etiquetas{
+    width: 33.33%;
+    height: 100%;
+    float: left;
+}
+#cajainput{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+.cajainput2{
+    width: 33.3%;
+    height: 100%;
+    float: left;
+}
+#cajade3{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+
+.inputformat{
+    margin-left: 0px;
+    margin-top: 5px;
+    width: 90%;
+    height: 35px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 15px;
+    background: white;
+    border: 2px solid #fff;
+}
+
+.labelformat{
+    display:inline-block;
+    margin-left: 0px;
+    margin-top: 5px;
+    font-size: 16px;
+}
+.labelradioformat{
+    font-size: 20px;
+    display:inline-block;
+    margin-left: 30px;
+    margin-top: 15px;  
+    content: '\A'; 
+    white-space: pre;
+}
+#motivovisita{
+    margin-top: 5px;
+    margin-left: 0px;
+    width: 97%;
+    height: 40px;
+}
+#cajainput2{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+#numeroformulario{
+    width: 100%;
+    height: 25%;
+    float: left;
+}
+#estadoformulario{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+#submitformulario{
+    width: 100%;
+    height: 25%;
+    float: left;
+}
+.radioformat{
+    margin-left: 15px;
+    margin-top: 5px;
+}
+#tablavisitante{
+    width: 95%;
+    height: 100%;
+    float: left;
+    overflow: scroll;
+}
+#btnagregarvisitante{
+    width: 5%;
+    float: left;
+}
+
+#imgdelete{
+    height: 17px;
+    text-align: center;
+    margin-left: 50px;
+}
+#estadosform{
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-left: 0px;
+    width: 100%;
+    height: 80%;
+    float: left;
+}
+#numeroformulario{
+    width: 100%;    
+    height: 20%;
+}
+#cajanumform{
+    width: 60%;
+    height: 100%;
+    float: left;
+    text-align: left;
+    font-size: 35px;
+    font-family:"Helvetica";
+}
+#cajanumform2{
+    width: 40%;
+    height: 100%;
+    float: left;
+    text-align: left;
+    font-weight:bold;
+    font-family:"Helvetica";
+}
+.labelformatnum{
+    display:inline-block;
+    margin-top: 15px;
+    font-size: 25px;
+    font-weight:bold;
+    color: white;
+}
+
+.radioformat{
+    border: 0px;
+    width: 20px;
+    height: 20px;
+}
+
+#distribuciontabla{
+    width: 95%;
+    background: white;
+}
+#distribuciontabla2{
+    width: 5%;
+}
+/**************************VENTANA MODAL*******************/
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+/* Modal Content */
+
+.modal-content {
+    position: relative;
+    background-color: #1e5799;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+/* Add Animation */
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+/* The Close Button */
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #73A5FF;
+    color: white;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #73A5FF;
+    color: white;
+}
+
+/*******************************************Tabla vistante*/
+#tblvisitanteform {
+    border-collapse: collapse;
+    width: 100%;
+    font-family:"Helvetica";
+    background: whitesmoke;
+    border-bottom: 1px solid #ddd;
+}
+
+#tblvisitanteform, td{
+	text-align: center;
+    padding: 12px;
+}
+
+.fila:hover{
+	background-color: #f5f5f5;
+}
+
+#titulocedula{
+	width:15%;
+    border: 1px solid black;
+    height: 40px;	
+}
+#titulonombre{
+	width:40%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#tituloempresa{
+	width:30%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#tituloeliminar{
+	width:15%;	
+    border: 1px solid black;
+    height: 40px;
+}
+
+/*Botones*/
+.cbp-mc-form input.cbp-mc-submit {
+	background: #10689a;
+	border: none;
+	color: #fff;
+	width: 90%;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	border-radius: 2px;
+	letter-spacing: 1px;
+    margin-top: 10px;
+    margin-left: 0px;
+
+}
+
+.cbp-mc-form input.cbp-mc-submit:hover {
+	background: #1478b1;
+}
+
+#myBtn{
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+	display: inline-block;
+    background: #10689a;
+    margin-top: 0;
+}
+
+#btnatras{
+
+    margin-top: 50px;
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+	display: inline-block;
+    background: #10689a;
+    margin-top: 0;
+    text-align: center;
+}
+#btnnuevo{
+
+    margin-top: 50px;
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+	display: inline-block;
+    background: #10689a;
+    margin-top: 0;
+    text-align: center;
+}
+
+/*Lista Formularios*/
+#listavisitante{
+    margin-top: 0px;
+    width: 100%;
+    height: 560px;
+    float: left;
+    background: #1e5799;
+}
+#nuevoformulario{
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    float: left;
+}
+#nuevo{
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+#atras{
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: right;
+}

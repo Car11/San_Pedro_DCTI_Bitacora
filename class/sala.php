@@ -1,6 +1,6 @@
 <?php
 class Sala{
-    function __construct(){
+    function __construct(){   
     require_once("conexion.php");
     //error_reporting(E_ALL);
     //Always in development, disabled in production

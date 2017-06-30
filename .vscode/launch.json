@@ -6,7 +6,7 @@
             "name": "JS",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost/san_pedro_dcti_bitacora/index.php",
+            "url": "http://localhost:8000/san_pedro_dcti_bitacora/FormularioIngresox.php",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}",
 

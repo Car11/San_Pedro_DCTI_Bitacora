@@ -17,6 +17,13 @@ class Formulario{
     public $idautorizador;
     public $idresponsable;
     public $estado;
+    public $nombreresponsable;
+    public $nombretramitante;
+    public $nombreautorizador;
+    public $rfc;
+    public $cedulav;
+    public $nombrev;
+    public $empresav;
     	
 	function __construct(){
         require_once("conexion.php");
@@ -28,16 +35,21 @@ class Formulario{
     //Agrega formulario 
     function AgregarFormulario(){
         try {                    
-            $sql='INSERT INTO formulario(fechaingreso,idsala,fechasolicitud,fechasalida,placavehiculo,detalleequipo,motivovisita)'. 
-                'VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasolicitud,:fechasalida,:placavehiculo,'.
-                ':detalleequipo,:motivovisita)';
+            $sql='INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,estado,rfc)'. 
+                'VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasalida,:placavehiculo,'.
+                ':detalleequipo,:motivovisita,(SELECT id FROM responsable WHERE nombre= :nombreresponsable),'.
+                '(SELECT id FROM usuario WHERE nombre= :nombreautorizador),(SELECT id FROM usuario WHERE nombre= :nombretramitante),:estado,:rfc)';
             $param= array(':fechaingreso'=>$this->fechaingreso,
                           ':nombresala'=>$this->nombresala,
-                          ':fechasolicitud'=>$this->fechasolicitud,
                           ':fechasalida'=>$this->fechasalida,
                           ':placavehiculo'=>$this->placavehiculo,
                           ':detalleequipo'=>$this->detalleequipo,
-                          ':motivovisita'=>$this->motivovisita);            
+                          ':motivovisita'=>$this->motivovisita,
+                          ':nombreresponsable'=>$this->nombreresponsable,
+                          ':nombreautorizador'=>$this->nombreautorizador,
+                          ':nombretramitante'=>$this->nombretramitante,
+                          ':estado'=>$this->estado,
+                          ':rfc'=>$this->rfc);            
             $result = DATA::Ejecutar($sql,$param);
             
             //Captura el id del formulario
@@ -54,7 +66,7 @@ class Formulario{
                 $result = DATA::Ejecutar($sql,$param);
             }
             
-            header('Location:../FormularioIngreso.php');
+            header('Location:../ListaFormulariox.php');
             exit;
         }     
         catch(Exception $e) {
@@ -63,12 +75,55 @@ class Formulario{
         }
     }
     
+        function Modificar(){
+        try {                    
+            $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
+            idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,estado=:estado,idsala=(SELECT ID FROM SALA WHERE NOMBRE= :nombresala),rfc=:rfc WHERE id=:identificador";
+            $param= array(':fechaingreso'=>$this->fechaingreso,
+                          ':fechasalida'=>$this->fechasalida,
+                          ':nombretramitante'=>$this->nombretramitante,
+                          ':nombreautorizador'=>$this->nombreautorizador,
+                          ':nombreresponsable'=>$this->nombreresponsable,
+                          ':placavehiculo'=>$this->placavehiculo,
+                          ':detalleequipo'=>$this->detalleequipo,
+                          ':motivovisita'=>$this->motivovisita,
+                          ':estado'=>$this->estado,
+                          ':nombresala'=>$this->nombresala,
+                          ':rfc'=>$this->rfc,
+                          ':identificador'=>$this->id);            
+            $result = DATA::Ejecutar($sql,$param);
+
+            //Elimina los registros de acuerdo al ID del Formulario
+            $sql="DELETE FROM visitanteporformulario WHERE idformulario=:identificador";
+            $param= array(':identificador'=>$this->id);            
+            $result = DATA::Ejecutar($sql,$param);
+
+            //Convierte el string en un arreglo
+            $visitantearray = explode(",",$this->visitante);            
+            //Calcula la longitud del arreglo de visistantes
+            $longitud = count($visitantearray);
+            //Recorre el arreglo e inserta cada item en la tabla intermedia
+            for($i=0; $i<$longitud; $i++){         
+                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
+                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id); 
+                $result = DATA::Ejecutar($sql,$param);
+            }
+                        
+            header('Location:../ListaFormulariox.php');
+            exit;
+        }     
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            exit;
+        }
+    }
     
     //Consulta formulario para llenar tabla 
     function ConsultaFormulario(){
         try {
 			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
-            idautorizador,idresponsable,idsala,placavehiculo,detalleequipo
+            idautorizador,idresponsable,(SELECT nombre from sala WHERE id=idsala),placavehiculo,detalleequipo,rfc
             FROM formulario";
 			$result = DATA::Ejecutar($sql);
 			return $result;			
@@ -81,9 +136,23 @@ class Formulario{
     function Cargar(){
         try {
 			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
-            idautorizador,idresponsable,idsala,placavehiculo,detalleequipo
+            idautorizador,(SELECT nombre from responsable WHERE id=idresponsable),(SELECT nombre from sala WHERE id=idsala),placavehiculo,detalleequipo,rfc
             FROM formulario WHERE id = :identificador";
             
+            $param= array(':identificador'=>$this->id);            
+            $result = DATA::Ejecutar($sql,$param);
+            
+			return $result;		
+		}catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }	 	
+	} 
+
+    function CargaVisitanteporFormulario(){
+        try {
+			$sql="SELECT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
+            on v.cedula=vpf.idvisitante and vpf.idformulario=:identificador";
             $param= array(':identificador'=>$this->id);            
             $result = DATA::Ejecutar($sql,$param);
             
