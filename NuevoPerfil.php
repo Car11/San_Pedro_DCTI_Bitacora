@@ -25,7 +25,7 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            location.href = "index.php";            
+            location.href = "index.php?estado=NULL";            
         }
     </script>
 </head>

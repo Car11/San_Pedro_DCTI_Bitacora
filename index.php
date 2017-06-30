@@ -10,9 +10,17 @@ if (!$sesion->estado){
 }
 //POST
 $estado="NULL";
-if (isset($_SESSION['estado'])) {
-    $estado=$_SESSION['estado'];
+if (isset($_GET['estado'])) 
+{
+    if($_GET['estado']=="NULL")
+    {
+        unset($_SESSION['estado']);
+        unset($_SESSION['idformulario']);
+        unset($_SESSION['cedula']);
+    }
 }
+if (isset($_SESSION['estado'])) 
+    $estado=$_SESSION['estado'];
 // Busca información del formulario para desplegar en pantalla.
 $formulario="NULL";
 $tarjeta="NULL";
