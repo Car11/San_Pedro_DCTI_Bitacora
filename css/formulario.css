@@ -166,7 +166,7 @@
     font-family:"Helvetica";
 }
 #cajanumform2{
-    width: 40%;
+    width: 30%;
     height: 100%;
     float: left;
     text-align: left;
@@ -175,10 +175,10 @@
 }
 .labelformatnum{
     display:inline-block;
-    margin-top: 15px;
-    font-size: 25px;
-    font-weight:bold;
-    color: white;
+    font-family: fantasy;
+    padding: 0px;
+    font-size: 40px;
+    color: aliceblue;
 }
 
 .radioformat{
@@ -194,6 +194,19 @@
 #distribuciontabla2{
     width: 5%;
 }
+.inputreadonly {
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0 auto;
+    border:none;
+    padding: 0px;    
+    font-size: 40px;
+    font-family: fantasy;
+    color: aliceblue;
+    background: none;
+}
+
 /**************************VENTANA MODAL*******************/
 
 .modal {

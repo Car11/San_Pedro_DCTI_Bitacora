@@ -146,10 +146,10 @@ $rol=$_SESSION['rol'];
                 <div id="etiquetas">
                     <div id="numeroformulario">
                         <div id="cajanumform">
-                            <label class="labelformatnum">#Formulario</label>    
+                            <label class="labelformatnum">Formulario #</label>    
                         </div>
                         <div id="cajanumform2">
-                            <input type="text" id="lblnumeroform" name="lblnumeroform" 
+                            <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
                             value="<?php if (isset($_GET['ID'])) {echo $formdata[0][0];}?>"/>                                    
                         </div>
                         
