@@ -26,14 +26,15 @@ function onValidaFormulario() {
     var equipo = document.getElementById('detalleequipo').value;
     var rfc = document.getElementById('txtrfc').value;
     var visitante = document.getElementById("visitantelargo").value;
+    var fechaingreso = document.getElementsByName("fechaingreso").value;
+    var fechasalida = document.getElementsByName("fechasalida").value;
 
-    /*altert(visitante);
-    if(visitante.length==0){
-        alert("Debe de insertar al menos un Visitante!");
-        return false;        
-    }*/
-
-
+    if(fechaingreso == "")
+    {
+        alert("Debe de insertar una fecha de ingreso!");
+        return false;
+    }
+    
     if (responsable == ""){
         alert("Debe de asignar un responsable!");
         return false;

@@ -28,6 +28,8 @@ if (isset($_GET['ID'])) {
     //Si hay un link carga el estado en el radio
     $estadoformulario= $formdata[0][2];
     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
+    //$visitanteformulario = json_encode($visitanteformulario);
+
     $largo=count($visitanteformulario);
 }
 
@@ -47,7 +49,6 @@ $usuario = new usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
-
 ?>
 
 <html>
@@ -58,7 +59,6 @@ $rol=$_SESSION['rol'];
     <link href="css/estilo.css" rel="stylesheet"/>        
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <link href="css/formulario.css" rel="stylesheet"/>
-    <link href="css/divsx.css" rel="stylesheet"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
  	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
@@ -85,8 +85,7 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput">
                         <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
-                        <input type="datetime-local" name="fechaingreso" class="inputformat"
-                        value="<?php if (isset($_GET['ID'])) {print $formulario->fechaingreso;}?>">
+                        <input type="datetime-local" name="fechaingreso" class="inputformat" value="<?php if (isset($_GET['ID'])) {print $formdata[0][4];}else echo "x";?>"required/>
                     </div>
                     <div id="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
@@ -96,8 +95,8 @@ $rol=$_SESSION['rol'];
                 </div>
                 <div id="caja">
                     <div id="cajainput">
-                        <label for="fechasalida" class="labelformat">Fecha y hora Salida</label></br>
-                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="inputformat"/> 
+                        <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
+                        <input type="datetime-local" name="fechasalida" class="inputformat" value="<?php if (isset($_GET['ID'])) {print $formdata[0][5];}?>"required/> 
                     </div>
                     <div id="cajainput">
                         <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
@@ -150,7 +149,7 @@ $rol=$_SESSION['rol'];
                         </div>
                         <div id="cajanumform2">
                             <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
-                            value="<?php if (isset($_GET['ID'])) {echo $formdata[0][0];}?>"/>                                    
+                            value="<?php if (isset($_GET['ID'])) echo $formdata[0][0]; else echo "___";?>"/>   
                         </div>
                         
                     </div>
@@ -205,7 +204,7 @@ $rol=$_SESSION['rol'];
     <!-- MODAL VISITANTE -->
     <div id="ModalVisitante" class="modal">
         <!-- Modal content -->
-        <div class="modal-contentuse">
+        <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
                 <h2>Seleccione los Visitantes a Autorizar</h2>
@@ -283,7 +282,7 @@ $rol=$_SESSION['rol'];
     <!-- MODAL SALA -->
     <div id="ModalSala" class="modal">
         <!-- Modal content -->
-        <div class="modal-content">
+        <div class="modal-content-sala">
             <div class="modal-header">
                 <span class="close">&times;</span>
                 <h2>Seleccione el Sala</h2>
@@ -317,21 +316,9 @@ $rol=$_SESSION['rol'];
 <script>
     //Se ejecuta al iniciar la pagina
     var x = "<?php echo $id;?>";      
-    
-    $(document).ready( function () {
-        // OBTIENE EL CSS PARA LOS TABLES    
-        if (x!=0){
-            CargaVisitanteLink();
-            EstadoFormulario();    
-        }
-
-        $('.sala').styleddropdown();
-        $('#tblvisitante').DataTable();
-        $('#tblresponsable').DataTable();          
-        $('#tblsala').DataTable();
-        MuestraEstados();
-    } );
-    
+    var jSala=[];
+    var jResponsable=[];
+    var jVisitante=[]; 
     // Obtiene el MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     
@@ -342,7 +329,25 @@ $rol=$_SESSION['rol'];
     var inputSala = document.getElementById("selectsala");
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
-    
+
+    $(document).ready( function () {    
+        if (x!=0){
+            CargaVisitanteLink();
+            EstadoFormulario();    
+        }
+        $('.sala').styleddropdown();
+        // OBTIENE EL CSS PARA LOS TABLES
+        $('#tblvisitante').DataTable();
+        $('#tblresponsable').DataTable();          
+        $('#tblsala').DataTable();
+        MuestraEstados();
+    } );
+
+    //Elimina el registro de la tabla modal para que no sea seleccionado nuevamente
+    /*fucntion EliminaRegistroVisiante(){
+
+    }*/
+        
     // Evento click que abre el MODAL
     btn.onclick = function() {
         modalVisitante.style.display = "block";
@@ -409,10 +414,8 @@ $rol=$_SESSION['rol'];
     }
 
     //Carga el Visitante en la tabla tblvisitanteform
-    function CargaVisitanteLink(){
-        //Pasa de PHP a JavaScript el array
-        var visitantes=<?php echo json_encode($visitanteformulario);?>;
-        
+    function CargaVisitanteLink(){    
+
         var data={
             "id":"<?php if (isset($_GET['ID'])) echo $visitanteformulario[0][0]; ?>",
             "nombre":"<?php if (isset($_GET['ID'])) echo $visitanteformulario[0][1]; ?>",
@@ -437,10 +440,11 @@ $rol=$_SESSION['rol'];
         }
     }
     
-    //SELECION DE LAS LINEAS DEL MODAL **********************/            
-    var jVisitante=[];             
+    //SELECION DE LAS LINEAS DEL MODAL **********************/                        
     $('#tblvisitante tr').on('click', function(){        
-        $(this).toggleClass('selected');
+        //$(this).toggleClass('selected');
+        
+        
         var data={
             "id":$(this).find('td:first').html(),
             "nombre":$(this).find('td:nth-child(2)').html(),
@@ -457,16 +461,25 @@ $rol=$_SESSION['rol'];
             var td4="<td><img id=imgdelete src=img/file_delete.png class=borrar></td></tr>";
             var tb2="</tbody>";
             $("#tblvisitanteform").append(tb1+tr+td1+td2+td3+td4+tb2); 
+            $(this).css('display', 'none');
         }
-        else { // El visitante esta en la lista y debe borrarse
+        /*else { // El visitante esta en la lista y debe borrarse
             var i = jVisitante.findIndex(x => x.id === data.id);
             jVisitante.splice(i,1);
             document.getElementById("tblvisitanteform").deleteRow(i+1);                 
-        }
+        }*/
+        
+
     });
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function EnviaVisitante() {
+        var x = document.getElementsByName("fechaingreso").value;
+        if(x=="x"){
+            alert("Debe de insertar una fecha de ingreso");
+            return false;
+        }
+        
         for (var index = 0; index < jVisitante.length; index++) {
             var element = jVisitante[index].id;
             document.getElementById("visitantearray").value += element + ",";    
@@ -475,18 +488,20 @@ $rol=$_SESSION['rol'];
         if(jVisitante.length==0){
             alert("Debe de insertar al menos un Visitante!");
             return false;
-        }      
+        }
+        alert("Formulario Creado!");      
     }
     
     //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
     $(document).on('click', '.borrar', function (event) {
-        
+        $('#tblvisitante tr').closest('tr').css('display', '');
         event.preventDefault();
         var i = $(this).closest('tr').index();
         $(this).closest('tr').remove();
         jVisitante.splice(i-1,1);
         
     });     
+
     //COMBO SALAS *********/
     (function ($) {
     $.fn.styleddropdown = function () {
@@ -494,19 +509,16 @@ $rol=$_SESSION['rol'];
             var obj = $(this)
             obj.find('.field').click(function () { //onclick event, 'list' fadein
                 obj.find('.list').fadeIn(400);
-
                 $(document).keyup(function (event) { //keypress event, fadeout on 'escape'
                     if (event.keyCode == 27) {
                         obj.find('.list').fadeOut(400);
                     }
                 });
-
                 obj.find('.list').hover(function () {},
                     function () {
                         $(this).fadeOut(400);
                     });
             });
-
             obj.find('.list li').click(function () { //onclick event, change field value with selected 'list' item and fadeout 'list'
                 obj.find('.field')
                     .val($(this).html())
@@ -521,7 +533,6 @@ $rol=$_SESSION['rol'];
     })(jQuery);
 
     //MODAL RESPONSABLES ********/
-    var jResponsable=[];
     $('#tblresponsable tr').on('click', function(){        
         $(this).toggleClass('selected');
         jResponsable.length = 0;
@@ -539,7 +550,6 @@ $rol=$_SESSION['rol'];
     });
 
     //MODAL SALAS ********/
-    var jSala=[];
     $('#tblsala tr').on('click', function(){        
         $(this).toggleClass('selected');
         jSala.length = 0;
