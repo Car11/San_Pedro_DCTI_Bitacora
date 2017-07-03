@@ -166,7 +166,7 @@
     font-family:"Helvetica";
 }
 #cajanumform2{
-    width: 40%;
+    width: 30%;
     height: 100%;
     float: left;
     text-align: left;
@@ -175,10 +175,10 @@
 }
 .labelformatnum{
     display:inline-block;
-    margin-top: 15px;
-    font-size: 25px;
-    font-weight:bold;
-    color: white;
+    font-family: fantasy;
+    padding: 0px;
+    font-size: 40px;
+    color: aliceblue;
 }
 
 .radioformat{
@@ -194,6 +194,19 @@
 #distribuciontabla2{
     width: 5%;
 }
+.inputreadonly {
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0 auto;
+    border:none;
+    padding: 0px;    
+    font-size: 40px;
+    font-family: fantasy;
+    color: aliceblue;
+    background: none;
+}
+
 /**************************VENTANA MODAL*******************/
 
 .modal {
@@ -218,8 +231,9 @@
     background-color: rgba(0, 0, 0, 0.4);
     /* Black w/ opacity */
 }
-/* Modal Content */
 
+
+/* Modal Content */
 .modal-content {
     position: relative;
     background-color: #1e5799;
@@ -227,6 +241,20 @@
     padding: 0;
     border: 1px solid #888;
     width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+.modal-content-sala {
+    position: relative;
+    background-color: #1e5799;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 30%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;

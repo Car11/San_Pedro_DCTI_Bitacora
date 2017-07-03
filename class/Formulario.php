@@ -133,7 +133,9 @@ class Formulario{
     function Cargar(){
         try {
 
-			$sql = "SELECT id,fechasolicitud,estado,motivovisita, DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,fechasalida,(
+			$sql = "SELECT id,fechasolicitud,estado,motivovisita, 
+                DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
+                DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,(
                 SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id
                 where f.id=:identificador)as nombretramitante , (
                 SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id
