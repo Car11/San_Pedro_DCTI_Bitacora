@@ -17,6 +17,7 @@ if (isset($_GET['estado']))
         unset($_SESSION['estado']);
         unset($_SESSION['idformulario']);
         unset($_SESSION['cedula']);
+        unset($_SESSION['link']);
     }
 }
 if (isset($_SESSION['estado'])) 
