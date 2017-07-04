@@ -6,6 +6,7 @@ class Visitante{
 	public $cedula;//id
 	public $nombre;
 	public $empresa;
+    public $permisoanual;
 
 	function __construct(){
         require_once("conexion.php");
@@ -64,10 +65,24 @@ class Visitante{
                     exit;                            
                 } else {
                     // el visitante existe pero no tiene formulario.
-                    //Muestra pagina de ingreso se informacion de visita
-                    $_SESSION['link']="true";                    
-                    header('Location: ../InfoVisita.php?id='. $this->cedula);
-                    exit;
+                    //Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
+                    /*$sql="SELECT PERMISOANUAL
+                        FROM visitante 
+                    where CEDULA= :idvisitante";
+                    $param= array(':idvisitante'=>$this->cedula);
+                    $data = DATA::Ejecutar($sql,$param);*/
+                    
+                    $this::Cargar($this->cedula);
+                    if ($this->permisoanual=="1") {  
+                        $_SESSION['link']="true";                    
+                        header('Location: ../InfoVisita.php?id='. $this->cedula);
+                        exit;
+                    }
+                    else {
+                        $_SESSION['estado']='2';
+                        header('Location: ../index.php');
+                        exit;   
+                    }
                 }
             }
             else { //la ID no existe en bd, muestra nuevo perfil
@@ -106,6 +121,7 @@ class Visitante{
             $this->cedula= $data[0]['CEDULA'];
             $this->nombre= $data[0]['NOMBRE'];
             $this->empresa= $data[0]['EMPRESA'];
+            $this->permisoanual= $data[0]['PERMISOANUAL'];
             //
             return $data;
         }
