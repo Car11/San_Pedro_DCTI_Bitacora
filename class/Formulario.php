@@ -150,18 +150,20 @@ class Formulario{
             $param= array(':identificador'=>$this->id);            
             $data = DATA::Ejecutar($sql,$param);
             //
-            $this->fechasolicitud= $data[0]['fechasolicitud'];
-            $this->estado= $data[0]['estado'];
-            $this->motivovisita= $data[0]['motivovisita'];
-            $this->fechaingreso= $data[0]['fechaingreso'];
-            $this->fechasalida= $data[0]['fechasalida'];
-            $this->nombretramitante= $data[0]['nombretramitante'];
-            $this->nombreautorizador= $data[0]['nombreautorizador'];
-            $this->nombreresponsable= $data[0]['nombreresponsable'];
-            $this->nombresala= $data[0]['nombresala'];
-            $this->placavehiculo= $data[0]['placavehiculo'];
-            $this->detalleequipo= $data[0]['detalleequipo'];
-            $this->rfc= $data[0]['rfc'];
+             if (count($data)) {
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['estado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->fechaingreso= $data[0]['fechaingreso'];
+                $this->fechasalida= $data[0]['fechasalida'];
+                $this->nombretramitante= $data[0]['nombretramitante'];
+                $this->nombreautorizador= $data[0]['nombreautorizador'];
+                $this->nombreresponsable= $data[0]['nombreresponsable'];
+                $this->nombresala= $data[0]['nombresala'];
+                $this->placavehiculo= $data[0]['placavehiculo'];
+                $this->detalleequipo= $data[0]['detalleequipo'];
+                $this->rfc= $data[0]['rfc'];
+             }
 			//
             return $data;		
 		}catch(Exception $e) {
