@@ -29,7 +29,6 @@ if (isset($_GET['ID'])) {
     $estadoformulario= $formdata[0][2];
     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
     //$visitanteformulario = json_encode($visitanteformulario);
-
     $largo=count($visitanteformulario);
 }
 
@@ -149,7 +148,7 @@ $rol=$_SESSION['rol'];
                         </div>
                         <div id="cajanumform2">
                             <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
-                            value="<?php if (isset($_GET['ID'])) echo $formdata[0][0]; else echo "___";?>"/>   
+                            value="<?php if (isset($_GET['ID'])) echo $formdata[0][0]; else echo "nuevo";?>"/>   
                         </div>
                         
                     </div>
@@ -499,7 +498,6 @@ $rol=$_SESSION['rol'];
         var i = $(this).closest('tr').index();
         $(this).closest('tr').remove();
         jVisitante.splice(i-1,1);
-        
     });     
 
     //COMBO SALAS *********/

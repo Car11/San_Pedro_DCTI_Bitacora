@@ -82,19 +82,9 @@ $data= $formulario->ConsultaFormulario();
     <script>
         //Da la apariencia del css datatable
         $(document).ready( function () {
-        $('#listaformulario').DataTable();
-        } );
-
-        //AL DAR CLICK EN MODIFICAR, CARGAR LOS DATOS DE LA FILA EN UN ARREGLO Y ABRIR FORMULARIOINGRESO.PHP Y CARGAR LOS DATOS DEL ARREGLO.
-        var jVisitante=[]; 
-        $(document).on('click', '.modificar', function (event) {
-            //event.preventDefault();
-            //Cargar Arreglo
-            var children = $("tr td")[0].innerHTML;
-            alert(children);
-            //Direccionar a FormularioIngreso            
-        });   
-
+            $('#listaformulario').DataTable();
+        } );  
+    
     </script>
     </body>
 </html>
