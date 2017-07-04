@@ -66,12 +66,6 @@ class Visitante{
                 } else {
                     // el visitante existe pero no tiene formulario.
                     //Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
-                    /*$sql="SELECT PERMISOANUAL
-                        FROM visitante 
-                    where CEDULA= :idvisitante";
-                    $param= array(':idvisitante'=>$this->cedula);
-                    $data = DATA::Ejecutar($sql,$param);*/
-                    
                     $this::Cargar($this->cedula);
                     if ($this->permisoanual=="1") {  
                         $_SESSION['link']="true";                    

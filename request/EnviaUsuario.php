@@ -10,8 +10,14 @@
         if($usuario->Validar())
         {
             $sesion->Inicio($usuario->usuario, $usuario->idrol);
-            header('Location: ../index.php'); 
-            exit;
+            if(isset($_SESSION['url'])){
+                header('Location: ../'. $_SESSION['url']); 
+                exit;
+            }
+            else {
+                header('Location: ../index.php'); 
+                exit;
+            }
         }
         else //usuario denegado
         {

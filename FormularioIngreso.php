@@ -6,6 +6,7 @@ if (!isset($_SESSION))
 include("class/sesion.php");
 $sesion = new sesion();
 if (!$sesion->estado){
+    
     header('Location: login.php');
     exit;
 }

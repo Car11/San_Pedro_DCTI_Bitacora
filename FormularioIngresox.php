@@ -20,8 +20,10 @@ include("class/Formulario.php");
 $formulario = new Formulario();
 $estadoformulario=0;
 $id=0;
-if (isset($_GET['ID'])) {
+if (isset($_GET['ID'])) {    
     $id=$_GET['ID'];
+    // es formulario temporal
+    $_SESSION['TEMP']=$id;
     $formulario->id=$id;
     //Carga la sala según el link
     $formdata= $formulario->Cargar();

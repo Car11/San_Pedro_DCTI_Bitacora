@@ -227,8 +227,13 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
         estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Autorizado.";
         htmltext= "<div class=mensajeriaOk id=" + divId + ">" + estado + "</div>";
     }else if(estado=="2"){
-        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado.";
-        htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
+        if(formularioConsultado!='NULL') {
+            estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado.";
+            htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
+        } else {
+            estado="Acceso Denegado<br>No hay formulario.";
+            htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
+        }
     }else if(estado=="3"){
         estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado, Tiempo de visita excedido.";
         htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";

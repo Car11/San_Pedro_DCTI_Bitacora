@@ -8,7 +8,13 @@ if (!$sesion->estado){
     header('Location: login.php');
     exit;
 }
-//
+// es un formulario temporal
+$formtemp="NULL";
+if(isset($_SESSION['TEMP']))
+{
+    $formtemp=$_SESSION['TEMP']; // ID del formulario temporal.
+}
+
 include("class/Formulario.php");
 $formulario= new Formulario();
 $data= $formulario->ConsultaFormulario();
@@ -83,8 +89,42 @@ $data= $formulario->ConsultaFormulario();
         //Da la apariencia del css datatable
         $(document).ready( function () {
             $('#listaformulario').DataTable();
-        } );  
-    
+            //
+             //envía notificación al servidor
+            this.ajaxSent = function() {
+                try {
+                    xhr = new XMLHttpRequest();
+                } catch (err) {
+                    alert(err);
+                }
+                alert('enviando: ' + formtemp);
+                url='notificaciondinamica.php?msg='+formtemp;
+                //alert(url);
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {                    
+                        if (xhr.status == 200) {   
+                            formtemp.value = "";
+                            alert('finalizando: ' + formtemp);
+                        }
+                    }
+                };
+                xhr.send();
+            };
+
+            var formtemp= "<?php echo $formtemp; ?>";
+            alert(formtemp);
+            if(formtemp!="NULL")
+                this.ajaxSent();
+            //For sending message
+            /*this.sendMsg = function() {
+                msg = document.getElementById("cedula").value;
+                this.ajaxSent();
+                return false;
+            };*/
+
+            } );  // fin document ready.
+        
     </script>
     </body>
 </html>
