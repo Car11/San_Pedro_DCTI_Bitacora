@@ -61,5 +61,6 @@
     else {
         $formulario->id=$_POST['lblnumeroform'];
         $formulario->Modificar();
+        
     } 
 ?>

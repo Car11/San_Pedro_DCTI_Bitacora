@@ -43,7 +43,7 @@
     </aside>
     <section>
         <div id="form">
-            <h1>Datos del Visitante</h1>
+            <h1>Nuevo Visitante</h1>
             <form name="perfil" method="POST" action="request/EnviaNuevoPerfil.php">
                 <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
                     <input readonly type="text" maxlength="9" id="cedula" value= "<?php print $id ?>" class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)"/>

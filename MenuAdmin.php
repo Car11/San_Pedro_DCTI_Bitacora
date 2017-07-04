@@ -5,6 +5,7 @@ if (!isset($_SESSION))
 include("class/sesion.php");
 $sesion = new sesion();
 if (!$sesion->estado){
+    $_SESSION['url']= 'menuadmin.php';
     header('Location: login.php');
     exit;
 }

@@ -1,12 +1,14 @@
-<?php 
-if (!isset($_SESSION))
+<?php
+if (!isset($_SESSION)) {
     session_start();
+}
 
-class Formulario{
+class Formulario
+{
     public $id;
     public $fechaingreso;
-	public $fechasalida;
-	public $fechasolicitud;
+    public $fechasalida;
+    public $fechasolicitud;
     public $idsala;
     public $nombresala;
     public $placavehiculo;
@@ -21,21 +23,23 @@ class Formulario{
     public $nombreresponsable;
     public $estado;
     public $rfc;
-    	
-	function __construct(){
+        
+    function __construct()
+    {
         require_once("conexion.php");
         //error_reporting(E_ALL);
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
     }
-	    
-    //Agrega formulario 
-    function AgregarFormulario(){
-        try {                    
-            $sql='INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,estado,rfc)'. 
-                'VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasalida,:placavehiculo,'.
-                ':detalleequipo,:motivovisita,(SELECT id FROM responsable WHERE nombre= :nombreresponsable),'.
-                '(SELECT id FROM usuario WHERE nombre= :nombreautorizador),(SELECT id FROM usuario WHERE nombre= :nombretramitante),:estado,:rfc)';
+        
+    //Agrega formulario
+    function AgregarFormulario()
+    {
+        try {
+            $sql="INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,estado,rfc)
+                VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasalida,:placavehiculo,
+                :detalleequipo,:motivovisita,(SELECT id FROM responsable WHERE nombre= :nombreresponsable),
+                (SELECT id FROM usuario WHERE nombre= :nombreautorizador),(SELECT id FROM usuario WHERE nombre= :nombretramitante),:estado,:rfc)";
             $param= array(':fechaingreso'=>$this->fechaingreso,
                           ':nombresala'=>$this->nombresala,
                           ':fechasalida'=>$this->fechasalida,
@@ -46,34 +50,32 @@ class Formulario{
                           ':nombreautorizador'=>$this->nombreautorizador,
                           ':nombretramitante'=>$this->nombretramitante,
                           ':estado'=>$this->estado,
-                          ':rfc'=>$this->rfc);            
-            $result = DATA::Ejecutar($sql,$param);
-            
+                          ':rfc'=>$this->rfc);
+            $result = DATA::Ejecutar($sql, $param);
             //Captura el id del formulario
             $idformulario = DATA::$conn->lastInsertId();
             //Convierte el string en un arreglo
-            $visitantearray = explode(",",$this->visitante);            
-            //Calcula la longitud del arreglo de visistantes
+            $visitantearray = explode(",", $this->visitante);
+            //Calcula la longitud del arreglo de visistantes 
             $longitud = count($visitantearray);
             //Recorre el arreglo e inserta cada item en la tabla intermedia
-            for($i=0; $i<$longitud; $i++){
-                
+            for ($i=0; $i<$longitud; $i++) {
                 $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
-                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario); 
-                $result = DATA::Ejecutar($sql,$param);
+                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario);
+                $result = DATA::Ejecutar($sql, $param);
             }
             
             header('Location:../ListaFormulariox.php');
             exit;
-        }     
-        catch(Exception $e) {
+        } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
             exit;
         }
     }
     
-    function Modificar(){
-        try {                    
+    function Modificar()
+    {
+        try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
             idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
             detalleequipo=:detalleequipo,motivovisita=:motivovisita,estado=:estado,idsala=(SELECT ID FROM SALA WHERE NOMBRE= :nombresala),rfc=:rfc WHERE id=:identificador";
@@ -88,52 +90,52 @@ class Formulario{
                           ':estado'=>$this->estado,
                           ':nombresala'=>$this->nombresala,
                           ':rfc'=>$this->rfc,
-                          ':identificador'=>$this->id);            
-            $result = DATA::Ejecutar($sql,$param);
+                          ':identificador'=>$this->id);
+            $result = DATA::Ejecutar($sql, $param);
 
             //Elimina los registros de acuerdo al ID del Formulario
             $sql="DELETE FROM visitanteporformulario WHERE idformulario=:identificador";
-            $param= array(':identificador'=>$this->id);            
-            $result = DATA::Ejecutar($sql,$param);
+            $param= array(':identificador'=>$this->id);
+            $result = DATA::Ejecutar($sql, $param);
 
             //Convierte el string en un arreglo
-            $visitantearray = explode(",",$this->visitante);            
+            $visitantearray = explode(",", $this->visitante);
             //Calcula la longitud del arreglo de visistantes
             $longitud = count($visitantearray);
             //Recorre el arreglo e inserta cada item en la tabla intermedia
-            for($i=0; $i<$longitud; $i++){         
+            for ($i=0; $i<$longitud; $i++) {
                 $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
-                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id); 
-                $result = DATA::Ejecutar($sql,$param);
+                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
+                $result = DATA::Ejecutar($sql, $param);
             }
                         
             header('Location:../ListaFormulariox.php');
             exit;
-        }     
-        catch(Exception $e) {
+        } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
             exit;
         }
     }
     
-    //Consulta formulario para llenar tabla 
-    function ConsultaFormulario(){
+    //Consulta formulario para llenar tabla
+    function ConsultaFormulario()
+    {
         try {
-			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
+            $sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
             idautorizador,idresponsable,(SELECT nombre from sala WHERE id=idsala),placavehiculo,detalleequipo,rfc
-            FROM formulario ORDER BY ID DESC;";
-			$result = DATA::Ejecutar($sql);
-			return $result;			
-		}catch(Exception $e) {
+            FROM formulario ORDER BY id DESC;";
+            $result = DATA::Ejecutar($sql);
+            return $result;
+        } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
-        }		 	
-    } 
+        }
+    }
     
-    function Cargar(){
+    function Cargar()
+    {
         try {
-
-			$sql = "SELECT id,fechasolicitud,estado,motivovisita, 
+            $sql = "SELECT id,fechasolicitud,estado,motivovisita, 
                 DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
                 DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,(
                 SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id
@@ -145,12 +147,12 @@ class Formulario{
                 SELECT sa.nombre FROM sala sa inner join formulario fo on sa.id=fo.idsala 
                 where fo.id=:identificador) as nombresala ,
             placavehiculo,detalleequipo, rfc
-            FROM formulario WHERE id = :identificador";            
+            FROM formulario WHERE id = :identificador";
 
-            $param= array(':identificador'=>$this->id);            
-            $data = DATA::Ejecutar($sql,$param);
+            $param= array(':identificador'=>$this->id);
+            $data = DATA::Ejecutar($sql, $param);
             //
-             if (count($data)) {
+            if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
                 $this->estado= $data[0]['estado'];
                 $this->motivovisita= $data[0]['motivovisita'];
@@ -163,31 +165,33 @@ class Formulario{
                 $this->placavehiculo= $data[0]['placavehiculo'];
                 $this->detalleequipo= $data[0]['detalleequipo'];
                 $this->rfc= $data[0]['rfc'];
-             }
-			//
-            return $data;		
-		}catch(Exception $e) {
+            }
+            //
+            return $data;
+        } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
-        }	 	
-	} 
+        }
+    }
 
-    function CargaVisitanteporFormulario(){
+    function CargaVisitanteporFormulario()
+    {
         try {
-			$sql="SELECT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
+            $sql="SELECT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
             on v.cedula=vpf.idvisitante and vpf.idformulario=:identificador";
-            $param= array(':identificador'=>$this->id);            
-            $result = DATA::Ejecutar($sql,$param);
+            $param= array(':identificador'=>$this->id);
+            $result = DATA::Ejecutar($sql, $param);
             
-			return $result;		
-		}catch(Exception $e) {
+            return $result;
+        } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
-        }	 	
-	} 
+        }
+    }
     
-    function AgregarTemporal($idvisitante){
-       try {            
+    function AgregarTemporal($idvisitante)
+    {
+        try {
             //agrega infomación del formulario temporal
             $sql="insert into FORMULARIO (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD,IDSALA, MOTIVOVISITA, IDTRAMITANTE) 
                 VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala), :motivovisita, 
@@ -196,39 +200,32 @@ class Formulario{
                 ':nombresala'=>$this->nombresala,
                 ':motivovisita'=>$this->motivovisita,
                 ':usuario'=>$_SESSION['username']
-            );
-            $data= DATA::Ejecutar($sql,$param,true);            
-            if($data)
-            {
-                //busca id de formulario agregado
-                $sql='SELECT LAST_INSERT_ID() as ID';
-                $data= DATA::Ejecutar($sql);
-                $this->id =$data[0]['ID'];
-                //agrega visitantes
-                $sql='insert into VISITANTEPORFORMULARIO(idvisitante,idformulario) VALUES(:idvisitante,:idformulario)';
-                $param= array(':idvisitante'=>$idvisitante,':idformulario'=>$this->id);
-                $data=  DATA::Ejecutar($sql,$param);       
-                include_once("email.php");
-                email::Enviar($idvisitante,  $this->id , "Formulario de Ingreso Pendiente", "FORMULARIO DE INGRESO PENDIENTE");
-                // elimina sesion link para evitar redirect a paginas anteriores.
-                unset($_SESSION['link']);       
-                $_SESSION['estado']='pendiente';       
-                header('Location: ../index.php');
-                exit;
-            }        
-            else {
-                $_SESSION['errmsg']= 'Formulario no registrado, comunicarse con operaciones TI';
-            header('Location: ../Error.php');
-            }    
-        }     
-        catch(Exception $e) {
+             );
+             $data= DATA::Ejecutar($sql, $param, true);
+            if ($data) {
+                 //busca id de formulario agregado
+                 $sql='SELECT LAST_INSERT_ID() as ID';
+                 $data= DATA::Ejecutar($sql);
+                 $this->id =$data[0]['ID'];
+                 //agrega visitantes
+                 $sql='insert into VISITANTEPORFORMULARIO(idvisitante,idformulario) VALUES(:idvisitante,:idformulario)';
+                 $param= array(':idvisitante'=>$idvisitante,':idformulario'=>$this->id);
+                 $data=  DATA::Ejecutar($sql, $param);
+                 include_once("email.php");
+                 email::Enviar($idvisitante, $this->id, "Formulario de Ingreso Pendiente", "FORMULARIO DE INGRESO PENDIENTE");
+                 // elimina sesion link para evitar redirect a paginas anteriores.
+                 unset($_SESSION['link']);
+                 $_SESSION['estado']='pendiente';
+                 header('Location: ../index.php');
+                 exit;
+            } else {
+                  $_SESSION['errmsg']= 'Formulario no registrado, comunicarse con operaciones TI';
+                header('Location: ../Error.php');
+            }
+        } catch (Exception $e) {
             $_SESSION['errmsg']= $e->getMessage();
             header('Location: ../Error.php');
             exit;
         }
     }
-
 }
-
-
-?>

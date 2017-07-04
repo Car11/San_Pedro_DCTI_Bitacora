@@ -3,6 +3,14 @@
     if (isset($_GET['ID'])) {
         $ID=$_GET['ID'];
     }
+    if(isset($_SESSION['estado']))
+        unset($_SESSION['estado']);
+    if(isset($_SESSION['idformulario']))
+        unset($_SESSION['idformulario']);
+    if(isset($_SESSION['cedula']))
+        unset($_SESSION['cedula']);
+    if(isset($_SESSION['link']))
+        unset($_SESSION['link']);
 ?>
 
 <html>

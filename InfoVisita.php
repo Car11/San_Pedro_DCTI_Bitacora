@@ -48,7 +48,7 @@
     </aside>
     <section>
         <div id="form">
-            <h1>Información de Ingreso</h1>
+            <h1>El visitante NO tiene un formulario aprobado,<br><i>por favor llenar los siguientes datos</i></h1>
             <h3>Cédula / Identificación</h3>
             <form name="datos" action="request/EnviaInfoVisita.php" method="POST">
                 <input readonly type="text" id="cedula" class="input-field" name="cedula" value="<?php print $id ?>" title="Número decédula separado con CEROS" onkeypress="return isNumber(event)" />
