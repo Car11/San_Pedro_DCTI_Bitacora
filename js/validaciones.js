@@ -67,6 +67,8 @@ function onValidaFormulario() {
         alert("El RFC no puede exceder de 10 caracteres!");    
         return false;
     }
+
+
 }
 
 

@@ -72,7 +72,7 @@ class Formulario{
         }
     }
     
-        function Modificar(){
+    function Modificar(){
         try {                    
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
             idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
@@ -121,7 +121,7 @@ class Formulario{
         try {
 			$sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
             idautorizador,idresponsable,(SELECT nombre from sala WHERE id=idsala),placavehiculo,detalleequipo,rfc
-            FROM formulario";
+            FROM formulario ORDER BY ID DESC;";
 			$result = DATA::Ejecutar($sql);
 			return $result;			
 		}catch(Exception $e) {
