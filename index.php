@@ -129,10 +129,10 @@ if (isset($_SESSION['idformulario'])) {
         
             <!-- Modal body -->
             <div class="modal-body">
-                <form name="datos" id="datos" action="class/Bitacora.php" method="POST">
+                <form name="datos-modal" id="datos-modal" action="class/Bitacora.php" method="POST">
                     <div class='modal-izq'>
                         <h3>Cédula</h3>
-                        <input type="text" readonly id='modal-cedula' name="cedula" class="input-field" value= "<?php if($formulario!="NULL") echo $_SESSION['cedula']; ?>" >
+                        <input type="text" readonly id='modal-cedula' name="modal-cedula" class="input-field" value= "<?php if($formulario!="NULL") echo $_SESSION['cedula']; ?>" >
                         <h3>Nombre Completo</h3>
                         <input type="text" readonly id='nombre' name="nombre" class="input-field" value= "<?php if($formulario!="NULL") echo $visitante->nombre; ?>" >
                         <h3>Empresa/Dependencia</h3>

@@ -65,7 +65,7 @@ class Visitante{
                     exit;                            
                 } else {
                     // el visitante existe pero no tiene formulario.
-                    //Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
+                    // Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
                     $this::Cargar($this->cedula);
                     if ($this->permisoanual=="1") {  
                         $_SESSION['link']="true";                    
@@ -73,7 +73,8 @@ class Visitante{
                         exit;
                     }
                     else {
-                        $_SESSION['estado']='2';
+                        // Visitante sin formulario y no en lista anual.
+                        $_SESSION['estado']='4';
                         header('Location: ../index.php');
                         exit;   
                     }

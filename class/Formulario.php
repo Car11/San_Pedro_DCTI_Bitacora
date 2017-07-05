@@ -59,7 +59,7 @@ class Formulario
             //Calcula la longitud del arreglo de visistantes 
             $longitud = count($visitantearray);
             //Recorre el arreglo e inserta cada item en la tabla intermedia
-            for ($i=0; $i<$longitud; $i++) {
+            for ($i=0; $i<$longitud-1; $i++) {
                 $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
                 $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario);
                 $result = DATA::Ejecutar($sql, $param);
@@ -92,7 +92,8 @@ class Formulario
                           ':rfc'=>$this->rfc,
                           ':identificador'=>$this->id);
             $result = DATA::Ejecutar($sql, $param);
-
+            // sesion del formulario temporal
+            
             //Elimina los registros de acuerdo al ID del Formulario
             $sql="DELETE FROM visitanteporformulario WHERE idformulario=:identificador";
             $param= array(':identificador'=>$this->id);
@@ -100,13 +101,20 @@ class Formulario
 
             //Convierte el string en un arreglo
             $visitantearray = explode(",", $this->visitante);
-            //Calcula la longitud del arreglo de visistantes
+            //Calcula la longitud del arreglo de visitantes
             $longitud = count($visitantearray);
+            // formulario temporal, vacia la variable para llenarla con los id de los visitantes.
+            if(isset( $_SESSION['TEMP']))
+                $_SESSION['TEMP']="";
             //Recorre el arreglo e inserta cada item en la tabla intermedia
-            for ($i=0; $i<$longitud; $i++) {
+            for ($i=0; $i<$longitud-1; $i++) {
                 $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
                 $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
                 $result = DATA::Ejecutar($sql, $param);
+                 // formulario temporal, agrega los idvisitante.
+                if(isset( $_SESSION['TEMP'])){
+                    $_SESSION['TEMP'] = $_SESSION['TEMP'] . $visitantearray[$i] . '-' . $this->estado . ',';
+                }
             }
                         
             header('Location:../ListaFormulariox.php');

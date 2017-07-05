@@ -27,6 +27,21 @@
         function onVuelve() {
             location.href = "index.php?estado=NULL";            
         }
+
+        $(document).ready( function () {    
+            // pregunta es nuevo visitante.
+            $( "#dialog" ).dialog({
+                dialogClass: "no-close",
+                buttons: [
+                    {
+                    text: "OK",
+                    click: function() {
+                        $( this ).dialog( "close" );
+                        }
+                    }
+                ]
+            });
+        }
     </script>
 </head>
 
@@ -42,7 +57,8 @@
     <aside>
     </aside>
     <section>
-        <div id="form">
+        
+         <div id="form">
             <h1>Nuevo Visitante</h1>
             <form name="perfil" method="POST" action="request/EnviaNuevoPerfil.php">
                 <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
