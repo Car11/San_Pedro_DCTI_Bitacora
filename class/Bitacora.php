@@ -57,6 +57,15 @@ class Bitacora{
                 else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
             }
             else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
+            // elimina variables de sesion.
+            if(isset($_SESSION['estado']))
+                unset($_SESSION['estado']);
+            if(isset($_SESSION['idformulario']))
+                unset($_SESSION['idformulario']);
+            if(isset($_SESSION['cedula']))
+                unset($_SESSION['cedula']);
+            if(isset($_SESSION['link']))
+                unset($_SESSION['link']);
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
@@ -84,6 +93,15 @@ class Bitacora{
                 else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
             }
             else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
+            // elimina variables de sesion.
+            if(isset($_SESSION['estado']))
+                unset($_SESSION['estado']);
+            if(isset($_SESSION['idformulario']))
+                unset($_SESSION['idformulario']);
+            if(isset($_SESSION['cedula']))
+                unset($_SESSION['cedula']);
+            if(isset($_SESSION['link']))
+                unset($_SESSION['link']);
         }     
         catch(Exception $e) {
             header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());

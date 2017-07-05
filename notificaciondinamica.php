@@ -16,14 +16,18 @@ function sendMsg($msg)
     flush();
 }
 
-$nFile= "/_chat.txt";
+$nFile= "_chat.txt";
 
 if (!empty($msg)) {
-    $id = uniqid();
-    $msg =  $id .  '-' . $msg;
-    $fp = fopen($nFile, 'a');
-    fwrite($fp, $msg . PHP_EOL);
-    fclose($fp);
+    $arraymsg = explode(",", $msg);
+    for ($i=0; $i < count($arraymsg)-1; $i++) { 
+        // id unica
+        $idu = uniqid();
+        $msg =  $idu .  '-' . $arraymsg[$i];
+        $fp = fopen($nFile, 'a');
+        fwrite($fp, $msg . PHP_EOL);
+        fclose($fp);
+    }
 }
 
 if (file_exists($nFile) && filesize($nFile) > 0) {

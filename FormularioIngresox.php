@@ -22,14 +22,14 @@ $estadoformulario=0;
 $id=0;
 if (isset($_GET['ID'])) {    
     $id=$_GET['ID'];
-    // es formulario temporal
-    $_SESSION['TEMP']=$id;
     $formulario->id=$id;
     //Carga la sala según el link
     $formdata= $formulario->Cargar();
     //Si hay un link carga el estado en el radio
     $estadoformulario= $formdata[0][2];
     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
+    // es formulario temporal
+    $_SESSION['TEMP'] = $id;
     //$visitanteformulario = json_encode($visitanteformulario);
     $largo=count($visitanteformulario);
 }
@@ -507,9 +507,9 @@ $rol=$_SESSION['rol'];
     $.fn.styleddropdown = function () {
         return this.each(function () {
             var obj = $(this)
-            obj.find('.field').click(function () { //onclick event, 'list' fadein
+            obj.find('.field').click(function () { // onclick event, 'list' fadein
                 obj.find('.list').fadeIn(400);
-                $(document).keyup(function (event) { //keypress event, fadeout on 'escape'
+                $(document).keyup(function (event) { // keypress event, fadeout on 'escape'
                     if (event.keyCode == 27) {
                         obj.find('.list').fadeOut(400);
                     }
@@ -519,7 +519,7 @@ $rol=$_SESSION['rol'];
                         $(this).fadeOut(400);
                     });
             });
-            obj.find('.list li').click(function () { //onclick event, change field value with selected 'list' item and fadeout 'list'
+            obj.find('.list li').click(function () { // onclick event, change field value with selected 'list' item and fadeout 'list'
                 obj.find('.field')
                     .val($(this).html())
                     .css({

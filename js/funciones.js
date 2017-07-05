@@ -33,9 +33,8 @@ function inicio() {
         modal.style.display = "block";
         $("#btncontinuar").toggle("fadeIn");
         $("#btnsalida").hide();
-        // desaparece div mensaje y elimina registro _chat.txt
+        // desaparece div mensaje.
         $(this).toggle("fadeOut");
-        $.get("filemanager.php");
     });
 
     $("#closemodal").click( function(){
@@ -134,7 +133,7 @@ function inicio() {
 
 }
 
-
+// xmlHttpRequest
 this.CapturaMensajeFormulario = function () {
     //pushed server data
     if (typeof (EventSource) !== "undefined") {
@@ -178,24 +177,41 @@ function checkTime(i) {
     return i;
 }
 
-function onMuestraFormulario(id) {
-    var divId=+ new Date(); 
-    id= id.split("-");
+function onMuestraFormulario(txt) {
+    //var divId=+ new Date(); 
+    // txt contiene texto del mensaje enviado por notificacion dinamica xmlHttpRequest
+    var miTxt= txt.split("-");
     //lista de id's en pantalla
     var data={
-        "id":id[1]
+        "uid":miTxt[0],
+        "id":miTxt[1],
+        "estado":miTxt[2]
     };
-    //
     var result = $.grep(formularioID, function(e){  return e.id== data.id; });
+    //
     if (result.length  == 0)// si esta en el arreglo, por lo tanto ya está en pantalla
     {
         //agrega al arreglo
         formularioID.push(data); 
         //muestra en pantalla
-        var htmltext= "<div class=avisoFormulario id=" + divId + ">" + id[1] + "</div>";    
+        var bground="";
+        switch (data.estado) {
+            case "0":
+                bground="#cc9900";
+                break;
+            case "1":
+                bground="#009933";
+                break;
+            case "2":
+                bground="#990000";
+                break;
+            default:
+                break;
+        }
+        var htmltext= "<div class=avisoFormulario style='background:"+ bground +"' id=" + data.uid + ">" + data.id + "</div>";    
         $("#IDsformulario").append(htmltext);
-        $("#"+divId).toggle("fadeIn");
-        $("#"+divId).click(onClickIDFormulario); 
+        $("#"+data.uid).toggle("fadeIn");
+        $("#"+data.uid).click(onClickIDFormulario); 
     }
     
 }
@@ -239,7 +255,7 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
         htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
     }
     else if(estado=="4"){
-        estado= estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>No hay tarjetas de visitante disponibles.";
+        estado= estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>No hay formulario.";
         htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
     }
     //
