@@ -139,6 +139,32 @@ class Formulario
             exit;
         }
     }
+
+    function ConsultaVisitantePorFormulario($idvisitante)
+    {
+        try{
+            $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida , f.estado 
+                FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
+                where vf.idvisitante= :idvisitante
+                order by f.id desc limit 1 ";
+            $param= array(':idvisitante'=>$idvisitante);
+            $data = DATA::Ejecutar($sql,$param);
+            if (count($data)) {  
+                $this->id= $data[0]['ID'];
+                $this->fechaingreso= $data[0]['fechaingreso'];
+                $this->fechasalida= $data[0]['fechasalida'];                
+                $this->estado= $data[0]['estado'];
+                return true;
+            }
+            else{
+                return false;
+            }
+        }catch (Exception $e) {
+            header('Location: ../Error.php?w=formulario');
+            exit;
+        }
+
+    }
     
     function Cargar()
     {
