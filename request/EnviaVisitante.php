@@ -9,5 +9,5 @@
         header('Location: ../Error.php');
         exit;
     }
-    $visitante->ValidaID2();
+    $visitante->ValidaID();
 ?>
