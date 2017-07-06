@@ -89,9 +89,9 @@ $data= $formulario->ConsultaFormulario();
         
         $(document).ready( function () {
             //Da la apariencia del css datatable
-            //CargarEstiloTablas();
+            CargarEstiloTablas();
             //Envía notificación al servidor
-            /*this.ajaxSent = function() {
+            this.ajaxSent = function() {
                 try {
                     xhr = new XMLHttpRequest();
                 } catch (err) {
@@ -110,24 +110,22 @@ $data= $formulario->ConsultaFormulario();
                     }
                 };
                 xhr.send();
-            };*/
+            };
 
-            //var formtemp= "<?php echo $formtemp; ?>";
-            //alert(formtemp);
-            /*if(formtemp!="NULL")
+            var formtemp= "<?php echo $formtemp; ?>";
+            alert(formtemp);
+            if(formtemp!="NULL")
                 this.ajaxSent();
-            //For sending message*/
-            /*this.sendMsg = function() {
+            //For sending message
+            this.sendMsg = function() {
                 msg = document.getElementById("cedula").value;
                 this.ajaxSent();
                 return false;
-            };*/
-            $('#listaformulario').DataTable({"order": [[ 3, "desc" ]]});
-            $('#listaformulario').DataTable(); 
+            };
         } );  // fin document ready.
         
         function CargarEstiloTablas() {
-            $('#listaformulario').DataTable({"order": [[ 3, "desc" ]]});
+            //$('#listaformulario').DataTable({"order": [[ 3, "desc" ]]});
             $('#listaformulario').DataTable();    
         }
 
