@@ -5,6 +5,8 @@ $bitacora= new Bitacora();
 if (isset($_POST['cedula'])) { 
     $bitacora->idvisitante=$_POST['cedula'];    
     //
+    if(isset($_SESSION['bitacora']))
+        $bitacora->id=$_SESSION['bitacora'];
     if (isset($_POST['idformulario'])) { 
         $bitacora->idformulario=$_POST['idformulario'];        
     }
@@ -24,8 +26,9 @@ if (isset($_POST['cedula'])) {
 }
 
     
-/**********************************************  CLASS  *****************************************************************/
+/**********************************************  CLASS  **************************************************/
 class Bitacora{
+    public $id;
     public $idvisitante;
     public $idformulario;
     public $idtarjeta;
@@ -39,10 +42,22 @@ class Bitacora{
     
     function Entrada(){
         try {
-            $sql="UPDATE visitanteporformulario
-                set entrada= now(), idtarjeta= :idtarjeta
-                where idformulario= :idformulario and idvisitante= :idvisitante";
-            $param= array(':idvisitante'=>$this->idvisitante, ':idformulario'=>$this->idformulario, ':idtarjeta'=>$this->idtarjeta);
+            if($this->id=='NUEVO')
+            {
+                $sql = "INSERT INTO visitanteporformulario (idvisitante, idformulario, entrada, idtarjeta)
+                    VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
+                $param= array(':idvisitante'=>$this->idvisitante, 
+                    ':idformulario'=>$this->idformulario,
+                    ':idtarjeta'=>$this->idtarjeta);
+            }
+            else{
+                $sql="UPDATE visitanteporformulario
+                    set entrada= now(), idtarjeta= :idtarjeta
+                    where id= :id";
+                $param= array(':id'=>$this->id, 
+                    ':idtarjeta'=>$this->idtarjeta);
+            }            
+            //
             $data = DATA::Ejecutar($sql,$param, true);
             if($data){
                 // Cambia el estado de la tarjeta asignada = 1.
@@ -66,6 +81,8 @@ class Bitacora{
                 unset($_SESSION['cedula']);
             if(isset($_SESSION['link']))
                 unset($_SESSION['link']);
+            if(isset($_SESSION['bitacora']))
+                unset($_SESSION['bitacora']);
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
@@ -78,8 +95,8 @@ class Bitacora{
            	date_default_timezone_set('America/Costa_Rica');
 	        $sql="UPDATE visitanteporformulario 
                 SET salida= :salida
-                WHERE idvisitante= :idvisitante and idformulario= :idformulario";
-	        $param= array(':salida'=>date('Y-m-d H:i:s',time()), ':idvisitante'=>$this->idvisitante, 'idformulario'=>$this->idformulario);
+                WHERE id = :id";
+	        $param= array(':salida'=>date('Y-m-d H:i:s',time()), ':id'=>$this->id);
 	        $data = DATA::Ejecutar($sql,$param,true);
 	        if($data){
                 // Cambia el estado de la tarjeta = 0.                
@@ -102,6 +119,8 @@ class Bitacora{
                 unset($_SESSION['cedula']);
             if(isset($_SESSION['link']))
                 unset($_SESSION['link']);
+            if(isset($_SESSION['bitacora']))
+                unset($_SESSION['bitacora']);
         }     
         catch(Exception $e) {
             header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());

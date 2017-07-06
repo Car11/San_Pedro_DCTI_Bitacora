@@ -30,7 +30,8 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            location.href = "index.php?estado=NULL";                       
+            unset($_SESSION['estado']);
+            location.href = "index.php";                       
         }
     </script>
 </head>

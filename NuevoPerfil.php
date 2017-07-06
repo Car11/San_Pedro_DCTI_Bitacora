@@ -25,12 +25,13 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            location.href = "index.php?estado=NULL";            
+            unset($_SESSION['estado']);
+            location.href = "index.php";                       
         }
 
-        $(document).ready( function () {    
+        //$(document).ready( function () {    
             // pregunta es nuevo visitante.
-            $( "#dialog" ).dialog({
+            /*$( "#dialog" ).dialog({
                 dialogClass: "no-close",
                 buttons: [
                     {
@@ -40,8 +41,8 @@
                         }
                     }
                 ]
-            });
-        }
+            });*/
+        //}
     </script>
 </head>
 
