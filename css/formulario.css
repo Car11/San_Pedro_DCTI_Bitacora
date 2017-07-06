@@ -9,8 +9,19 @@
     height: 600px;
     float:left;
 }
+#superiorizq{
+    width: 100%;
+    height: 41%;
+    float: lef;
+}
+#medioizq{
+    width: 100%;
+    height: 80px;
+    float: lef;
+}
 
 #principal{
+    margin-top: 0px;
     width: 78%;
     height: 600px;
     float: left;
@@ -41,6 +52,7 @@
     width: 100%;
     height: 20%;
     float: left;
+    background: red;
 }
 /*DIVS CONTENEDORES DE INPUTS*/
 #caja{
@@ -73,6 +85,7 @@
     height: 50%;
     float: left;
 }
+
 
 .inputformat{
     margin-left: 0px;
@@ -126,7 +139,7 @@
     float: left;
 }
 .radioformat{
-    margin-left: 15px;
+    margin-left: 0px;
     margin-top: 5px;
 }
 #tablavisitante{
@@ -145,6 +158,21 @@
     text-align: center;
     margin-left: 50px;
 }
+#imgflecha{
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    transition-property: opacity, left, top, height;
+    transition-duration: 3s, 5s;
+}
+
+.imagenNO {
+  visibility: hidden;
+}
+.imagen {
+  visibility: visible;
+}
+
 #estadosform{
     margin-bottom: auto;
     margin-top: auto;
@@ -334,29 +362,10 @@
 	background-color: #f5f5f5;
 }
 
-#titulocedula{
-	width:15%;
-    border: 1px solid black;
-    height: 40px;	
-}
-#titulonombre{
-	width:40%;	
-    border: 1px solid black;
-    height: 40px;
-}
-#tituloempresa{
-	width:30%;	
-    border: 1px solid black;
-    height: 40px;
-}
-#tituloeliminar{
-	width:15%;	
-    border: 1px solid black;
-    height: 40px;
-}
+
 
 /*Botones*/
-.cbp-mc-form input.cbp-mc-submit {
+.cbp-mc-submit {
 	background: #10689a;
 	border: none;
 	color: #fff;
@@ -373,7 +382,7 @@
 
 }
 
-.cbp-mc-form input.cbp-mc-submit:hover {
+.cbp-mc-submit:hover {
 	background: #1478b1;
 }
 
@@ -388,31 +397,17 @@
     margin-top: 0;
 }
 
-#btnatras{
-
-    margin-top: 50px;
-    width: 100px;
-    height: 40px;
-    color: #fff;
-    cursor: pointer;
-    text-transform: uppercase;
-	display: inline-block;
-    background: #10689a;
-    margin-top: 0;
-    text-align: center;
-}
 #btnnuevo{
-
-    margin-top: 50px;
-    width: 100px;
-    height: 40px;
-    color: #fff;
-    cursor: pointer;
-    text-transform: uppercase;
-	display: inline-block;
-    background: #10689a;
-    margin-top: 0;
-    text-align: center;
+    margin-top: 0px;
+    width: 120px;   
+}
+#btnatras{
+    margin-top: 0px;
+    width: 120px;
+}
+#espacio{
+    width: 100%;
+    height: 50px;
 }
 
 /*Lista Formularios*/
@@ -423,8 +418,8 @@
     float: left;
     background: #1e5799;
 }
-#nuevoformulario{
-    margin-top: 10px;
+#superiornavegacion{
+    margin-top: 0px;
     width: 100%;
     height: 50px;
     float: left;
@@ -435,8 +430,72 @@
     float: left;
 }
 #atras{
+    width: 46.5%;
+    height: 100%;
+    float: left;
+    text-align: right;
+}
+#atraslista{
     width: 50%;
     height: 100%;
     float: left;
     text-align: right;
+}
+#extra{
+    width: 3.5%;
+    height: 100%;
+    float: left;
+}
+
+/*RESPONSABLES*/
+#formresposables{
+    width: 30%;
+    height: 400px;
+    float: left;
+}
+#tablaresponsable{
+    width: 70%;
+    height: 400px;
+    float: left;
+    background: white;
+}
+#cajainputrespsuperior{
+    width: 100%;
+    height: 65px;
+    float: left;
+}
+#cajainputresp{
+    width: 100%;
+    height: 22%;
+    float: left;
+}
+#titulocedula{
+	width:20%;
+    border: 1px solid black;
+    height: 40px;	
+}
+#titulonombre{
+	width:35%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#tituloempresa{
+	width:25%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#titulomodificar{
+	width:15%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#tituloeliminar{
+	width:15%;	
+    border: 1px solid black;
+    height: 40px;
+}
+#tituloid{
+    width:15%;	
+    border: 1px solid black;
+    height: 40px;    
 }

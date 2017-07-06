@@ -21,6 +21,7 @@ class Formulario
     public $nombreautorizador;
     public $idresponsable;
     public $nombreresponsable;
+    public $nombreestado;
     public $estado;
     public $rfc;
         
@@ -36,7 +37,7 @@ class Formulario
     function AgregarFormulario()
     {
         try {
-            $sql="INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,estado,rfc)
+            $sql="INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,idestado,rfc)
                 VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasalida,:placavehiculo,
                 :detalleequipo,:motivovisita,(SELECT id FROM responsable WHERE nombre= :nombreresponsable),
                 (SELECT id FROM usuario WHERE nombre= :nombreautorizador),(SELECT id FROM usuario WHERE nombre= :nombretramitante),:estado,:rfc)";
@@ -65,7 +66,7 @@ class Formulario
                 $result = DATA::Ejecutar($sql, $param);
             }
             
-            header('Location:../ListaFormulariox.php');
+            header('Location:../ListaFormulario.php');
             exit;
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
@@ -78,7 +79,7 @@ class Formulario
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
             idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
-            detalleequipo=:detalleequipo,motivovisita=:motivovisita,estado=:estado,idsala=(SELECT ID FROM SALA WHERE NOMBRE= :nombresala),rfc=:rfc WHERE id=:identificador";
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT ID FROM SALA WHERE NOMBRE= :nombresala),rfc=:rfc WHERE id=:identificador";
             $param= array(':fechaingreso'=>$this->fechaingreso,
                           ':fechasalida'=>$this->fechasalida,
                           ':nombretramitante'=>$this->nombretramitante,
@@ -117,7 +118,7 @@ class Formulario
                 }
             }
                         
-            header('Location:../ListaFormulariox.php');
+            header('Location:../ListaFormulario.php');
             exit;
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
@@ -129,7 +130,7 @@ class Formulario
     function ConsultaFormulario()
     {
         try {
-            $sql = "SELECT id,fechasolicitud,estado,motivovisita,fechaingreso,fechasalida,idtramitante,
+            $sql = "SELECT id,fechasolicitud,motivovisita,(SELECT nombre FROM estado WHERE id=idestado),fechaingreso,fechasalida,idtramitante,
             idautorizador,idresponsable,(SELECT nombre from sala WHERE id=idsala),placavehiculo,detalleequipo,rfc
             FROM formulario ORDER BY id DESC;";
             $result = DATA::Ejecutar($sql);
@@ -143,7 +144,7 @@ class Formulario
     function Cargar()
     {
         try {
-            $sql = "SELECT id,fechasolicitud,estado,motivovisita, 
+            $sql = "SELECT id,fechasolicitud,idestado,motivovisita, 
                 DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
                 DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,(
                 SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id
@@ -154,7 +155,7 @@ class Formulario
                 where f.id=:identificador) as nombreresponsable,(
                 SELECT sa.nombre FROM sala sa inner join formulario fo on sa.id=fo.idsala 
                 where fo.id=:identificador) as nombresala ,
-            placavehiculo,detalleequipo, rfc
+                placavehiculo,detalleequipo, rfc
             FROM formulario WHERE id = :identificador";
 
             $param= array(':identificador'=>$this->id);
@@ -162,7 +163,7 @@ class Formulario
             //
             if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
-                $this->estado= $data[0]['estado'];
+                $this->estado= $data[0]['idestado'];
                 $this->motivovisita= $data[0]['motivovisita'];
                 $this->fechaingreso= $data[0]['fechaingreso'];
                 $this->fechasalida= $data[0]['fechasalida'];
