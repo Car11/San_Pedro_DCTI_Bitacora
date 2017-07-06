@@ -30,7 +30,7 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            unset($_SESSION['estado']);
+            "<?php if(isset($_SESSION['estado'])) unset($_SESSION['estado']); ?>";
             location.href = "index.php";                       
         }
     </script>
@@ -52,7 +52,7 @@
             <h1>El visitante NO tiene un formulario aprobado,<br><i>por favor llenar los siguientes datos</i></h1>
             <h3>Cédula / Identificación</h3>
             <form name="datos" action="request/EnviaInfoVisita.php" method="POST">
-                <input readonly type="text" id="cedula" class="input-field" name="cedula" value="<?php print $id ?>" title="Número decédula separado con CEROS" onkeypress="return isNumber(event)" />
+                <input readonly type="text" id="cedula" class="input-field" name="cedula" value="<?php print $id ?>" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
                 <h3>Motivo de la Visita</h3>
                 <input type=text autofocus class="textarea-field" id="detalle" name="detalle" placeholder="Descripción  /  Razón  /  #RFC">
                 <div class="sala">

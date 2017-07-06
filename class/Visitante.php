@@ -11,7 +11,7 @@ class Visitante{
 	function __construct(){
         require_once("conexion.php");
     }
-    function ValidaID2(){
+    function ValidaID(){
         try{
             if($this::ValidaIdVisitante()){
                 $this::ValidaEstadoFormulario();
@@ -80,22 +80,17 @@ class Visitante{
                     }
                 }
                 else {
-                    // tiempo expirado, estado = 3.          
-                    $_SESSION['estado']='3';
+                    // no hay formulario para la fecha.
+                    // Si no hay permiso anual, tiempo expirado, estado = 3.          
+                    if(!$this::ValidarPermisoAnual())                        
+                        $_SESSION['estado']='3';
                     //return false;
                 }                
             }else {
                 // return false;
                 // NO tiene formulario.
-                // Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
-                $this::Cargar($this->cedula);
-                if ($this->permisoanual=="1") {  
-                    unset($_SESSION['estado']);
-                    $_SESSION['link']="true";                    
-                    header('Location: ../InfoVisita.php?id='. $this->cedula);
-                    exit;
-                }
-                else {
+                // Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.                
+                 if(!$this::ValidarPermisoAnual()) {
                     // Visitante sin formulario y no en lista anual.
                     $_SESSION['estado']='4';
                     //return false;
@@ -107,6 +102,23 @@ class Visitante{
             header('Location: ../Error.php?w=validarFormulario');
             exit;
         }                  
+    }
+
+    function ValidarPermisoAnual(){
+        try{
+            $this::Cargar($this->cedula);
+            if ($this->permisoanual=="1") {  
+                unset($_SESSION['estado']);
+                $_SESSION['link']="true";                    
+                header('Location: ../InfoVisita.php?id='. $this->cedula);
+                exit;
+            } else return false;
+        }
+        catch(Exception $e) {
+            unset($_SESSION['estado']);
+            header('Location: ../Error.php?w=ValidarIdPermisoAnual');
+            exit;
+        }
     }
 
     function ValidaIdVisitante(){
@@ -133,87 +145,7 @@ class Visitante{
             header('Location: ../Error.php?w=validarIDVisitante');
             exit;
         }
-    }
-
-    function ValidaID(){
-        try{
-            $_SESSION["cedula"]=$this->cedula;
-            $sql='SELECT * FROM visitante where cedula=:cedula';
-            $param= array(':cedula'=>$this->cedula);
-            $data = DATA::Ejecutar($sql,$param);
-            if (count($data)) { //la ID existe en bd
-                $this->nombre=$data[0]['NOMBRE']; // nombre del visitante.
-                // Valida si el visitante está saliendo.
-                $sql= "SELECT idformulario
-                    FROM visitanteporformulario 
-                    where idvisitante= :idvisitante and salida is null and entrada is not null";
-                $param= array(':idvisitante'=>$this->cedula);
-                $data = DATA::Ejecutar($sql,$param);                
-                if (count($data)) {                                        
-                    // existe un visitante ingresado en bitacora. se debe hacer la SALIDA.
-                    $idformulario = $data[0]['idformulario'];
-                    $_SESSION['estado']='fin';
-                    $_SESSION['idformulario']=$idformulario;
-                    header('Location: ../index.php');
-                    exit;
-                } 
-                //si el visitante no ha ingresado, Valida formulario. ENTRADA.
-                $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida, f.idsala , f.estado, f.motivovisita, f.detalleequipo, f.placavehiculo, f.idautorizador 
-                    FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
-                    where vf.idvisitante= :idvisitante and entrada is null
-                      order by f.id desc limit 1 ";
-                $param= array(':idvisitante'=>$this->cedula);
-                $data = DATA::Ejecutar($sql,$param);
-                if (count($data)) {                    
-                    $idformulario = $data[0]['ID'];
-                    $estado = $data[0]['estado'];                    
-                    $_SESSION['idformulario']=$idformulario;
-                    //  valida si el estado del formulario.
-                    $_SESSION['estado']=$estado;
-                    if($estado=="1"){
-                        // formulario aceptado = 1.
-                        // valida fecha y hora de ingreso.                        
-                        $fechaingreso= $data[0]['fechaingreso'];
-                        $fechasalida= $data[0]['fechasalida'];
-                        $idsala = $data[0]['idsala'];
-                        // flexibilidad de hora de entrada, 1h antes.
-                        $fechaanticipada  = new DateTime($fechaingreso);
-                        date_sub($fechaanticipada ,  date_interval_create_from_date_string('1 hour') );
-                        //  Tiempo expirado. = 3
-                        if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) >  time() || time() > strtotime($fechasalida))
-                            $_SESSION['estado']='3';
-                    }     
-                    //             
-                    header('Location: ../index.php');
-                    exit;                            
-                } else {
-                    // el visitante existe pero no tiene formulario.
-                    // Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
-                    $this::Cargar($this->cedula);
-                    if ($this->permisoanual=="1") {  
-                        $_SESSION['link']="true";                    
-                        header('Location: ../InfoVisita.php?id='. $this->cedula);
-                        exit;
-                    }
-                    else {
-                        // Visitante sin formulario y no en lista anual.
-                        $_SESSION['estado']='4';
-                        header('Location: ../index.php');
-                        exit;   
-                    }
-                }
-            }
-            else { //la ID no existe en bd, muestra nuevo perfil
-                $_SESSION['link']="true";
-                header('Location: ../nuevoperfil.php?id='.$this->cedula);
-                exit;
-            }
-        }
-        catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id');
-            exit;
-        }
-    }
+    }    
     
     function Agregar(){
         try {

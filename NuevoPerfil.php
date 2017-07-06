@@ -25,24 +25,9 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
-            unset($_SESSION['estado']);
-            location.href = "index.php";                       
+            "<?php if(isset($_SESSION['estado'])) unset($_SESSION['estado']); ?>";            
+            location.href = "index.php";             
         }
-
-        //$(document).ready( function () {    
-            // pregunta es nuevo visitante.
-            /*$( "#dialog" ).dialog({
-                dialogClass: "no-close",
-                buttons: [
-                    {
-                    text: "OK",
-                    click: function() {
-                        $( this ).dialog( "close" );
-                        }
-                    }
-                ]
-            });*/
-        //}
     </script>
 </head>
 
@@ -58,8 +43,34 @@
     <aside>
     </aside>
     <section>
-        
-         <div id="form">
+        <!-- Modal -->
+        <div class="modal" id="modal-perfil">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" id="closemodal">&times;</span>
+                    <h2>Nuevo Perfil</h2>                
+                </div>        
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h2>La cédula <b>"<?php print $id ?>"</b> NO ha sido ingresada al sistema.</h2>
+                    <br><br>
+                    <h2>Nuevo: Agregar un nuevo visitante</h2>
+                    <h2>Buscar: Buscar por Nombre al visitante</h2>
+                    <form name="perfil-modal" id="perfil-modal" >                    
+                        <nav class="btnfrm">
+                            <ul>
+                                <li><button type="button" value="" id="" >Nuevo</button></li>
+                                <li><button type="button" value="" id="" >Buscar</button></li>
+                            </ul>
+                        </nav>
+                        
+                    </form> 
+                </div>
+            </div>
+        </div>                    
+
+        <div id="form">
             <h1>Nuevo Visitante</h1>
             <form name="perfil" method="POST" action="request/EnviaNuevoPerfil.php">
                 <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
@@ -81,3 +92,9 @@
 </body>
 
 </html>
+<script>
+// pregunta es nuevo visitante.
+//modal = document.getElementById('modal-perfil'); 
+//modal.style.display = "block";
+//$("#btncontinuar").toggle("fadeIn");
+</script>

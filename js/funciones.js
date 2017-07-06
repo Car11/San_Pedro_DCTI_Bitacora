@@ -251,7 +251,7 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
             htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
         }
     }else if(estado=="3"){
-        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado, Tiempo de visita excedido.";
+        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado, NO hay formulario para este día.";
         htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
     }
     else if(estado=="4"){
