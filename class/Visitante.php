@@ -11,7 +11,100 @@ class Visitante{
 	function __construct(){
         require_once("conexion.php");
     }
-    
+    function ValidaID2(){
+        try{
+            if($this::ValidaIdVisitante()){
+                $this::ValidaEstadoFormulario();
+                // muestra resultado del estado del formulario (session) en index.
+                header('Location: ../index.php');
+                exit;  
+            } 
+        }
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=validarID');
+            exit;
+        }
+
+    }
+
+    function ValidaEstadoFormulario(){
+        try{
+            include_once('Formulario.php');
+            $formulario= new Formulario();
+            if($formulario->ConsultaVisitantePorFormulario($this->cedula))
+            {
+                // Valida fechas correctas.
+                // flexibilidad de hora de entrada, 1h antes.
+                $_SESSION['idformulario']= $formulario->id;
+                $_SESSION['estado'] = $formulario->estado;
+                $fechaanticipada  = new DateTime($formulario->fechaingreso);
+                date_sub($fechaanticipada ,  date_interval_create_from_date_string('1 hour') );
+                if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
+                {
+                    // return true;           
+                    // busca si es una salida.
+                    $sql= "SELECT f.estado
+                        FROM visitanteporformulario vf inner join formulario f on f.id=vf.idformulario
+                        where vf.idvisitante=:idvisitante and f.id=:idformulario and salida is null and entrada is not null";
+                    $param= array(':idvisitante'=>$this->cedula, ':idformulario'=>$formulario->id);
+                    $data = DATA::Ejecutar($sql,$param);      
+                    if (count($data)) { 
+                        // Es salida.                                   
+                        $_SESSION['estado']='fin';
+                    }
+                }
+                else {
+                    // tiempo expirado, estado = 3.          
+                    $_SESSION['estado']='3';
+                    //return false;
+                }                
+            }else {
+                // return false;
+                // NO tiene formulario.
+                // Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
+                $this::Cargar($this->cedula);
+                if ($this->permisoanual=="1") {  
+                    $_SESSION['link']="true";                    
+                    header('Location: ../InfoVisita.php?id='. $this->cedula);
+                    exit;
+                }
+                else {
+                    // Visitante sin formulario y no en lista anual.
+                    $_SESSION['estado']='4';
+                    //return false;
+                }
+            }
+        }
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=validarFormulario');
+            exit;
+        }                  
+    }
+
+    function ValidaIdVisitante(){
+        try{
+            // Inicia la sesion para la cedula ingresada.
+            $_SESSION["cedula"]=$this->cedula;
+            $sql='SELECT * FROM visitante where cedula=:cedula';
+            $param= array(':cedula'=>$this->cedula);
+            $data = DATA::Ejecutar($sql,$param);
+            if (count($data)) {
+                 return true;
+            }
+            else {
+                // return false;
+                // No existe el visitante en base de datos, muestra nuevo perfil.
+                $_SESSION['link']="true";
+                header('Location: ../nuevoperfil.php?id='.$this->cedula);
+                exit;
+            }
+        }
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=validarIDVisitante');
+            exit;
+        }
+    }
+
     function ValidaID(){
         try{
             $_SESSION["cedula"]=$this->cedula;
@@ -34,7 +127,7 @@ class Visitante{
                     header('Location: ../index.php');
                     exit;
                 } 
-                //si el visitnate no ha ingresado, Valida formulario. ENTRADA.
+                //si el visitante no ha ingresado, Valida formulario. ENTRADA.
                 $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida, f.idsala , f.estado, f.motivovisita, f.detalleequipo, f.placavehiculo, f.idautorizador 
                     FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
                     where vf.idvisitante= :idvisitante and entrada is null

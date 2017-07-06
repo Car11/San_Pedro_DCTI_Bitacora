@@ -9,8 +9,5 @@
         header('Location: ../Error.php');
         exit;
     }
-    $visitante->ValidaID();
-    //
-    //$array = $visitante->formulario;
-    //print $array;exit;
+    $visitante->ValidaID2();
 ?>
