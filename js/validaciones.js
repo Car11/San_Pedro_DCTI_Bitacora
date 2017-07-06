@@ -6,7 +6,6 @@ function inicio() {
     $("#EnviaNuevoPerfil").click(onValidaNuevoPerfil);
     $("#EnviaInfoVisita").click(onValidaInfoVisita);
     $("#EnviaFormulario").click(onValidaFormulario);
-   
 }
 
 function isNumber(evt) {
@@ -29,18 +28,19 @@ function onValidaFormulario() {
     var fechaingreso = document.getElementsByName("fechaingreso").value;
     var fechasalida = document.getElementsByName("fechasalida").value;
 
-    if(fechaingreso == "")
-    {
-        alert("Debe de insertar una fecha de ingreso!");
-        return false;
-    }
-    
     if (responsable == ""){
         alert("Debe de asignar un responsable!");
         return false;
     }
     if (sala == ""){
         alert("Debe de seleccionar una SALA!");
+        return false;
+    }
+
+    /*
+    if(fechaingreso == "")
+    {
+        alert("Debe de insertar una fecha de ingreso!");
         return false;
     }
     if (motivo == ""){
@@ -66,7 +66,7 @@ function onValidaFormulario() {
     if(rfc.length>200){
         alert("El RFC no puede exceder de 10 caracteres!");    
         return false;
-    }
+    }*/
 
 
 }
