@@ -8,20 +8,16 @@ if (!$sesion->estado){
     header('Location: login.php');
     exit;
 }
-//POST
+// POST
 $estado="NULL";
-if (isset($_GET['estado'])) 
-{
-    if($_GET['estado']=="NULL")
-    {
-        unset($_SESSION['estado']);
-        unset($_SESSION['idformulario']);
-        unset($_SESSION['cedula']);
-        unset($_SESSION['link']);
-    }
-}
 if (isset($_SESSION['estado'])) 
     $estado=$_SESSION['estado'];
+else {
+    unset($_SESSION['idformulario']);
+    unset($_SESSION['cedula']);
+    unset($_SESSION['link']);
+    unset($_SESSION['bitacora']);
+}
 // Busca información del formulario para desplegar en pantalla.
 $formulario="NULL";
 $tarjeta="NULL";

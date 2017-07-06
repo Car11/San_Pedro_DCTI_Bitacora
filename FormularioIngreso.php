@@ -22,14 +22,14 @@ $estadoformulario=0;
 $id=0;
 if (isset($_GET['ID'])) {    
     $id=$_GET['ID'];
-    // es formulario temporal
-    $_SESSION['TEMP']=$id;
     $formulario->id=$id;
     //Carga la sala según el link
     $formdata= $formulario->Cargar();
     //Si hay un link carga el estado en el radio
     $estadoformulario= $formdata[0][2];
     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
+    // es formulario temporal
+    $_SESSION['TEMP'] = $id;
     //$visitanteformulario = json_encode($visitanteformulario);
     $largo=count($visitanteformulario);
 }

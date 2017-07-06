@@ -21,6 +21,7 @@ class Visitante{
             } 
         }
         catch(Exception $e) {
+            unset($_SESSION['estado']);
             header('Location: ../Error.php?w=validarID');
             exit;
         }
@@ -37,20 +38,45 @@ class Visitante{
                 // flexibilidad de hora de entrada, 1h antes.
                 $_SESSION['idformulario']= $formulario->id;
                 $_SESSION['estado'] = $formulario->estado;
+                //
                 $fechaanticipada  = new DateTime($formulario->fechaingreso);
                 date_sub($fechaanticipada ,  date_interval_create_from_date_string('1 hour') );
                 if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
                 {
                     // return true;           
-                    // busca si es una salida.
-                    $sql= "SELECT f.estado
+                    // busca si es una salida o entrada.
+                    $sql= "SELECT vf.id, vf.entrada , vf.salida 
                         FROM visitanteporformulario vf inner join formulario f on f.id=vf.idformulario
-                        where vf.idvisitante=:idvisitante and f.id=:idformulario and salida is null and entrada is not null";
+                        where vf.idvisitante=:idvisitante and f.id=:idformulario
+                        order by vf.id desc limit 1 ";
                     $param= array(':idvisitante'=>$this->cedula, ':idformulario'=>$formulario->id);
                     $data = DATA::Ejecutar($sql,$param);      
-                    if (count($data)) { 
-                        // Es salida.                                   
-                        $_SESSION['estado']='fin';
+                    if (count($data)) {                                 
+                        $entrada= $data[0]['entrada'];
+                        $salida= $data[0]['salida'];
+                        if($entrada===NULL  and $salida===NULL)
+                        {
+                            // es primer entrada. 
+                            $_SESSION['bitacora']=$data[0]['id'];
+                            
+                        }
+                        else if($entrada!=NULL and $salida==NULL)
+                        {
+                            // es primer salida.
+                            $_SESSION['estado']='fin';
+                            $_SESSION['bitacora']=$data[0]['id'];
+                        }
+                        else 
+                        {
+                            // nueva entrada.
+                            $_SESSION['bitacora'] = "NUEVO";
+                        }
+                    }
+                    else {
+                        // error.
+                        unset($_SESSION['estado']);
+                        header('Location: ../Error.php?w=validarVisitanteFormulario');
+                        exit;
                     }
                 }
                 else {
@@ -64,6 +90,7 @@ class Visitante{
                 // Muestra pagina de ingreso de informacion de visita si es un visitante en la lista anual, sino, muestra denegado.
                 $this::Cargar($this->cedula);
                 if ($this->permisoanual=="1") {  
+                    unset($_SESSION['estado']);
                     $_SESSION['link']="true";                    
                     header('Location: ../InfoVisita.php?id='. $this->cedula);
                     exit;
@@ -76,6 +103,7 @@ class Visitante{
             }
         }
         catch(Exception $e) {
+            unset($_SESSION['estado']);
             header('Location: ../Error.php?w=validarFormulario');
             exit;
         }                  
@@ -94,12 +122,14 @@ class Visitante{
             else {
                 // return false;
                 // No existe el visitante en base de datos, muestra nuevo perfil.
+                unset($_SESSION['estado']);
                 $_SESSION['link']="true";
                 header('Location: ../nuevoperfil.php?id='.$this->cedula);
                 exit;
             }
         }
         catch(Exception $e) {
+            unset($_SESSION['estado']);
             header('Location: ../Error.php?w=validarIDVisitante');
             exit;
         }
