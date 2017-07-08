@@ -137,7 +137,7 @@ function inicio() {
 this.CapturaMensajeFormulario = function () {
     //pushed server data
     if (typeof (EventSource) !== "undefined") {
-        var source = new EventSource("Pruebas/envianotificaciondinamica.php");
+        var source = new EventSource("notificaciondinamica.php");
         source.onmessage = function (event) {
             onMuestraFormulario(event.data);
         };
