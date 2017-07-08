@@ -11,8 +11,18 @@ if (!$sesion->estado){
 }
 // POST
 $estado="NULL";
-if (isset($_SESSION['estado'])) 
+if (isset($_SESSION['estado'])) {
     $estado=$_SESSION['estado'];
+    // Informacion de la salida de tarjeta cuando no esta en uso.
+    if($_SESSION['estado']=='TARJETANULL')
+    {
+        unset($_SESSION['estado']);        
+        unset($_SESSION['idformulario']);
+        unset($_SESSION['cedula']);
+        unset($_SESSION['link']);
+        unset($_SESSION['bitacora']);
+    }
+}
 else {
     unset($_SESSION['idformulario']);
     unset($_SESSION['cedula']);
@@ -53,11 +63,16 @@ if (isset($_SESSION['idformulario'])) {
 <head>
     <meta charset="UTF-8">
     <title>Control de Accesos</title>
-    <link href="css/estilo.css" rel="stylesheet" />
+    
     <script src="js/jquery.js" type="text/jscript"></script>
+    <script src="js/jquery-ui.js" type="text/jscript"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     
+    <link href="css/estilo.css" rel="stylesheet" />
+
 </head>
 
 <script>
@@ -71,7 +86,7 @@ if (isset($_SESSION['idformulario'])) {
     };  
 </script>
 
-<body>
+<body oncopy="return false" oncut="return false" onpaste="return false">
     <header>
         <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
         <div id="logo"><img src="img/logoice.png" height="75" onclick="onShowLogin()" > </div>  
@@ -91,14 +106,22 @@ if (isset($_SESSION['idformulario'])) {
         <span id="textomensaje"></span>
     </div>
     
-    <aside></aside>
+    <aside>
+        
+    </aside>
 
     <section>
+        <div class="dialog-message" title="Tarjeta">
+            <p id="texto-mensaje">
+                Está realizando una salida de tarjeta?
+            </p>
+        </div>
+
         <div id="form">
             <h2>Cédula / Identificación</h2>
             <form name="datos" id="datos" action="request/EnviaVisitante.php" method="POST">
                 <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
-                <input type="submit" value="Consultar" id="enviar" />
+                <input type="submit" class="btn" value="Consultar" id="enviar" />
             </form>
         </div>
     </section>
@@ -149,8 +172,8 @@ if (isset($_SESSION['idformulario'])) {
                     </div>
                     <nav class="btnfrm">
                         <ul>
-                            <li><button type="button" value="entrada" id="btncontinuar" >Entrada</button></li>
-                            <li><button type="button" value="salida" id="btnsalida" >Salida</button></li>
+                            <li><button type="button" class="btn" value="entrada" id="btncontinuar" >Entrada</button></li>
+                            <li><button type="button" class="btn" value="salida" id="btnsalida" >Salida</button></li>
                             <!--<li><button type="button"  onclick="onCancelar()" id="btnvolver" >Volver</button> </li>-->
                         </ul>
                     </nav>
@@ -162,7 +185,8 @@ if (isset($_SESSION['idformulario'])) {
             </div>
         </div>
     </div>                    
-                    
+
+
 </body>
 
 </html>
@@ -172,5 +196,9 @@ if (isset($_SESSION['idformulario'])) {
     // Captura estados del formulario. estado del formulario. Id del formulario
     MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->id; else print "NULL" ?>');  
     
-
+    
+    
+    
+    
+  
 </script>

@@ -47,8 +47,7 @@ function inicio() {
          modal.style.display = "none";
          $("#cedula").focus();
     };
-
-    
+            
     this.MensajeTop= function(msg){
         $("#textomensaje").text(msg);
         $("#mensajetop").css("background-color", "60E800");
@@ -146,13 +145,35 @@ this.CapturaMensajeFormulario = function () {
     }
 };
 
+this.MuestraMensajeTarjetaSinUso= function(){
+    $( ".dialog-message" ).dialog({
+        modal: true,
+        closeOnEscape: false,
+        open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+        buttons: {
+            Salir: function() {                
+                $( this ).dialog( "close" );                
+                $("#cedula").focus();
+                return false;
+            }
+        }
+    });
+};
+
 this.MensajeriaHtml = function(mensaje, id){
     formularioConsultado = id;    
     if(mensaje!="NULL"){
-        if(mensaje=="fin")
+        if(mensaje=="TARJETANULL"){
+            //alert("La tarjeta NO está en uso.");       
+            $('#texto-mensaje').text("La tarjeta NO está en uso.");
+            MuestraMensajeTarjetaSinUso();
+            return false;
+        }
+        else if(mensaje=="fin")
             onMuestraPerfilSalida();
         else onMuestraEstadoFormulario(mensaje);
-    }
+        
+    }  
 };
 
 function startTime() {

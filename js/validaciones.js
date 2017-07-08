@@ -8,6 +8,26 @@ function inicio() {
     $("#EnviaFormulario").click(onValidaFormulario);
 }
 
+this.MuestraMensajeTarjeta= function(){
+    $('#texto-mensaje').text("Está realizando una salida de tarjeta?");
+    $( ".dialog-message" ).dialog({
+        modal: true,
+        closeOnEscape: false,
+        open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+        buttons: {
+            Yes: function() {
+                $( this ).dialog( "close" );
+                document.getElementById("datos").submit();
+                return true;
+            },
+            No: function() {
+                $( this ).dialog( "close" );
+                return false;
+            }
+        }
+    });
+};
+
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -37,38 +57,6 @@ function onValidaFormulario() {
         return false;
     }
 
-    /*
-    if(fechaingreso == "")
-    {
-        alert("Debe de insertar una fecha de ingreso!");
-        return false;
-    }
-    if (motivo == ""){
-        alert("El motivo no puede estar vacío");
-        return false;
-    }
-    if (motivo.length<8){
-        alert("El motivo debe contener mínimo 8 caracteres");
-        return false;
-    }
-    if(motivo.length>1000){
-        alert("El motivo no puede exceder de 1000 caracteres!");    
-        return false;
-    }
-    if(placa.length>200){
-        alert("La placa no puede exceder de 200 caracteres!");    
-        return false;
-    }
-    if(equipo.length>200){
-        alert("El detalle de los equipos no puede exceder de 200 caracteres!");    
-        return false;
-    }
-    if(rfc.length>200){
-        alert("El RFC no puede exceder de 10 caracteres!");    
-        return false;
-    }*/
-
-
 }
 
 
@@ -81,7 +69,12 @@ function onValidaInicio() {
         });
         $("#cedula").focus();
         return false;
-    } else if (cedula.length < 9) {
+    } if (cedula.length<=2) {
+        // es una tarjeta
+        MuestraMensajeTarjeta();
+        return false;
+    }
+    else if (cedula.length < 9) {
         $("#mensajetop").css("background-color", "firebrick");
         $("#textomensaje").text("Formato de cedula: mínimo 9 digitos sin guiones ni espacios");
         $("#mensajetop").css("visibility", "visible");

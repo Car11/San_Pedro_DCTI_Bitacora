@@ -13,12 +13,18 @@ class Visitante{
     }
     function ValidaID(){
         try{
-            if($this::ValidaIdVisitante()){
-                $this::ValidaEstadoFormulario();
-                // muestra resultado del estado del formulario (session) en index.
-                header('Location: ../index.php');
-                exit;  
-            } 
+            if(strlen($this->cedula)<=2)
+            {
+                $this::ValidaIDTarjeta();
+            }
+            else { // es una cedula.
+                if($this::ValidaIdVisitante()){
+                    $this::ValidaEstadoFormulario();
+                    // muestra resultado del estado del formulario (session) en index.
+                    header('Location: ../index.php');
+                    exit;  
+                } 
+            }            
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
@@ -26,6 +32,48 @@ class Visitante{
             exit;
         }
 
+    }
+
+    function ValidaIDTarjeta(){
+        try{
+            // es una tarjeta. Aplica solo para salidas.
+            // Busca la tarjeta en estado 1 y su visitante asignado (visitanteporformulario)
+            // Si no hay, muestra mensaje que la tarjeta no está en uso.
+            $sql= "SELECT vf.id as idvisitanteformulario , idformulario, idvisitante, entrada, salida, idtarjeta
+                FROM TARJETA t inner join visitanteporformulario vf on vf.idtarjeta= t.id
+                WHERE t.ID=:idtarjeta AND ESTADO=1 
+                order by vf.id desc limit 1";
+            $param= array(':idtarjeta'=>$this->cedula); // cedula en este caso es el idtarjeta.
+            $data = DATA::Ejecutar($sql,$param);      
+            if (count($data)) {      
+                // Valida que es una salida.
+                $entrada= $data[0]['entrada'];
+                $salida= $data[0]['salida'];      
+                if($entrada!=NULL and $salida==NULL)
+                {
+                    $_SESSION['estado']='fin';
+                    $_SESSION['bitacora']=$data[0]['idvisitanteformulario'];
+                    $_SESSION['idformulario']=$data[0]['idformulario'];
+                    $_SESSION["cedula"]=$data[0]['idvisitante'];
+                }   
+                else {
+                    // la tarjeta no esta en uso.
+                    $_SESSION['estado']= "TARJETANULL";
+                    //print "la tarjeta no esta en uso.";exit;                        
+                }      
+            }
+            else {
+                // la tarjeta no esta en uso.
+                $_SESSION['estado']= "TARJETANULL";
+                //print "la tarjeta no esta en uso.";exit;                
+            }
+            header('Location: ../index.php');
+            exit;      
+        }
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=validarIDTarjeta');
+            exit;
+        }     
     }
 
     function ValidaEstadoFormulario(){
@@ -57,19 +105,19 @@ class Visitante{
                         if($entrada===NULL  and $salida===NULL)
                         {
                             // es primer entrada. 
-                            $_SESSION['bitacora']=$data[0]['id'];
+                            $_SESSION['bitacora']=$data[0]['id']; // id de visitanteporformulario 
                             
                         }
                         else if($entrada!=NULL and $salida==NULL)
                         {
-                            // es primer salida.
+                            // es salida.
                             $_SESSION['estado']='fin';
-                            $_SESSION['bitacora']=$data[0]['id'];
+                            $_SESSION['bitacora']=$data[0]['id']; // id de visitanteporformulario 
                         }
                         else 
                         {
                             // nueva entrada.
-                            $_SESSION['bitacora'] = "NUEVO";
+                            $_SESSION['bitacora'] = "NUEVO"; // Nuevo id de visitanteporformulario 
                         }
                     }
                     else {

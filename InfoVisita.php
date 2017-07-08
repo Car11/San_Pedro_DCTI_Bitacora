@@ -67,8 +67,8 @@
                 </div>
                 <nav class="btnfrm">
                     <ul>
-                        <li><input type="submit" value="Continuar" id="EnviaInfoVisita" class="botonesform" /></li>
-                        <li><button type="button" onclick="onVuelve()">Cancelar</button></li>
+                        <li><input type="submit" class="btn" value="Continuar" id="EnviaInfoVisita" class="botonesform" /></li>
+                        <li><button type="button" class="btn" onclick="onVuelve()">Cancelar</button></li>
                     </ul>
                 </nav>
             </form>
