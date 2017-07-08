@@ -12,6 +12,7 @@
             $sesion->Inicio($usuario->usuario, $usuario->idrol);
             if(isset($_SESSION['url'])){
                 header('Location: ../'. $_SESSION['url']); 
+                unset($_SESSION['url']);
                 exit;
             }
             else {

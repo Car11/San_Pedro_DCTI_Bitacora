@@ -6,6 +6,7 @@ if (!isset($_SESSION))
 include("class/sesion.php");
 $sesion = new sesion();
 if (!$sesion->estado){
+	$_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
     header('Location: login.php');
     exit;
 }
