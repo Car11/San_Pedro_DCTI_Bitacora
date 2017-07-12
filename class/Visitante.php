@@ -182,6 +182,7 @@ class Visitante{
             else {
                 // return false;
                 // No existe el visitante en base de datos, muestra nuevo perfil.
+                unset($_SESSION['cedula']);
                 unset($_SESSION['estado']);
                 $_SESSION['link']="true";
                 header('Location: ../nuevoperfil.php?id='.$this->cedula);

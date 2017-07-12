@@ -8,8 +8,7 @@ function inicio() {
     $("#EnviaFormulario").click(onValidaFormulario);
 }
 
-this.MuestraMensajeTarjeta= function(){
-    $('#texto-mensaje').text("Está realizando una salida de tarjeta?");
+this.MuestraMensajeTarjeta= function(){    
     $( ".dialog-message" ).dialog({
         modal: true,
         closeOnEscape: false,
@@ -70,7 +69,8 @@ function onValidaInicio() {
         $("#cedula").focus();
         return false;
     } if (cedula.length<=2) {
-        // es una tarjeta
+        // es una tarjeta.
+        $('#texto-mensaje').text("Está realizando una salida de tarjeta?");
         MuestraMensajeTarjeta();
         return false;
     }

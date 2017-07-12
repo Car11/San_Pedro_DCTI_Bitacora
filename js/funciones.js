@@ -4,12 +4,17 @@ var formularioID= []; // formularios temporales aprobado/Denegado en tiempo real
 var modal;
 
 function inicio() {    
+    // tabla de busqueda
+    $('#tblvisitante-buscar').DataTable();
     // Cierra el MODAL en cualquier parte de la ventana
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
             $("#cedula").focus();
         }
+        if (event.target == modalVisitante) {
+            modalVisitante.style.display = "none";
+        }        
     };
     
     startTime();
@@ -17,6 +22,7 @@ function inicio() {
     $('.sala').styleddropdown();
     //modal index
     modal = document.getElementById('modal-index'); 
+    modalVisitante  = document.getElementById('Modal-Visitante');         
     //
     $(".mensajeriaInfo").click( function(){
         // Cierra div
@@ -163,7 +169,9 @@ this.MuestraMensajeTarjetaSinUso= function(){
 this.MensajeriaHtml = function(mensaje, id){
     formularioConsultado = id;    
     if(mensaje!="NULL"){
-        if(mensaje=="TARJETANULL"){
+        if(mensaje=="BUSCAR"){                        
+            modalVisitante.style.display = "block";
+        } else if(mensaje=="TARJETANULL"){
             //alert("La tarjeta NO está en uso.");       
             $('#texto-mensaje').text("La tarjeta NO está en uso.");
             MuestraMensajeTarjetaSinUso();

@@ -1,5 +1,5 @@
 <?php 
-    include("../class/Visitante.php");
+    require_once("../class/Visitante.php");
     $visitante= new Visitante();
     //
     if (isset($_POST['cedula'])) { 

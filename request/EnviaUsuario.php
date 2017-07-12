@@ -1,6 +1,6 @@
 <?php 
-    include("../class/usuario.php");
-    include("../class/sesion.php");
+    require_once("../class/usuario.php");
+    require_once("../class/sesion.php");
     $usuario= new usuario();
     $sesion = new sesion();
     //

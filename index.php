@@ -13,21 +13,21 @@ if (!$sesion->estado){
 $estado="NULL";
 if (isset($_SESSION['estado'])) {
     $estado=$_SESSION['estado'];
-    // Informacion de la salida de tarjeta cuando no esta en uso.
-    if($_SESSION['estado']=='TARJETANULL')
-    {
-        unset($_SESSION['estado']);        
-        unset($_SESSION['idformulario']);
-        unset($_SESSION['cedula']);
-        unset($_SESSION['link']);
-        unset($_SESSION['bitacora']);
-    }
+    // elimina el estado para posteriores re-envios de la pagina (F5).
+    unset($_SESSION['estado']);       
 }
 else {
     unset($_SESSION['idformulario']);
     unset($_SESSION['cedula']);
     unset($_SESSION['link']);
     unset($_SESSION['bitacora']);
+}
+// Inicia Busqueda de visitante por nombre Completo.
+$visitantes=[]; // arreglo de visitantes.
+if ($estado=="BUSCAR"){
+    require_once("class/Visitante.php");
+    $visitante= new Visitante();
+    $visitantes= $visitante->FormularioIngresoConsultaVisitante();
 }
 // Busca información del formulario para desplegar en pantalla.
 $formulario="NULL";
@@ -51,7 +51,7 @@ if (isset($_SESSION['idformulario'])) {
         $tarjeta->CargaTarjetaAsignada($_SESSION['cedula'] , $formulario->id);
     }
     // Carga Info VISITANTE
-    include("class/Visitante.php");
+    require_once("class/Visitante.php");
     $visitante= new Visitante();
     $visitante->Cargar($_SESSION['cedula']);
 }
@@ -66,12 +66,17 @@ if (isset($_SESSION['idformulario'])) {
     
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/jquery-ui.js" type="text/jscript"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="js/jquery.dynatable.js" type="text/jscript"></script>
+    <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+    
 
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     
     <link href="css/estilo.css" rel="stylesheet" />
+    <link href="css/dynatable.css" rel="stylesheet" />
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/datatables.css">
 
 </head>
 
@@ -184,7 +189,46 @@ if (isset($_SESSION['idformulario'])) {
             <div class="modal-footer">
             </div>
         </div>
-    </div>                    
+    </div>      
+    <!-- FIN MODAL ENTRADA/SALIDA -->
+
+     <!-- MODAL VISITANTE -->
+    <div id="Modal-Visitante" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" id="closemodal">&times;</span>
+                <h2>Búsqueda de Visitantes</h2>
+            </div>
+            <div class="modal-body">
+                <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
+                <?php 
+                print "<table id='tblvisitante-buscar'class='display'>";
+                print "<thead>";
+                print "<tr>";
+                print "<th>Cedula</th>";
+                print "<th>Nombre</th>";
+                print "<th>Empresa</th>";
+                print "</tr>";
+                print "</thead>";	
+                print "<tbody>";
+                for($i=0; $i<count($visitantes); $i++){
+                        print "<tr>";
+                        print "<td>".$visitantes[$i][0]."</td>";
+                        print "<td>".$visitantes[$i][1]."</td>";
+                        print "<td>".$visitantes[$i][2]."</td>";
+                        print "</tr>";
+                }
+                print "</tbody>";
+                print "</table>";
+                ?> 
+            </div>
+            <div class="modal-footer">
+            <br>
+            </div>
+        </div>
+    </div>
+    <!--FINAL MODAL VISITANTE-->
 
 
 </body>
@@ -196,9 +240,4 @@ if (isset($_SESSION['idformulario'])) {
     // Captura estados del formulario. estado del formulario. Id del formulario
     MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->id; else print "NULL" ?>');  
     
-    
-    
-    
-    
-  
 </script>

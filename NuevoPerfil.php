@@ -23,9 +23,10 @@
     <script src="js/jquery.js"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/jscript"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script>
         function onVuelve() {
-            "<?php if(isset($_SESSION['estado'])) unset($_SESSION['estado']); ?>";            
             location.href = "index.php";             
         }
     </script>
@@ -42,33 +43,12 @@
     </div>
     <aside>
     </aside>
-    <section>
-        <!-- Modal -->
-        <div class="modal" id="modal-perfil">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close" id="closemodal">&times;</span>
-                    <h2>Nuevo Perfil</h2>                
-                </div>        
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <h2>La cédula <b>"<?php print $id ?>"</b> NO ha sido ingresada al sistema.</h2>
-                    <br><br>
-                    <h2>Nuevo: Agregar un nuevo visitante</h2>
-                    <h2>Buscar: Buscar por Nombre al visitante</h2>
-                    <form name="perfil-modal" id="perfil-modal" >                    
-                        <nav class="btnfrm">
-                            <ul>
-                                <li><button type="button" class="btn" value="" id="" >Nuevo</button></li>
-                                <li><button type="button" class="btn" value="" id="" >Buscar</button></li>
-                            </ul>
-                        </nav>
-                        
-                    </form> 
-                </div>
-            </div>
-        </div>                    
+    <section>   
+         <div class="dialog-message" title="Nuevo Perfil">
+            <p id="texto-mensaje">
+                La identificación <b>"<?php print $id ?>"</b> NO está registrada en el sistema.
+            </p>
+        </div>
 
         <div id="form">
             <h1>Nuevo Visitante</h1>
@@ -87,14 +67,38 @@
             </form>
         </div>        
     </section>
+
     <aside>
     </aside>
+
 </body>
 
 </html>
 <script>
 // pregunta es nuevo visitante.
-//modal = document.getElementById('modal-perfil'); 
-//modal.style.display = "block";
-//$("#btncontinuar").toggle("fadeIn");
+ $( ".dialog-message" ).dialog({
+        modal: true,
+        closeOnEscape: false,
+        open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+        buttons: {
+            Nuevo: function() {
+                $( this ).dialog( "close" );      
+                 "<?php unset($_SESSION['estado']); ?>";          
+                return true;
+            },            
+            Buscar: function(){
+                $( this ).dialog( "close" );
+                // llama a ventana para buscar identificaciones por NOMBRE COMPLETO.
+                "<?php $_SESSION['estado']='BUSCAR'; ?>";
+                onVuelve();
+                return false;
+            },
+            Volver: function() {
+                $( this ).dialog( "close" );
+                "<?php unset($_SESSION['estado']); ?>";          
+                onVuelve();
+                return false;
+            }
+        }
+    });
 </script>

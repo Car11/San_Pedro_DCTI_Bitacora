@@ -1,5 +1,5 @@
 <?php
-    include("../class/Formulario.php");
+    require_once("../class/Formulario.php");
     $formulario= new Formulario(); 
 
     if (isset($_POST['fechaingreso'])) {
