@@ -132,7 +132,7 @@ $data= $formulario->ConsultaFormulario();
         //MODIFICA EL REGISTRO SELECIONADO EN EL CAMPO MODIFICAR *********/       
         $(document).on('click', '.modificar', function (event) {    
             var idtd = $(this).parents("tr").find("td").eq(0).text();
-            location.href='FormularioIngreso.php?ID='+idtd;
+            location.href='FormularioIngreso.php?MOD='+idtd;
         }); 
          
 

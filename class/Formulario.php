@@ -166,7 +166,7 @@ class Formulario
         }
 
     }
-    
+
     function Cargar()
     {
         try {

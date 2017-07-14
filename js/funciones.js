@@ -130,7 +130,6 @@ function inicio() {
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
         });
     });
-
 }
 
 // xmlHttpRequest
