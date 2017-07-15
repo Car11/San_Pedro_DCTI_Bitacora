@@ -11,7 +11,7 @@ if (!$sesion->estado){
 }
 
 //VISITANTE
-include("class/Visitante.php");
+//include("class/Visitante.php");
 //$visitante= new Visitante();
 //$visitantes= $visitante->FormularioIngresoConsultaVisitante();
 //$visitantes= $visitante->ConsultaVisitante();
@@ -330,9 +330,7 @@ $rol=$_SESSION['rol'];
             </div>
             <div id="visitante-modal" class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
-                <?php 
-                    print "<table id='tblvisitante'></table>"; 
-                ?>
+
             </div>
             <div class="modal-footer">
             <br>
@@ -374,7 +372,7 @@ $rol=$_SESSION['rol'];
     $('#btnagregavisitante').click(function() {
         modalVisitante.style.display = "block";
         var visitantereal =[];
-
+        ExcluyeVisitante();
         $.ajax({
             type: "POST",
             url: "class/Visitante.php",
@@ -382,14 +380,16 @@ $rol=$_SESSION['rol'];
         })
         .done(function( e ) {
             visitantereal = JSON.parse(e);
-            //$('#visitante-modal').append("<table id='tblvisitante'></table>");
+            $('#visitante-modal').append("<table id='tblvisitante'></table>");
             var tb1="<thead><tr><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody>";
             $('#tblvisitante').append(tb1);
             for (var i = 0; i < visitantereal.length; i++) {                
-                var td1="<tr><td>"+visitantereal[i][0] +"</td>";
+                var tr1="<tr>";
+                var td1="<td>"+visitantereal[i][0] +"</td>";
                 var td2="<td>"+visitantereal[i][1] +"</td>";
-                var td3="<td>"+visitantereal[i][2] +"</td></tr>";        
-                $('#tblvisitante').append(td1+td2+td3);
+                var td3="<td>"+visitantereal[i][2] +"</td>";
+                var tr2="</tr>";
+                $('#tblvisitante').append(tr1+td1+td2+td3+tr2);
             }
             var tb2="</tbody>";
             $('#tblvisitante').append(tb2); 
@@ -402,7 +402,7 @@ $rol=$_SESSION['rol'];
     });    
 
     //SELECION DE LAS LINEAS DEL MODAL **********************/                        
-    $("#tblvisitante tr").on('click', function(){        
+    $(document).on('click','#tblvisitante tr', function(){        
         //$(this).toggleClass('selected');
         var data={
             "id":$(this).find('td:first').html(),
@@ -420,10 +420,9 @@ $rol=$_SESSION['rol'];
             var td4="<td><img id=imgdelete src=img/file_delete.png class=borrar></td></tr>";
             var tb2="</tbody>";
             $("#tblvisitanteform").append(tb1+tr+td1+td2+td3+td4+tb2); 
-            //$(this).css('display', 'none');
             $('#imgflecha').removeClass('imagen');
             $('#imgflecha').addClass('imagenNO');
-            //modalVisitante.style.display = "none";
+            $(this).css('display', 'none');
         }
     });
         
@@ -446,6 +445,8 @@ $rol=$_SESSION['rol'];
         modalVisitante.style.display = "none";
         $('#tblvisitante').html("");
         modalSala.style.display = "none";
+        //Vacia el atg que contiene los visitantes excluidos
+        document.getElementById("visitanteexcluido").value ="";
     }
 
     // Cierra el MODAL en cualquier parte de la ventana
@@ -453,6 +454,8 @@ $rol=$_SESSION['rol'];
         if (event.target == modalVisitante) {
             modalVisitante.style.display = "none";
             $('#tblvisitante').html("");
+            //Vacia el atg que contiene los visitantes excluidos
+            document.getElementById("visitanteexcluido").value ="";
         }else{
             if (event.target == modalResponsable) {
                 modalResponsable.style.display = "none";
@@ -537,7 +540,7 @@ $rol=$_SESSION['rol'];
             }           
         }
         $(this).closest('tr').remove();
-        ExcluyeVisitante();
+        //ExcluyeVisitante();
     });  
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
@@ -572,14 +575,14 @@ $rol=$_SESSION['rol'];
 
         //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function ExcluyeVisitante() {  
-        alert(jVisitante.length);     
+        //alert(jVisitante.length);     
         for (var index = 0; index < jVisitante.length; index++) {
             var element = jVisitante[index].id;
             if(index==0){
-                document.getElementById("visitanteexluido").value += element;
+                document.getElementById("visitanteexcluido").value += element;
             }
             else{
-                document.getElementById("visitanteexluido").value += "," + element;
+                document.getElementById("visitanteexcluido").value += "," + element;
             }    
         } 
     }   

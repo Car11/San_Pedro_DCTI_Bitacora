@@ -60,7 +60,7 @@ class Formulario
             //Calcula la longitud del arreglo de visistantes 
             $longitud = count($visitantearray);
             //Recorre el arreglo e inserta cada item en la tabla intermedia
-            for ($i=0; $i<$longitud-1; $i++) {
+            for ($i=0; $i<$longitud; $i++) {
                 $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
                 $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario);
                 $result = DATA::Ejecutar($sql, $param);

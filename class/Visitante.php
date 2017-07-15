@@ -262,16 +262,17 @@ class Visitante{
 
     function ConsultaVisitante()
     {
-        try {/*
-            if (isset($_POST['visitanteexcluido'])) {
-                $sql="SELECT * FROM visitante  WHERE cedula not in (:visitantearray)";
-                $param= array(':visitantearray'=>$this->visitanteexcluido);
-                $result = DATA::Ejecutar($sql,$param);    
-            }
-            else{*/
+        try {
+            if (empty($_POST['visitanteexcluido'])) {
                 $sql="SELECT * FROM visitante";
                 $result = DATA::Ejecutar($sql);
-            //}
+            }
+            else{
+                
+                $sql="SELECT * FROM visitante  WHERE NOT FIND_IN_SET(CEDULA,:EXCLUSION)";
+                $param= array(':EXCLUSION'=>$_POST['visitanteexcluido']);
+                $result = DATA::Ejecutar($sql,$param);  
+            }
 
             echo json_encode($result);
         } catch (Exception $e) {
