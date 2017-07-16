@@ -137,6 +137,11 @@ function inicio() {
         });
     });
 
+    $('#Modal-Visitante tr').click(function() {
+        $("#cedula").val($(this).find('td:first').html());
+        modalVisitante.style.display = "none";
+    });
+
 }
 
 // xmlHttpRequest
@@ -304,6 +309,8 @@ function onClickIDFormulario() {
     //elimina elemento de archivo.
     $.get("filemanager.php");
 }
+
+
 
 /********COMBO BOX********/
 

@@ -544,7 +544,7 @@ $rol=$_SESSION['rol'];
             "nombre":"<?php if (isset($_GET['ID'])) echo $visitanteformulario[0][1]; ?>",
             "empresa":"<?php if (isset($_GET['ID'])) echo $visitanteformulario[0][2]; ?>"
         };
-
+        
         var result = $.grep(jVisitante, function(e){  return e.id== data.id; });
         if (result.length  == 0) { // El visitante no esta en la lista
             jVisitante.push(data); 
