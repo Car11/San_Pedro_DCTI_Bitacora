@@ -43,9 +43,10 @@ function inicio() {
         $(this).toggle("fadeOut");
     });
 
-    $("#closemodal").click( function(){
+    $(".close").click( function(){
         // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
         modal.style.display = "none";
+        modalVisitante.style.display="none";
         $("#cedula").focus();
     });
 
@@ -169,7 +170,7 @@ this.MuestraMensajeTarjetaSinUso= function(){
 this.MensajeriaHtml = function(mensaje, id){
     formularioConsultado = id;    
     if(mensaje!="NULL"){
-        if(mensaje=="BUSCAR"){                        
+        if(mensaje=="buscar"){                        
             modalVisitante.style.display = "block";
         } else if(mensaje=="TARJETANULL"){
             //alert("La tarjeta NO está en uso.");       

@@ -11,6 +11,12 @@ if (!$sesion->estado){
 }
 // POST
 $estado="NULL";
+if (isset($_GET['estado']))
+{
+    // abre modal de busqueda de visitantes.
+    $estado= $_GET['estado'];
+    unset($_SESSION['estado']);       
+}
 if (isset($_SESSION['estado'])) {
     $estado=$_SESSION['estado'];
     // elimina el estado para posteriores re-envios de la pagina (F5).
@@ -66,7 +72,6 @@ if (isset($_SESSION['idformulario'])) {
     
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/jquery-ui.js" type="text/jscript"></script>
-    <script src="js/jquery.dynatable.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     
 
@@ -74,7 +79,6 @@ if (isset($_SESSION['idformulario'])) {
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
     
     <link href="css/estilo.css" rel="stylesheet" />
-    <link href="css/dynatable.css" rel="stylesheet" />
     <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
 
@@ -146,7 +150,7 @@ if (isset($_SESSION['idformulario'])) {
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close" id="closemodal">&times;</span>
+                <span class="close">&times;</span>
                 <h2>Información del Formulario</h2>
                 <input readonly  id="idformulario" name="idformulario" class="input-field-readonly" value= "<?php if($formulario!="NULL") print $formulario->id; ?>"  >
                 
@@ -197,13 +201,13 @@ if (isset($_SESSION['idformulario'])) {
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close" id="closemodal">&times;</span>
+                <span class="close" >&times;</span>
                 <h2>Búsqueda de Visitantes</h2>
             </div>
             <div class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
                 <?php 
-                print "<table id='tblvisitante-buscar'class='display'>";
+                print "<table id='tblvisitante-buscar' class='display'>";
                 print "<thead>";
                 print "<tr>";
                 print "<th>Cedula</th>";
@@ -235,9 +239,11 @@ if (isset($_SESSION['idformulario'])) {
 
 </html>
 <script>
-    // captura mensajes en línea de estado de formularios temporales.
-    CapturaMensajeFormulario();
-    // Captura estados del formulario. estado del formulario. Id del formulario
-    MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->id; else print "NULL" ?>');  
+    $( document ).ready(function() {
+        // captura mensajes en línea de estado de formularios temporales.
+        CapturaMensajeFormulario();
+        // Captura estados del formulario. estado del formulario. Id del formulario
+        MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->id; else print "NULL" ?>');  
+    });
     
 </script>

@@ -6,6 +6,8 @@
         header('Location: index.php');
         exit; 
     }
+    //
+    unset($_SESSION['estado']);
     $id="";
     if (isset($_GET['id'])) {
         $id=$_GET['id'];
@@ -26,8 +28,8 @@
     <script src="js/jquery-ui.js" type="text/jscript"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script>
-        function onVuelve() {
-            location.href = "index.php";             
+        function onVuelve(dir="index.php") {
+            location.href = dir; 
         }
     </script>
 </head>
@@ -82,20 +84,17 @@
         open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
         buttons: {
             Nuevo: function() {
-                $( this ).dialog( "close" );      
-                 "<?php unset($_SESSION['estado']); ?>";          
+                $( this ).dialog( "close" );         
                 return true;
             },            
             Buscar: function(){
                 $( this ).dialog( "close" );
                 // llama a ventana para buscar identificaciones por NOMBRE COMPLETO.
-                "<?php $_SESSION['estado']='BUSCAR'; ?>";
-                onVuelve();
+                onVuelve("index.php?estado=buscar");
                 return false;
             },
             Volver: function() {
-                $( this ).dialog( "close" );
-                "<?php unset($_SESSION['estado']); ?>";          
+                $( this ).dialog( "close" );   
                 onVuelve();
                 return false;
             }

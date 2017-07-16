@@ -51,6 +51,7 @@ class Visitante{
                 $salida= $data[0]['salida'];      
                 if($entrada!=NULL and $salida==NULL)
                 {
+                    // La tarjeta está en uso.
                     $_SESSION['estado']='fin';
                     $_SESSION['bitacora']=$data[0]['idvisitanteformulario'];
                     $_SESSION['idformulario']=$data[0]['idformulario'];
@@ -89,6 +90,7 @@ class Visitante{
                 //
                 $fechaanticipada  = new DateTime($formulario->fechaingreso);
                 date_sub($fechaanticipada ,  date_interval_create_from_date_string('1 hour') );
+                //if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
                 if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
                 {
                     // return true;           
