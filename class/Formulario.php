@@ -107,8 +107,10 @@ class Formulario
             // formulario temporal, vacia la variable para llenarla con los id de los visitantes.
             if(isset( $_SESSION['TEMP']))
                 $_SESSION['TEMP']="";
+            
             //Recorre el arreglo e inserta cada item en la tabla intermedia
-            for ($i=0; $i<$longitud-1; $i++) {
+            for ($i=0; $i<$longitud; $i++) {
+                
                 $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
                 $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
                 $result = DATA::Ejecutar($sql, $param);
