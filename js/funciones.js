@@ -2,10 +2,9 @@ $(document).ready(inicio);
 var formularioConsultado='NULL'; // formulario consultado por medio de la cedula del visitante en punto de seguridad.
 var formularioID= []; // formularios temporales aprobado/Denegado en tiempo real por operaciones.
 var modal;
+var modalVisitante;
 
 function inicio() {    
-    // tabla de busqueda
-    $('#tblvisitante-buscar').DataTable();
     // Cierra el MODAL en cualquier parte de la ventana
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -14,7 +13,7 @@ function inicio() {
         }
         if (event.target == modalVisitante) {
             modalVisitante.style.display = "none";
-        }        
+        }    
     };
     
     startTime();
@@ -24,25 +23,6 @@ function inicio() {
     modal = document.getElementById('modal-index'); 
     modalVisitante  = document.getElementById('Modal-Visitante');         
     //
-    $(".mensajeriaInfo").click( function(){
-        // Cierra div
-        $(this).toggle("fadeOut");
-    });
-    $(".mensajeriaAdvertencia").click( function(){
-        $(this).toggle("fadeOut");
-    });
-    $(".mensajeriaError").click( function(){
-        $(this).toggle("fadeOut");
-    });
-    $(".mensajeriaOk").click( function(){
-        // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.        
-        modal.style.display = "block";
-        $("#btncontinuar").toggle("fadeIn");
-        $("#btnsalida").hide();
-        // desaparece div mensaje.
-        $(this).toggle("fadeOut");
-    });
-
     $(".close").click( function(){
         // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
         modal.style.display = "none";
@@ -141,7 +121,8 @@ function inicio() {
         $("#cedula").val($(this).find('td:first').html());
         modalVisitante.style.display = "none";
     });
-
+    // tabla de busqueda
+    $('#tblvisitante-buscar').DataTable();
 }
 
 // xmlHttpRequest
@@ -296,6 +277,25 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
     //
     $("#mensajespersonales").append(htmltext);
     $("#"+divId).toggle("fadeIn");
+    //
+    $(".mensajeriaInfo").click( function(){
+        // Cierra div
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaAdvertencia").click( function(){
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaError").click( function(){
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaOk").click( function(){
+        // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.        
+        modal.style.display = "block";
+        $("#btncontinuar").toggle("fadeIn");
+        $("#btnsalida").hide();
+        // desaparece div mensaje.
+        $(this).toggle("fadeOut");
+    });
 }
 
 function onClickIDFormulario() {
