@@ -340,7 +340,7 @@ $rol=$_SESSION['rol'];
     
 <script type="text/javascript" language="javascript">
     //Se ejecuta al iniciar la pagina
-    var x = "<?php echo $id;?>";      
+    var existeid = "<?php echo $id;?>";      
     var jSala=[];
     var jResponsable=[];
     var jVisitante=[]; 
@@ -355,14 +355,12 @@ $rol=$_SESSION['rol'];
     var inputSala = document.getElementById("selectsala");
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
-    var contador =0;  
-    var openvisitante=0;
 
     $(document).ready( function () { 
          
         ExcluyeVisitanteCarga();
 
-        if (x!=0){
+        if (existeid!=0){
             EstadoFormulario();    
         }
         // OBTIENE EL CSS PARA LOS TABLES
@@ -372,8 +370,10 @@ $rol=$_SESSION['rol'];
         
     } );
 
+    
+
+    //Abre el modal con el evento click en el boton (+) , contruye la tabla visitante en el modal
     $('#btnagregavisitante').click(function() {
-        openvisitante=1;
         modalVisitante.style.display = "block";
         var visitantereal =[];
 
@@ -477,7 +477,6 @@ $rol=$_SESSION['rol'];
             if (jVisitante[i][0]==ced||jVisitante[i].id==ced)
                 jVisitante.splice(i,1);                 
         }
-        contador ++;
         $(this).closest('tr').remove();
         ExcluyeVisitante();
     });
@@ -532,7 +531,6 @@ $rol=$_SESSION['rol'];
             $('#tblvisitante').html("");
             //Vacia el tag que contiene los visitantes excluidos
             document.getElementById("visitanteexcluido").value ="";
-            openvisitante=0;
             $('#tblvisitante').DataTable().destroy();
         }else{
             if (event.target == modalResponsable) {
@@ -582,11 +580,6 @@ $rol=$_SESSION['rol'];
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function EnviaVisitante() {
-        var x = document.getElementsByName("fechaingreso").value;
-        if(x=="x"){
-            alert("Debe de insertar una fecha de ingreso");
-            return false;
-        }
         for (var i = 0; i < jVisitante.length; i++) {
             var element = jVisitante[i].id;
             if(element==undefined)
@@ -598,15 +591,14 @@ $rol=$_SESSION['rol'];
                 document.getElementById("visitantearray").value += "," + element;
             }             
         }   
-        //valida si se han agregado visitantes a la tabla
-        var x = "<?php echo  $largo; ?>";
-        if(x<0){
+        //valida si se han agregado visitantes a la tabla        
+        var cantidadvisitante = document.getElementById("tblvisitanteform").rows.length;
+        if(cantidadvisitante<2){
             //alert("Debe de insertar al menos un Visitante!");
             $('#imgflecha').addClass('imagen');
             return false;
         }
         alert("Formulario Creado!");    
-        //$('#listaformulario').DataTable({"order": [[ 3, "desc" ]]});  
     }   
 
     //MODAL RESPONSABLES ********/
@@ -623,7 +615,7 @@ $rol=$_SESSION['rol'];
         jResponsable.push(data); 
         $("#txtresponsable").val(jResponsable[jResponsable.length-1].nombre);
         modalResponsable.style.display = "none";
-        $(this).toggleClass('selected')=false;                        
+        //$(this).toggleClass('selected')=false;                        
     });
 
     //MODAL SALAS ********/
@@ -637,7 +629,7 @@ $rol=$_SESSION['rol'];
         jSala.push(data); 
         $("#selectsala").val(jSala[jSala.length-1].sala);
         modalSala.style.display = "none";
-        $(this).toggleClass('selected')=false;                        
+        //$(this).toggleClass('selected')=false;                        
     });
 
 </script>
