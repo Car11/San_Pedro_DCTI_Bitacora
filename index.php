@@ -30,7 +30,7 @@ else {
 }
 // Inicia Busqueda de visitante por nombre Completo.
 $visitantes=[]; // arreglo de visitantes.
-if ($estado=="BUSCAR"){
+if ($estado=="buscar"){
     require_once("class/Visitante.php");
     $visitante= new Visitante();
     $visitantes= $visitante->FormularioIngresoConsultaVisitante();
