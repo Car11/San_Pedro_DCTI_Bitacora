@@ -158,6 +158,11 @@
     text-align: center;
     margin-left: 50px;
 }
+#imgagregar{
+    height: 17px;
+    text-align: center;
+    margin-left: 50px;
+}
 #imgflecha{
     width: 100%;
     height: 80px;
@@ -386,7 +391,7 @@
 	background: #1478b1;
 }
 
-#myBtn{
+#btnagregavisitante{
     width: 100%;
     height: 40px;
     color: #fff;

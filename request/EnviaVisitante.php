@@ -9,5 +9,13 @@
         header('Location: ../Error.php');
         exit;
     }
+
+    if (isset($_POST['visitanteexluido'])) {  
+        $visitante->visitante=$_POST['visitanteexluido'];
+        $visitante->ConsultaVisitante();
+    }
+    else header('Location: ../Error.php');
+
     $visitante->ValidaID();
+
 ?>

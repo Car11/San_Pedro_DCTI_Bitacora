@@ -340,11 +340,11 @@ $rol=$_SESSION['rol'];
     
 <script type="text/javascript" language="javascript">
     //Se ejecuta al iniciar la pagina
-    var x = "<?php echo $id;?>";      
+    var existeid = "<?php echo $id;?>";      
     var jSala=[];
     var jResponsable=[];
     var jVisitante=[]; 
-    var longitud = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {echo count($visitanteformulario);}else{echo 0;}?>";
+    var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {echo count($visitanteformulario);}else{echo 0;}?>";
     // Obtiene el MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     
@@ -356,22 +356,23 @@ $rol=$_SESSION['rol'];
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
 
-    $(document).ready( function () {    
-        ExcluyeVisitante();
+    $(document).ready( function () { 
+         
+        ExcluyeVisitanteCarga();
 
-        if (x!=0){
-            CargaVisitanteLink();
+        if (existeid!=0){
             EstadoFormulario();    
         }
-        //$('.sala').styleddropdown();
         // OBTIENE EL CSS PARA LOS TABLES
-        //$('#tblvisitante').DataTable();
         $('#tblresponsable').DataTable();          
         $('#tblsala').DataTable();
         MuestraEstados();
         
     } );
 
+    
+
+    //Abre el modal con el evento click en el boton (+) , contruye la tabla visitante en el modal
     $('#btnagregavisitante').click(function() {
         modalVisitante.style.display = "block";
         var visitantereal =[];
@@ -381,12 +382,15 @@ $rol=$_SESSION['rol'];
         $.ajax({
             type: "POST",
             url: "class/Visitante.php",
-            data: {visitanteexcluido: document.getElementById('visitanteexcluido').value}
+            data: {
+                    action: "Excluye",
+                    visitanteexcluido: document.getElementById('visitanteexcluido').value
+                  }
         })
         .done(function( e ) {
             visitantereal = JSON.parse(e);
             $('#visitante-modal').append("<table id='tblvisitante'></table>");
-            var tb1="<thead><tr><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody>";
+            var tb1="<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody>";
             $('#tblvisitante').append(tb1);
             for (var i = 0; i < visitantereal.length; i++) {                
                 var tr1="<tr>";
@@ -408,10 +412,13 @@ $rol=$_SESSION['rol'];
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function ExcluyeVisitante() {     
-        if(longitud!=0){
-            jVisitante = JSON.parse('<?php echo json_encode($visitanteformulario);?>');   
+        document.getElementById("visitanteexcluido").value = "";
+        //**********MODIFICAR
+        if(longitudvisitanteform!=0){
             for (var i = 0; i < jVisitante.length; i++) {
-                var element = jVisitante[i][0];
+                    var element = jVisitante[i][0];
+                    if(element==undefined)
+                        element = jVisitante[i].id;
                 if(i==0){
                     document.getElementById("visitanteexcluido").value += element;
                 }
@@ -420,6 +427,7 @@ $rol=$_SESSION['rol'];
                 }    
             }  
         }
+        //**********NUEVO
         else{
              for (var i = 0; i < jVisitante.length; i++) {
                 var element = jVisitante[i].id;
@@ -431,13 +439,50 @@ $rol=$_SESSION['rol'];
                 }    
             }
         }
+    } 
 
+    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
+    function ExcluyeVisitanteCarga() {     
+        //**********MODIFICAR
+        if(longitudvisitanteform!=0){    
+            jVisitante = JSON.parse('<?php echo json_encode($visitanteformulario);?>');   
+            for (var i = 0; i < jVisitante.length; i++) {
+                var element = jVisitante[i][0];
+                if(i==0){
+                    document.getElementById("visitanteexcluido").value += element;
+                }
+                else{
+                    document.getElementById("visitanteexcluido").value += "," + element;
+                }    
+            }  
+        }
+        //**********NUEVO
+        else{
+             for (var i = 0; i < jVisitante.length; i++) {
+                var element = jVisitante[i].id;
+                if(i==0){
+                    document.getElementById("visitanteexcluido").value += element;
+                }
+                else{
+                    document.getElementById("visitanteexcluido").value += "," + element;
+                }    
+            }
+        }
+    } 
 
-    }  
+    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
+    $(document).on('click', '.borrar', function (event) {
+        var ced = $(this).parents("tr").find("td").eq(0).text();
+        for (var i = 0; i < jVisitante.length; i++) {
+            if (jVisitante[i][0]==ced||jVisitante[i].id==ced)
+                jVisitante.splice(i,1);                 
+        }
+        $(this).closest('tr').remove();
+        ExcluyeVisitante();
+    });
 
     //SELECION DE LAS LINEAS DEL MODAL **********************/                        
     $(document).on('click','#tblvisitante tr', function(){        
-        //$(this).toggleClass('selected');
         var data={
             "id":$(this).find('td:first').html(),
             "nombre":$(this).find('td:nth-child(2)').html(),
@@ -459,37 +504,34 @@ $rol=$_SESSION['rol'];
             $(this).css('display', 'none');
         }
     });
-        
-    // Evento click que abre el MODAL
-    //btn.onclick = function() {   
-        //modalVisitante.style.display = "block";
-        //ExcluyeVisitante();
-        //Volver a Cargar Visitantes.
-    //}
 
+    //Abre el modal de responsables
     inputResponsable.onclick = function() {
         modalResponsable.style.display = "block";
     }
+    //Abre el modal de Salas
     inputSala.onclick = function() {
         modalSala.style.display = "block";
     }
-    // Cierra el MODAL en la X
+    //Cierra el MODAL en la X
     span.onclick = function() {
         modalResponsable.style.display = "none";
         modalVisitante.style.display = "none";
-        $('#tblvisitante').html("");
+        ///Borra la tabla 
+        $('#tblvisitante').clear();
         modalSala.style.display = "none";
         //Vacia el atg que contiene los visitantes excluidos
         document.getElementById("visitanteexcluido").value ="";
     }
 
-    // Cierra el MODAL en cualquier parte de la ventana
+    //Cierra el MODAL en cualquier parte de la ventana
     window.onclick = function(event) {
         if (event.target == modalVisitante) {
             modalVisitante.style.display = "none";
             $('#tblvisitante').html("");
-            //Vacia el atg que contiene los visitantes excluidos
+            //Vacia el tag que contiene los visitantes excluidos
             document.getElementById("visitanteexcluido").value ="";
+            $('#tblvisitante').DataTable().destroy();
         }else{
             if (event.target == modalResponsable) {
                 modalResponsable.style.display = "none";
@@ -536,110 +578,28 @@ $rol=$_SESSION['rol'];
         }
     }
 
-    //Carga el Visitante en la tabla tblvisitanteform
-    function CargaVisitanteLink(){    
-
-        var data={
-            "id":"<?php if (isset($_GET['ID'])) echo $visitanteformulario[0][0]; ?>",
-            "nombre":"<?php if (isset($_GET['ID'])) echo $visitanteformulario[0][1]; ?>",
-            "empresa":"<?php if (isset($_GET['ID'])) echo $visitanteformulario[0][2]; ?>"
-        };
-        
-        var result = $.grep(jVisitante, function(e){  return e.id== data.id; });
-        if (result.length  == 0) { // El visitante no esta en la lista
-            jVisitante.push(data); 
-            var tb1="<tbody>";
-            var tr="<tr class='fila'>";
-            var td1="<td class='tdcolumna'>"+jVisitante[jVisitante.length-1].id +"</td>";
-            var td2="<td class='tdcolumna'>"+jVisitante[jVisitante.length-1].nombre +"</td>";
-            var td3="<td class='tdcolumna'>"+jVisitante[jVisitante.length-1].empresa +"</td>";
-            var td4="<td class='tdcolumna'></td></tr>";
-            var tb2="</tbody>";
-            $("#tblvisitanteform").append(tb1+tr+td1+td2+td3+td4+tb2);    
-        }
-        else { // El visitante esta en la lista y debe borrarse
-            var i = jVisitante.findIndex(x => x.id === data.id);
-            jVisitante.splice(i,1);
-        }
-    }
-
-    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
-    $(document).on('click', '.borrar', function (event) {
-        //$('#tblvisitante tr').closest('tr').css('display', '');
-        //event.preventDefault();
-        var ced = $(this).parents("tr").find("td").eq(0).text();
-        for (var i = 0; i < jVisitante.length; i++) {
-            if (jVisitante[i].id==ced) {
-                jVisitante.splice(i,1);        
-            }           
-        }
-        $(this).closest('tr').remove();
-        //ExcluyeVisitante();
-    });  
-
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function EnviaVisitante() {
-        var x = document.getElementsByName("fechaingreso").value;
-        if(x=="x"){
-            alert("Debe de insertar una fecha de ingreso");
-            return false;
-        }
-        for (var index = 0; index < jVisitante.length; index++) {
-            var element = jVisitante[index].id;
-            
-            if(index==0){
+        for (var i = 0; i < jVisitante.length; i++) {
+            var element = jVisitante[i].id;
+            if(element==undefined)
+                element = jVisitante[i][0];
+            if(i==0){
                 document.getElementById("visitantearray").value += element;
             }
             else{
                 document.getElementById("visitantearray").value += "," + element;
             }             
         }   
-        //valida si se han agregado visitantes a la tabla
-
-        var x = "<?php echo  $largo; ?>";
-
-        if(x<0){
+        //valida si se han agregado visitantes a la tabla        
+        var cantidadvisitante = document.getElementById("tblvisitanteform").rows.length;
+        if(cantidadvisitante<2){
             //alert("Debe de insertar al menos un Visitante!");
             $('#imgflecha').addClass('imagen');
             return false;
         }
         alert("Formulario Creado!");    
-        //$('#listaformulario').DataTable({"order": [[ 3, "desc" ]]});  
     }   
-
- 
-
-
-
-    //COMBO SALAS *********/
-    (function ($) {
-    $.fn.styleddropdown = function () {
-        return this.each(function () {
-            var obj = $(this)
-            obj.find('.field').click(function () { //onclick event, 'list' fadein
-                obj.find('.list').fadeIn(400);
-                $(document).keyup(function (event) { //keypress event, fadeout on 'escape'
-                    if (event.keyCode == 27) {
-                        obj.find('.list').fadeOut(400);
-                    }
-                });
-                obj.find('.list').hover(function () {},
-                    function () {
-                        $(this).fadeOut(400);
-                    });
-            });
-            obj.find('.list li').click(function () { //onclick event, change field value with selected 'list' item and fadeout 'list'
-                obj.find('.field')
-                    .val($(this).html())
-                    .css({
-                        'background': '#fff',
-                        'color': '#333'
-                    });
-                obj.find('.list').fadeOut(400);
-            });
-        });
-    };
-    })(jQuery);
 
     //MODAL RESPONSABLES ********/
     $('#tblresponsable tr').on('click', function(){        
@@ -655,7 +615,7 @@ $rol=$_SESSION['rol'];
         jResponsable.push(data); 
         $("#txtresponsable").val(jResponsable[jResponsable.length-1].nombre);
         modalResponsable.style.display = "none";
-        $(this).toggleClass('selected')=false;                        
+        //$(this).toggleClass('selected')=false;                        
     });
 
     //MODAL SALAS ********/
@@ -669,12 +629,9 @@ $rol=$_SESSION['rol'];
         jSala.push(data); 
         $("#selectsala").val(jSala[jSala.length-1].sala);
         modalSala.style.display = "none";
-        $(this).toggleClass('selected')=false;                        
+        //$(this).toggleClass('selected')=false;                        
     });
-    
-    //IMAGENES OCULTAR Y MOSTRAR
-    
-    
+
 </script>
 </body>
 </html>

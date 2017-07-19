@@ -78,7 +78,7 @@ $rol=$_SESSION['rol'];
             <div id="tablaresponsable">
                 <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL FORMULARIO-->
                 <?php
-                print "<table id='tblresponsable'>";
+                print "<table id='tblresponsable' class='display'>";
                 print "<thead>";
                 print "<tr>";
                 print "<th id='tituloid'>ID</th>";

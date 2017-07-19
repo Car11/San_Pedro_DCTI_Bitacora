@@ -2,11 +2,22 @@
 if (!isset($_SESSION))
     session_start();
 
+if(isset($_POST["action"])){
+    if($_POST["action"]=="Excluye"){
+            $visitante= new Visitante();
+        $visitante->ConsultaVisitante();
+    }
+}
+    
+
+
 class Visitante{
 	public $cedula;//id
 	public $nombre;
 	public $empresa;
     public $permisoanual;
+    public $visitante;
+    public $visitanteexcluido;
 
 	function __construct(){
         require_once("conexion.php");
@@ -266,7 +277,26 @@ class Visitante{
         }                                     
     }
 
-     
+    function ConsultaVisitante()
+    {
+        try {
+            if (empty($_POST['visitanteexcluido'])) {
+                $sql="SELECT CEDULA,NOMBRE,EMPRESA FROM visitante";
+                $result = DATA::Ejecutar($sql);
+            }
+            else{
+                
+                $sql="SELECT CEDULA,NOMBRE,EMPRESA FROM visitante  WHERE NOT FIND_IN_SET(CEDULA,:EXCLUSION)";
+                $param= array(':EXCLUSION'=>$_POST['visitanteexcluido']);
+                $result = DATA::Ejecutar($sql,$param);  
+            }
+
+            echo json_encode($result);
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
+    } 
     
 
 }

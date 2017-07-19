@@ -123,6 +123,7 @@ function inicio() {
     });
     // tabla de busqueda
     $('#tblvisitante-buscar').DataTable();
+
 }
 
 // xmlHttpRequest
