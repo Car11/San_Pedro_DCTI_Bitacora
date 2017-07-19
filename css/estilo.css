@@ -264,7 +264,7 @@ label {
     color: aliceblue;
     background: none;
 }
-
+/*
 [type=submit],
 [type=button] {    
     border: none;
@@ -284,6 +284,27 @@ label {
 
 [type=submit]:hover,
 [type=button]:hover {
+    background: #FFAB49;
+    color: #fff;
+}*/
+
+.btn {    
+    border: none;
+    padding: 9px 17px 10px 17px;
+    background: #FF8500;
+    color: #fff;
+    box-shadow: 1px 1px 4px #DADADA;
+    -moz-box-shadow: 1px 1px 4px #DADADA;
+    -webkit-box-shadow: 1px 1px 4px #DADADA;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 50;
+}
+
+.btn:hover {
     background: #FFAB49;
     color: #fff;
 }
@@ -363,6 +384,7 @@ label {
     width: 250;
     color: white;
     font-size: 20;
+    margin-left: 20px;
 }
 
 span.required {
@@ -477,6 +499,14 @@ nav.btnfrm li {
 
 .fullfield {
     background-color: #ccc;
+}
+
+
+
+/******************************************/
+
+.dialog-message {
+    display: none;
 }
 
 /**************************VENTANA MODAL*******************/

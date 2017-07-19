@@ -6,7 +6,9 @@
             "name": "JS",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:8000/San_Pedro_DCTI_Bitacora/FormularioIngreso.php?ID=190",
+
+            "url": "http://localhost/san_pedro_dcti_bitacora/index.php",
+
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}",
 

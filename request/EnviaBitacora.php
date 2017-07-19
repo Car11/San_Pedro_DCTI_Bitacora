@@ -1,5 +1,5 @@
 <?php
-    include("../class/Visitante.php");
+    require_once("../class/Visitante.php");
     $bitacora= new Bitacora();
     if (isset($_POST['cedula'])) { 
         $bitacora->cedula=$_POST['cedula'];        

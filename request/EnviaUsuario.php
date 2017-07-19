@@ -1,6 +1,6 @@
 <?php 
-    include("../class/usuario.php");
-    include("../class/sesion.php");
+    require_once("../class/usuario.php");
+    require_once("../class/sesion.php");
     $usuario= new usuario();
     $sesion = new sesion();
     //
@@ -12,6 +12,7 @@
             $sesion->Inicio($usuario->usuario, $usuario->idrol);
             if(isset($_SESSION['url'])){
                 header('Location: ../'. $_SESSION['url']); 
+                unset($_SESSION['url']);
                 exit;
             }
             else {

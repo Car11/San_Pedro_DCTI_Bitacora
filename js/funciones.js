@@ -2,6 +2,7 @@ $(document).ready(inicio);
 var formularioConsultado='NULL'; // formulario consultado por medio de la cedula del visitante en punto de seguridad.
 var formularioID= []; // formularios temporales aprobado/Denegado en tiempo real por operaciones.
 var modal;
+var modalVisitante;
 
 function inicio() {    
     // Cierra el MODAL en cualquier parte de la ventana
@@ -10,6 +11,9 @@ function inicio() {
             modal.style.display = "none";
             $("#cedula").focus();
         }
+        if (event.target == modalVisitante) {
+            modalVisitante.style.display = "none";
+        }    
     };
     
     startTime();
@@ -17,29 +21,12 @@ function inicio() {
     $('.sala').styleddropdown();
     //modal index
     modal = document.getElementById('modal-index'); 
+    modalVisitante  = document.getElementById('Modal-Visitante');         
     //
-    $(".mensajeriaInfo").click( function(){
-        // Cierra div
-        $(this).toggle("fadeOut");
-    });
-    $(".mensajeriaAdvertencia").click( function(){
-        $(this).toggle("fadeOut");
-    });
-    $(".mensajeriaError").click( function(){
-        $(this).toggle("fadeOut");
-    });
-    $(".mensajeriaOk").click( function(){
-        // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.        
-        modal.style.display = "block";
-        $("#btncontinuar").toggle("fadeIn");
-        $("#btnsalida").hide();
-        // desaparece div mensaje.
-        $(this).toggle("fadeOut");
-    });
-
-    $("#closemodal").click( function(){
+    $(".close").click( function(){
         // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
         modal.style.display = "none";
+        modalVisitante.style.display="none";
         $("#cedula").focus();
     });
 
@@ -47,8 +34,7 @@ function inicio() {
          modal.style.display = "none";
          $("#cedula").focus();
     };
-
-    
+            
     this.MensajeTop= function(msg){
         $("#textomensaje").text(msg);
         $("#mensajetop").css("background-color", "60E800");
@@ -130,13 +116,21 @@ function inicio() {
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
         });
     });
+
+    $('#Modal-Visitante tr').click(function() {
+        $("#cedula").val($(this).find('td:first').html());
+        modalVisitante.style.display = "none";
+    });
+    // tabla de busqueda
+    $('#tblvisitante-buscar').DataTable();
+
 }
 
 // xmlHttpRequest
 this.CapturaMensajeFormulario = function () {
     //pushed server data
     if (typeof (EventSource) !== "undefined") {
-        var source = new EventSource("Pruebas/envianotificaciondinamica.php");
+        var source = new EventSource("notificaciondinamica.php");
         source.onmessage = function (event) {
             onMuestraFormulario(event.data);
         };
@@ -145,13 +139,37 @@ this.CapturaMensajeFormulario = function () {
     }
 };
 
+this.MuestraMensajeTarjetaSinUso= function(){
+    $( ".dialog-message" ).dialog({
+        modal: true,
+        closeOnEscape: false,
+        open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+        buttons: {
+            Salir: function() {                
+                $( this ).dialog( "close" );                
+                $("#cedula").focus();
+                return false;
+            }
+        }
+    });
+};
+
 this.MensajeriaHtml = function(mensaje, id){
     formularioConsultado = id;    
     if(mensaje!="NULL"){
-        if(mensaje=="fin")
+        if(mensaje=="buscar"){                        
+            modalVisitante.style.display = "block";
+        } else if(mensaje=="TARJETANULL"){
+            //alert("La tarjeta NO está en uso.");       
+            $('#texto-mensaje').text("La tarjeta NO está en uso.");
+            MuestraMensajeTarjetaSinUso();
+            return false;
+        }
+        else if(mensaje=="fin")
             onMuestraPerfilSalida();
         else onMuestraEstadoFormulario(mensaje);
-    }
+        
+    }  
 };
 
 function startTime() {
@@ -250,7 +268,7 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
             htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
         }
     }else if(estado=="3"){
-        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado, Tiempo de visita excedido.";
+        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado, NO hay formulario para este día.";
         htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
     }
     else if(estado=="4"){
@@ -260,6 +278,25 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
     //
     $("#mensajespersonales").append(htmltext);
     $("#"+divId).toggle("fadeIn");
+    //
+    $(".mensajeriaInfo").click( function(){
+        // Cierra div
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaAdvertencia").click( function(){
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaError").click( function(){
+        $(this).toggle("fadeOut");
+    });
+    $(".mensajeriaOk").click( function(){
+        // muestra modal con número de carnet y btn aceptar/x para cerrar para ingreso bitácora. info básica formulario.        
+        modal.style.display = "block";
+        $("#btncontinuar").toggle("fadeIn");
+        $("#btnsalida").hide();
+        // desaparece div mensaje.
+        $(this).toggle("fadeOut");
+    });
 }
 
 function onClickIDFormulario() {
@@ -273,6 +310,8 @@ function onClickIDFormulario() {
     //elimina elemento de archivo.
     $.get("filemanager.php");
 }
+
+
 
 /********COMBO BOX********/
 

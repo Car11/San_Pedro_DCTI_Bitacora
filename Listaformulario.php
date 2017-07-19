@@ -5,6 +5,7 @@ if (!isset($_SESSION))
 include("class/sesion.php");
 $sesion = new sesion();
 if (!$sesion->estado){
+    $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
     header('Location: login.php');
     exit;
 }
@@ -13,6 +14,7 @@ $formtemp="NULL";
 if(isset($_SESSION['TEMP']))
 {
     $formtemp=$_SESSION['TEMP']; // ID del formulario temporal.
+    unset($_SESSION['TEMP']);
 }
 
 include("class/Formulario.php");
@@ -90,22 +92,21 @@ $data= $formulario->ConsultaFormulario();
         $(document).ready( function () {
             //Da la apariencia del css datatable
             CargarEstiloTablas();
-            //Envía notificación al servidor
+            //envía notificación al servidor
             this.ajaxSent = function() {
                 try {
                     xhr = new XMLHttpRequest();
                 } catch (err) {
                     alert(err);
                 }
-                alert('enviando: ' + formtemp);
+                //alert('enviando formulario temporal: ' + formtemp);
                 url='notificaciondinamica.php?msg='+formtemp;
-                alert(url);
                 xhr.open('GET', url, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {                    
                         if (xhr.status == 200) {   
                             formtemp.value = "";
-                            alert('finalizando: ' + formtemp);
+                            //alert('finalizando formulario temporal: ' + formtemp);
                         }
                     }
                 };
@@ -114,14 +115,9 @@ $data= $formulario->ConsultaFormulario();
 
             var formtemp= "<?php echo $formtemp; ?>";
             //alert(formtemp);
+
             if(formtemp!="NULL")
                 this.ajaxSent();
-            //For sending message
-            this.sendMsg = function() {
-                msg = document.getElementById("cedula").value;
-                this.ajaxSent();
-                return false;
-            };
         } );  // fin document ready.
         
         function CargarEstiloTablas() {

@@ -22,7 +22,7 @@
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
      <script>
         function onVuelve() {
-            location.href = "index.php";
+           // location.href = "index.php";
         }
         //
         $('#username').attr("autocomplete", "off");
@@ -50,8 +50,8 @@
                     <input type="password" id="password" class="input-field" name="password" placeholder="CONTRASEÑA" maxlength="20" />
                     <nav class="btnfrm">
                         <ul>
-                            <li> <input type="submit" value="Ingresar" id="login" /></li>
-                            <li><button type="button" onclick="onVuelve()">Cancelar</button></li>
+                            <li> <input class="btn" type="submit" value="Ingresar" id="login" /></li>
+                            <li><button class="btn" type="button" onclick="onVuelve()">Cancelar</button></li>
                         </ul>
                     </nav>
                 </form>      

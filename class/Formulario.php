@@ -147,7 +147,7 @@ class Formulario
     function ConsultaVisitantePorFormulario($idvisitante)
     {
         try{
-            $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida , f.estado 
+            $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida , f.idestado  as estado
                 FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
                 where vf.idvisitante= :idvisitante
                 order by f.id desc limit 1 ";

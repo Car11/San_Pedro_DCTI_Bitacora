@@ -6,6 +6,8 @@
         header('Location: index.php');
         exit; 
     }
+    //
+    unset($_SESSION['estado']);
     $id="";
     if (isset($_GET['id'])) {
         $id=$_GET['id'];
@@ -23,24 +25,11 @@
     <script src="js/jquery.js"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/jscript"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script>
-        function onVuelve() {
-            location.href = "index.php?estado=NULL";            
-        }
-
-        $(document).ready( function () {    
-            // pregunta es nuevo visitante.
-            $( "#dialog" ).dialog({
-                dialogClass: "no-close",
-                buttons: [
-                    {
-                    text: "OK",
-                    click: function() {
-                        $( this ).dialog( "close" );
-                        }
-                    }
-                ]
-            });
+        function onVuelve(dir="index.php") {
+            location.href = dir; 
         }
     </script>
 </head>
@@ -56,9 +45,14 @@
     </div>
     <aside>
     </aside>
-    <section>
-        
-         <div id="form">
+    <section>   
+         <div class="dialog-message" title="Nuevo Perfil">
+            <p id="texto-mensaje">
+                La identificación <b>"<?php print $id ?>"</b> NO está registrada en el sistema.
+            </p>
+        </div>
+
+        <div id="form">
             <h1>Nuevo Visitante</h1>
             <form name="perfil" method="POST" action="request/EnviaNuevoPerfil.php">
                 <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
@@ -68,15 +62,42 @@
                 <label for="nombre"><span class="campoperfil">Nombre Completo <span class="required">*</span></span><input  type="text" class="input-field" name="nombre" value="" id="nombre"/></label>
                 <nav class="btnfrm">
                     <ul>
-                        <li><input type="submit" value="Continuar" id="EnviaNuevoPerfil" class="botonesform" /></li>
-                        <li><button type="button" onclick="onVuelve()" >Volver</button></li>
+                        <li><input type="submit" class="btn" value="Continuar" id="EnviaNuevoPerfil" class="botonesform" /></li>
+                        <li><button type="button" class="btn" onclick="onVuelve()" >Volver</button></li>
                     </ul>
                 </nav>
             </form>
         </div>        
     </section>
+
     <aside>
     </aside>
+
 </body>
 
 </html>
+<script>
+// pregunta es nuevo visitante.
+ $( ".dialog-message" ).dialog({
+        modal: true,
+        closeOnEscape: false,
+        open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+        buttons: {
+            Nuevo: function() {
+                $( this ).dialog( "close" );         
+                return true;
+            },            
+            Buscar: function(){
+                $( this ).dialog( "close" );
+                // llama a ventana para buscar identificaciones por NOMBRE COMPLETO.
+                onVuelve("index.php?estado=buscar");
+                return false;
+            },
+            Volver: function() {
+                $( this ).dialog( "close" );   
+                onVuelve();
+                return false;
+            }
+        }
+    });
+</script>
