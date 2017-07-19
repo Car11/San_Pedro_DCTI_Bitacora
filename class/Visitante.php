@@ -2,9 +2,13 @@
 if (!isset($_SESSION))
     session_start();
 
-
-    $visitante= new Visitante();
-    $visitante->ConsultaVisitante();
+if(isset($_POST["action"])){
+    if($_POST["action"]=="Excluye"){
+            $visitante= new Visitante();
+        $visitante->ConsultaVisitante();
+    }
+}
+    
 
 
 class Visitante{

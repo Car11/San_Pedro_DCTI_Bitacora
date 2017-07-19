@@ -113,7 +113,7 @@ $data= $formulario->ConsultaFormulario();
             };
 
             var formtemp= "<?php echo $formtemp; ?>";
-            alert(formtemp);
+            //alert(formtemp);
             if(formtemp!="NULL")
                 this.ajaxSent();
             //For sending message
