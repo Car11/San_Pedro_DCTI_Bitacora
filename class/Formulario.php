@@ -95,31 +95,32 @@ class Formulario
             $result = DATA::Ejecutar($sql, $param);
             // sesion del formulario temporal
             
-            //Elimina los registros de acuerdo al ID del Formulario
-            $sql="DELETE FROM visitanteporformulario WHERE idformulario=:identificador";
-            $param= array(':identificador'=>$this->id);
-            $result = DATA::Ejecutar($sql, $param);
-
             //Convierte el string en un arreglo
             $visitantearray = explode(",", $this->visitante);
-            //Calcula la longitud del arreglo de visitantes
-            $longitud = count($visitantearray);
-            // formulario temporal, vacia la variable para llenarla con los id de los visitantes.
-            if(isset( $_SESSION['TEMP']))
-                $_SESSION['TEMP']="";
+
+            //Elimina los registros segun el arreglo de visitantes
+            $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET(idvisitante,:EXCLUSION) 
+            and idformulario=:idformulario";
+            $param= array(':EXCLUSION'=>$this->visitante,
+            ':idformulario'=>$this->id);
+
+            $result = DATA::Ejecutar($sql, $param);
             
+            $longitud = count($visitantearray);
+
             //Recorre el arreglo e inserta cada item en la tabla intermedia
             for ($i=0; $i<$longitud; $i++) {
-                
-                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
-                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
-                $result = DATA::Ejecutar($sql, $param);
-                 // formulario temporal, agrega los idvisitante.
-                if(isset( $_SESSION['TEMP'])){
-                    $_SESSION['TEMP'] = $_SESSION['TEMP'] . $visitantearray[$i] . '-' . $this->estado . ',';
+                //Si no existe Inserta
+                $existe="SELECT id from visitanteporformulario WHERE idvisitante = :idvisitante AND idformulario = :idformulario";
+                $parametro= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
+                $resultadoexiste= DATA::Ejecutar($existe, $parametro);
+
+                if(count($resultadoexiste)==0){
+                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES(:idvisitante,:idformulario)";
+                    $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
+                    $result = DATA::Ejecutar($sql, $param);
                 }
-            }
-                        
+            }       
             header('Location:../ListaFormulario.php');
             exit;
         } catch (Exception $e) {
