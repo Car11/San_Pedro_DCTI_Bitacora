@@ -265,17 +265,6 @@ class Visitante{
             exit;
         }                                     
     }
-    
-    function FormularioIngresoConsultaVisitante(){
-        try {
-           $sql = "SELECT cedula, nombre, empresa FROM visitante";
-           $result = DATA::Ejecutar($sql);
-           return $result;                                 
-        }catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            exit;
-        }                                     
-    }
 
     function ConsultaVisitante()
     {
@@ -297,7 +286,5 @@ class Visitante{
             exit;
         }
     } 
-    
-
 }
 ?>

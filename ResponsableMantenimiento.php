@@ -56,22 +56,19 @@ $rol=$_SESSION['rol'];
                 </div>
             </div>
             <div id="formresposables">
-                    <div id="cajainputrespsuperior">
-                    <div id=""></div>
-                    </div> 
-                    <div id="cajainputresp">
+                    <div class="cajainputresp">
                         <label for="txttramitante" class="labelformat">Nombre</label></br>
                         <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="inputformat" value=""/>
                     </div>                   
-                    <div id="cajainputresp">
+                    <div class="cajainputresp">
                         <label for="txtautorizador" class="labelformat">Cedula</label></br>
                         <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="inputformat" value=""/> 
                     </div>
-                    <div id="cajainputresp">
+                    <div class="cajainputresp">
                         <label for="txtautorizador" class="labelformat">Empresa</label></br>
                         <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="inputformat" value=""/> 
                     </div>
-                    <div id="cajainputresp">
+                    <div class="cajainputresp">
                         <input id="EnviaResponsable" class="cbp-mc-submit" type="submit" value="Enviar Responsable">
                     </div>    
             </div>
@@ -96,6 +93,8 @@ $rol=$_SESSION['rol'];
                     print "<td>".$responsables[$i][1]."</td>";
                     print "<td>".$responsables[$i][2]."</td>";
                     print "<td>".$responsables[$i][3]."</td>";
+                    print "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>";
+                    print "<td><img id=imgdelete src=img/file_delete.png class=borrar></td>";
                     print "</tr>";
                 }
                 print "</tbody>";
