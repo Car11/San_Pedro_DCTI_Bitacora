@@ -1,21 +1,15 @@
-<?php 
-if (!isset($_SESSION)) 
+<?php
+if (!isset($_SESSION)) {
     session_start();
+}
 
 // Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();
-if (!$sesion->estado){
+if (!$sesion->estado) {
     header('Location: login.php');
     exit;
 }
-
-//VISITANTE
-//include("class/Visitante.php");
-//$visitante= new Visitante();
-//$visitantes= $visitante->FormularioIngresoConsultaVisitante();
-//$visitantes= $visitante->ConsultaVisitante();
-
 //FORMULARIO - Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
 $formulario = new Formulario();
@@ -23,7 +17,7 @@ $estadoformulario=0;
 $id=0;
 $largo=0;
 $visitanteformulario=0;
-if (isset($_GET['ID'])) {    
+if (isset($_GET['ID'])) {
     $id=$_GET['ID'];
     // es formulario temporal
     $_SESSION['TEMP']=$id;
@@ -35,10 +29,8 @@ if (isset($_GET['ID'])) {
     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
     $largo=count($visitanteformulario);
 }
-if (isset($_GET['MOD'])) {    
+if (isset($_GET['MOD'])) {
     $id=$_GET['MOD'];
-    //es formulario temporal
-    //$_SESSION['TEMP']=$id;
     $formulario->id=$id;
     //Carga la sala según el link
     $formdata= $formulario->Cargar();
@@ -50,21 +42,21 @@ if (isset($_GET['MOD'])) {
 
 
 //SALA 
-include("class/sala.php");    
+include("class/sala.php");
 $sala= new Sala();
 $salas=$sala->Disponibles();
 
 //RESPONSABLE
-include("class/responsable.php");  
+include("class/responsable.php");
 $responsable= new Responsable();
 $responsables= $responsable->Consulta();
 
 //USER AND ROL
-include("class/usuario.php");  
+include("class/usuario.php");
 $usuario = new usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
-$rol=$_SESSION['rol'];  
+$rol=$_SESSION['rol'];
 
 ?>
 
@@ -78,14 +70,14 @@ $rol=$_SESSION['rol'];
     <link href="css/formulario.css" rel="stylesheet"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
- 	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+    <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
 </head>
 <body> 
     <header>
-	<h1>FORMULARIO DE INGRESO</h1>        
+    <h1>FORMULARIO DE INGRESO</h1>        
     <div id="logo"><img src="img/logoice.png" height="75" ></div>
-	</header>
+    </header>
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
         <div id="izquierda">
@@ -108,24 +100,32 @@ $rol=$_SESSION['rol'];
                     <div id="cajainput">
                         <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
                         <input type="datetime-local" name="fechaingreso" class="inputformat" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                            print $formdata[0][4];
+}?>" required/>
                     </div>
                     <div id="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
                         <input type="text" id="txtresponsable" name="txtresponsable" placeholder="CLICK" class="inputformat" readonly="readonly"
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][8];}?>" required/>  
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                            print $formdata[0][8];
+}?>" required/>  
                     </div>
                 </div>
                 <div id="caja">
                     <div id="cajainput">
                         <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
                         <input type="datetime-local" name="fechasalida" class="inputformat" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                            print $formdata[0][5];
+}?>" required/> 
                     </div>
                     <div id="cajainput">
                         <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
                         <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="inputformat" readonly="readonly"
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][9];}?>" required/> 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                            print $formdata[0][9];
+}?>" required/> 
                     </div>
                 </div>
                 <div id="caja">
@@ -137,7 +137,9 @@ $rol=$_SESSION['rol'];
                     <div id="cajainput">
                         <label for="txtautorizador" class="labelformat">Autorizador</label></br>
                         <input type="text" id="txtautorizador" name="txtautorizador" placeholder="" class="inputformat" readonly="readonly" 
-                        value="<?php if ($rol==1) echo($usuario->nombre); ?>"/> 
+                        value="<?php if ($rol==1) {
+                            echo($usuario->nombre);
+} ?>"/> 
                     </div>
                 </div>
             </div>  
@@ -158,17 +160,17 @@ $rol=$_SESSION['rol'];
                             print "</thead>";
                             if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                                 print "<tbody>";
-                                for($i=0; $i<count($visitanteformulario); $i++){
+                                for ($i=0; $i<count($visitanteformulario); $i++) {
                                     print "<tr>";
                                     print "<td>".$visitanteformulario[$i][0]."</td>";
                                     print "<td>".$visitanteformulario[$i][1]."</td>";
                                     print "<td>".$visitanteformulario[$i][2]."</td>";
                                     print "<td><img id=imgdelete src=img/file_delete.png class=borrar></td>";
-                                    print "</tr>";                                 
+                                    print "</tr>";
                                 }
-                                print "</tbody>";                                    
-                            }                            
-                            print "</table>"; 
+                                print "</tbody>";
+                            }
+                            print "</table>";
                             ?>
                         </div>
                     <div id="btnagregarvisitante">
@@ -184,7 +186,11 @@ $rol=$_SESSION['rol'];
                         </div>
                         <div id="cajanumform2">
                             <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
-                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][0]; else echo "nuevo";?>"/>   
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                echo $formdata[0][0];
+} else {
+    echo "nuevo";
+}?>"/>   
                         </div>
                         
                     </div>
@@ -215,26 +221,34 @@ $rol=$_SESSION['rol'];
                     <div class="cajainput2">
                         <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
                         <input type="text" id="placavehiculo" class="inputformat" name="placavehiculo" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][10];}?>" 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                            print $formdata[0][10];
+}?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                     </div>      
                     <div class="cajainput2">
                         <label for="detalleequipo" class="labelformat">Detalle Equipo</label>
                         <input type="text" id="detalleequipo" class="inputformat" name="detalleequipo" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][11];}?>" 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                            print $formdata[0][11];
+}?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                     </div>
                     <div class="cajainput2">
                         <label for="txtrfc" class="labelformat">RFC          :</label>
                         <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="inputformat" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][12];}?>" 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                            print $formdata[0][12];
+}?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>
                     </div>  
                 </div>
                 <div id="cajade3">
                     <label for="motivovisita" class="labelformat">Motivo Visita</label>
                     <input type="text" id="motivovisita" name="motivovisita" 
-                    value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
+                    value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                        echo $formdata[0][3];
+}?>" required 
                     pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                 </div>
             </div>  
@@ -255,7 +269,7 @@ $rol=$_SESSION['rol'];
             </div>
             <div class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR RESPONSABLES -->
-                <?php 
+                <?php
                 print "<table id='tblresponsable'class='display'>";
                 print "<thead>";
                 print "<tr>";
@@ -264,9 +278,9 @@ $rol=$_SESSION['rol'];
                 print "<th>Cedula</th>";
                 print "<th>Empresa</th>";
                 print "</tr>";
-                print "</thead>";	
+                print "</thead>";
                 print "<tbody>";
-                for($i=0; $i<count($responsables); $i++){
+                for ($i=0; $i<count($responsables); $i++) {
                     print "<tr>";
                     print "<td>".$responsables[$i][0]."</td>";
                     print "<td>".$responsables[$i][1]."</td>";
@@ -295,15 +309,15 @@ $rol=$_SESSION['rol'];
             </div>
             <div class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR RESPONSABLES -->
-                <?php 
+                <?php
                 print "<table id='tblsala'class='display'>";
                 print "<thead>";
                 print "<tr>";
                 print "<th>Locación</th>";
                 print "</tr>";
-                print "</thead>";	
+                print "</thead>";
                 print "<tbody>";
-                for($i=0; $i<count($salas); $i++){
+                for ($i=0; $i<count($salas); $i++) {
                     print "<tr>";
                     print "<td>".$salas[$i][1]."</td>";
                     print "</tr>";
@@ -344,7 +358,11 @@ $rol=$_SESSION['rol'];
     var jSala=[];
     var jResponsable=[];
     var jVisitante=[]; 
-    var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {echo count($visitanteformulario);}else{echo 0;}?>";
+    var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+        echo count($visitanteformulario);
+} else {
+    echo 0;
+}?>";
     // Obtiene el MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     

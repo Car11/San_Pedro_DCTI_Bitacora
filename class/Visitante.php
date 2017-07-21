@@ -8,8 +8,6 @@ if(isset($_POST["action"])){
         $visitante->ConsultaVisitante();
     }
 }
-    
-
 
 class Visitante{
 	public $cedula;//id
@@ -22,6 +20,7 @@ class Visitante{
 	function __construct(){
         require_once("conexion.php");
     }
+
     function ValidaID(){
         try{
             if(strlen($this->cedula)<=2)
@@ -130,14 +129,7 @@ class Visitante{
                             $_SESSION['estado']='3';
                         return false;
                     }
-                }
-                /*}
-                else {
-                    // error.
-                    unset($_SESSION['estado']);
-                    header('Location: ../Error.php?w=validarVisitanteFormulario');
-                    exit;
-                }    */                      
+                }                    
             }else {
                 // return false;
                 // NO tiene formulario.
@@ -145,7 +137,6 @@ class Visitante{
                  if(!$this::ValidarPermisoAnual()) {
                     // Visitante sin formulario y no en lista anual.
                     $_SESSION['estado']='4';
-                    //return false;
                 }
             }
         }
@@ -217,7 +208,9 @@ class Visitante{
     
     function Cargar($ID){
         try {
-            $sql='SELECT * FROM visitante where cedula=:cedula';
+            $sql="SELECT CEDULA, NOMBRE, EMPRESA, PERMISOANUAL 
+                FROM visitante 
+                where cedula=:cedula";
             $param= array(':cedula'=>$ID);
             $data= DATA::Ejecutar($sql,$param);
             //
@@ -236,7 +229,7 @@ class Visitante{
     
     function CargarTodos(){
         try {
-            $sql='SELECT cedula, nombre, empresa FROM visitante ORDER BY cedula';
+            $sql='SELECT cedula, nombre, empresa, permisoanual FROM visitante ORDER BY cedula';
             $data= DATA::Ejecutar($sql);
             return $data;
         }
@@ -246,28 +239,6 @@ class Visitante{
         }
     }
     
-    function ConsultaBitacora(){
-        try {
-           $sql = "SELECT * FROM bitacora";
-           $result = DATA::Ejecutar($sql);
-           return $result;                                 
-        }catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            exit;
-        }                                     
-    }
-    
-    function FormularioIngresoConsultaVisitante(){
-        try {
-           $sql = "SELECT cedula, nombre, empresa FROM visitante";
-           $result = DATA::Ejecutar($sql);
-           return $result;                                 
-        }catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            exit;
-        }                                     
-    }
-
     function ConsultaVisitante()
     {
         try {
@@ -288,7 +259,5 @@ class Visitante{
             exit;
         }
     } 
-    
-
 }
 ?>
