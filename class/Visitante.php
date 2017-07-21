@@ -50,11 +50,11 @@ class Visitante{
             // es una tarjeta. Aplica solo para salidas.
             // Busca la tarjeta en estado 1 y su visitante asignado (visitanteporformulario)
             // Si no hay, muestra mensaje que la tarjeta no está en uso.
-            $sql= "SELECT vf.id as idvisitanteformulario , idformulario, idvisitante, entrada, salida, idtarjeta
-                FROM TARJETA t inner join visitanteporformulario vf on vf.idtarjeta= t.id
+            $sql= "SELECT b.id as idbitacora  , idformulario, idvisitante, entrada, salida, idtarjeta
+                FROM TARJETA t inner join bitacora b on b.idtarjeta= t.id
                 WHERE t.ID=:idtarjeta AND ESTADO=1 
-                order by vf.id desc limit 1";
-            $param= array(':idtarjeta'=>$this->cedula); // cedula en este caso es el idtarjeta.
+                order by b.id desc limit 1";
+            $param= array(':idtarjeta'=>$this->cedula);   // cedula en este caso es el idtarjeta que viaja por POST
             $data = DATA::Ejecutar($sql,$param);      
             if (count($data)) {      
                 // Valida que es una salida.
@@ -64,7 +64,7 @@ class Visitante{
                 {
                     // La tarjeta está en uso.
                     $_SESSION['estado']='fin';
-                    $_SESSION['bitacora']=$data[0]['idvisitanteformulario'];
+                    $_SESSION['bitacora']=$data[0]['idbitacora'];
                     $_SESSION['idformulario']=$data[0]['idformulario'];
                     $_SESSION["cedula"]=$data[0]['idvisitante'];
                 }   
@@ -101,52 +101,43 @@ class Visitante{
                 //
                 $fechaanticipada  = new DateTime($formulario->fechaingreso);
                 date_sub($fechaanticipada ,  date_interval_create_from_date_string('1 hour') );
-                //if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
-                if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
-                {
-                    // return true;           
-                    // busca si es una salida o entrada.
-                    $sql= "SELECT vf.id, vf.entrada , vf.salida 
-                        FROM visitanteporformulario vf inner join formulario f on f.id=vf.idformulario
-                        where vf.idvisitante=:idvisitante and f.id=:idformulario
-                        order by vf.id desc limit 1 ";
-                    $param= array(':idvisitante'=>$this->cedula, ':idformulario'=>$formulario->id);
-                    $data = DATA::Ejecutar($sql,$param);      
-                    if (count($data)) {                                 
-                        $entrada= $data[0]['entrada'];
-                        $salida= $data[0]['salida'];
-                        if($entrada===NULL  and $salida===NULL)
-                        {
-                            // es primer entrada. 
-                            $_SESSION['bitacora']=$data[0]['id']; // id de visitanteporformulario 
-                            
-                        }
-                        else if($entrada!=NULL and $salida==NULL)
-                        {
-                            // es salida.
-                            $_SESSION['estado']='fin';
-                            $_SESSION['bitacora']=$data[0]['id']; // id de visitanteporformulario 
-                        }
-                        else 
-                        {
-                            // nueva entrada.
-                            $_SESSION['bitacora'] = "NUEVO"; // Nuevo id de visitanteporformulario 
-                        }
-                    }
-                    else {
-                        // error.
-                        unset($_SESSION['estado']);
-                        header('Location: ../Error.php?w=validarVisitanteFormulario');
-                        exit;
+                // busca si es una salida o entrada.
+                $sql = "SELECT id, entrada, salida, idtarjeta
+                    FROM bitacora 
+                    where idvisitante=:idvisitante and idformulario=:idformulario
+                    order by id desc limit 1 ";
+                $param= array(':idvisitante'=>$this->cedula, ':idformulario'=>$formulario->id);
+                $data = DATA::Ejecutar($sql,$param);      
+                if (count($data)) {                                 
+                    $entrada= $data[0]['entrada'];
+                    $salida= $data[0]['salida'];
+                    //
+                    if($entrada!=NULL and $salida==NULL)
+                    {
+                        // es salida.
+                        $_SESSION['estado']='fin';
+                        $_SESSION['bitacora']=$data[0]['id']; // id de Bitacora 
                     }
                 }
+                else 
+                {
+                    // nueva entrada.
+                    if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
+                        $_SESSION['bitacora'] = "NUEVO"; // Nuevo id de Bitacora 
+                    else {
+                        // la entrada no es en la fecha/hora correcta.
+                        if(!$this::ValidarPermisoAnual())                        
+                            $_SESSION['estado']='3';
+                        return false;
+                    }
+                }
+                /*}
                 else {
-                    // no hay formulario para la fecha.
-                    // Si no hay permiso anual, tiempo expirado, estado = 3.          
-                    if(!$this::ValidarPermisoAnual())                        
-                        $_SESSION['estado']='3';
-                    //return false;
-                }                
+                    // error.
+                    unset($_SESSION['estado']);
+                    header('Location: ../Error.php?w=validarVisitanteFormulario');
+                    exit;
+                }    */                      
             }else {
                 // return false;
                 // NO tiene formulario.

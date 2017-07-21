@@ -25,7 +25,7 @@ class Tarjeta{
 
     function CargaTarjetaAsignada($idvisitante , $idformulario){
         $sql="SELECT idtarjeta 
-            from visitanteporformulario
+            from bitacora
             where idvisitante= :idvisitante and idformulario= :idformulario
             order by id desc limit 1";
         $param= array(':idvisitante'=>$idvisitante, ':idformulario'=>$idformulario);

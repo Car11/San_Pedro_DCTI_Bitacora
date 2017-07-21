@@ -37,27 +37,32 @@ class Bitacora{
     
     function __construct(){
         require_once("conexion.php");  
-        include("email.php");  
+        require_once("email.php");  
     }
     
     function Entrada(){
         try {
-            if($this->id=='NUEVO')
+           /* if($this->id=='NUEVO')
             {
-                $sql = "INSERT INTO visitanteporformulario (idvisitante, idformulario, entrada, idtarjeta)
+                $sql = "INSERT INTO bitacora (idvisitante, idformulario, entrada, idtarjeta)
                     VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
                 $param= array(':idvisitante'=>$this->idvisitante, 
                     ':idformulario'=>$this->idformulario,
                     ':idtarjeta'=>$this->idtarjeta);
             }
             else{
-                $sql="UPDATE visitanteporformulario
+                $sql="UPDATE bitacora
                     set entrada= now(), idtarjeta= :idtarjeta
                     where id= :id";
                 $param= array(':id'=>$this->id, 
                     ':idtarjeta'=>$this->idtarjeta);
-            }            
+            }    */
             //
+            $sql = "INSERT INTO bitacora (idvisitante, idformulario, entrada, idtarjeta)
+                    VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
+            $param= array(':idvisitante'=>$this->idvisitante, 
+                ':idformulario'=>$this->idformulario,
+                ':idtarjeta'=>$this->idtarjeta);
             $data = DATA::Ejecutar($sql,$param, true);
             if($data){
                 // Cambia el estado de la tarjeta asignada = 1.
@@ -93,7 +98,7 @@ class Bitacora{
 	function Salida(){
         try {
            	date_default_timezone_set('America/Costa_Rica');
-	        $sql="UPDATE visitanteporformulario 
+	        $sql="UPDATE bitacora 
                 SET salida= :salida
                 WHERE id = :id";
 	        $param= array(':salida'=>date('Y-m-d H:i:s',time()), ':id'=>$this->id);
