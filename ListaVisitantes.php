@@ -33,6 +33,7 @@ if (isset($_GET['MOD'])) {
     <script src="js/jquery.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     <script src="js/funciones-Visitante.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
 </head>
 
 <body> 
@@ -51,7 +52,7 @@ if (isset($_GET['MOD'])) {
         <section>
            <div id="superiornavegacion">
                 <div id="nuevo">
-                    <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="AbreModalInsertar()";>      
+                    <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="Nuevo()";>      
                 </div>
                 <div id="atraslista">
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás" onclick="location.href='MenuAdmin.php'";>   
@@ -72,7 +73,7 @@ if (isset($_GET['MOD'])) {
                     print "<th>ELIMINAR</th>";
                     print "</tr>";
                     print "</thead>";
-                    print "<tbody>";
+                    print "<tbody id='tableBody'>";
                     for ($i=0; $i<count($data); $i++) {
                         print "<tr>";
                         print "<td>".$data[$i][0]."</td>";
@@ -104,7 +105,7 @@ if (isset($_GET['MOD'])) {
             <!-- Modal body -->
             <div class="modal-body">
                 <div id="form">
-                    <h1>Nuevo Visitante</h1>
+                    <!-- <h1>Nuevo Visitante</h1> -->
 
                     <form name="perfil" method="POST" >
                         <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>

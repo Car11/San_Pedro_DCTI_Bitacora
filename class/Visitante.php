@@ -8,6 +8,9 @@ if(isset($_POST["action"])){
         case "Excluye":
             $visitante->ConsultaVisitante();
             break;
+        case "CargarTodos":
+            echo json_encode($visitante->CargarTodos());
+            break;
         case "Cargar":
             echo json_encode($visitante->Cargar($_POST["idvisitante"]));
             break;
@@ -16,6 +19,12 @@ if(isset($_POST["action"])){
             $visitante->nombre= $_POST["nombre"];
             $visitante->empresa= $_POST["empresa"];
             $visitante->Agregar();
+            break;
+        case "Modificar":
+            $visitante->cedula= $_POST["cedula"];
+            $visitante->nombre= $_POST["nombre"];
+            $visitante->empresa= $_POST["empresa"];
+            $visitante->Modificar();
             break;
     }
     
@@ -226,8 +235,10 @@ class Visitante{
 
     function Modificar(){
         try {
-            $sql='UPDATE visitante (nombre, cedula, empresa, PERMISOANUAL) VALUES (:nombre, :cedula, :empresa, :permisoanual)';
-            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual);
+            $sql="UPDATE visitante 
+                SET nombre= :nombre, cedula= :cedula, empresa= :empresa
+                WHERE cedula=:cedula";
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
                 return true;
