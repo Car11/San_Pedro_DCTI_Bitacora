@@ -98,9 +98,12 @@ class Formulario
             //Convierte el string en un arreglo
             $visitantearray = explode(",", $this->visitante);
 
+
+            //$entradaexiste="SELECT id FROM visitanteporformulario WHERE ";
+
             //Elimina los registros segun el arreglo de visitantes
             $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET(idvisitante,:EXCLUSION) 
-            and idformulario=:idformulario";
+            AND idformulario=:idformulario";
             $param= array(':EXCLUSION'=>$this->visitante,
             ':idformulario'=>$this->id);
 
@@ -133,8 +136,8 @@ class Formulario
     function ConsultaFormulario()
     {
         try {
-            $sql = "SELECT id,fechasolicitud,motivovisita,(SELECT nombre FROM estado WHERE id=idestado),fechaingreso,fechasalida,idtramitante,
-            idautorizador,idresponsable,(SELECT nombre from sala WHERE id=idsala),placavehiculo,detalleequipo,rfc
+            $sql = "SELECT id,fechasolicitud,motivovisita,(SELECT nombre FROM estado WHERE id=idestado),fechaingreso,fechasalida,(SELECT nombre FROM usuario WHERE id=idtramitante),
+            (SELECT nombre FROM usuario WHERE id=idautorizador),idresponsable,(SELECT nombre from sala WHERE id=idsala),placavehiculo,detalleequipo,rfc
             FROM formulario ORDER BY id DESC;";
             $result = DATA::Ejecutar($sql);
             return $result;
@@ -215,7 +218,7 @@ class Formulario
     function CargaVisitanteporFormulario()
     {
         try {
-            $sql="SELECT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
+            $sql="SELECT DISTINCT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
             on v.cedula=vpf.idvisitante and vpf.idformulario=:identificador";
             $param= array(':identificador'=>$this->id);
             $result = DATA::Ejecutar($sql, $param);

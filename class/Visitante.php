@@ -4,7 +4,7 @@ if (!isset($_SESSION))
 
 if(isset($_POST["action"])){
     if($_POST["action"]=="Excluye"){
-            $visitante= new Visitante();
+        $visitante= new Visitante();
         $visitante->ConsultaVisitante();
     }
 }
@@ -256,17 +256,6 @@ class Visitante{
             exit;
         }                                     
     }
-    
-    function FormularioIngresoConsultaVisitante(){
-        try {
-           $sql = "SELECT cedula, nombre, empresa FROM visitante";
-           $result = DATA::Ejecutar($sql);
-           return $result;                                 
-        }catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            exit;
-        }                                     
-    }
 
     function ConsultaVisitante()
     {
@@ -288,7 +277,5 @@ class Visitante{
             exit;
         }
     } 
-    
-
 }
 ?>

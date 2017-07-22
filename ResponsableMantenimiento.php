@@ -43,7 +43,7 @@ $rol=$_SESSION['rol'];
     <div id="logo"><img src="img/logoice.png" height="75" ></div>
 	</header>
     <div id="general">
-        <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
+        <form class="cbp-mc-form" method="POST" action="request/EnviaResponsable.php" onSubmit="return EnviaResponsable()">       
         <div id="izquierda">
  
         </div>
@@ -56,23 +56,22 @@ $rol=$_SESSION['rol'];
                 </div>
             </div>
             <div id="formresposables">
-                    <div id="cajainputrespsuperior">
-                    <div id=""></div>
-                    </div> 
-                    <div id="cajainputresp">
+                    <div class="cajainputresp">
                         <label for="txttramitante" class="labelformat">Nombre</label></br>
                         <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="inputformat" value=""/>
                     </div>                   
-                    <div id="cajainputresp">
+                    <div class="cajainputresp">
                         <label for="txtautorizador" class="labelformat">Cedula</label></br>
                         <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="inputformat" value=""/> 
                     </div>
-                    <div id="cajainputresp">
+                    <div class="cajainputresp">
                         <label for="txtautorizador" class="labelformat">Empresa</label></br>
                         <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="inputformat" value=""/> 
                     </div>
-                    <div id="cajainputresp">
-                        <input id="EnviaResponsable" class="cbp-mc-submit" type="submit" value="Enviar Responsable">
+                    <div class="cajainputresp">
+                        <input id="btnInsertaResponsable" class="cbp-mc-submit" type="button" value="Inserta Responsable">
+                        <input id="btnModificaResponsable" class="cbp-mc-submit" type="button" value="Modifica Responsable">
+                        <input id="idresponsable" name="idresponsable" type="hidden">
                     </div>    
             </div>
             <div id="tablaresponsable">
@@ -82,8 +81,8 @@ $rol=$_SESSION['rol'];
                 print "<thead>";
                 print "<tr>";
                 print "<th id='tituloid'>ID</th>";
-                print "<th id='titulocedula'>Cedula</th>";
-                print "<th id='titulonombre'>Nombre</th>";
+                print "<th id='titulocedula'>Nombre</th>";
+                print "<th id='titulonombre'>Cédula</th>";
                 print "<th id='tituloempresa'>Empresa</th>";
                 print "<th id='titulomodificar'>Modificar</th>";
                 print "<th id='tituloeliminar'>Eliminar</th>";
@@ -96,6 +95,8 @@ $rol=$_SESSION['rol'];
                     print "<td>".$responsables[$i][1]."</td>";
                     print "<td>".$responsables[$i][2]."</td>";
                     print "<td>".$responsables[$i][3]."</td>";
+                    print "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>";
+                    print "<td><img id=imgdelete src=img/file_delete.png class=borrar href='EnviaResponsable.php'></td>";
                     print "</tr>";
                 }
                 print "</tbody>";
@@ -111,11 +112,114 @@ $rol=$_SESSION['rol'];
     </div>    
     
 <script>
+    var idresponsabletbl;
     $(document).ready( function () {             
+        $('#btnModificaResponsable').hide();
+        $('#btnInsertaResponsable').show();
         $('#tblresponsable').DataTable();   
+        LimpiaInputs();
     } );
+
+
+    //Limpia los input despues de insertar o modificar
+    function LimpiaInputs(){
+        document.getElementById("txtnombre").value = "";
+        document.getElementById("txtcedula").value = "";
+        document.getElementById("txtempresa").value = "";
+    }
     
-    
+    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
+    $(document).on('click', '.borrar', function (event) {
+        var idresponsable = $(this).parents("tr").find("td").eq(0).text();
+        document.getElementById("idresponsable").value = idresponsable;
+        
+        $.ajax({
+            type: "POST",
+            url: "class/Responsable.php",
+            data: {
+                    action: "Eliminar",
+                    idresponsable: document.getElementById('idresponsable').value
+                  }
+        })
+        .done(function( e ) {
+            location.reload();
+            alert("Responsable Eliminado!");
+        })    
+        .fail(function(msg){
+            alert("Error al Eliminar");
+        });
+        
+    });
+
+    //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
+    $(document).on('click', '.modificar', function (event) {
+        idresponsabletbl = $(this).parents("tr").find("td").eq(0).text();
+        $('#btnInsertaResponsable').hide();
+        $('#btnModificaResponsable').show();
+        $.ajax({
+            type: "POST",
+            url: "class/Responsable.php",
+            data: {
+                    action: "Cargar",
+                    idresponsable:  idresponsabletbl
+                  }
+        })
+        .done(function( e ) {
+            var responsable = JSON.parse(e);
+            document.getElementById('txtnombre').value = responsable[0][1];
+            document.getElementById('txtcedula').value = responsable[0][2];
+            document.getElementById('txtempresa').value = responsable[0][3];      
+        })    
+        .fail(function(msg){
+            alert("Error al Cargar");
+        });
+    });
+
+    //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
+    $(document).on('click', '#btnModificaResponsable', function (event) {
+        $.ajax({
+            type: "POST",
+            url: "class/Responsable.php",
+            data: {
+                    action: "Modificar",
+                    idresponsable: idresponsabletbl,
+                    nombre: document.getElementById('txtnombre').value,
+                    cedula: document.getElementById('txtcedula').value,
+                    empresa: document.getElementById('txtempresa').value
+                  }
+        })
+        .done(function( e ) {
+            location.reload();
+            alert("Responsable Modificado!");
+            
+        })    
+        .fail(function(msg){
+            alert("Error al Eliminar");
+        });
+        
+    });
+
+    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
+    $(document).on('click', '#btnInsertaResponsable', function (event) {
+        $.ajax({
+            type: "POST",
+            url: "class/Responsable.php",
+            data: {
+                    action: "Insertar",
+                    nombre: document.getElementById('txtnombre').value,
+                    cedula: document.getElementById('txtcedula').value,
+                    empresa: document.getElementById('txtempresa').value
+                  }
+        })
+        .done(function( e ) {
+            location.reload();
+            alert("Responsable Insertado!");
+            
+        })    
+        .fail(function(msg){
+            alert("Error al Eliminar");
+        });
+    });  
     
 </script>
 </body>
