@@ -322,7 +322,11 @@ $responsables= $responsable->Consulta();
             </div>
             <div id="visitante-modal" class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
-
+                <?php 
+                print "<table id='tblvisitante'class='display'>";
+                print "<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead>";	
+                print "</table>";
+                ?>     
             </div>
             <div class="modal-footer">
             <br>
@@ -412,9 +416,7 @@ $responsables= $responsable->Consulta();
         })
         .done(function( e ) {
             visitantereal = JSON.parse(e);
-            $('#visitante-modal').append("<table id='tblvisitante'></table>");
-            var tb1="<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody>";
-            $('#tblvisitante').append(tb1);
+            $('#tblvisitante').append("<tbody>");
             for (var i = 0; i < visitantereal.length; i++) {                
                 var tr1="<tr>";
                 var td1="<td>"+visitantereal[i][0] +"</td>";
@@ -423,8 +425,7 @@ $responsables= $responsable->Consulta();
                 var tr2="</tr>";
                 $('#tblvisitante').append(tr1+td1+td2+td3+tr2);
             }
-            var tb2="</tbody>";
-            $('#tblvisitante').append(tb2); 
+            $('#tblvisitante').append("</tbody>"); 
             $('#tblvisitante').DataTable();
         })    
         .fail(function(msg){
@@ -521,6 +522,8 @@ $responsables= $responsable->Consulta();
             var td3="<td>"+jVisitante[jVisitante.length-1].empresa +"</td>";
             var td4="<td><img id=imgdelete src=img/file_delete.png class=borrar></td></tr>";
             var tb2="</tbody>";
+            if(jVisitante[jVisitante.length-1].id==undefined)
+                return false;
             $("#tblvisitanteform").append(tb1+tr+td1+td2+td3+td4+tb2); 
             $('#imgflecha').removeClass('imagen');
             $('#imgflecha').addClass('imagenNO');

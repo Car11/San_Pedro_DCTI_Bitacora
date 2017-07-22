@@ -1,6 +1,26 @@
 <?php 
 if (!isset($_SESSION))
     session_start();
+
+if(isset($_POST["action"])){
+    if($_POST["action"]=="Eliminar"){
+        $responsable= new Responsable();
+        $responsable->Elimina();
+    }
+    if($_POST["action"]=="Insertar"){
+        $responsable= new Responsable();
+        $responsable->Inserta();
+    }
+    if($_POST["action"]=="Modificar"){
+        $responsable= new Responsable();
+        $responsable->Modifica();
+    }
+    if($_POST["action"]=="Cargar"){
+        $responsable= new Responsable();
+        $responsable->Cargar();
+    }
+}
+
 class Responsable{
 
     public $id;
@@ -15,36 +35,16 @@ class Responsable{
         //ini_set('display_errors', 1);
     }
 	    
-    //Agrega formulario 
-    function Inserta(){
+    //Modifica Responsable 
+    function Modifica(){
         try {                    
-            $sql='INSERT INTO formulario(fechaingreso,idsala,fechasolicitud,fechasalida,placavehiculo,detalleequipo,motivovisita)'. 
-                'VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasolicitud,:fechasalida,:placavehiculo,'.
-                ':detalleequipo,:motivovisita)';
-            $param= array(':fechaingreso'=>$this->fechaingreso,
-                          ':nombresala'=>$this->nombresala,
-                          ':fechasolicitud'=>$this->fechasolicitud,
-                          ':fechasalida'=>$this->fechasalida,
-                          ':placavehiculo'=>$this->placavehiculo,
-                          ':detalleequipo'=>$this->detalleequipo,
-                          ':motivovisita'=>$this->motivovisita);            
+            $sql="UPDATE responsable SET nombre=:nombre,cedula=:cedula,empresa=:empresa WHERE id=:idresponsable";
+            $param= array(':idresponsable'=>$_POST["idresponsable"],
+                          ':nombre'=>$_POST["nombre"],
+                          ':cedula'=>$_POST["cedula"],
+                          ':empresa'=>$_POST["empresa"]);            
             $result = DATA::Ejecutar($sql,$param);
-            
-            //Captura el id del formulario
-            $idformulario = DATA::$conn->lastInsertId();
-            //Convierte el string en un arreglo
-            $visitantearray = explode(",",$this->visitante);            
-            //Calcula la longitud del arreglo de visistantes
-            $longitud = count($visitantearray);
-            //Recorre el arreglo e inserta cada item en la tabla intermedia
-            for($i=0; $i<$longitud; $i++){
-                
-                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
-                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario); 
-                $result = DATA::Ejecutar($sql,$param);
-            }
-            
-            header('Location:../FormularioIngreso.php');
+            header("location:../ResponsableMantenimiento.php");
             exit;
         }     
         catch(Exception $e) {
@@ -52,7 +52,35 @@ class Responsable{
             exit;
         }
     }
-    
+
+    //Inserta Responsable 
+    function Inserta(){
+        try {                    
+            $sql="INSERT INTO responsable(nombre,cedula,empresa) VALUES (:nombre,:cedula,:empresa)";
+            $param= array(':nombre'=>$_POST["nombre"],
+                          ':cedula'=>$_POST["cedula"],
+                          ':empresa'=>$_POST["empresa"]);            
+            $result = DATA::Ejecutar($sql,$param);
+            header("location:../ResponsableMantenimiento.php");
+            exit;
+        }     
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            exit;
+        }
+    }
+    //Carga la lista de responsables 
+    function Cargar(){
+        try {
+			$sql = "SELECT id,nombre,cedula,empresa FROM responsable WHERE id=:idresponsable";
+			$param= array(':idresponsable'=>$_POST["idresponsable"]);            
+            $result = DATA::Ejecutar($sql,$param);
+			echo json_encode($result);			
+		}catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }		 	
+    }    
     
     //Consulta formulario para llenar tabla 
     function Consulta(){
@@ -65,6 +93,19 @@ class Responsable{
             exit;
         }		 	
     } 
+
+    //Elimina responsable de acuerdo al ID
+    function Elimina(){
+        try {
+			$sql="DELETE FROM responsable WHERE id=:idresponsable";
+            $param= array(':idresponsable'=>$_POST['idresponsable']);            
+            $result = DATA::Ejecutar($sql,$param);            
+			return $result;			
+		}catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }		 	
+    }
     
     function Carga(){
         try {
