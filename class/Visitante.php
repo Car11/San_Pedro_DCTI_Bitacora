@@ -3,10 +3,22 @@ if (!isset($_SESSION))
     session_start();
 
 if(isset($_POST["action"])){
-    if($_POST["action"]=="Excluye"){
-            $visitante= new Visitante();
-        $visitante->ConsultaVisitante();
+    $visitante= new Visitante();
+    switch($_POST["action"]){
+        case "Excluye":
+            $visitante->ConsultaVisitante();
+            break;
+        case "Cargar":
+            echo json_encode($visitante->Cargar($_POST["idvisitante"]));
+            break;
+        case "Insertar":
+            $visitante->cedula= $_POST["cedula"];
+            $visitante->nombre= $_POST["nombre"];
+            $visitante->empresa= $_POST["empresa"];
+            $visitante->Agregar();
+            break;
     }
+    
 }
 
 class Visitante{
@@ -21,6 +33,9 @@ class Visitante{
         require_once("conexion.php");
     }
 
+    //
+    // Funciones de validacion de identificacion y formulario de visitante.
+    //
     function ValidaID(){
         try{
             if(strlen($this->cedula)<=2)
@@ -191,10 +206,28 @@ class Visitante{
         }
     }    
     
+    //
+    // Funciones de Mantenimiento.
+    //
     function Agregar(){
         try {
             $sql='INSERT INTO visitante (nombre, cedula, empresa) VALUES (:nombre, :cedula, :empresa)';
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa);
+            $data = DATA::Ejecutar($sql,$param,true);
+            if($data)
+                return true;
+            else return false;
+        }     
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+    function Modificar(){
+        try {
+            $sql='UPDATE visitante (nombre, cedula, empresa, PERMISOANUAL) VALUES (:nombre, :cedula, :empresa, :permisoanual)';
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
                 return true;
@@ -218,11 +251,12 @@ class Visitante{
             $this->nombre= $data[0]['NOMBRE'];
             $this->empresa= $data[0]['EMPRESA'];
             $this->permisoanual= $data[0]['PERMISOANUAL'];
-            //
+            //            
             return $data;
         }
         catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            //header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            echo "Error al leer la información";
             exit;
         }
     }
@@ -239,6 +273,9 @@ class Visitante{
         }
     }
     
+    //
+    // Consulta lista de visitantes que no pertenece a un formulario especifico.
+    //
     function ConsultaVisitante()
     {
         try {

@@ -194,7 +194,7 @@ if (isset($_SESSION['idformulario'])) {
             </div>
         </div>
     </div>      
-    <!-- FIN MODAL ENTRADA/SALIDA -->
+    <!-- FIN MODAL -->
 
      <!-- MODAL VISITANTE -->
     <div id="Modal-Visitante" class="modal">
