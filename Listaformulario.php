@@ -1,6 +1,10 @@
 <?php 
 if (!isset($_SESSION)) 
     session_start();
+
+if (isset($_GET['Message'])) {
+    print '<script type="text/javascript">alert("' . $_GET['Message'] . '");</script>';
+}
 // Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();

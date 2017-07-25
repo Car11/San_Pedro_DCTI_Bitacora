@@ -6,6 +6,9 @@ function inicio() {
     $("#EnviaNuevoPerfil").click(onValidaNuevoPerfil);
     $("#EnviaInfoVisita").click(onValidaInfoVisita);
     $("#EnviaFormulario").click(onValidaFormulario);
+    $("#btnInsertaResponsable").click(onValidaResponsable);
+    $("#btnModificaResponsable").click(onValidaResponsable);
+    
 }
 
 this.MuestraMensajeTarjeta= function(){    
@@ -48,14 +51,53 @@ function onValidaFormulario() {
     var fechasalida = document.getElementsByName("fechasalida").value;
 
     if (responsable == ""){
-        alert("Debe de asignar un responsable!");
+        $("#txtresponsable").css("border", "2px solid red");
+        $("#txtresponsable").css("color", "red");
+        document.getElementById('txtresponsable').placeholder = "REQUERIDO";
+        //alert("Debe de asignar un responsable!");
         return false;
     }
     if (sala == ""){
-        alert("Debe de seleccionar una SALA!");
+        $("#selectsala").css("border", "2px solid red");
+        $("#selectsala").css("color", "red");
+        document.getElementById('selectsala').placeholder = "REQUERIDO";
+        return false;
+    }
+    if(motivo == ""){
+        $("#motivovisita").css("border", "2px solid red");
+        $("#motivovisita").css("color", "red");
+        document.getElementById('motivovisita').placeholder = "REQUERIDO";
         return false;
     }
 
+
+
+}
+
+function onValidaResponsable() {
+    var nombre = document.getElementById('txtnombre').value;
+    var cedula = document.getElementById('txtcedula').value;
+    var empresa = document.getElementById("txtempresa").value;
+
+    if (nombre == ""){
+        $("#txtnombre").css("border", "2px solid red");
+        $("#txtnombre").css("color", "red");
+        document.getElementById('txtnombre').placeholder = "REQUERIDO";
+        //alert("Debe de asignar un responsable!");
+        return false;
+    }
+    if (cedula == ""){
+        $("#txtcedula").css("border", "2px solid red");
+        $("#txtcedula").css("color", "red");
+        document.getElementById('txtcedula').placeholder = "REQUERIDO";
+        return false;
+    }
+    if(empresa == ""){
+        $("#txtempresa").css("border", "2px solid red");
+        $("#txtempresa").css("color", "red");
+        document.getElementById('txtempresa').placeholder = "REQUERIDO";
+        return false;
+    }
 }
 
 
