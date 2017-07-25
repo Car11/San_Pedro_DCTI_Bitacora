@@ -358,7 +358,7 @@ $responsables= $responsable->Consulta();
 
         if (existeid!=0){
             EstadoFormulario();  
-            FechaFormMod();
+            //FechaFormMod();
         }  
         else
             FechaFormNuevo();
