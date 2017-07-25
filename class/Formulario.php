@@ -1,4 +1,5 @@
 <?php
+//ob_start();
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -65,7 +66,6 @@ class Formulario
                 $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario);
                 $result = DATA::Ejecutar($sql, $param);
             }
-            
             header('Location:../ListaFormulario.php');
             exit;
         } catch (Exception $e) {
@@ -124,7 +124,7 @@ class Formulario
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
-            header('Location:../ListaFormulario.php');
+            header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());

@@ -32,10 +32,12 @@ $rol=$_SESSION['rol'];
     <link href="css/estilo.css" rel="stylesheet"/>        
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <link href="css/formulario.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
  	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/sweetalert2.js"></script>
 </head>
 <body> 
     <header>
@@ -142,8 +144,9 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            location.reload();
+            
             alert("Responsable Eliminado!");
+            location.reload();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
@@ -189,9 +192,9 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            location.reload();
-            alert("Responsable Modificado!");
             
+            alert("Responsable Modificado!");
+            location.reload();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
@@ -212,14 +215,36 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            location.reload();
-            alert("Responsable Insertado!");
             
+            alert("Responsable Insertado!");
+            location.reload();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
         });
     });  
+
+    $( "#txtnombre" ).change(function() {
+        $("#txtnombre").css("border", "0px");
+        $("#txtnombre").css("color", "black");
+        $("#txtnombre").css("background", "white");
+        document.getElementById('txtnombre').placeholder = "";
+    });
+
+    $( "#txtcedula" ).change(function() {
+        $("#txtcedula").css("border", "0px");
+        $("#txtcedula").css("color", "black");
+        $("#txtcedula").css("background", "white");
+        document.getElementById('txtcedula').placeholder = "";
+    });
+
+    $( "#txtempresa" ).change(function() {
+        $("#txtempresa").css("border", "0px");
+        $("#txtempresa").css("color", "black");
+        $("#txtempresa").css("background", "white");
+        document.getElementById('txtempresa').placeholder = "";
+    });
+
     
 </script>
 </body>

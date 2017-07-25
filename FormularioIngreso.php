@@ -67,12 +67,12 @@ $responsables= $responsable->Consulta();
     <link rel="stylesheet" href="css/estilo.css"     type="text/css"/>        
     <link rel="stylesheet" href="css/datatables.css" type="text/css"/>
     <link rel="stylesheet" href="css/formulario.css" type="text/css"/>
-    <link rel="stylesheet" href="css/sweetalert.css" type="text/css"/>
+    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
- 	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+ 	<script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
-    <script src="js/sweetalert.min.js"></script>
+    <script src="js/sweetalert2.js"></script>
 </head>
 <body> 
     <header>
@@ -125,12 +125,12 @@ $responsables= $responsable->Consulta();
                     <div id="cajainput">
                         <label for="txttramitante" class="labelformat">Tramitante</label></br>
                         <input type="text" id="txttramitante" name="txttramitante" placeholder="" class="inputformat" readonly="readonly" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>"/>
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>" />
                     </div>                   
                     <div id="cajainput">
                         <label for="txtautorizador" class="labelformat">Autorizador</label></br>
                         <input type="text" id="txtautorizador" name="txtautorizador" placeholder="" class="inputformat" readonly="readonly" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>"/> 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
                     </div>
                 </div>
             </div>  
@@ -356,8 +356,10 @@ $responsables= $responsable->Consulta();
     $(document).ready( function () {  
         ExcluyeVisitanteCarga();
 
-        if (existeid!=0)
-            EstadoFormulario();    
+        if (existeid!=0){
+            EstadoFormulario();  
+            FechaFormMod();
+        }  
         else
             FechaFormNuevo();
         // OBTIENE EL CSS PARA LOS TABLES
@@ -396,6 +398,31 @@ $responsables= $responsable->Consulta();
         document.getElementById("fechasalida").setAttribute("min", today);
         document.getElementById("fechaingreso").value = today;
         document.getElementById("fechasalida").value = salida;
+    }
+
+        //Establece la fecha de hoy a los datetme-local
+    function FechaFormMod(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var min = today.getMinutes();
+        if(dd<10){
+            dd='0'+dd
+        } 
+        if(mm<10){
+            mm='0'+mm
+        } 
+        if(hh<10){
+            hh='0'+hh
+        }
+        if(min<10){
+            min='0'+min
+        }
+        today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
+        document.getElementById("fechaingreso").setAttribute("min", today);
+        document.getElementById("fechasalida").setAttribute("min", today);
     }
 
 
@@ -624,8 +651,7 @@ $responsables= $responsable->Consulta();
             $('#imgflecha').addClass('imagen');
             return false;
         }
-        Swal ({Título: "Formulario Insertado!" ,Texto: "Se ha creado correctamente." ,Tipo: "success"});
-        //alert("Formulario Creado!");    
+        alert("Formulario Insertado Correctamente!");
     }   
 
     //MODAL RESPONSABLES ********/
@@ -642,7 +668,7 @@ $responsables= $responsable->Consulta();
         jResponsable.push(data); 
         $("#txtresponsable").val(jResponsable[jResponsable.length-1].nombre);
         modalResponsable.style.display = "none";
-        //$(this).toggleClass('selected')=false;                        
+        ValidacionCorrecta();                       
     });
 
     //MODAL SALAS ********/
@@ -656,7 +682,24 @@ $responsables= $responsable->Consulta();
         jSala.push(data); 
         $("#selectsala").val(jSala[jSala.length-1].sala);
         modalSala.style.display = "none";
-        //$(this).toggleClass('selected')=false;                        
+        ValidacionCorrecta();
+    });
+
+    function ValidacionCorrecta() {
+        $("#txtresponsable").css("border", "0px");
+        $("#txtresponsable").css("color", "black");
+        document.getElementById('txtresponsable').placeholder = "CLICK";    
+        $("#selectsala").css("border", "0px");
+        $("#selectsala").css("color", "black");
+        document.getElementById('selectsala').placeholder = "CLICK";
+
+    }
+
+    $( "#motivovisita" ).change(function() {
+        $("#motivovisita").css("border", "0px");
+        $("#motivovisita").css("color", "black");
+        $("#motivovisita").css("background", "white");
+        document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
     });
 
 </script>
