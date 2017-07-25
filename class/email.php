@@ -23,8 +23,8 @@ class email{
                 $formulario->Cargar();    
                 //
                 ini_set('SMTP','smtpapl.correo.ice');
-                //$to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>";
-                $to= "cchaconc@ice.go.cr";   
+                $to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>";
+                //$to= "cchaconc@ice.go.cr";   
                 $from = "operTI@ice.go.cr";
                 //
                 $mensaje = "<h2><i>".$mensajeEncabezado."<i><h2>";
@@ -44,7 +44,7 @@ class email{
                 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
                 $headers .= "From: ".$from."\r\n"; 
                 //
-                //mail($to, $asunto, $mensaje,$headers);      
+                mail($to, $asunto, $mensaje,$headers);      
             }            
         }     
         catch(Exception $e) {
