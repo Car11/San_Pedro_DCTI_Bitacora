@@ -33,7 +33,7 @@ $visitantes=[]; // arreglo de visitantes.
 if ($estado=="buscar"){
     require_once("class/Visitante.php");
     $visitante= new Visitante();
-    $visitantes= $visitante->FormularioIngresoConsultaVisitante();
+    $visitantes= $visitante->CargarTodos();
 }
 // Busca información del formulario para desplegar en pantalla.
 $formulario="NULL";
@@ -130,7 +130,7 @@ if (isset($_SESSION['idformulario'])) {
             <h2>Cédula / Identificación</h2>
             <form name="datos" id="datos" action="request/EnviaVisitante.php" method="POST">
                 <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
-                <input type="submit" class="btn" value="Consultar" id="enviar" />
+                <input type="submit" class="nbtn" value="Consultar" id="enviar" />
             </form>
         </div>
     </section>
@@ -181,8 +181,8 @@ if (isset($_SESSION['idformulario'])) {
                     </div>
                     <nav class="btnfrm">
                         <ul>
-                            <li><button type="button" class="btn" value="entrada" id="btncontinuar" >Entrada</button></li>
-                            <li><button type="button" class="btn" value="salida" id="btnsalida" >Salida</button></li>
+                            <li><button type="button" class="nbtn" value="entrada" id="btncontinuar" >Entrada</button></li>
+                            <li><button type="button" class="nbtn" value="salida" id="btnsalida" >Salida</button></li>
                             <!--<li><button type="button"  onclick="onCancelar()" id="btnvolver" >Volver</button> </li>-->
                         </ul>
                     </nav>

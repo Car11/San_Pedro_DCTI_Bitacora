@@ -4,9 +4,10 @@ if (!isset($_SESSION)) {
 }
 
 // Sesion de usuario
-include("class/sesion.php");
+require_once("class/sesion.php");
 $sesion = new sesion();
 if (!$sesion->estado) {
+    $_SESSION['url']= explode('/', $_SERVER['REQUEST_URI'])[2];
     header('Location: login.php');
     exit;
 }

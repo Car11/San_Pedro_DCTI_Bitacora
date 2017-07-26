@@ -62,8 +62,8 @@
                 <label for="nombre"><span class="campoperfil">Nombre Completo <span class="required">*</span></span><input  type="text" class="input-field" name="nombre" value="" id="nombre"/></label>
                 <nav class="btnfrm">
                     <ul>
-                        <li><input type="submit" class="btn" value="Continuar" id="EnviaNuevoPerfil" class="botonesform" /></li>
-                        <li><button type="button" class="btn" onclick="onVuelve()" >Volver</button></li>
+                        <li><input type="submit" class="nbtn" value="Continuar" id="EnviaNuevoPerfil" class="botonesform" /></li>
+                        <li><button type="button" class="nbtn" onclick="onVuelve()" >Volver</button></li>
                     </ul>
                 </nav>
             </form>

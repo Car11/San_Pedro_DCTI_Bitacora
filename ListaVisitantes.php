@@ -14,26 +14,25 @@ if (!$sesion->estado) {
 require_once("class/Visitante.php");
 $visitante= new Visitante();
 $data= $visitante->CargarTodos();
-/*$id="NULL";
-if (isset($_GET['MOD'])) {
-    $id=$_GET['MOD'];
-    $visitante->Cargar($id);
-} */
+
 ?>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
-   <!-- CSS -->
-    <link href="css/estilo.css" type="text/css" rel="stylesheet"/>
+   <!-- CSS -->    
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <link href="css/formulario.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/sweetalert2.css">
+    <link href="css/estilo.css" type="text/css" rel="stylesheet"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+    <script src="js/sweetalert2.js"></script>
     <script src="js/funciones-Visitante.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
+    
 </head>
 
 <body> 
@@ -41,7 +40,7 @@ if (isset($_GET['MOD'])) {
         <h1>LISTA DE VISITANTES</h1>        
         <div id="logo"><img src="img/logoice.png" height="75" > </div>
     </header>
-     <div id="mensajetop">
+    <div id="mensajetop">
         <span id="textomensaje"></span>
     </div>
 
@@ -50,7 +49,12 @@ if (isset($_GET['MOD'])) {
         </aside>
 
         <section>
-           <div id="superiornavegacion">
+            <div class="dialog-message" title="Visitante">
+                <p id="texto-mensaje">
+                    Desea Eliminar el Perfil?
+                </p>
+            </div>
+            <div id="superiornavegacion">
                 <div id="nuevo">
                     <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="Nuevo()";>      
                 </div>
@@ -128,8 +132,8 @@ if (isset($_GET['MOD'])) {
 
                         <nav class="btnfrm">
                             <ul>
-                                <li><button type="button" class="btn" onclick="Guardar()" >Guardar</button></li>
-                                <li><button type="button" class="btn" onclick="Cerrar()" >Cerrar</button></li>
+                                <li><button type="button" class="nbtn" onclick="Guardar()" >Guardar</button></li>
+                                <li><button type="button" class="nbtn" onclick="Cerrar()" >Cerrar</button></li>
                             </ul>
                         </nav>
 
@@ -150,4 +154,10 @@ if (isset($_GET['MOD'])) {
     </body>
 </html>
 
+<script>
+$(document).ready( function () {
 
+    
+    
+});
+</script>

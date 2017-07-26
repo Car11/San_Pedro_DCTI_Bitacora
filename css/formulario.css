@@ -374,6 +374,10 @@
     cursor: pointer;
 }
 
+.eliminar{
+    cursor: pointer;
+}
+
 .cbp-mc-submit {
 	background: #10689a;
 	border: none;

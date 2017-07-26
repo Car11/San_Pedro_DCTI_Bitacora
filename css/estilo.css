@@ -287,7 +287,7 @@ label {
     color: #fff;
 }*/
 
-.btn {    
+.nbtn {    
     border: none;
     padding: 9px 17px 10px 17px;
     background: #FF8500;
@@ -303,7 +303,7 @@ label {
     margin-top: 50;
 }
 
-.btn:hover {
+.nbtn:hover {
     background: #FFAB49;
     color: #fff;
 }
@@ -340,7 +340,7 @@ label {
 /********************************/
 
 #form {
-    background: gray;
+    /*background: gray;*/
     display: block;
     margin: 50 50 50 50;
     height: auto;

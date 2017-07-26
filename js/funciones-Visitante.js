@@ -50,6 +50,32 @@ $(document).ready( function () {
         });
     };
 
+    // evento click del boton eliminar
+    $('.eliminar').click( function(){
+        id = $(this).parents("tr").find("td").eq(0).text();    
+        // Mensaje de borrado:
+        swal({
+            title: 'Eliminar el Perfil?',
+            text: "Esta acción es irreversible!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'No, cancelar!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            // eliminar registro.
+            swal(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+        })
+    });
+
     // evento click del boton modificar
     $('.modificar').click( function(){
         id = $(this).parents("tr").find("td").eq(0).text();           
