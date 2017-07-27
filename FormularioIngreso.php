@@ -228,7 +228,7 @@ $responsables= $responsable->Consulta();
                     <label for="motivovisita" class="labelformat">Motivo Visita</label>
                     <input type="text" id="motivovisita" name="motivovisita" 
                     value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
-                    pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
+                    pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                 </div>
             </div>  
         </div>
@@ -391,6 +391,15 @@ $responsables= $responsable->Consulta();
         }
         if(min<10){
             min='0'+min
+        }
+        if(hhs==24){
+            hhs='00'
+        }
+        if(hhs==25){
+            hhs='01'
+        }
+        if(hhs==26){
+            hhs='02'
         }
         today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
         salida = yyyy+'-'+mm+'-'+dd+'T'+hhs+':'+min;
