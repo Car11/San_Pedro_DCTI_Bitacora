@@ -60,15 +60,15 @@ $rol=$_SESSION['rol'];
             <div id="formresposables">
                     <div class="cajainputresp">
                         <label for="txttramitante" class="labelformat">Nombre</label></br>
-                        <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="inputformat" value=""/>
+                        <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="inputformat" value="" pattern="[\.áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/>
                     </div>                   
                     <div class="cajainputresp">
                         <label for="txtautorizador" class="labelformat">Cedula</label></br>
-                        <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="inputformat" value=""/> 
+                        <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="inputformat" value="" pattern="[\.-_0-9A-Za-z/\s/]*"/> 
                     </div>
                     <div class="cajainputresp">
                         <label for="txtautorizador" class="labelformat">Empresa</label></br>
-                        <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="inputformat" value=""/> 
+                        <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="inputformat" value="" pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/> 
                     </div>
                     <div class="cajainputresp">
                         <input id="btnInsertaResponsable" class="cbp-mc-submit" type="button" value="Inserta Responsable">
