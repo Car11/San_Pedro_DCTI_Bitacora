@@ -84,7 +84,7 @@ $(document).ready( function () {
             type: "POST",
             url: "class/Visitante.php",
             data: { 
-                action: 'Cargar',                
+                action: 'CargarID',                
                 idvisitante:  id
             }
         })
@@ -126,7 +126,8 @@ $(document).ready( function () {
             type: "POST",
             url: "class/Visitante.php",
             data: { 
-                action: miAccion,
+                action: miAccion,  
+                idvisitante: id,              
                 cedula:  $("#cedula").val(),
                 nombre: $("#nombre").val(),
                 empresa: $("#empresa").val()

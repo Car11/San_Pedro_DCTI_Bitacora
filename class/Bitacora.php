@@ -2,11 +2,13 @@
 if (!isset($_SESSION))
     session_start();
 $bitacora= new Bitacora();
-if (isset($_POST['cedula'])) { 
-    $bitacora->idvisitante=$_POST['cedula'];    
+if (isset($_POST['idvisitante'])) { 
+    $bitacora->idvisitante=$_POST['idvisitante'];    
     //
     if(isset($_SESSION['bitacora']))
         $bitacora->id=$_SESSION['bitacora'];
+    if(isset($_POST['cedula']))
+        $bitacora->cedula=$_POST['cedula'];
     if (isset($_POST['idformulario'])) { 
         $bitacora->idformulario=$_POST['idformulario'];        
     }
@@ -30,6 +32,7 @@ if (isset($_POST['cedula'])) {
 class Bitacora{
     public $id;
     public $idvisitante;
+    public $cedula;
     public $idformulario;
     public $idtarjeta;
     public $entrada;
@@ -42,22 +45,6 @@ class Bitacora{
     
     function Entrada(){
         try {
-           /* if($this->id=='NUEVO')
-            {
-                $sql = "INSERT INTO bitacora (idvisitante, idformulario, entrada, idtarjeta)
-                    VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
-                $param= array(':idvisitante'=>$this->idvisitante, 
-                    ':idformulario'=>$this->idformulario,
-                    ':idtarjeta'=>$this->idtarjeta);
-            }
-            else{
-                $sql="UPDATE bitacora
-                    set entrada= now(), idtarjeta= :idtarjeta
-                    where id= :id";
-                $param= array(':id'=>$this->id, 
-                    ':idtarjeta'=>$this->idtarjeta);
-            }    */
-            //
             $sql = "INSERT INTO bitacora (idvisitante, idformulario, entrada, idtarjeta)
                     VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
             $param= array(':idvisitante'=>$this->idvisitante, 
@@ -71,7 +58,7 @@ class Bitacora{
                 $data = DATA::Ejecutar($sql,$param,true);
                 if($data)
                 {    
-                    email::Enviar($this->idvisitante, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE INGRESO", $this->idtarjeta);           
+                    email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE INGRESO", $this->idtarjeta);           
                     echo "Bienvenid@ "; 
                 }
                 else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
@@ -82,8 +69,8 @@ class Bitacora{
                 unset($_SESSION['estado']);
             if(isset($_SESSION['idformulario']))
                 unset($_SESSION['idformulario']);
-            if(isset($_SESSION['cedula']))
-                unset($_SESSION['cedula']);
+            if(isset($_SESSION['idvisitante']))
+                unset($_SESSION['idvisitante']);
             if(isset($_SESSION['link']))
                 unset($_SESSION['link']);
             if(isset($_SESSION['bitacora']))
@@ -109,7 +96,7 @@ class Bitacora{
                 $param= array(':idtarjeta'=>$this->idtarjeta);
                 $data = DATA::Ejecutar($sql,$param,true);     
                 if($data){    
-                    email::Enviar($this->idvisitante, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE SALIDA", $this->idtarjeta);           
+                    email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE SALIDA", $this->idtarjeta);           
                     echo "Salida Completa";
                 }
                 else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
@@ -120,8 +107,8 @@ class Bitacora{
                 unset($_SESSION['estado']);
             if(isset($_SESSION['idformulario']))
                 unset($_SESSION['idformulario']);
-            if(isset($_SESSION['cedula']))
-                unset($_SESSION['cedula']);
+            if(isset($_SESSION['idvisitante']))
+                unset($_SESSION['idvisitante']);
             if(isset($_SESSION['link']))
                 unset($_SESSION['link']);
             if(isset($_SESSION['bitacora']))

@@ -24,20 +24,21 @@ if (isset($_SESSION['estado'])) {
 }
 else {
     unset($_SESSION['idformulario']);
-    unset($_SESSION['cedula']);
+    unset($_SESSION['idvisitante']);
     unset($_SESSION['link']);
     unset($_SESSION['bitacora']);
 }
 // Inicia Busqueda de visitante por nombre Completo.
 $visitantes=[]; // arreglo de visitantes.
+$visitante="NULL";
+$formulario="NULL";
+$tarjeta="NULL";
 if ($estado=="buscar"){
     require_once("class/Visitante.php");
     $visitante= new Visitante();
     $visitantes= $visitante->CargarTodos();
 }
 // Busca información del formulario para desplegar en pantalla.
-$formulario="NULL";
-$tarjeta="NULL";
 if (isset($_SESSION['idformulario'])) {     
     // Carga info del formulario.
     include("class/formulario.php");
@@ -54,12 +55,13 @@ if (isset($_SESSION['idformulario'])) {
     }
     else {
         // Carga la tarjeta asigana al visitante. (fin) 
-        $tarjeta->CargaTarjetaAsignada($_SESSION['cedula'] , $formulario->id);
+        $tarjeta->CargaTarjetaAsignada($_SESSION['idvisitante'] , $formulario->id);
     }
     // Carga Info VISITANTE
     require_once("class/Visitante.php");
     $visitante= new Visitante();
-    $visitante->Cargar($_SESSION['cedula']);
+    $visitante->ID= $_SESSION['idvisitante'];
+    $visitante->CargarID($_SESSION['idvisitante']);
 }
 
 ?>
@@ -153,7 +155,7 @@ if (isset($_SESSION['idformulario'])) {
                 <span class="close">&times;</span>
                 <h2>Información del Formulario</h2>
                 <input readonly  id="idformulario" name="idformulario" class="input-field-readonly" value= "<?php if($formulario!="NULL") print $formulario->id; ?>"  >
-                
+                <input readonly  id="idvisitante" name="idvisitante" class="input-field-readonly" value= "<?php if($visitante!="NULL") print $visitante->ID; ?>"  >
             </div>
         
             <!-- Modal body -->
@@ -161,7 +163,7 @@ if (isset($_SESSION['idformulario'])) {
                 <form name="datos-modal" id="datos-modal" action="class/Bitacora.php" method="POST">
                     <div class='modal-izq'>
                         <h3>Cédula</h3>
-                        <input type="text" readonly id='modal-cedula' name="modal-cedula" class="input-field" value= "<?php if($formulario!="NULL") echo $_SESSION['cedula']; ?>" >
+                        <input type="text" readonly id='modal-cedula' name="modal-cedula" class="input-field" value= "<?php if($formulario!="NULL") echo $visitante->cedula; ?>" >
                         <h3>Nombre Completo</h3>
                         <input type="text" readonly id='nombre' name="nombre" class="input-field" value= "<?php if($formulario!="NULL") echo $visitante->nombre; ?>" >
                         <h3>Empresa/Dependencia</h3>
@@ -218,9 +220,9 @@ if (isset($_SESSION['idformulario'])) {
                 print "<tbody>";
                 for($i=0; $i<count($visitantes); $i++){
                         print "<tr>";
-                        print "<td>".$visitantes[$i][0]."</td>";
                         print "<td>".$visitantes[$i][1]."</td>";
                         print "<td>".$visitantes[$i][2]."</td>";
+                        print "<td>".$visitantes[$i][3]."</td>";
                         print "</tr>";
                 }
                 print "</tbody>";

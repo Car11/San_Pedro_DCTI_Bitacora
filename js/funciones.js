@@ -55,8 +55,8 @@ function inicio() {
                 accion: 'salida',                
                 idtarjeta:  document.getElementById('idtarjeta').value,
                 idformulario: document.getElementById('idformulario').value,
+                idvisitante: document.getElementById('idvisitante').value,
                 cedula: document.getElementById('modal-cedula').value
-                //motivovisita: document.getElementById('motivovisita').value
             }
         })
         .done(function( e ) {
@@ -89,11 +89,11 @@ function inicio() {
             type: "POST",
             url: "class/Bitacora.php",
             data: { 
-                accion: 'entrada',                
+                accion: 'entrada',  
+                idvisitante: document.getElementById('idvisitante').value,              
                 cedula: document.getElementById('modal-cedula').value ,
                 idtarjeta:  document.getElementById('idtarjeta').value,
                 idformulario: document.getElementById('idformulario').value
-                //motivovisita: document.getElementById('motivovisita').value
             }
         })
         .done(function( e ) {
