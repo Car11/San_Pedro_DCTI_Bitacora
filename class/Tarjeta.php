@@ -27,7 +27,7 @@ class Tarjeta{
         $sql="SELECT idtarjeta 
             from bitacora
             where idvisitante= :idvisitante and idformulario= :idformulario
-            order by id desc limit 1";
+            order by fechacreacion desc limit 1";
         $param= array(':idvisitante'=>$idvisitante, ':idformulario'=>$idformulario);
         $data = DATA::Ejecutar($sql,$param);
         if (count($data)) {

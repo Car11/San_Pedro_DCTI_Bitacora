@@ -39,7 +39,7 @@ if (!$sesion->estado){
                 <li><a href="Listaformulario.php">Formulario</a></li>
                   <li><a href="ResponsableMantenimiento.php">Responsables</a></li>
                 <li><a href="">Pool Tarjetas</a></li>
-                <li><a href="">Visitantes</a></li>
+                <li><a href="ListaVisitantes.php">Visitantes</a></li>
                 <li><a href="">Salas</a></li>
               </ul>
             </li>

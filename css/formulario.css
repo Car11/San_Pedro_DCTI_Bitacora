@@ -370,6 +370,14 @@
 
 
 /*Botones*/
+.modificar{
+    cursor: pointer;
+}
+
+.eliminar{
+    cursor: pointer;
+}
+
 .cbp-mc-submit {
 	background: #10689a;
 	border: none;
@@ -384,7 +392,6 @@
 	letter-spacing: 1px;
     margin-top: 10px;
     margin-left: 0px;
-
 }
 
 .cbp-mc-submit:hover {

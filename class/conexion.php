@@ -49,6 +49,8 @@ class DATA {
         }
     }
     
+
+    // Ejecuta consulta SQL, $op = true envía los datos en 'crudo', $op=false envía los datos en arreglo (fetch).
     public static function Ejecutar($sql, $param=NULL, $op=false) {
         try{
             //conecta a BD

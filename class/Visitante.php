@@ -3,25 +3,56 @@ if (!isset($_SESSION))
     session_start();
 
 if(isset($_POST["action"])){
-    if($_POST["action"]=="Excluye"){
-        $visitante= new Visitante();
-        $visitante->ConsultaVisitante();
+    $visitante= new Visitante();
+    switch($_POST["action"]){
+        case "Excluye":
+            $visitante->ConsultaVisitante();
+            break;
+        case "CargarTodos":
+            echo json_encode($visitante->CargarTodos());
+            break;
+        case "Cargar": // carga visitante por cedula
+            echo json_encode($visitante->Cargar($_POST["cedula"]));
+            break;
+        case "CargarID": // carga visitante por ID
+            if(isset($_POST["idvisitante"])){
+                $visitante->ID= $_POST["idvisitante"];
+                echo json_encode($visitante->CargarID());
+            }
+            break;
+        case "Insertar":
+            $visitante->cedula= $_POST["cedula"];
+            $visitante->nombre= $_POST["nombre"];
+            $visitante->empresa= $_POST["empresa"];
+            $visitante->Agregar();
+            break;
+        case "Modificar":
+            $visitante->ID= $_POST["idvisitante"];
+            $visitante->cedula= $_POST["cedula"];
+            $visitante->nombre= $_POST["nombre"];
+            $visitante->empresa= $_POST["empresa"];
+            $visitante->Modificar();
+            break;
     }
-}
     
-
+}
 
 class Visitante{
-	public $cedula;//id
+    public $ID;
+	public $cedula;
 	public $nombre;
 	public $empresa;
-    public $permisoanual;
+    public $permisoanual=0;
     public $visitante;
     public $visitanteexcluido;
 
 	function __construct(){
         require_once("conexion.php");
     }
+
+    //
+    // Funciones de validacion de identificacion y formulario de visitante.
+    //
     function ValidaID(){
         try{
             if(strlen($this->cedula)<=2)
@@ -53,7 +84,7 @@ class Visitante{
             $sql= "SELECT b.id as idbitacora  , idformulario, idvisitante, entrada, salida, idtarjeta
                 FROM TARJETA t inner join bitacora b on b.idtarjeta= t.id
                 WHERE t.ID=:idtarjeta AND ESTADO=1 
-                order by b.id desc limit 1";
+                order by b.FECHACREACION desc limit 1";
             $param= array(':idtarjeta'=>$this->cedula);   // cedula en este caso es el idtarjeta que viaja por POST
             $data = DATA::Ejecutar($sql,$param);      
             if (count($data)) {      
@@ -66,18 +97,16 @@ class Visitante{
                     $_SESSION['estado']='fin';
                     $_SESSION['bitacora']=$data[0]['idbitacora'];
                     $_SESSION['idformulario']=$data[0]['idformulario'];
-                    $_SESSION["cedula"]=$data[0]['idvisitante'];
+                    $_SESSION["idvisitante"]=$data[0]['idvisitante'];
                 }   
                 else {
                     // la tarjeta no esta en uso.
-                    $_SESSION['estado']= "TARJETANULL";
-                    //print "la tarjeta no esta en uso.";exit;                        
+                    $_SESSION['estado']= "TARJETANULL";                
                 }      
             }
             else {
                 // la tarjeta no esta en uso.
-                $_SESSION['estado']= "TARJETANULL";
-                //print "la tarjeta no esta en uso.";exit;                
+                $_SESSION['estado']= "TARJETANULL";        
             }
             header('Location: ../index.php');
             exit;      
@@ -88,11 +117,12 @@ class Visitante{
         }     
     }
 
+    // Estado del formulario por Visitante.
     function ValidaEstadoFormulario(){
         try{
             include_once('Formulario.php');
             $formulario= new Formulario();
-            if($formulario->ConsultaVisitantePorFormulario($this->cedula))
+            if($formulario->ConsultaVisitantePorFormulario($this->ID))
             {
                 // Valida fechas correctas.
                 // flexibilidad de hora de entrada, 1h antes.
@@ -105,8 +135,8 @@ class Visitante{
                 $sql = "SELECT id, entrada, salida, idtarjeta
                     FROM bitacora 
                     where idvisitante=:idvisitante and idformulario=:idformulario
-                    order by id desc limit 1 ";
-                $param= array(':idvisitante'=>$this->cedula, ':idformulario'=>$formulario->id);
+                    order by FECHACREACION desc limit 1 ";
+                $param= array(':idvisitante'=>$this->ID, ':idformulario'=>$formulario->id);
                 $data = DATA::Ejecutar($sql,$param);      
                 if (count($data)) {                                 
                     $entrada= $data[0]['entrada'];
@@ -118,10 +148,21 @@ class Visitante{
                         $_SESSION['estado']='fin';
                         $_SESSION['bitacora']=$data[0]['id']; // id de Bitacora 
                     }
+                    else {
+                        // Nueva entrada.
+                        if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
+                            $_SESSION['bitacora'] = "NUEVO"; // Nuevo id de Bitacora 
+                        else {
+                            // la entrada no es en la fecha/hora correcta.
+                            if(!$this::ValidarPermisoAnual())                        
+                                $_SESSION['estado']='3';
+                            return false;
+                        }
+                    }
                 }
                 else 
                 {
-                    // nueva entrada.
+                    // Primera entrada.
                     if(strtotime($fechaanticipada->format('Y-m-d H:i:s')) <=  time() && time() <= strtotime($formulario->fechasalida))
                         $_SESSION['bitacora'] = "NUEVO"; // Nuevo id de Bitacora 
                     else {
@@ -130,14 +171,7 @@ class Visitante{
                             $_SESSION['estado']='3';
                         return false;
                     }
-                }
-                /*}
-                else {
-                    // error.
-                    unset($_SESSION['estado']);
-                    header('Location: ../Error.php?w=validarVisitanteFormulario');
-                    exit;
-                }    */                      
+                }                    
             }else {
                 // return false;
                 // NO tiene formulario.
@@ -145,7 +179,6 @@ class Visitante{
                  if(!$this::ValidarPermisoAnual()) {
                     // Visitante sin formulario y no en lista anual.
                     $_SESSION['estado']='4';
-                    //return false;
                 }
             }
         }
@@ -174,19 +207,16 @@ class Visitante{
     }
 
     function ValidaIdVisitante(){
-        try{
-            // Inicia la sesion para la cedula ingresada.
-            $_SESSION["cedula"]=$this->cedula;
-            $sql='SELECT * FROM visitante where cedula=:cedula';
-            $param= array(':cedula'=>$this->cedula);
-            $data = DATA::Ejecutar($sql,$param);
-            if (count($data)) {
-                 return true;
+        try{            
+            if (count($this->Cargar($this->cedula))) {
+                // Inicia la sesion para la cedula ingresada.
+                $_SESSION["idvisitante"]=$this->ID;
+                return true;
             }
             else {
                 // return false;
                 // No existe el visitante en base de datos, muestra nuevo perfil.
-                unset($_SESSION['cedula']);
+                unset($_SESSION['idvisitante']);
                 unset($_SESSION['estado']);
                 $_SESSION['link']="true";
                 header('Location: ../nuevoperfil.php?id='.$this->cedula);
@@ -200,10 +230,30 @@ class Visitante{
         }
     }    
     
+    //
+    // Funciones de Mantenimiento.
+    //
     function Agregar(){
         try {
-            $sql='INSERT INTO visitante (nombre, cedula, empresa) VALUES (:nombre, :cedula, :empresa)';
-            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa);
+            $sql='INSERT INTO visitante (nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual)';
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual);
+            $data = DATA::Ejecutar($sql,$param,true);
+            if($data)
+                return true;
+            else return false;
+        }     
+        catch(Exception $e) {
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+    function Modificar(){
+        try {
+            $sql="UPDATE visitante 
+                SET  nombre= :nombre, cedula= :cedula, empresa= :empresa , permisoanual= :permisoanual
+                WHERE ID=:ID";
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, 'permisoanual'=>$this->permisoanual, ':ID'=>$this->ID);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
                 return true;
@@ -215,28 +265,79 @@ class Visitante{
         }
     }
     
-    function Cargar($ID){
+
+    // Carga visitante por cedula.
+    function Cargar($cedula){
         try {
-            $sql='SELECT * FROM visitante where cedula=:cedula';
-            $param= array(':cedula'=>$ID);
+            $sql="SELECT ID, CEDULA, NOMBRE, EMPRESA, PERMISOANUAL 
+                FROM visitante 
+                where cedula=:cedula";
+            $param= array(':cedula'=>$cedula);
             $data= DATA::Ejecutar($sql,$param);
             //
-            $this->cedula= $data[0]['CEDULA'];
-            $this->nombre= $data[0]['NOMBRE'];
-            $this->empresa= $data[0]['EMPRESA'];
-            $this->permisoanual= $data[0]['PERMISOANUAL'];
-            //
+            if(count($data)){
+                $this->ID= $data[0]['ID'];
+                $this->cedula= $data[0]['CEDULA'];
+                $this->nombre= $data[0]['NOMBRE'];
+                $this->empresa= $data[0]['EMPRESA'];
+                $this->permisoanual= $data[0]['PERMISOANUAL'];
+            }            
+            //            
             return $data;
         }
         catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            //header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            echo "Error al leer la información";
+            exit;
+        }
+    }
+
+    // Carga visitante por ID (UUID)
+    function CargarID(){
+        try {
+            $sql="SELECT ID, CEDULA, NOMBRE, EMPRESA, PERMISOANUAL 
+                FROM visitante 
+                where ID=:ID";
+            $param= array(':ID'=>$this->ID);
+            $data= DATA::Ejecutar($sql,$param);
+            //
+            if(count($data)){
+                $this->ID= $data[0]['ID'];
+                $this->cedula= $data[0]['CEDULA'];
+                $this->nombre= $data[0]['NOMBRE'];
+                $this->empresa= $data[0]['EMPRESA'];
+                $this->permisoanual= $data[0]['PERMISOANUAL'];
+            }
+            //            
+            return $data;
+        }
+        catch(Exception $e) {
+            //header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            echo "Error al leer la información";
             exit;
         }
     }
     
-    function CargarTodos(){
+    function Eliminar(){
         try {
-            $sql='SELECT cedula, nombre, empresa FROM visitante ORDER BY cedula';
+            $sql='DELETE visitante 
+            WHERE idvisitante= :idvisitante';
+            $param= array(':idvisitante'=>$this->ID);
+            $data= DATA::Ejecutar($sql, $param);
+            return $data;
+        }
+        catch(Exception $e) {            
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+
+     function CargarTodos(){
+        try {
+            $sql='SELECT ID, cedula, nombre, empresa, permisoanual 
+            FROM visitante 
+            ORDER BY cedula';
             $data= DATA::Ejecutar($sql);
             return $data;
         }
@@ -246,16 +347,9 @@ class Visitante{
         }
     }
     
-    function ConsultaBitacora(){
-        try {
-           $sql = "SELECT * FROM bitacora";
-           $result = DATA::Ejecutar($sql);
-           return $result;                                 
-        }catch(Exception $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            exit;
-        }                                     
-    }
+    //
+    // Consulta lista de visitantes que no pertenece a un formulario especifico.
+    //
 
     function ConsultaVisitante()
     {
