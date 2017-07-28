@@ -11,6 +11,7 @@ if (!$sesion->estado) {
     header('Location: login.php');
     exit;
 }
+
 //FORMULARIO - Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
 $formulario = new Formulario();
@@ -41,7 +42,6 @@ if (isset($_GET['MOD'])) {
     $largo=count($visitanteformulario);
 }
 
-
 //SALA 
 include("class/sala.php");
 $sala= new Sala();
@@ -52,12 +52,14 @@ include("class/responsable.php");
 $responsable= new Responsable();
 $responsables= $responsable->Consulta();
 
+
 //USER AND ROL
 include("class/usuario.php");
 $usuario = new usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
+
 
 ?>
 
@@ -66,13 +68,15 @@ $rol=$_SESSION['rol'];
     <meta charset="UTF-8">
     <title>Control de Accesos</title>       
     <!-- CSS -->
-    <link href="css/estilo.css" rel="stylesheet"/>        
-    <link rel="stylesheet" type="text/css" href="css/datatables.css">
-    <link href="css/formulario.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/estilo.css"     type="text/css"/>        
+    <link rel="stylesheet" href="css/datatables.css" type="text/css"/>
+    <link rel="stylesheet" href="css/formulario.css" type="text/css"/>
+    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
-    <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+ 	  <script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
     <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/sweetalert2.js"></script>
 </head>
 <body> 
     <header>
@@ -100,10 +104,8 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput">
                         <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
-                        <input type="datetime-local" name="fechaingreso" class="inputformat" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][4];
-}?>" required/>
+                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="inputformat" 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
                     </div>
                     <div id="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
@@ -116,31 +118,27 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput">
                         <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
-                        <input type="datetime-local" name="fechasalida" class="inputformat" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][5];
-}?>" required/> 
+                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="inputformat" 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
                     </div>
                     <div id="cajainput">
                         <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
                         <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="inputformat" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][9];
-}?>" required/> 
+                            print $formdata[0][9];}?>" required/> 
                     </div>
                 </div>
                 <div id="caja">
                     <div id="cajainput">
                         <label for="txttramitante" class="labelformat">Tramitante</label></br>
                         <input type="text" id="txttramitante" name="txttramitante" placeholder="" class="inputformat" readonly="readonly" 
-                        value="<?php echo($usuario->nombre);?>"/>
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>" />
                     </div>                   
                     <div id="cajainput">
                         <label for="txtautorizador" class="labelformat">Autorizador</label></br>
                         <input type="text" id="txtautorizador" name="txtautorizador" placeholder="" class="inputformat" readonly="readonly" 
-                        value="<?php if ($rol==1) {
-                            echo($usuario->nombre);
-} ?>"/> 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
+
                     </div>
                 </div>
             </div>  
@@ -239,18 +237,15 @@ $rol=$_SESSION['rol'];
                         <label for="txtrfc" class="labelformat">RFC          :</label>
                         <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="inputformat" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][12];
-}?>" 
+                            print $formdata[0][12]; }?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>
                     </div>  
                 </div>
                 <div id="cajade3">
                     <label for="motivovisita" class="labelformat">Motivo Visita</label>
                     <input type="text" id="motivovisita" name="motivovisita" 
-                    value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                        echo $formdata[0][3];
-}?>" required 
-                    pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
+                    value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
+                    pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                 </div>
             </div>  
         </div>
@@ -344,7 +339,11 @@ $rol=$_SESSION['rol'];
             </div>
             <div id="visitante-modal" class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
-
+                <?php 
+                print "<table id='tblvisitante'class='display'>";
+                print "<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead>";	
+                print "</table>";
+                ?>     
             </div>
             <div class="modal-footer">
             <br>
@@ -375,13 +374,15 @@ $rol=$_SESSION['rol'];
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
 
-    $(document).ready( function () { 
-         
+    $(document).ready( function () {  
         ExcluyeVisitanteCarga();
 
         if (existeid!=0){
-            EstadoFormulario();    
-        }
+            EstadoFormulario();  
+            //FechaFormMod();
+        }  
+        else
+            FechaFormNuevo();
         // OBTIENE EL CSS PARA LOS TABLES
         $('#tblresponsable').DataTable();          
         $('#tblsala').DataTable();
@@ -389,7 +390,71 @@ $rol=$_SESSION['rol'];
         
     } );
 
-    
+    //Establece la fecha de hoy a los datetme-local
+    function FechaFormNuevo(){
+        var today = new Date();
+        var salida = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var hhs= today.getHours()+2;
+        var min = today.getMinutes();
+
+        if(dd<10){
+            dd='0'+dd
+        } 
+        if(mm<10){
+            mm='0'+mm
+        } 
+        if(hh<10){
+            hh='0'+hh
+        }
+        if(min<10){
+            min='0'+min
+        }
+        if(hhs==24){
+            hhs='00'
+        }
+        if(hhs==25){
+            hhs='01'
+        }
+        if(hhs==26){
+            hhs='02'
+        }
+        today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
+        salida = yyyy+'-'+mm+'-'+dd+'T'+hhs+':'+min;
+        document.getElementById("fechaingreso").setAttribute("min", today);
+        document.getElementById("fechasalida").setAttribute("min", today);
+        document.getElementById("fechaingreso").value = today;
+        document.getElementById("fechasalida").value = salida;
+    }
+
+        //Establece la fecha de hoy a los datetme-local
+    function FechaFormMod(){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        var hh = today.getHours();
+        var min = today.getMinutes();
+        if(dd<10){
+            dd='0'+dd
+        } 
+        if(mm<10){
+            mm='0'+mm
+        } 
+        if(hh<10){
+            hh='0'+hh
+        }
+        if(min<10){
+            min='0'+min
+        }
+        today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
+        document.getElementById("fechaingreso").setAttribute("min", today);
+        document.getElementById("fechasalida").setAttribute("min", today);
+    }
+
 
     //Abre el modal con el evento click en el boton (+) , contruye la tabla visitante en el modal
     $('#btnagregavisitante').click(function() {
@@ -408,9 +473,7 @@ $rol=$_SESSION['rol'];
         })
         .done(function( e ) {
             visitantereal = JSON.parse(e);
-            $('#visitante-modal').append("<table id='tblvisitante'></table>");
-            var tb1="<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody>";
-            $('#tblvisitante').append(tb1);
+            $('#tblvisitante').append("<tbody>");
             for (var i = 0; i < visitantereal.length; i++) {                
                 var tr1="<tr>";
                 var td1="<td>"+visitantereal[i][0] +"</td>";
@@ -419,8 +482,7 @@ $rol=$_SESSION['rol'];
                 var tr2="</tr>";
                 $('#tblvisitante').append(tr1+td1+td2+td3+tr2);
             }
-            var tb2="</tbody>";
-            $('#tblvisitante').append(tb2); 
+            $('#tblvisitante').append("</tbody>"); 
             $('#tblvisitante').DataTable();
         })    
         .fail(function(msg){
@@ -517,6 +579,8 @@ $rol=$_SESSION['rol'];
             var td3="<td>"+jVisitante[jVisitante.length-1].empresa +"</td>";
             var td4="<td><img id=imgdelete src=img/file_delete.png class=borrar></td></tr>";
             var tb2="</tbody>";
+            if(jVisitante[jVisitante.length-1].id==undefined)
+                return false;
             $("#tblvisitanteform").append(tb1+tr+td1+td2+td3+td4+tb2); 
             $('#imgflecha').removeClass('imagen');
             $('#imgflecha').addClass('imagenNO');
@@ -617,7 +681,7 @@ $rol=$_SESSION['rol'];
             $('#imgflecha').addClass('imagen');
             return false;
         }
-        alert("Formulario Creado!");    
+        alert("Formulario Insertado Correctamente!");
     }   
 
     //MODAL RESPONSABLES ********/
@@ -634,7 +698,7 @@ $rol=$_SESSION['rol'];
         jResponsable.push(data); 
         $("#txtresponsable").val(jResponsable[jResponsable.length-1].nombre);
         modalResponsable.style.display = "none";
-        //$(this).toggleClass('selected')=false;                        
+        ValidacionCorrecta();                       
     });
 
     //MODAL SALAS ********/
@@ -648,7 +712,24 @@ $rol=$_SESSION['rol'];
         jSala.push(data); 
         $("#selectsala").val(jSala[jSala.length-1].sala);
         modalSala.style.display = "none";
-        //$(this).toggleClass('selected')=false;                        
+        ValidacionCorrecta();
+    });
+
+    function ValidacionCorrecta() {
+        $("#txtresponsable").css("border", "0px");
+        $("#txtresponsable").css("color", "black");
+        document.getElementById('txtresponsable').placeholder = "CLICK";    
+        $("#selectsala").css("border", "0px");
+        $("#selectsala").css("color", "black");
+        document.getElementById('selectsala').placeholder = "CLICK";
+
+    }
+
+    $( "#motivovisita" ).change(function() {
+        $("#motivovisita").css("border", "0px");
+        $("#motivovisita").css("color", "black");
+        $("#motivovisita").css("background", "white");
+        document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
     });
 
 </script>

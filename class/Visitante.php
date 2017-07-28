@@ -332,6 +332,7 @@ class Visitante{
         }
     }
 
+
      function CargarTodos(){
         try {
             $sql='SELECT ID, cedula, nombre, empresa, permisoanual 
@@ -349,6 +350,7 @@ class Visitante{
     //
     // Consulta lista de visitantes que no pertenece a un formulario especifico.
     //
+
     function ConsultaVisitante()
     {
         try {

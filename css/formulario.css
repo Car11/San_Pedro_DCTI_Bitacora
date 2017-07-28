@@ -464,19 +464,14 @@
     width: 30%;
     height: 400px;
     float: left;
+
 }
 #tablaresponsable{
     width: 70%;
     height: 400px;
     float: left;
-    background: white;
 }
-#cajainputrespsuperior{
-    width: 100%;
-    height: 65px;
-    float: left;
-}
-#cajainputresp{
+.cajainputresp{
     width: 100%;
     height: 22%;
     float: left;

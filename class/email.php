@@ -23,8 +23,8 @@ class email{
                 $formulario->Cargar();    
                 //
                 ini_set('SMTP','smtpapl.correo.ice');
-                //$to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>";
-                $to= "cchaconc@ice.go.cr";   
+                $to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>";
+                //$to= "cchaconc@ice.go.cr";   
                 $from = "operTI@ice.go.cr";
                 //
                 $mensaje = "<h2><i>".$mensajeEncabezado."<i><h2>";
@@ -34,7 +34,7 @@ class email{
                 $mensaje .= "<tr><td><strong>Nombre:</strong> </td><td>" .  $visitante->nombre  . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Empresa:</strong> </td><td>" . $visitante->empresa . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Detalle:</strong> </td><td>" . $formulario->motivovisita . "</td></tr>";
-                $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.149.20.26:8000//control_acceso_cdc/formularioingreso.php?ID=" . $idformulario . "</td></tr>";
+                $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.149.20.26:8000/Cert/formularioingreso.php?ID=" . $idformulario . "</td></tr>";
                 if($idtarjeta!="NULL")
                     $mensaje .= "<tr><td><strong>Tarjeta:</strong> </td><td>"  . $idtarjeta . "</td></tr>";
                 $mensaje .= "</table>";
@@ -44,7 +44,7 @@ class email{
                 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
                 $headers .= "From: ".$from."\r\n"; 
                 //
-                //mail($to, $asunto, $mensaje,$headers);      
+                mail($to, $asunto, $mensaje,$headers);      
             }            
         }     
         catch(Exception $e) {

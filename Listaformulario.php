@@ -1,6 +1,10 @@
 <?php 
 if (!isset($_SESSION)) 
     session_start();
+
+if (isset($_GET['Message'])) {
+    print '<script type="text/javascript">alert("' . $_GET['Message'] . '");</script>';
+}
 // Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();
@@ -19,7 +23,7 @@ if(isset($_SESSION['TEMP']))
 
 include("class/Formulario.php");
 $formulario= new Formulario();
-$data= $formulario->ConsultaFormulario();
+$listaformulario= $formulario->ConsultaFormulario();
 ?>
 
 
@@ -64,16 +68,18 @@ $data= $formulario->ConsultaFormulario();
                 print "<th>FECHA SOLICITUD</th>";
                 print "<th>MOTIVO</th>";
                 print "<th>ESTADO</th>";
+                print "<th>RFC</th>";
                 print "<th>MODIFICAR</th>";    
                 print "</tr>";
                 print "</thead>";	
                 print "<tbody>";
-                for($i=0; $i<count($data); $i++){
+                for($i=0; $i<count($listaformulario); $i++){
                         print "<tr>";
-                        print "<td>".$data[$i][0]."</td>";
-                        print "<td>".$data[$i][1]."</td>";
-                        print "<td>".$data[$i][2]."</td>";
-                        print "<td>".$data[$i][3]."</td>";
+                        print "<td>".$listaformulario[$i][0]."</td>";
+                        print "<td>".$listaformulario[$i][1]."</td>";
+                        print "<td>".$listaformulario[$i][2]."</td>";
+                        print "<td>".$listaformulario[$i][3]."</td>";
+                        print "<td>".$listaformulario[$i][12]."</td>";
                         print "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>";
                         print "</tr>";
                 }
