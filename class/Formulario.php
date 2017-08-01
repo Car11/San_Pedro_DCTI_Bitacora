@@ -230,6 +230,17 @@ class Formulario
         }
     }
     
+     function getID(){
+        try{
+            $sql="SELECT ID FROM FORMULARIO ORDER BY FECHASOLICITUD DESC LIMIT 1";
+            $data= DATA::Ejecutar($sql);
+            $this->id= $data[0]['ID'];
+        }
+        catch(Exception $e){
+
+        }
+    }
+
     function AgregarTemporal($idvisitante)
     {
         try {
@@ -245,11 +256,9 @@ class Formulario
              $data= DATA::Ejecutar($sql, $param, true);
             if ($data) {
                  //busca id de formulario agregado
-                 $sql='SELECT LAST_INSERT_ID() as ID';
-                 $data= DATA::Ejecutar($sql);
-                 $this->id =$data[0]['ID'];
+                 $this->getID();
                  //agrega visitantes
-                 $sql='insert into VISITANTEPORFORMULARIO(idvisitante,idformulario) VALUES(:idvisitante,:idformulario)';
+                 $sql='insert into VISITANTEPORFORMULARIO(idvisitante , idformulario) VALUES(:idvisitante,:idformulario)';
                  $param= array(':idvisitante'=>$idvisitante,':idformulario'=>$this->id);
                  $data=  DATA::Ejecutar($sql, $param);
                  include_once("email.php");

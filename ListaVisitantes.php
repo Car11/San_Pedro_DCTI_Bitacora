@@ -128,8 +128,8 @@ $data= $visitante->CargarTodos();
                             <input  type="text" class="input-field" name="nombre" 
                                 value= "<?php if ($visitante->nombre!=null) print $visitante->nombre; ?>" id="nombre"/>
                         </label>
-                        <label for="permiso"><span class="campoperfil">Tiene permiso de Ingreso Anual? <span class="required">*</span></span>
-                            <input type="checkbox" name="permiso" >
+                        <label for="permiso"><span class="campoperfil">Tiene permiso de Ingreso Anual?</span>
+                            <input type="checkbox" name="permiso" class="input-field" >
                         </label>
 
                         <nav class="btnfrm">

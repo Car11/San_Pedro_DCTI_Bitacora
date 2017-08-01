@@ -8,6 +8,19 @@ $(document).ready( function () {
         location.href = "ListaVisitantes.php";                       
     }; 
 
+    // cierra el modal
+    $(".close").click( function(){
+        // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
+        $(".modal").css({ display: "none" });
+    });
+
+     // Cierra el MODAL en cualquier parte de la ventana
+    window.onclick = function(event) {
+        if (event.target.className=="modal") {
+            $(".modal").css({ display: "none" });
+        }    
+    };
+
     //vuelve al menu
     this.Cerrar = function(){
         $(".modal").css({ display: "none" });

@@ -155,7 +155,7 @@ if (isset($_SESSION['idformulario'])) {
                 <span class="close">&times;</span>
                 <h2>Información del Formulario</h2>
                 <input readonly  id="idformulario" name="idformulario" class="input-field-readonly" value= "<?php if($formulario!="NULL") print $formulario->id; ?>"  >
-                <input readonly  id="idvisitante" name="idvisitante" class="input-field-readonly" value= "<?php if($visitante!="NULL") print $visitante->ID; ?>"  >
+                <input  type="hidden"  id="idvisitante" name="idvisitante" class="input-field-readonly" value= "<?php if($visitante!="NULL") print $visitante->ID; ?>"  >
             </div>
         
             <!-- Modal body -->

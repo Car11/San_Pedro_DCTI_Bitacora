@@ -235,16 +235,32 @@ class Visitante{
     //
     function Agregar(){
         try {
-            $sql='INSERT INTO visitante (nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual)';
+            $sql="INSERT INTO visitante (id,nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual);";
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
+            {
+                //ID ingresado
+                $this->getID();
+                $_SESSION['idvisitante']= $this->ID;
                 return true;
+            }
             else return false;
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
+        }
+    }
+
+    function getID(){
+        try{
+            $sql="SELECT ID FROM VISITANTE ORDER BY FECHACREACION DESC LIMIT 1";
+            $data= DATA::Ejecutar($sql);
+            $this->ID= $data[0]['ID'];
+        }
+        catch(Exception $e){
+
         }
     }
 
