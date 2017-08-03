@@ -11,65 +11,97 @@ if (!$sesion->estado){
     exit;
 }
 //
-include("class/Visitante.php");
-$visitante= new Visitante();
-$data= $visitante->ConsultaBitacora();
+include("class/bitacora.php");
+$bitacora= new bitacora();
+$listabitacora= $bitacora->Consulta();
 ?>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Bitácora de Ingreso DCTI San Pedro</title>
-    
-    
-    
-    <link href="css/estilo.css" rel="stylesheet"/>        
-    <!-- CONSULTA BITACORA -->
-     
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/estilo.css"     type="text/css"/>        
+    <link rel="stylesheet" href="css/datatables.css" type="text/css"/>
+    <link rel="stylesheet" href="css/formulario.css" type="text/css"/>
+    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
+    <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
-    <link rel="stylesheet" type="text/css" href="css/datatables.css">
- 	<script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
+ 	<script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
+    <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/sweetalert2.js"></script>
 
 </head>
 <body> 
 	<header>
-	<h1>BITÁCORA DE INGRESO</h1>
-        <div id="logo"><img src="img/logoice.png" height="75" > </div>
-        <div id="fechahora"><span id="date"></span></div>
+	<h1>BITÁCORA</h1>
+	    <div id="logo"><img src="img/logoice.png" height="75" > </div>
 	</header>
-	<div>    
+    <div id="general">
+        <div id="izquierda">
+            
+        </div>
+        <div id="principal">
+            <div id="superiornavegacion">
+                <div id="nuevo">   
+                </div>
+                <div id="atraslista">
+                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
+                </div>
+            </div>
+            <div id="listavisitante">
+               </br>
+					<?php 
+                    print "<table id='tblbitacora'>";
+					print "<thead>";
+					print "<tr>";
+					print "<th>Formulario</th>";
+					print "<th>Cédula</th>";
+                    print "<th>Nombre</th>";
+					print "<th>Entrada</th>";
+					print "<th>Salida</th>";
+			        print "<th>Locación</th>";		
+                    print "<th>Tarjeta</th>";
+                    print "<th>Estado</th>";
+                    
+					print "</tr>";
+					print "</thead>";	
+					
+					print "<tbody>";
+					for($i=0; $i<count($listabitacora); $i++){
+						print "<tr>";
+						print "<td>".$listabitacora[$i][1]."</td>";
+						print "<td>".$listabitacora[$i][2]."</td>";
+						print "<td>".$listabitacora[$i][3]."</td>";
+						print "<td>".$listabitacora[$i][4]."</td>";
+						print "<td>".$listabitacora[$i][5]."</td>";
+						print "<td>".$listabitacora[$i][6]."</td>";
+                        print "<td>".$listabitacora[$i][7]."</td>";
+                        if($listabitacora[$i][8]==1)
+                            print "<td>USO</td>";    
+                        else
+                            print "<td>LIBRE</td>";
+						print "</tr>";
+					}
+					print "</tbody>";
+					print "</table>";
+					?>
+                </div>
+                <footer></footer>  
+        </div>
+        <div id="derecha">
+  
+        </div>
+    </div>  
+
+
 	<script>
 		$(document).ready( function () {
-	    $('#bitacora').DataTable();
+	    $('#tblbitacora').DataTable();
 	} );
 	</script>
 
-	<?php 
-	print "<table id='bitacora'class='display'>";
-	print "<thead>";
-	print "<tr>";
-	print "<th bgcolor='gray'>Cedula</th>";
-	print "<th bgcolor='gray'>Entrada</th>";
-	print "<th bgcolor='gray'>Salida</th>";
-	print "<th bgcolor='gray'>Detalle</th>";
-	print "</tr>";
-	print "</thead>";	
 	
-	print "<tbody>";
-	for($i=1; $i<count($data); $i++){
-	       print "<tr>";
-		   print "<td>".$data[$i][2]."</td>";
-		   print "<td>".$data[$i][3]."</td>";
-		   print "<td>".$data[$i][4]."</td>";
-		   print "<td>".$data[$i][5]."</td>";
-	       print "</tr>";
-	}
-	print "</tbody>";
-	print "</table>";
-	?>
-			
-	<footer></footer>
-	</div>
 </body>
 </html>
 

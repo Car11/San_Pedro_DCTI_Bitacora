@@ -42,22 +42,6 @@ class Bitacora{
     
     function Entrada(){
         try {
-           /* if($this->id=='NUEVO')
-            {
-                $sql = "INSERT INTO bitacora (idvisitante, idformulario, entrada, idtarjeta)
-                    VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
-                $param= array(':idvisitante'=>$this->idvisitante, 
-                    ':idformulario'=>$this->idformulario,
-                    ':idtarjeta'=>$this->idtarjeta);
-            }
-            else{
-                $sql="UPDATE bitacora
-                    set entrada= now(), idtarjeta= :idtarjeta
-                    where id= :id";
-                $param= array(':id'=>$this->id, 
-                    ':idtarjeta'=>$this->idtarjeta);
-            }    */
-            //
             $sql = "INSERT INTO bitacora (idvisitante, idformulario, entrada, idtarjeta)
                     VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
             $param= array(':idvisitante'=>$this->idvisitante, 
@@ -133,17 +117,17 @@ class Bitacora{
         }
     }
     
-    /* function Consulta(){
+    function Consulta(){
         try {
-			require_once("conexion.php");
-			$sql = "SELECT * FROM bitacora";
+			$sql = "SELECT id,idformulario,(SELECT cedula from visitante WHERE id = idvisitante),(SELECT nombre from visitante WHERE id = idvisitante),entrada, salida,(SELECT (SELECT nombre FROM sala WHERE id=idsala) FROM formulario WHERE id=idformulario),idtarjeta,(SELECT estado FROM tarjeta WHERE id=idtarjeta) FROM bitacora";
 			$result = DATA::Ejecutar($sql);
 			return $result;			
 		}catch(Exception $e) {
             header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
             exit;
-        }		 	
-	 }*/
-    
+        }
+    }
+
+
 }
 ?>

@@ -128,7 +128,7 @@ $listaformulario= $formulario->ConsultaFormulario();
         
         function CargarEstiloTablas() {
             //$('#listaformulario').DataTable({"order": [[ 3, "desc" ]]});
-            $('#listaformulario').DataTable();    
+            $('#listaformulario').DataTable({ "order": [[ 3, "desc" ]]});    
         }
 
         //MODIFICA EL REGISTRO SELECIONADO EN EL CAMPO MODIFICAR *********/       
