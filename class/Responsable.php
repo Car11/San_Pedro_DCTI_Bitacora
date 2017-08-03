@@ -69,6 +69,7 @@ class Responsable{
             exit;
         }
     }
+    
     //Carga la lista de responsables 
     function Cargar(){
         try {

@@ -62,8 +62,8 @@ class Formulario
             $longitud = count($visitantearray);
             //Recorre el arreglo e inserta cada item en la tabla intermedia
             for ($i=0; $i<$longitud; $i++) {
-                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
-                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario);
+                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES ((SELECT id from visitante WHERE cedula=:cedula),:idformulario)';
+                $param= array(':cedula'=>$visitantearray[$i],':idformulario'=>$idformulario);
                 $result = DATA::Ejecutar($sql, $param);
             }
             header('Location:../ListaFormulario.php');
@@ -98,11 +98,8 @@ class Formulario
             //Convierte el string en un arreglo
             $visitantearray = explode(",", $this->visitante);
 
-
-            //$entradaexiste="SELECT id FROM visitanteporformulario WHERE ";
-
             //Elimina los registros segun el arreglo de visitantes
-            $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET(idvisitante,:EXCLUSION) 
+            $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET((SELECT cedula from visitante WHERE id=idvisitante),:EXCLUSION) 
             AND idformulario=:idformulario";
             $param= array(':EXCLUSION'=>$this->visitante,
             ':idformulario'=>$this->id);
@@ -114,13 +111,13 @@ class Formulario
             //Recorre el arreglo e inserta cada item en la tabla intermedia
             for ($i=0; $i<$longitud; $i++) {
                 //Si no existe Inserta
-                $existe="SELECT id from visitanteporformulario WHERE idvisitante = :idvisitante AND idformulario = :idformulario";
-                $parametro= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
+                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = :idformulario";
+                $parametro= array(':cedula'=>$visitantearray[$i],':idformulario'=>$this->id);
                 $resultadoexiste= DATA::Ejecutar($existe, $parametro);
 
                 if(count($resultadoexiste)==0){
-                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES(:idvisitante,:idformulario)";
-                    $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$this->id);
+                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),:idformulario)";
+                    $param= array(':cedula'=>$visitantearray[$i],':idformulario'=>$this->id);
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
@@ -214,12 +211,12 @@ class Formulario
             exit;
         }
     }
-
+    //Carga los visitantes en la tabla principal del formulario
     function CargaVisitanteporFormulario()
     {
         try {
             $sql="SELECT DISTINCT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
-            on v.cedula=vpf.idvisitante and vpf.idformulario=:identificador";
+            on v.id=vpf.idvisitante and vpf.idformulario=:identificador";
             $param= array(':identificador'=>$this->id);
             $result = DATA::Ejecutar($sql, $param);
             
