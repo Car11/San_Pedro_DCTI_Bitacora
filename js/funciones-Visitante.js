@@ -107,6 +107,7 @@ $(document).ready( function () {
             $("#cedula").val(data[0].CEDULA);
             $("#empresa").val(data[0].EMPRESA);
             $("#nombre").val(data[0].NOMBRE);
+            $("#permiso")[0].checked= data[0].PERMISOANUAL=1?true:false;
             $(".modal").css({ display: "block" }); 
         })    
         .fail(function(e){
@@ -127,8 +128,20 @@ $(document).ready( function () {
         $("#cedula").val("");
         $("#empresa").val("");
         $("#nombre").val("");
+        $("#permiso")[0].checked = false;
         // Muestra modal.
         $(".modal").css({ display: "block" });         
+    }
+
+    this.muestraError = function(){
+        location.reload();            
+        $(".modal").css({ display: "none" });  
+        $("#textomensaje").text("Error al almacenar la información");
+        $("#mensajetop").css("background-color", "firebrick");
+        $("#mensajetop").css("color", "white");    
+        $("#mensajetop").css("visibility", "visible");
+        $("#mensajetop").slideDown("slow");
+        $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
     }
 
     // guarda el registro.
@@ -143,7 +156,8 @@ $(document).ready( function () {
                 idvisitante: id,              
                 cedula:  $("#cedula").val(),
                 nombre: $("#nombre").val(),
-                empresa: $("#empresa").val()
+                empresa: $("#empresa").val(),
+                permiso: $("#permiso")[0].checked
             }
         })
         .done(function( e ) {
@@ -215,9 +229,9 @@ $(document).ready( function () {
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
         })    
         .fail(function(e){
-            location.reload();            
+            // location.reload();            
             $(".modal").css({ display: "none" });  
-            $("#textomensaje").text(e);
+            $("#textomensaje").text("Error al almacenar la información");
             $("#mensajetop").css("background-color", "firebrick");
             $("#mensajetop").css("color", "white");    
             $("#mensajetop").css("visibility", "visible");

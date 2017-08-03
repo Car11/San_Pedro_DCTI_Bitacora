@@ -24,6 +24,7 @@ if(isset($_POST["action"])){
             $visitante->cedula= $_POST["cedula"];
             $visitante->nombre= $_POST["nombre"];
             $visitante->empresa= $_POST["empresa"];
+            $visitante->permisoanual= $_POST["permiso"];
             $visitante->Agregar();
             break;
         case "Modificar":
@@ -31,6 +32,7 @@ if(isset($_POST["action"])){
             $visitante->cedula= $_POST["cedula"];
             $visitante->nombre= $_POST["nombre"];
             $visitante->empresa= $_POST["empresa"];
+            $visitante->permisoanual= $_POST["permiso"];
             $visitante->Modificar();
             break;
     }
@@ -235,8 +237,8 @@ class Visitante{
     //
     function Agregar(){
         try {
-            $sql="INSERT INTO visitante (id,nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual);";
-            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual);
+            $sql="INSERT INTO visitante (nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual);";
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual=="true"?1:0);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
             {
@@ -245,7 +247,7 @@ class Visitante{
                 $_SESSION['idvisitante']= $this->ID;
                 return true;
             }
-            else return false;
+            else var_dump(http_response_code(404)); // error
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
@@ -269,11 +271,11 @@ class Visitante{
             $sql="UPDATE visitante 
                 SET  nombre= :nombre, cedula= :cedula, empresa= :empresa , permisoanual= :permisoanual
                 WHERE ID=:ID";
-            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, 'permisoanual'=>$this->permisoanual, ':ID'=>$this->ID);
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, 'permisoanual'=>$this->permisoanual=="true"?1:0, ':ID'=>$this->ID);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
                 return true;
-            else return false;
+            else var_dump(http_response_code(404)); // error
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());

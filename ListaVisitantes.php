@@ -115,7 +115,7 @@ $data= $visitante->CargarTodos();
 
                     <form name="perfil" method="POST" >
                         <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
-                            <input autofocus type="text" maxlength="9" id="cedula" 
+                            <input autofocus type="text"  id="cedula" 
                                 value= "<?php if ($visitante->cedula!=null) print $visitante->cedula;  ?>" 
                                 class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)"/>
                         </label>
@@ -129,7 +129,7 @@ $data= $visitante->CargarTodos();
                                 value= "<?php if ($visitante->nombre!=null) print $visitante->nombre; ?>" id="nombre"/>
                         </label>
                         <label for="permiso"><span class="campoperfil">Tiene permiso de Ingreso Anual?</span>
-                            <input type="checkbox" name="permiso" class="input-field" >
+                            <input type="checkbox" name="permiso" id="permiso" class="input-field" >
                         </label>
 
                         <nav class="btnfrm">
