@@ -1,4 +1,5 @@
 var id="NULL"; 
+var formReady=false;
 $(document).ready( function () {
     //Da la apariencia del css datatable
     $('#tblLista').DataTable();    
@@ -25,6 +26,38 @@ $(document).ready( function () {
     this.Cerrar = function(){
         $(".modal").css({ display: "none" });
     }; 
+
+    //valida cedula unica.
+    $('#cedula').focusout(function() {
+        $.ajax ({
+            type: "POST",
+            url: "class/Visitante.php",
+            data: { 
+                action: "ValidaCedulaUnica",
+                cedula:  $("#cedula").val(),
+                nombre: $("#nombre").val(),
+            }
+        })
+        .done(function( e ) {    
+            if(e=="invalida"){
+                 $("#cedula").css({
+                    "border-color": "firebrick",
+                    "border-width": "5px"
+                });
+                $("#cedula").focus();
+            }
+            else {
+                $("#cedula").css({
+                    "border-color": "green",
+                    "border-width": "5px"
+                });
+                formReady=true;
+            }
+         })
+        .fail(function( e ) {    
+            // ...
+         });
+    });
 
     // AJAX: Carga la lista 
     this.ReCargar = function(){
@@ -91,6 +124,11 @@ $(document).ready( function () {
 
     // evento click del boton modificar
     $('.modificar').click( function(){
+        $("#cedula").css({
+                    "border-color": "green",
+                    "border-width": "5px"
+        });
+        //                
         id = $(this).parents("tr").find("td").eq(0).text();           
         // Ajax: Consulta visitante.        
         $.ajax({
@@ -122,13 +160,16 @@ $(document).ready( function () {
     });
 
     // Abre nuevo modal.
-    this.Nuevo = function() {
-        // limpia valores.
+    this.Nuevo = function() {        
+        // limpia valores.        
         id="NULL";
         $("#cedula").val("");
         $("#empresa").val("");
         $("#nombre").val("");
         $("#permiso")[0].checked = false;
+        $("#cedula").css({
+            "border": "1px solid #C2C2C2"
+        });
         // Muestra modal.
         $(".modal").css({ display: "block" });         
     }
@@ -146,6 +187,14 @@ $(document).ready( function () {
 
     // guarda el registro.
     this.Guardar = function(){
+        /*$('#perfil').validate({
+            submitHandler:
+        });*/
+        //
+        if(!formReady){
+            alert('Error de datos, hay errores en el formulario');
+            return false;
+        }            
         // Ajax: insert / Update.
         var miAccion= id=='NULL' ? 'Insertar' : 'Modificar';
         $.ajax({
@@ -162,7 +211,7 @@ $(document).ready( function () {
         })
         .done(function( e ) {
             // mensaje de visitante salida correcta.
-            //location.reload();
+            // location.reload();
             // recarga la lista:
             $.ajax({
                 type: "POST",

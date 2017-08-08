@@ -8,6 +8,11 @@ if(isset($_POST["action"])){
         case "Excluye":
             $visitante->ConsultaVisitante();
             break;
+        case "ValidaCedulaUnica":
+            $visitante->cedula= $_POST["cedula"];
+            $visitante->nombre= $_POST["nombre"];
+            $visitante->ValidaCedulaUnica();
+            break;
         case "CargarTodos":
             echo json_encode($visitante->CargarTodos());
             break;
@@ -231,6 +236,21 @@ class Visitante{
             exit;
         }
     }    
+
+    function ValidaCedulaUnica(){
+        try{
+            $sql = "SELECT id
+                    FROM visitante
+                    where cedula=:cedula and nombre<> :nombre";
+            $param= array(':cedula'=>$this->cedula, ':nombre'=>$this->nombre);
+            $data = DATA::Ejecutar($sql,$param);      
+            if ($data) {                       
+                echo "invalida";
+            } else echo "valida";
+        }
+        catch(Exception $e) {
+        }
+    }
     
     //
     // Funciones de Mantenimiento.

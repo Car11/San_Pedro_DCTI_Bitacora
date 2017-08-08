@@ -113,19 +113,19 @@ $data= $visitante->CargarTodos();
                 <div id="form">
                     <!-- <h1>Nuevo Visitante</h1> -->
 
-                    <form name="perfil" method="POST" >
+                    <form name="perfil" id='perfil' method="POST" >
                         <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
-                            <input autofocus type="text"  id="cedula" 
+                            <input autofocus required type="text"  id="cedula" 
                                 value= "<?php if ($visitante->cedula!=null) print $visitante->cedula;  ?>" 
                                 class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)"/>
                         </label>
                         <label for="empresa"><span class="campoperfil">Empresa / Dependencia <span class="required">*</span></span>
-                            <input type="text"   style="text-transform:uppercase" 
+                            <input required type="text"   style="text-transform:uppercase" 
                                 value= "<?php if ($visitante->empresa!=null) print $visitante->empresa; ?>" 
                                 class="input-field" name="empresa" value="" id="empresa"/>
                         </label>
                         <label for="nombre"><span class="campoperfil">Nombre Completo <span class="required">*</span></span>
-                            <input  type="text" class="input-field" name="nombre" 
+                            <input  required type="text" class="input-field" name="nombre" style="text-transform:uppercase" 
                                 value= "<?php if ($visitante->nombre!=null) print $visitante->nombre; ?>" id="nombre"/>
                         </label>
                         <label for="permiso"><span class="campoperfil">Tiene permiso de Ingreso Anual?</span>
@@ -156,10 +156,4 @@ $data= $visitante->CargarTodos();
     </body>
 </html>
 
-<script>
-$(document).ready( function () {
 
-    
-    
-});
-</script>
