@@ -144,8 +144,11 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            
-            alert("Responsable Eliminado!");
+            var existeresponsable = JSON.parse(e);
+            if (existeresponsable[0][0]==0)
+                alert("Responsable Eliminado!");
+            else
+                alert("No se puede eliminar Responsable, ya está asignado a un Formulario!");
             location.reload();
         })    
         .fail(function(msg){
@@ -153,7 +156,7 @@ $rol=$_SESSION['rol'];
         });
         
     });
-
+    
     //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
     $(document).on('click', '.modificar', function (event) {
         idresponsabletbl = $(this).parents("tr").find("td").eq(0).text();

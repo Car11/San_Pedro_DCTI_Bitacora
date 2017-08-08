@@ -4,6 +4,13 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+if(isset($_POST["action"])){
+    if($_POST["action"]=="ExisteResposable"){
+        $formulario= new Formulario();
+        $formulario->ExisteFormulario();
+    }
+}
+
 class Formulario
 {
     public $id;
@@ -33,7 +40,7 @@ class Formulario
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
     }
-        
+
     //Agrega formulario
     function AgregarFormulario()
     {
@@ -263,6 +270,18 @@ class Formulario
         } catch (Exception $e) {
             $_SESSION['errmsg']= $e->getMessage();
             header('Location: ../Error.php');
+            exit;
+        }
+    }
+
+        function ExisteFormulario(){
+        try {
+			$sql = "SELECT count(idresponsable) FROM formulario WHERE idresponsable=:idresponsable";
+            $param= array(':idresponsable'=>$_POST["idresponsable"]);
+            $result = DATA::Ejecutar($sql, $param);
+			echo $result;			
+		}catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }
     }
