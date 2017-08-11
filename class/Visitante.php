@@ -267,7 +267,7 @@ class Visitante{
                 $_SESSION['idvisitante']= $this->ID;
                 return true;
             }
-            else var_dump(http_response_code(404)); // error
+            else var_dump(http_response_code(500)); // error
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
@@ -288,14 +288,14 @@ class Visitante{
 
     function Modificar(){
         try {
-            $sql="UPDATE visitante 
+            $sql="UPDATE visitante
                 SET  nombre= :nombre, cedula= :cedula, empresa= :empresa , permisoanual= :permisoanual
                 WHERE ID=:ID";
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, 'permisoanual'=>$this->permisoanual=="true"?1:0, ':ID'=>$this->ID);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
                 return true;
-            else var_dump(http_response_code(404)); // error
+            else var_dump(http_response_code(500)); // error
         }     
         catch(Exception $e) {
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
@@ -377,7 +377,9 @@ class Visitante{
             FROM visitante 
             ORDER BY cedula';
             $data= DATA::Ejecutar($sql);
-            return $data;
+            if($data)
+                return $data;
+            else var_dump(http_response_code(500)); // error
         }
         catch(Exception $e) {            
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
