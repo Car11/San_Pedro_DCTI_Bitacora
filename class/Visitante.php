@@ -40,6 +40,10 @@ if(isset($_POST["action"])){
             $visitante->permisoanual= $_POST["permiso"];
             $visitante->Modificar();
             break;
+        case "Eliminar":
+            $visitante->ID= $_POST["idvisitante"];            
+            $visitante->Eliminar();
+            break;
     }
     
 }
@@ -355,14 +359,37 @@ class Visitante{
             exit;
         }
     }
-    
+
+    function ValidarEliminar(){
+        try{
+            $sql="SELECT *
+                FROM VISITANTEPORFORMULARIO F, BITACORA B
+                WHERE F.IDVISITANTE= :ID OR B.IDVISITANTE= :ID";
+            $param= array(':ID'=>$this->ID);
+            $data= DATA::Ejecutar($sql, $param);
+            if(count($data))
+                return true;
+            else return false;
+        }
+        catch(Exception $e){
+            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            exit;
+        }
+    }
+
     function Eliminar(){
         try {
-            $sql='DELETE visitante 
-            WHERE idvisitante= :idvisitante';
-            $param= array(':idvisitante'=>$this->ID);
-            $data= DATA::Ejecutar($sql, $param);
-            return $data;
+            if($this->ValidarEliminar()){
+                echo "Registro en uso";
+                return false;
+            }                
+            $sql='DELETE FROM visitante 
+            WHERE ID= :ID';
+            $param= array(':ID'=>$this->ID);
+            $data= DATA::Ejecutar($sql, $param, true);
+            if($data)
+                return true;
+            else var_dump(http_response_code(500)); // error 
         }
         catch(Exception $e) {            
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
@@ -370,8 +397,7 @@ class Visitante{
         }
     }
 
-
-     function CargarTodos(){
+    function CargarTodos(){
         try {
             $sql='SELECT ID, cedula, nombre, empresa, permisoanual 
             FROM visitante 
@@ -404,7 +430,7 @@ class Visitante{
                 $param= array(':EXCLUSION'=>$_POST['visitanteexcluido']);
                 $result = DATA::Ejecutar($sql,$param);  
             }
-
+            //
             echo json_encode($result);
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());

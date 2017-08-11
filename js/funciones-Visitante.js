@@ -22,12 +22,6 @@ $(document).ready( function () {
         }    
     };
 
-    $("#id_of_textbox").keyup(function(event){
-    if(event.keyCode == 13){
-        $("#id_of_button").click();
-    }
-});
-
     //valida cedula unica al perder el foco en el input cedula.
     $('#cedula').focusout(ValidaCedulaUnica);
 
@@ -107,14 +101,7 @@ $(document).ready( function () {
                 "order": [[ 2, "asc" ]]
             } ); 
         })    
-        .fail(function(e){
-            $("#textomensaje").text('Error al cargar la lista, Intente de nuevo.');
-            $("#mensajetop").css("background-color", "firebrick");
-            $("#mensajetop").css("color", "white");    
-            $("#mensajetop").css("visibility", "visible");
-            $("#mensajetop").slideDown("slow");
-            $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");            
-        });
+        .fail(muestraError);
     };
 
     // evento click del boton eliminar
@@ -135,12 +122,41 @@ $(document).ready( function () {
             buttonsStyling: false
         }).then(function () {
             // eliminar registro.
-            swal(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-            )
+            Eliminar();
         })
+    };
+
+    function Eliminar(){            
+        $.ajax({
+            type: "POST",
+            url: "class/Visitante.php",
+            data: { 
+                action: 'Eliminar',                
+                idvisitante:  id
+            }
+            /*,statusCode: {
+                200: function (response) {
+                    alert('200 ec');         
+                }
+            }*/
+        })
+        .done(function(e){
+            if(e=="Registro en uso")
+            {
+                swal(
+                'Mensaje!',
+                'El registro se encuentra  en uso, no es posible eliminar.',
+                'error'
+            );
+            }
+            else swal(
+                'Eliminado!',
+                'El registro se ha eliminado.',
+                'success'
+            );
+            ReCargar();
+        })        
+        .fail(muestraError);
     };
 
     function EventoClickModificar(){
@@ -157,7 +173,7 @@ $(document).ready( function () {
             data: { 
                 action: 'CargarID',                
                 idvisitante:  id
-            }
+            }            
         })
         .done(function( e ) {
             // mensaje de visitante salida correcta.
@@ -202,7 +218,7 @@ $(document).ready( function () {
 
     function muestraError(){        
         $(".modal").css({ display: "none" });  
-        $("#textomensaje").text("Error al almacenar la información");
+        $("#textomensaje").text("Error al procesar la información");
         $("#mensajetop").css("background-color", "firebrick");
         $("#mensajetop").css("color", "white");    
         $("#mensajetop").css("visibility", "visible");
