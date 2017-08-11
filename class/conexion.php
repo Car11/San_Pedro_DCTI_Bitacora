@@ -1,32 +1,26 @@
 <?php 
 
 class DATA {
-	/*private static $host = "10.129.29.85";
-	private static $usuario = "Admin";
-	private static $clave = "12345";
-	private static $db = "registroingreso";*/
+
 	public static $conn;
     private static $connSql;
-	
-	public function __construct(){
-		
-	}  
-    
-    public static function Conectar(){
+    private static $config="";
+
+	private static function ConfiguracionIni(){
+        require_once('Globals.php');
+        if (file_exists('../../ini/config.ini')) {
+            self::$config = parse_ini_file('../../ini/config.ini',true); 
+        } 
+        else if (file_exists('../ini/config.ini')) {
+            self::$config = parse_ini_file('../ini/config.ini',true); 
+        }         
+    }  
+
+    private static function Conectar(){
         try {
-            if(!isset(self::$conn)) {
-                $config="";
-                if (file_exists('../ini/config.ini')) {
-                    $config = parse_ini_file('../ini/config.ini'); 
-                    //printf('ini: '. $config['host']);exit;
-                } 
-                else if (file_exists('ini/config.ini')) {
-                    $config = parse_ini_file('ini/config.ini'); 
-                    //printf('ini: '. $config['host']);exit;
-                } 
-                //
-                //self::$conn = new PDO('mysql:host='. $config['host'] . ';port='. $config['port'] .';dbname='.$config['dbname'].';charset=utf8', $config['username'],   $config['password']); 
-                self::$conn = new PDO('mysql:host='. $config['host'] .';dbname='.$config['dbname'].';charset=utf8', $config['username'],   $config['password']); 
+            self::ConfiguracionIni();
+            if(!isset(self::$conn)) {                                
+                self::$conn = new PDO('mysql:host='. self::$config[Globals::app]['host'] .';dbname=' . self::$config[Globals::app]['dbname'].';charset=utf8', self::$config[Globals::app]['username'],   self::$config[Globals::app]['password']); 
                 return self::$conn;
             }
         } catch (PDOException $e) {
@@ -47,34 +41,44 @@ class DATA {
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
-    }
-    
+    }    
 
     // Ejecuta consulta SQL, $op = true envía los datos en 'crudo', $op=false envía los datos en arreglo (fetch).
     public static function Ejecutar($sql, $param=NULL, $op=false) {
         try{
             //conecta a BD
-            DATA::Conectar();
-            $st=DATA::$conn->prepare($sql);
-            $st->execute($param);
-            //
-            if(!$op)
-            	return  $st->fetchAll();
-			else return $st;    
+            self::Conectar();
+            $st=self::$conn->prepare($sql);
+            self::$conn->beginTransaction(); 
+            if($st->execute($param))
+            {
+                self::$conn->commit(); 
+                if(!$op)
+                    return  $st->fetchAll();
+                else return $st;    
+            } else return false;
+            
         } catch (Exception $e) {
+            self::$conn->rollback(); 
             header('Location: ../Error.php?w=ejecutar&id='.$e->getMessage());
             exit;
         }
     }
     
-    public static function EjecutarSQL($sql, $param=NULL) {
+    public static function EjecutarSQL($sql, $param=NULL, $op=false) {
         try{
             //conecta a BD
-            DATA::ConectarSQL();    
-            $st=DATA::$connSql->prepare($sql);
-            $st->execute($param);
-            return $st->fetchAll();
+            self::ConectarSQL();    
+            $st=self::$connSql->prepare($sql);
+            self::$conn->beginTransaction(); 
+            if($st->execute($param)){
+                self::$conn->commit(); 
+                if(!$op)
+                    return  $st->fetchAll();
+                else return $st;    
+            } else return false;
         } catch (Exception $e) {
+            self::$conn->rollback(); 
             header('Location: ../Error.php?w=ejecutar&id='.$e->getMessage());
             exit;
         }
@@ -83,5 +87,9 @@ class DATA {
 	private static function Close(){
 		mysqli_close(self::$conn);			
 	}
+
+    public static function getLastID(){
+        return self::$conn->lastInsertId( );
+    }
 }
 ?>

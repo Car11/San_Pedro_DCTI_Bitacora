@@ -3,7 +3,7 @@ class email{
 
     //public $visitante;
 
-     static function Enviar($idvisitante, $idformulario, $asunto, $mensajeEncabezado, $idtarjeta="NULL"){
+    static function Enviar($idvisitante, $idformulario, $asunto, $mensajeEncabezado, $idtarjeta="NULL"){
         // smtpapl.correo.ice
         // puerto 25
         // ip 10.149.20.26
@@ -44,7 +44,7 @@ class email{
                 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
                 $headers .= "From: ".$from."\r\n"; 
                 //
-                mail($to, $asunto, $mensaje,$headers);      
+                // mail($to, $asunto, $mensaje,$headers);      
             }            
         }     
         catch(Exception $e) {

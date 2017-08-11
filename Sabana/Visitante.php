@@ -97,7 +97,7 @@ class Visitante{
         try {
             $sql='INSERT INTO visitante (nombre, cedula, empresa)VALUES (:nombre, :cedula, :empresa)';
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa);
-            $result = DATA::Ejecutar($sql,$param);
+            $data = DATA::Ejecutar($sql,$param);
             //Agrega la entrada
             $this->BitacoraEntrada();
         }     
@@ -105,7 +105,7 @@ class Visitante{
             header('Location: Error.html?w=visitante-agregar&id='.$e->getMessage());
             exit;
         }
-    }
+    }  
     
     function BitacoraEntrada(){
         try {
