@@ -96,16 +96,22 @@ class Responsable{
     } 
 
     //Elimina responsable de acuerdo al ID
+
     function Elimina(){
         try {
 			$sql="DELETE FROM responsable WHERE id=:idresponsable";
             $param= array(':idresponsable'=>$_POST['idresponsable']);            
-            $result = DATA::Ejecutar($sql,$param);            
-			return $result;			
+            DATA::Ejecutar($sql,$param);
+            $sql = "SELECT count(id) FROM formulario WHERE idresponsable=:idresponsable";
+            $param= array(':idresponsable'=>$_POST['idresponsable']);            
+            $result = DATA::Ejecutar($sql,$param);
+
+			echo json_encode($result);			
 		}catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }		 	
+
     }
     
     function Carga(){

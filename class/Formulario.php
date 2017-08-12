@@ -4,6 +4,13 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+if(isset($_POST["action"])){
+    if($_POST["action"]=="Consultarporvisitante"){
+        $formulario= new formulario();
+        $formulario->ConsultarporVisitante();
+    }
+}
+
 class Formulario
 {
     public $id;
@@ -33,6 +40,7 @@ class Formulario
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
     }
+
         
     //Agrega formulario
     function AgregarFormulario()
@@ -265,5 +273,27 @@ class Formulario
             header('Location: ../Error.php');
             exit;
         }
+    }
+
+    function ConsultarporVisitante(){
+        try {
+            $sql = "SELECT f.id,f.fechasolicitud,f.idestado,f.motivovisita,f.rfc
+            FROM formulario f INNER JOIN  visitanteporformulario vxf ON f.id = vxf.idformulario INNER JOIN visitante v ON v.id=vxf.IDVISITANTE and v.CEDULA=:cedula";
+
+            $param= array(':cedula'=>$_POST["cedula"]);
+            $data = DATA::Ejecutar($sql, $param);
+            //
+            if (count($data)) {
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['idestado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->rfc= $data[0]['rfc'];
+            }
+            //
+            echo json_encode($data);	 
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }    
     }
 }

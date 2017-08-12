@@ -47,7 +47,8 @@ $listaformulario= $formulario->ConsultaFormulario();
 	</header>
     <div id="general">
         <div id="izquierda">
-            
+            <input type="text" id="txtbuscavisitante" name="txtbuscavisitante" class="inputformat" value=""/> 
+            <input id="btnbuscaxvisiante" type="button" value="Buscar por Visitante"/>
         </div>
         <div id="principal">
             <div id="superiornavegacion">
@@ -136,6 +137,30 @@ $listaformulario= $formulario->ConsultaFormulario();
             var idtd = $(this).parents("tr").find("td").eq(0).text();
             location.href='FormularioIngreso.php?MOD='+idtd;
         }); 
+
+
+        $(document).on('click', '#btnbuscaxvisiante', function (event) {
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                    action: "Consultarporvisitante",
+                    cedula: document.getElementById('txtbuscavisitante').value,
+                  }
+        })
+        .done(function( e ) {
+            var formularioxvisitante = JSON.parse(e);
+            
+            $('#listaformulario').html("");
+            
+            
+            //alert(formularioxvisitante.length);
+            //location.reload();
+        })    
+        .fail(function(msg){
+            alert("Error al Eliminar");
+        });
+    });  
          
 
     </script>
