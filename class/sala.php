@@ -14,7 +14,7 @@ class Sala{
             return $result;
         }     
         catch(Exception $e) {
-            header('Location: ../Error.php?w=sala&id='.$e->getMessage());
+            header('Location: ../Error.php');
             exit;
         }
     }

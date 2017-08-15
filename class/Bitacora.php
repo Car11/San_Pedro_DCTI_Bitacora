@@ -41,10 +41,11 @@ class Bitacora{
     function __construct(){
         require_once("conexion.php");  
         require_once("email.php");  
+        require_once("log.php");  
     }
     
     function Entrada(){
-        try {
+        try {            
             $sql = "INSERT INTO bitacora (idvisitante, idformulario, entrada, idtarjeta)
                     VALUES (:idvisitante, :idformulario, now(), :idtarjeta)";
             $param= array(':idvisitante'=>$this->idvisitante, 
@@ -58,12 +59,18 @@ class Bitacora{
                 $data = DATA::Ejecutar($sql,$param,true);
                 if($data)
                 {    
-                    email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE INGRESO", $this->idtarjeta);           
-                    echo "Bienvenid@ "; 
+                    email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE INGRESO", $this->idtarjeta);                  
+                    echo "Bienvenid@ !!!"; 
                 }
-                else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
+                else {
+                    log::Add('ERROR', 'Ha ocurrido un error al realizar la Asignacion de Tarjeta del Visitante. IDvisitante: ' . $this->idvisitante  );
+                    var_dump(http_response_code(500)); // error ajax
+                }
             }
-            else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
+            else {
+                log::Add('ERROR', 'Ha ocurrido un error al realizar la Entrada del Visitante. IDvisitante: ' . $this->idvisitante  );
+                var_dump(http_response_code(500)); // error ajax
+            }
             // elimina variables de sesion.
             if(isset($_SESSION['estado']))
                 unset($_SESSION['estado']);
@@ -77,13 +84,13 @@ class Bitacora{
                 unset($_SESSION['bitacora']);
         }     
         catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
-            exit;
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax            
         }
     }
 
 	function Salida(){
-        try {
+        try {            
            	date_default_timezone_set('America/Costa_Rica');
 	        $sql="UPDATE bitacora 
                 SET salida= :salida
@@ -99,9 +106,15 @@ class Bitacora{
                     email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE SALIDA", $this->idtarjeta);           
                     echo "Salida Completa";
                 }
-                else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
+                else {
+                    log::Add('ERROR', 'Ha ocurrido un error al liberar la tarjeta del Visitante. IDvisitante: ' . $this->idvisitante  );
+                    var_dump(http_response_code(500)); // error ajax
+                }
             }
-            else echo "Ha ocurrido un problema, comunicarse con Operaciones TI";
+            else {
+                log::Add('ERROR', 'Ha ocurrido un error al realizar la Salida del Visitante. IDvisitante: ' . $this->idvisitante  );
+                var_dump(http_response_code(500)); // error ajax
+            }
             // elimina variables de sesion.
             if(isset($_SESSION['estado']))
                 unset($_SESSION['estado']);
@@ -115,18 +128,35 @@ class Bitacora{
                 unset($_SESSION['bitacora']);
         }     
         catch(Exception $e) {
-            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
-            exit;
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax
         }
     }
     
     function Consulta(){
         try {
-			$sql = "SELECT id,idformulario,(SELECT cedula from visitante WHERE id = idvisitante),(SELECT nombre from visitante WHERE id = idvisitante),entrada, salida,(SELECT (SELECT nombre FROM sala WHERE id=idsala) FROM formulario WHERE id=idformulario),idtarjeta,(SELECT estado FROM tarjeta WHERE id=idtarjeta) FROM bitacora";
-			$result = DATA::Ejecutar($sql);
-			return $result;			
+			$sql = "SELECT id,idformulario,
+                (SELECT cedula from visitante WHERE id = idvisitante),
+                (SELECT nombre from visitante WHERE id = idvisitante),
+                entrada, salida,
+                (SELECT (SELECT nombre FROM sala WHERE id=idsala) 
+                FROM formulario 
+                WHERE id=idformulario),idtarjeta,(SELECT estado FROM tarjeta WHERE id=idtarjeta) FROM bitacora";
+			$data = DATA::Ejecutar($sql);
+            if($data)
+			    return $data;	
+            else {
+                log::Add('ERROR', 'Ha ocurrido un error al Consultar la bitacora.');
+                // muestra mensaje (ajax o html) del error.
+                $_SESSION['errmsg']= 'Problemas de Consulta';
+                header('Location: ../Error.php');
+                exit;
+            }		
 		}catch(Exception $e) {
-            header('Location: Error.html?w=visitante-bitacora&id='.$e->getMessage());
+            require_once("log.php");  
+            log::AddD('FATAL', 'Ha ocurrido al Consultar la bitacora.', $e->getMessage());
+            $_SESSION['errmsg']= 'Problemas de Consulta';
+            header('Location: ../Error.php');
             exit;
         }
     }

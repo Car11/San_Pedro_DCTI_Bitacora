@@ -5,15 +5,36 @@ class log{
     // WARNING
     // ERROR
     // FATAL
+    private static $categoria='';
+    private static $evento='';
+    private static $detalle='';
+    private static $usuario='Sistema';
 
-    public static function Add($categoria, $evento){
+    public static function Add($cat, $e){
         try{
             self::Init();
             // entrada al log.
-            $usuario='Sistema';
             if(isset($_SESSION['username']))
                 $usuario=$_SESSION['username'];
-            self::EscribeLog($categoria, $evento, $usuario);
+            self::$categoria= $cat;
+            self::$evento= $e;
+            self::Write();
+            // Valida tamaño del log.
+            self::SizeCheck();
+        }
+        catch(Exception $e){}
+    }
+
+    public static function AddD($cat, $e, $d){
+        try{
+            self::Init();
+            // entrada al log.
+            if(isset($_SESSION['username']))
+                $usuario=$_SESSION['username'];
+            self::$categoria= $cat;
+            self::$evento= $e;
+            self::$detalle= $d;
+            self::Write();
             // Valida tamaño del log.
             self::SizeCheck();
         }
@@ -25,7 +46,7 @@ class log{
         catch(Exception $e){}
     }
 
-    private static function EscribeLog($categoria, $evento, $usuario){
+    private static function Write(){
          if( $xml = file_get_contents( '../../log/xLog.xml') ) {
             $doc = new DomDocument( '1.0' );
             $doc->formatOutput = true;
@@ -34,14 +55,17 @@ class log{
             $root = $doc->getElementsByTagName('EventLogger')->item(0);
             // etiqueta elog.
             $log = $doc->createElement('eLog');
-            $log->setAttribute('Categoria', $categoria);
+            $log->setAttribute('Categoria', self::$categoria);
             $log->setAttribute('Fecha', date("Y-m-d"));
             $log->setAttribute('Hora', date("H:i:s"));       
-            $log->setAttribute('Usuario', $usuario);
-            $log->setAttribute('Evento', $evento);
+            $log->setAttribute('Usuario', self::$usuario);
+            $log->setAttribute('Evento', self::$evento);
+            if(self::$detalle!='')
+                $log->setAttribute('Detalle', self::$detalle);
             //
             $root= $root->appendChild( $log );
             $doc->save('../../log/xLog.xml');
+            self::$detalle='';
         }
     }
 
@@ -79,7 +103,11 @@ class log{
                 {
                     // Si el log es de mas de 10 MB, lo cierra y crea nuevo.
                     // Ultima entrada.
-                    self::EscribeLog('INFO', 'Cierre del log', 'Sistema');
+                    self::$categoria='INFO';
+                    self::$evento='Cierre del log';
+                    self::$detalle='';
+                    self::$usuario='Sistema';
+                    self::Write();
                     // Renombra.
                     rename("../../log/xLog.xml", "../../log/Historico/xLog_". date("Ymd")  .".xml");
                     // Nuevo archivo.

@@ -36,6 +36,7 @@ class Formulario
     function __construct()
     {
         require_once("conexion.php");
+        require_once("log.php");
         //error_reporting(E_ALL);
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
