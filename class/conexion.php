@@ -24,7 +24,10 @@ class DATA {
                 return self::$conn;
             }
         } catch (PDOException $e) {
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            require_once("log.php");  
+            log::AddD('FATAL', 'Ha ocurrido al Conectar con la base de datos MySQL', $e->getMessage());
+            $_SESSION['errmsg']= 'Problemas de Conexión';
+            header('Location: ../Error.php');
             exit;
         }
     }
@@ -37,8 +40,10 @@ class DATA {
                 return self::$connSql;
             }
         } catch (PDOException $e) {
-            print('<br>'. $e);exit;
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+            require_once("log.php");  
+            log::AddD('FATAL', 'Ha ocurrido al Conectar con la base de datos SQL', $e->getMessage());
+            //$_SESSION['errmsg']= $e->getMessage();
+            header('Location: ../Error.php');
             exit;
         }
     }    
@@ -56,11 +61,19 @@ class DATA {
                 if(!$op)
                     return  $st->fetchAll();
                 else return $st;    
-            } else return false;
+            } else {
+                self::$conn->rollback(); 
+                require_once("log.php");  
+                log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );
+                return false;
+            }
             
         } catch (Exception $e) {
             self::$conn->rollback(); 
-            header('Location: ../Error.php?w=ejecutar&id='.$e->getMessage());
+            require_once("log.php");  
+            log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL', $e->getMessage());
+            //$_SESSION['errmsg']= $e->getMessage();
+            header('Location: ../Error.php');
             exit;
         }
     }
@@ -76,10 +89,18 @@ class DATA {
                 if(!$op)
                     return  $st->fetchAll();
                 else return $st;    
-            } else return false;
+            } else {
+                self::$conn->rollback(); 
+                require_once("log.php");  
+                log::Add('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL');
+                return false;
+            }
         } catch (Exception $e) {
             self::$conn->rollback(); 
-            header('Location: ../Error.php?w=ejecutar&id='.$e->getMessage());
+            require_once("log.php");  
+            log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL', $e->getMessage());
+            //$_SESSION['errmsg']= $e->getMessage();
+            header('Location: ../Error.php');
             exit;
         }
     }
@@ -89,7 +110,7 @@ class DATA {
 	}
 
     public static function getLastID(){
-        return self::$conn->lastInsertId( );
+        return self::$conn->lastInsertId();
     }
 }
 ?>

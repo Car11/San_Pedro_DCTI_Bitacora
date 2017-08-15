@@ -83,10 +83,10 @@ $(document).ready( function () {
             // Recorre arreglo.
             $.each(data, function(i, item) {
                 var row="<tr>"+
-                    "<td style='display:none;' >" + item.ID +"</td>"+
-                    "<td>"+ item.cedula +"</td>"+
-                    "<td>"+ item.nombre +"</td>"+
-                    "<td>"+ item.empresa +"</td>"+
+                    "<td style='display:none;' >" + item.ID +"</td>" +
+                    "<td>"+ item.cedula + "</td>"+
+                    "<td>"+ item.nombre + "</td>"+
+                    "<td>"+ item.empresa + "</td>"+
                     "<td>"+ item.permisoanual +"</td>"+
                     "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
                     "<td><img id=imgdelete src=img/file_delete.png class=eliminar></td>"+

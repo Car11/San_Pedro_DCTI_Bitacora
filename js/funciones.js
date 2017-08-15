@@ -71,11 +71,9 @@ function inicio() {
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
         })    
-        .fail(function(msg){
+        .fail(function(e){
             modal.style.display = "none";
-            //alert("Salida ERROR:"  + document.getElementById('modal-cedula').value );
-            //MensajeTop(e);
-            $("#textomensaje").text(e);
+            $("#textomensaje").text('Ha ocurrido un error al realizar la salida, comunicarse con Operaciones TI');
             $("#mensajetop").css("background-color", "firebrick");
             $("#mensajetop").css("color", "white");    
             $("#mensajetop").css("visibility", "visible");
@@ -106,9 +104,9 @@ function inicio() {
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
         })    
-        .fail(function(msg){
+        .fail(function(e){
             modal.style.display = "none";
-            $("#textomensaje").text(e);
+            $("#textomensaje").text("Ha ocurrido un problema al realizar la entrada, comunicarse con Operaciones TI");
             $("#mensajetop").css("background-color", "firebrick");
             $("#mensajetop").css("color", "white");    
             $("#mensajetop").css("visibility", "visible");

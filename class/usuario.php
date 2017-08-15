@@ -8,6 +8,7 @@ class usuario{
 	
 	function __construct(){
         require_once("conexion.php");
+        require_once("log.php");
     }
 	
     function Validar(){    
@@ -16,6 +17,7 @@ class usuario{
         $data = DATA::Ejecutar($sql,$param);
         if (count($data) ) {
             $this->idrol= $data[0]['IDROL'];
+            log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
             return true;
         }else {        
             return false;           
