@@ -59,6 +59,7 @@ class Visitante{
 
 	function __construct(){
         require_once("conexion.php");
+        require_once("log.php");
     }
 
     //
@@ -66,6 +67,7 @@ class Visitante{
     //
     function ValidaID(){
         try{
+            log::Add('INFO', 'Valida id Visitante' );
             if(strlen($this->cedula)<=2)
             {
                 $this::ValidaIDTarjeta();
