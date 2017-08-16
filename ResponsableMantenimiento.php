@@ -105,7 +105,7 @@ $rol=$_SESSION['rol'];
             </div>
             <div class="modal-body">
                 <div id="resizquierda"></div>
-                <div id="modalcontainer">
+                
                     <div class="modalmod">
                         <label for="txttramitante" class="labelformat">Nombre</label></br>
                         <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="inputformat" value="" pattern="[\.áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/>
@@ -123,7 +123,7 @@ $rol=$_SESSION['rol'];
                         <input id="btnModificaResponsable" class="cbp-mc-submit" type="button" value="Modifica Responsable">
                         <input id="idresponsable" name="idresponsable" type="hidden">
                     </div>    
-                </div>
+                
                 <div id="resderecha"></div>
             </div>
             <div class="modal-footer">

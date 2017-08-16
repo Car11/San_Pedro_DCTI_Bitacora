@@ -527,3 +527,52 @@
 #up{
     height: 70px;
 }
+
+
+/*LISTA FORMULARIO*/
+#supnuevo{
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+#supbusca{
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+#supatras{
+    float: left;
+    width: 25%;
+    height: 100%;
+    text-align: right;
+}
+#cedvisitante{
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: right;
+}
+#botoncedvisitante{
+    width: 50%;
+    height: 100%;
+    float: left;
+    margin-top: 0px;
+}
+#btnbuscaxvisiante{
+    margin-top: 0px;
+    width: 80%;  
+}
+
+#txtbuscavisitante{
+    margin-left: 0px;
+    margin-top: 5px;
+    width: 80%;
+    height: 35px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 20px;
+    background: white;
+    border: 2px solid #fff;
+}
+input[type=checkbox] {
+    transform: scale(2);
+}

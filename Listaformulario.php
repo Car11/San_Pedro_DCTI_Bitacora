@@ -47,47 +47,30 @@ $listaformulario= $formulario->ConsultaFormulario();
 	</header>
     <div id="general">
         <div id="izquierda">
-            <input type="text" id="txtbuscavisitante" name="txtbuscavisitante" class="inputformat" value=""/> 
-            <input id="btnbuscaxvisiante" type="button" value="Buscar por Visitante"/>
+             
+            
         </div>
         <div id="principal">
             <div id="superiornavegacion">
-                <div id="nuevo">
+                <div id="supnuevo">
                     <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="location.href='FormularioIngreso.php'";>      
                 </div>
-                <div id="atraslista">
+                <div id="supbusca">
+                    <div id=cedvisitante>
+                         <input type="checkbox" id="checkconsultavisitante" name="checkconsultavisitante" value="Bike">
+                        <input type="text" id="txtbuscavisitante" name="txtbuscavisitante" class="inputformat" value=""/>       
+                    </div>
+                    <div id=botoncedvisitante>
+                        <input id="btnbuscaxvisiante" type="button" class="cbp-mc-submit" value="Buscar por Visitante"/>
+                    </div>
+                </div>
+                <div id="supatras">
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
                 </div>
             </div>
             <div id="listavisitante">
-               </br>
-               <?php 
-                print "<table id='listaformulario'class='display'>";
-                print "<thead>";
-                print "<tr>";
-                print "<th>ID</th>";
-                print "<th>FECHA SOLICITUD</th>";
-                print "<th>MOTIVO</th>";
-                print "<th>ESTADO</th>";
-                print "<th>RFC</th>";
-                print "<th>MODIFICAR</th>";    
-                print "</tr>";
-                print "</thead>";	
-                print "<tbody>";
-                for($i=0; $i<count($listaformulario); $i++){
-                        print "<tr>";
-                        print "<td>".$listaformulario[$i][0]."</td>";
-                        print "<td>".$listaformulario[$i][1]."</td>";
-                        print "<td>".$listaformulario[$i][2]."</td>";
-                        print "<td>".$listaformulario[$i][3]."</td>";
-                        print "<td>".$listaformulario[$i][12]."</td>";
-                        print "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>";
-                        print "</tr>";
-                }
-                print "</tbody>";
-                print "</table>";
-                ?>
-                </div>
+
+            </div>
                 <footer></footer>  
         </div>
         <div id="derecha">
@@ -97,8 +80,9 @@ $listaformulario= $formulario->ConsultaFormulario();
     <script>
         
         $(document).ready( function () {
+            ActivaConsultaVisitante();
             //Da la apariencia del css datatable
-            CargarEstiloTablas();
+            //CargarEstiloTablas();
             //envía notificación al servidor
             this.ajaxSent = function() {
                 try {
@@ -138,6 +122,24 @@ $listaformulario= $formulario->ConsultaFormulario();
             location.href='FormularioIngreso.php?MOD='+idtd;
         }); 
 
+        //FUNCIONALIDAD DEL CHECKBOX QUE ACTIVA LA CONSULTA DE VISITANTES *********/       
+        $(document).on('click', '#checkconsultavisitante', function (event) {    
+            ActivaConsultaVisitante();
+        }); 
+
+
+        function ActivaConsultaVisitante(){
+            if(document.getElementById("checkconsultavisitante").checked == true){
+                $("#txtbuscavisitante").prop("readonly", false);
+                $('#btnbuscaxvisiante').attr("disabled", false);
+            }
+            if(document.getElementById("checkconsultavisitante").checked == false){
+                $("#txtbuscavisitante").prop("readonly", true);
+                $('#btnbuscaxvisiante').attr("disabled", true);
+                $("#txtbuscavisitante").val("");
+                RecargarTabla();
+            }
+        }
 
         $(document).on('click', '#btnbuscaxvisiante', function (event) {
         $.ajax({
@@ -151,17 +153,72 @@ $listaformulario= $formulario->ConsultaFormulario();
         .done(function( e ) {
             var formularioxvisitante = JSON.parse(e);
             
-            $('#listaformulario').html("");
-            
-            
-            //alert(formularioxvisitante.length);
-            //location.reload();
+            $('#listavisitante').html("");
+            $('#listavisitante').append("<table id='listaformulario'class='display'>");
+            var col="<thead><tr> <th>ID</th> <th>FECHA SOLICITUD</th> <th>MOTIVO</th> <th>ESTADO</th> <th>RFC</th> <th>MODIFICAR</th></tr></thead><tbody id='tableBody'></tbody>";
+            $('#listaformulario').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td>"+ item.id+"</td>" +
+                    "<td>"+ item.fechasolicitud + "</td>"+
+                    "<td>"+ item.motivovisita + "</td>"+
+                    "<td>"+ item.estado + "</td>"+
+                    "<td>"+ item.rfc +"</td>"+
+                    "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
+                "</tr>";
+                $('#tableBody').append(row);         
+            })
+            // formato tabla
+            $('#listaformulario').DataTable( {
+                "order": [[ 0, "desc" ]]
+            } );
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
         });
     });  
-         
+    
+    function RecargarTabla(){
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                    action: "RecargaTabla"
+                  }
+        })
+        .done(function( e ) {
+            var formularioxvisitante = JSON.parse(e);
+            
+            $('#listavisitante').html("");
+            $('#listavisitante').append("<table id='listaformulario'class='display'>");
+            var col="<thead><tr> <th>ID</th> <th>FECHA SOLICITUD</th> <th>MOTIVO</th> <th>ESTADO</th> <th>RFC</th> <th>MODIFICAR</th></tr></thead><tbody id='tableBody'></tbody>";
+            $('#listaformulario').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td>"+ item.id+"</td>" +
+                    "<td>"+ item.fechasolicitud + "</td>"+
+                    "<td>"+ item.motivovisita + "</td>"+
+                    "<td>"+ item.estado + "</td>"+
+                    "<td>"+ item.rfc +"</td>"+
+                    "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
+                "</tr>";
+                $('#tableBody').append(row);         
+            })
+            // formato tabla
+            $('#listaformulario').DataTable( {
+                "order": [[ 0, "desc" ]]
+            } );
+        })    
+        .fail(function(msg){
+            alert("Error al Eliminar");
+        });    
+    }
 
     </script>
     </body>
