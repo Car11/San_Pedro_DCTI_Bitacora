@@ -5,9 +5,14 @@ if (!isset($_SESSION)) {
 }
 
 if(isset($_POST["action"])){
-    if($_POST["action"]=="ExisteResposable"){
-        $formulario= new Formulario();
-        $formulario->ExisteFormulario();
+
+    if($_POST["action"]=="Consultarporvisitante"){
+        $formulario= new formulario();
+        $formulario->ConsultarporVisitante();
+    }
+    if($_POST["action"]=="RecargaTabla"){
+        $formulario= new formulario();
+        $formulario->RecargaTabla();
     }
 }
 
@@ -284,13 +289,41 @@ class Formulario
         }
     }
 
-        function ExisteFormulario(){
+
+    function ConsultarporVisitante(){
         try {
-			$sql = "SELECT count(idresponsable) FROM formulario WHERE idresponsable=:idresponsable";
-            $param= array(':idresponsable'=>$_POST["idresponsable"]);
-            $result = DATA::Ejecutar($sql, $param);
-			echo $result;			
-		}catch(Exception $e) {
+            $sql = "SELECT f.id,f.fechasolicitud,(SELECT nombre FROM estado WHERE id=f.idestado) as estado,f.motivovisita,f.rfc
+            FROM formulario f INNER JOIN  visitanteporformulario vxf ON f.id = vxf.idformulario INNER JOIN visitante v ON v.id=vxf.IDVISITANTE and v.CEDULA=:cedula";
+
+            $param= array(':cedula'=>$_POST["cedula"]);
+            $data = DATA::Ejecutar($sql, $param);
+            //
+            if (count($data)) {
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['estado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->rfc= $data[0]['rfc'];
+            }
+            //
+            echo json_encode($data);	 
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }    
+    }
+
+    function RecargaTabla(){
+        try {
+            $sql = "SELECT id,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc FROM formulario";
+            $data = DATA::Ejecutar($sql);
+            if (count($data)) {
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['estado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->rfc= $data[0]['rfc'];
+            }
+            echo json_encode($data);	 
+        } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }

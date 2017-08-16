@@ -51,30 +51,12 @@ $rol=$_SESSION['rol'];
         </div>
         <div id="principal">
             <div id="superiornavegacion">
-                <div id="nuevo">   
+                <div id="nuevo">
+                    <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="location.href='FormularioIngreso.php'";>         
                 </div>
                 <div id="atraslista">
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
                 </div>
-            </div>
-            <div id="formresposables">
-                    <div class="cajainputresp">
-                        <label for="txttramitante" class="labelformat">Nombre</label></br>
-                        <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="inputformat" value="" pattern="[\.áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/>
-                    </div>                   
-                    <div class="cajainputresp">
-                        <label for="txtautorizador" class="labelformat">Cedula</label></br>
-                        <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="inputformat" value="" pattern="[\.-_0-9A-Za-z/\s/]*"/> 
-                    </div>
-                    <div class="cajainputresp">
-                        <label for="txtautorizador" class="labelformat">Empresa</label></br>
-                        <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="inputformat" value="" pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/> 
-                    </div>
-                    <div class="cajainputresp">
-                        <input id="btnInsertaResponsable" class="cbp-mc-submit" type="button" value="Inserta Responsable">
-                        <input id="btnModificaResponsable" class="cbp-mc-submit" type="button" value="Modifica Responsable">
-                        <input id="idresponsable" name="idresponsable" type="hidden">
-                    </div>    
             </div>
             <div id="tablaresponsable">
                 <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL FORMULARIO-->
@@ -108,13 +90,68 @@ $rol=$_SESSION['rol'];
 
         </div>
         <div id="derecha">
-            
+
         </div>
     </form>
     </div>    
+
+    <!-- MODAL RESPONSABLE -->
+    <div id="ModalResponsable" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Responsables</h2>
+            </div>
+            <div class="modal-body">
+                <div id="resizquierda"></div>
+                
+                    <div class="modalmod">
+                        <label for="txttramitante" class="labelformat">Nombre</label></br>
+                        <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="inputformat" value="" pattern="[\.áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/>
+                    </div>                   
+                    <div class="modalmod">
+                        <label for="txtautorizador" class="labelformat">Cedula</label></br>
+                        <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="inputformat" value="" pattern="[\.-_0-9A-Za-z/\s/]*"/> 
+                    </div>
+                    <div class="modalmod">
+                        <label for="txtautorizador" class="labelformat">Empresa</label></br>
+                        <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="inputformat" value="" pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/> 
+                    </div>
+                    <div class="modalmod">
+                        <input id="btnInsertaResponsable" class="cbp-mc-submit" type="button" value="Inserta Responsable">
+                        <input id="btnModificaResponsable" class="cbp-mc-submit" type="button" value="Modifica Responsable">
+                        <input id="idresponsable" name="idresponsable" type="hidden">
+                    </div>    
+                
+                <div id="resderecha"></div>
+            </div>
+            <div class="modal-footer">
+            <br>
+            </div>
+        </div>
+    </div>
+    <!--FINAL MODAL RESPONSABLE-->
     
 <script>
     var idresponsabletbl;
+    var modalResponsable = document.getElementById('ModalResponsable');  
+    var btnmodificar = document.getElementsByClassName('modificar');
+    var btnnuevo  = document.getElementById('btnnuevo');
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function() {modalResponsable.style.display = "none";}
+
+    btnnuevo.onclick = function() {
+        modalResponsable.style.display = "block";
+    }
+
+    window.onclick = function(event) {
+    if (event.target == modalResponsable) {
+        modalResponsable.style.display = "none";
+        }
+    }
+    
     $(document).ready( function () {             
         $('#btnModificaResponsable').hide();
         $('#btnInsertaResponsable').show();
@@ -159,6 +196,8 @@ $rol=$_SESSION['rol'];
     
     //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
     $(document).on('click', '.modificar', function (event) {
+        modalResponsable.style.display = "block";
+
         idresponsabletbl = $(this).parents("tr").find("td").eq(0).text();
         $('#btnInsertaResponsable').hide();
         $('#btnModificaResponsable').show();
