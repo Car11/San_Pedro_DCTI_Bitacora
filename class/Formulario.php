@@ -5,6 +5,7 @@ if (!isset($_SESSION)) {
 }
 
 if(isset($_POST["action"])){
+
     if($_POST["action"]=="Consultarporvisitante"){
         $formulario= new formulario();
         $formulario->ConsultarporVisitante();
@@ -40,12 +41,12 @@ class Formulario
     function __construct()
     {
         require_once("conexion.php");
+        require_once("log.php");
         //error_reporting(E_ALL);
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
     }
 
-        
     //Agrega formulario
     function AgregarFormulario()
     {
@@ -239,6 +240,17 @@ class Formulario
         }
     }
     
+     function getID(){
+        try{
+            $sql="SELECT ID FROM FORMULARIO ORDER BY FECHASOLICITUD DESC LIMIT 1";
+            $data= DATA::Ejecutar($sql);
+            $this->id= $data[0]['ID'];
+        }
+        catch(Exception $e){
+
+        }
+    }
+
     function AgregarTemporal($idvisitante)
     {
         try {
@@ -254,11 +266,9 @@ class Formulario
              $data= DATA::Ejecutar($sql, $param, true);
             if ($data) {
                  //busca id de formulario agregado
-                 $sql='SELECT LAST_INSERT_ID() as ID';
-                 $data= DATA::Ejecutar($sql);
-                 $this->id =$data[0]['ID'];
+                 $this->getID();
                  //agrega visitantes
-                 $sql='insert into VISITANTEPORFORMULARIO(idvisitante,idformulario) VALUES(:idvisitante,:idformulario)';
+                 $sql='insert into VISITANTEPORFORMULARIO(idvisitante , idformulario) VALUES(:idvisitante,:idformulario)';
                  $param= array(':idvisitante'=>$idvisitante,':idformulario'=>$this->id);
                  $data=  DATA::Ejecutar($sql, $param);
                  include_once("email.php");
@@ -278,6 +288,7 @@ class Formulario
             exit;
         }
     }
+
 
     function ConsultarporVisitante(){
         try {

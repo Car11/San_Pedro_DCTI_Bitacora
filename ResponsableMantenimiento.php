@@ -193,7 +193,7 @@ $rol=$_SESSION['rol'];
         });
         
     });
-
+    
     //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
     $(document).on('click', '.modificar', function (event) {
         modalResponsable.style.display = "block";

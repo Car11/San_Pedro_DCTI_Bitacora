@@ -8,6 +8,11 @@ if(isset($_POST["action"])){
         case "Excluye":
             $visitante->ConsultaVisitante();
             break;
+        case "ValidaCedulaUnica":
+            $visitante->cedula= $_POST["cedula"];
+            $visitante->nombre= $_POST["nombre"];
+            $visitante->ValidaCedulaUnica();
+            break;
         case "CargarTodos":
             echo json_encode($visitante->CargarTodos());
             break;
@@ -24,6 +29,7 @@ if(isset($_POST["action"])){
             $visitante->cedula= $_POST["cedula"];
             $visitante->nombre= $_POST["nombre"];
             $visitante->empresa= $_POST["empresa"];
+            $visitante->permisoanual= $_POST["permiso"];
             $visitante->Agregar();
             break;
         case "Modificar":
@@ -31,7 +37,12 @@ if(isset($_POST["action"])){
             $visitante->cedula= $_POST["cedula"];
             $visitante->nombre= $_POST["nombre"];
             $visitante->empresa= $_POST["empresa"];
+            $visitante->permisoanual= $_POST["permiso"];
             $visitante->Modificar();
+            break;
+        case "Eliminar":
+            $visitante->ID= $_POST["idvisitante"];            
+            $visitante->Eliminar();
             break;
     }
     
@@ -48,6 +59,7 @@ class Visitante{
 
 	function __construct(){
         require_once("conexion.php");
+        require_once("log.php");
     }
 
     //
@@ -70,6 +82,7 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarID');
             exit;
         }
@@ -112,6 +125,7 @@ class Visitante{
             exit;      
         }
         catch(Exception $e) {
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarIDTarjeta');
             exit;
         }     
@@ -184,6 +198,7 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarFormulario');
             exit;
         }                  
@@ -201,6 +216,7 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=ValidarIdPermisoAnual');
             exit;
         }
@@ -225,41 +241,76 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarIDVisitante');
             exit;
         }
     }    
+
+    function ValidaCedulaUnica(){
+        try{
+            $sql = "SELECT id
+                    FROM visitante
+                    where cedula=:cedula and nombre<> :nombre";
+            $param= array(':cedula'=>$this->cedula, ':nombre'=>$this->nombre);
+            $data = DATA::Ejecutar($sql,$param);      
+            if ($data) {                       
+                echo "invalida";
+            } else echo "valida";
+        }
+        catch(Exception $e) {
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+        }
+    }
     
     //
     // Funciones de Mantenimiento.
     //
     function Agregar(){
         try {
-            $sql='INSERT INTO visitante (nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual)';
-            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual);
+            $sql="INSERT INTO visitante (nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual);";
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual=="true"?1:0);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
+            {
+                //ID ingresado
+                $this->getID();
+                $_SESSION['idvisitante']= $this->ID;
                 return true;
-            else return false;
+            }
+            else var_dump(http_response_code(500)); // error
         }     
         catch(Exception $e) {
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
     }
 
+    function getID(){
+        try{
+            $sql="SELECT ID FROM VISITANTE ORDER BY FECHACREACION DESC LIMIT 1";
+            $data= DATA::Ejecutar($sql);
+            $this->ID= $data[0]['ID'];
+        }
+        catch(Exception $e){
+
+        }
+    }
+
     function Modificar(){
         try {
-            $sql="UPDATE visitante 
+            $sql="UPDATE visitante
                 SET  nombre= :nombre, cedula= :cedula, empresa= :empresa , permisoanual= :permisoanual
                 WHERE ID=:ID";
-            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, 'permisoanual'=>$this->permisoanual, ':ID'=>$this->ID);
+            $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, 'permisoanual'=>$this->permisoanual=="true"?1:0, ':ID'=>$this->ID);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
                 return true;
-            else return false;
+            else var_dump(http_response_code(500)); // error
         }     
         catch(Exception $e) {
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
@@ -283,12 +334,11 @@ class Visitante{
                 $this->permisoanual= $data[0]['PERMISOANUAL'];
             }            
             //            
-            return $data;
+            return $data;            
         }
         catch(Exception $e) {
-            //header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            echo "Error al leer la información";
-            exit;
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax
         }
     }
 
@@ -312,37 +362,61 @@ class Visitante{
             return $data;
         }
         catch(Exception $e) {
-            //header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            echo "Error al leer la información";
-            exit;
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax
         }
     }
-    
+
+    function ValidarEliminar(){
+        try{
+            $sql="SELECT *
+                FROM VISITANTEPORFORMULARIO F, BITACORA B
+                WHERE F.IDVISITANTE= :ID OR B.IDVISITANTE= :ID";
+            $param= array(':ID'=>$this->ID);
+            $data= DATA::Ejecutar($sql, $param);
+            if(count($data))
+                return true;
+            else return false;
+        }
+        catch(Exception $e){
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax
+        }
+    }
+
     function Eliminar(){
         try {
-            $sql='DELETE visitante 
-            WHERE idvisitante= :idvisitante';
-            $param= array(':idvisitante'=>$this->ID);
-            $data= DATA::Ejecutar($sql, $param);
-            return $data;
+            if($this->ValidarEliminar()){
+                echo "Registro en uso";
+                return false;
+            }                
+            $sql='DELETE FROM visitante 
+            WHERE ID= :ID';
+            $param= array(':ID'=>$this->ID);
+            $data= DATA::Ejecutar($sql, $param, true);
+            if($data)
+                return true;
+            else var_dump(http_response_code(500)); // error 
         }
         catch(Exception $e) {            
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
-            exit;
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax
         }
     }
 
-
-     function CargarTodos(){
+    function CargarTodos(){
         try {
             $sql='SELECT ID, cedula, nombre, empresa, permisoanual 
             FROM visitante 
             ORDER BY cedula';
             $data= DATA::Ejecutar($sql);
-            return $data;
+            if($data)
+                return $data;
+            else var_dump(http_response_code(500)); // error
         }
-        catch(Exception $e) {            
-            header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
+        catch(Exception $e) {        
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());    
+            header('Location: ../Error.php?w=conectar&id=');
             exit;
         }
     }
@@ -364,10 +438,11 @@ class Visitante{
                 $param= array(':EXCLUSION'=>$_POST['visitanteexcluido']);
                 $result = DATA::Ejecutar($sql,$param);  
             }
-
+            //
             echo json_encode($result);
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            header('Location: ../Error.php?w=visitante-bitacora&id=');
             exit;
         }
     } 

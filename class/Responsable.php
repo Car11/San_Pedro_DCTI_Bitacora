@@ -102,10 +102,10 @@ class Responsable{
 			$sql="DELETE FROM responsable WHERE id=:idresponsable";
             $param= array(':idresponsable'=>$_POST['idresponsable']);            
             DATA::Ejecutar($sql,$param);
+
             $sql = "SELECT count(id) FROM formulario WHERE idresponsable=:idresponsable";
             $param= array(':idresponsable'=>$_POST['idresponsable']);            
             $result = DATA::Ejecutar($sql,$param);
-
 			echo json_encode($result);			
 		}catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
@@ -114,6 +114,7 @@ class Responsable{
 
     }
     
+    //Carga la lista de resposanbles
     function Carga(){
         try {
 			$sql = "SELECT id,nombre,cedula,empresa FROM responsable WHERE id = :identificador";
@@ -127,6 +128,18 @@ class Responsable{
             exit;
         }		 	
 	} 
+
+    function ExisteResponsable(){
+        try {
+			$sql = "SELECT count(id) FROM formulario WHERE idresponsable=:idresponsable";
+            $param= array(':idresponsable'=>$_POST['idresponsable']);            
+            $result = DATA::Ejecutar($sql,$param); 
+			echo json_encode($result);			
+		}catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
+    }
 
 }
 ?>

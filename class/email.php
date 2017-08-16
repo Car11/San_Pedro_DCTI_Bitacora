@@ -3,7 +3,7 @@ class email{
 
     //public $visitante;
 
-     static function Enviar($idvisitante, $idformulario, $asunto, $mensajeEncabezado, $idtarjeta="NULL"){
+    static function Enviar($idvisitante, $idformulario, $asunto, $mensajeEncabezado, $idtarjeta="NULL"){
         // smtpapl.correo.ice
         // puerto 25
         // ip 10.149.20.26
@@ -44,13 +44,18 @@ class email{
                 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
                 $headers .= "From: ".$from."\r\n"; 
                 //
-                mail($to, $asunto, $mensaje,$headers);      
+                /*if(!mail($to, $asunto, $mensaje,$headers))
+                {
+                    require_once("log.php");  
+                    log::AddD('ERROR', 'Ha ocurrido un error al realizar el envío de correo');
+                }*/
             }            
         }     
         catch(Exception $e) {
-            $_SESSION['errmsg']= $e->getMessage() . " Notificar a Operaciones";
-            header('Location: ../Error.php');
-            exit;
+            // no debe detener el proceso si no se envía el email.
+            // log
+            require_once("log.php");  
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar el envío de correo', $e->getMessage());
         }
     }
     
