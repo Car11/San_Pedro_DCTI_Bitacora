@@ -235,7 +235,7 @@ class Visitante{
                 unset($_SESSION['idvisitante']);
                 unset($_SESSION['estado']);
                 $_SESSION['link']="true";
-                header('Location: ../nuevoperfil.php?id='.$this->cedula);
+                header('Location: ../NuevoPerfil.php?id='.$this->cedula);
                 exit;
             }
         }

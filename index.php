@@ -41,12 +41,12 @@ if ($estado=="buscar"){
 // Busca información del formulario para desplegar en pantalla.
 if (isset($_SESSION['idformulario'])) {     
     // Carga info del formulario.
-    include("class/formulario.php");
+    include("class/Formulario.php");
     $formulario= new Formulario();
     $formulario->id=$_SESSION['idformulario'];
     $formulario->Cargar();    
     // Carga info tarjeta
-    include("class/tarjeta.php");
+    include("class/Tarjeta.php");
     $tarjeta= new tarjeta();
     if($estado!="fin"){
         // Carga tarjeta asiganada si es un ingreso, no salida 
@@ -92,7 +92,7 @@ if (isset($_SESSION['idformulario'])) {
         if(login)
         {
             // valida el rol del usuario para mostrar el menu, el index o el formulario.
-            location.href= 'menuAdmin.php';
+            location.href= 'MenuAdmin.php';
         }
     };  
 </script>

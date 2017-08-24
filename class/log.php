@@ -9,6 +9,13 @@ class log{
     private static $evento='';
     private static $detalle='';
     private static $usuario='Sistema';
+    //private static $path='/var/www/html/log/xLog.xml';
+    //private static $dirpath='/var/www/html/log';
+    //private static $dirHistpath='/var/www/html/log/Historico';
+    //
+    private static $path='c:\log\xLog.xml';
+    private static $dirpath='c:\log';
+    private static $dirHistpath='c:\log\Historico';
 
     public static function Add($cat, $e){
         try{
@@ -47,7 +54,7 @@ class log{
     }
 
     private static function Write(){
-         if( $xml = file_get_contents( '../../log/xLog.xml') ) {
+         if( $xml = file_get_contents( self::$path ) ) {
             $doc = new DomDocument( '1.0' );
             $doc->formatOutput = true;
             $doc->loadXML( $xml, LIBXML_NOBLANKS );                
@@ -64,7 +71,7 @@ class log{
                 $log->setAttribute('Detalle', self::$detalle);
             //
             $root= $root->appendChild( $log );
-            $doc->save('../../log/xLog.xml');
+            $doc->save(self::$path);
             self::$detalle='';
         }
     }
@@ -72,14 +79,14 @@ class log{
     private static function Init(){
         try{    
             // Directorios.
-            if (!file_exists('../../log/')) {
-                mkdir('../../log/', 0777, true);
+            if (!file_exists(self::$dirpath)) {
+                mkdir(self::$dirpath, 0777, true);
             }  
-            if (!file_exists('../../log/Historico')) {               
-                mkdir('../../log/Historico', 0777, true);
+            if (!file_exists(self::$dirHistpath)) {               
+                mkdir(self::$dirHistpath, 0777, true);
             }        
             // Archivo log.
-            if (!file_exists('../../log/xLog.xml')) {
+            if (!file_exists(self::$path)) {
                 // Si no existe el archivo, lo crea.
                 // require_once('Globals.php');                
                 $doc = new DOMDocument('1.0', 'utf-8');
@@ -89,7 +96,7 @@ class log{
                 $root->setAttribute('Aplicacion', 'Bitacora DCTI');
                 $root->setAttribute('Fecha_Inicio', date("Y-m-d H:i:s") );                                
                 $root = $doc->appendChild($root);
-                $doc->save('../../log/xLog.xml');
+                $doc->save(self::$path);
             }                        
         }
         catch(Exception $e){
@@ -98,8 +105,8 @@ class log{
 
     private static function SizeCheck(){
         try{       
-            if (file_exists('../../log/xLog.xml')) {
-                if(filesize('../../log/xLog.xml')/1024>2000) // 2 MB - 2.000 KB
+            if (file_exists(self::$path)) {
+                if(filesize(self::$path)/1024>2000) // 2 MB - 2.000 KB
                 {
                     // Si el log es de mas de 10 MB, lo cierra y crea nuevo.
                     // Ultima entrada.
@@ -109,7 +116,7 @@ class log{
                     self::$usuario='Sistema';
                     self::Write();
                     // Renombra.
-                    rename("../../log/xLog.xml", "../../log/Historico/xLog_". date("Ymd")  .".xml");
+                    rename($path, "/home/cachac6/log/Historico/xLog_". date("Ymd")  .".xml");
                     // Nuevo archivo.
                     self::Init();
                 }

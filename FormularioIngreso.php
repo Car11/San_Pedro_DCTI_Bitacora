@@ -48,7 +48,7 @@ $sala= new Sala();
 $salas=$sala->Disponibles();
 
 //RESPONSABLE
-include("class/responsable.php");
+include("class/Responsable.php");
 $responsable= new Responsable();
 $responsables= $responsable->Consulta();
 
