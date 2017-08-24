@@ -3,7 +3,7 @@
 	exit;
 	if (isset($_POST['tag'])) {
 		try {
-			require_once("conexion.php");
+			require_once("Conexion.php");
 			$sql = "SELECT * FROM bitacora";
 			$result = DATA::Ejecutar($sql);
 			print_r($result);

@@ -11,9 +11,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Control de Accesos</title>
-    <link href="css/estilo.css" rel="stylesheet" />
+    <link href="css/Estilo.css" rel="stylesheet" />
     <script src="js/jquery.js"></script>
-    <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
+    <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>
         function onVuelve() {
             location.href = "index.php";
@@ -24,7 +24,7 @@
 <body>
     <header>
         <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
-        <div id="logo"><img src="img/logoice.png" height="75"> </div>
+        <div id="logo"><img src="img/Logoice.png" height="75"> </div>
         <div id="fechahora"><span id="date"></span></div>
     </header>
     <aside>

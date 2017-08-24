@@ -3,11 +3,11 @@ if (!isset($_SESSION))
     session_start();
 //
 // Sesion de usuario
-include("class/sesion.php");
-$sesion = new sesion();
+include("class/Sesion.php");
+$sesion = new Sesion();
 if (!$sesion->estado){
 	$_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
-    header('Location: login.php');
+    header('Location: Login.php');
     exit;
 }
 //
@@ -21,21 +21,21 @@ $listabitacora= $bitacora->Consulta();
     <meta charset="UTF-8">
     <title>Bitácora de Ingreso DCTI San Pedro</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="css/estilo.css"     type="text/css"/>        
+    <link rel="stylesheet" href="css/Estilo.css"     type="text/css"/>        
     <link rel="stylesheet" href="css/datatables.css" type="text/css"/>
-    <link rel="stylesheet" href="css/formulario.css" type="text/css"/>
+    <link rel="stylesheet" href="css/Formulario.css" type="text/css"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
  	<script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
-    <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/sweetalert2.js"></script>
 
 </head>
 <body> 
 	<header>
 	<h1>BITÁCORA</h1>
-	    <div id="logo"><img src="img/logoice.png" height="75" > </div>
+	    <div id="logo"><img src="img/Logoice.png" height="75" > </div>
 	</header>
     <div id="general">
         <div id="izquierda">

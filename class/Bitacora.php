@@ -39,9 +39,9 @@ class Bitacora{
     public $salida;
     
     function __construct(){
-        require_once("conexion.php");  
-        require_once("email.php");  
-        require_once("log.php");  
+        require_once("Conexion.php");  
+        require_once("Email.php");  
+        require_once("Log.php");  
     }
     
     function Entrada(){
@@ -153,7 +153,7 @@ class Bitacora{
                 exit;
             }		
 		}catch(Exception $e) {
-            require_once("log.php");  
+            require_once("Log.php");  
             log::AddD('FATAL', 'Ha ocurrido al Consultar la bitacora.', $e->getMessage());
             $_SESSION['errmsg']= 'Problemas de Consulta';
             header('Location: ../Error.php');

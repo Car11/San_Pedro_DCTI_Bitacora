@@ -1,9 +1,9 @@
 <?php
     // Sesion de usuario
-    include("class/sesion.php");
-    $sesion = new sesion();
+    include("class/Sesion.php");
+    $sesion = new Sesion();
     if (!$sesion->estado){
-        header('Location: login.php');
+        header('Location: Login.php');
         exit;
     }
     //

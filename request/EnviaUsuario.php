@@ -1,11 +1,11 @@
 <?php 
     require_once("../class/usuario.php");
-    require_once("../class/sesion.php");
-    require_once("../class/log.php");
+    require_once("../class/Sesion.php");
+    require_once("../class/Log.php");
     log::Add('info','log');
 
-    $usuario= new usuario();
-    $sesion = new sesion();
+    $usuario= new Usuario();
+    $sesion = new Sesion();
     //
     if(isset($_POST["username"]) && isset($_POST["password"])){
         $usuario->usuario=$_POST['username'];        
@@ -26,12 +26,12 @@
         else //usuario denegado
         {
             $sesion->Fin();
-            header('Location: ../login.php?ID=invalid');
+            header('Location: ../Login.php?ID=invalid');
             exit;
         }
     }
     else {
-		header('Location: ../login.php?ID=error');
+		header('Location: ../Login.php?ID=error');
 		exit;
     }
 ?>

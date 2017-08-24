@@ -1,5 +1,5 @@
 <?php
-class email{
+class Email{
 
     //public $visitante;
 
@@ -46,7 +46,7 @@ class email{
                 //
                 /*if(!mail($to, $asunto, $mensaje,$headers))
                 {
-                    require_once("log.php");  
+                    require_once("Log.php");  
                     log::AddD('ERROR', 'Ha ocurrido un error al realizar el envío de correo');
                 }*/
             }            
@@ -54,7 +54,7 @@ class email{
         catch(Exception $e) {
             // no debe detener el proceso si no se envía el email.
             // log
-            require_once("log.php");  
+            require_once("Log.php");  
             log::AddD('FATAL', 'Ha ocurrido un error al realizar el envío de correo', $e->getMessage());
         }
     }
