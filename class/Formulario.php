@@ -229,11 +229,15 @@ class Formulario
     function CargaVisitanteporFormulario()
     {
         try {
+            //Adquiere el id de formulario con base al consecutivo
+            $sql_id="SELECT id FROM formulario WHERE consecutivo=:cons";
+            $id= array(':cons'=>$this->id);
+            $idformulario = DATA::Ejecutar($sql_id, $id);
+            //Selecciona los visitantes con base al id del formulario
             $sql="SELECT DISTINCT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
             on v.id=vpf.idvisitante and vpf.idformulario=:identificador";
-            $param= array(':identificador'=>$this->id);
-            $result = DATA::Ejecutar($sql, $param);
-            
+            $param= array(':identificador'=>$idformulario[0][0]);
+            $result= DATA::Ejecutar($sql,$param);           
             return $result;
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
