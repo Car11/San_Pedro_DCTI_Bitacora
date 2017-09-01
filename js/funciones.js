@@ -128,7 +128,7 @@ function inicio() {
 this.CapturaMensajeFormulario = function () {
     //pushed server data
     if (typeof (EventSource) !== "undefined") {
-        var source = new EventSource("notificaciondinamica.php");
+        var source = new EventSource("NotificacionDinamica.php");
         source.onmessage = function (event) {
             onMuestraFormulario(event.data);
         };
@@ -306,7 +306,7 @@ function onClickIDFormulario() {
     document.getElementById('cedula').value = $(this)[0].innerText;
     document.getElementById("datos").submit();
     //elimina elemento de archivo.
-    $.get("filemanager.php");
+    $.get("FileManager.php");
 }
 
 

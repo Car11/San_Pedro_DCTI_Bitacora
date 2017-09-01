@@ -9,7 +9,7 @@ class Visitante{
     public $expira;
 	
 	function __construct(){
-        require_once("../php/conexion.php");
+        require_once("../php/Conexion.php");
         error_reporting(E_ALL);
         // Always in development, disabled in production
         ini_set('display_errors', 0);
@@ -110,7 +110,7 @@ class Visitante{
     function BitacoraEntrada(){
         try {
             $sql='INSERT INTO bitacora (cedula,detalle, idsala) VALUES (:cedula, :detalle, 
-                (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :sala))';
+                (SELECT sa.ID FROM sala sa WHERE NOMBRE= :sala))';
             $param= array(':cedula'=>$this->cedula, ':detalle'=>$this->detalle, ':sala'=>$this->sala);
             $result = DATA::Ejecutar($sql,$param);
             //
@@ -150,7 +150,7 @@ class Visitante{
     
      function ConsultaBitacora(){
         try {
-			require_once("conexion.php");
+			require_once("Conexion.php");
 			$sql = "SELECT * FROM bitacora";
 			$result = DATA::Ejecutar($sql);
 			return $result;			

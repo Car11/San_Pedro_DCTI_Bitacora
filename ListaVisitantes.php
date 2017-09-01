@@ -3,11 +3,11 @@ if (!isset($_SESSION)) {
     session_start();
 }
 // Sesion de usuario
-require_once("class/sesion.php");
-$sesion = new sesion();
+require_once("class/Sesion.php");
+$sesion = new Sesion();
 if (!$sesion->estado) {
     $_SESSION['url']= explode('/', $_SERVER['REQUEST_URI'])[2];
-    header('Location: login.php');
+    header('Location: Login.php');
     exit;
 }
 ?>
@@ -18,14 +18,14 @@ if (!$sesion->estado) {
     <title>Control de Acceso</title>
    <!-- CSS -->    
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
-    <link href="css/formulario.css" rel="stylesheet"/>
+    <link href="css/Formulario.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/sweetalert2.css">
-    <link href="css/estilo.css" type="text/css" rel="stylesheet"/>
+    <link href="css/Estilo.css" type="text/css" rel="stylesheet"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     <script src="js/sweetalert2.js"></script>
-    <script src="js/funciones-Visitante.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/FuncionesVisitante.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
     
 </head>
@@ -33,7 +33,7 @@ if (!$sesion->estado) {
 <body> 
     <header>
         <h1>LISTA DE VISITANTES</h1>        
-        <div id="logo"><img src="img/logoice.png" height="75" > </div>
+        <div id="logo"><img src="img/Logoice.png" height="75" > </div>
     </header>
     <div id="mensajetop">
         <span id="textomensaje"></span>
@@ -65,7 +65,7 @@ if (!$sesion->estado) {
         <aside> 
         </aside>
 
-    <!-- MODAL FORMULARIO -->
+    <!-- MODAL formulario -->
     <div class="modal" id="modal-index" onkeypress="Guardar()">
         <!-- Modal content -->
         <div class="modal-content">

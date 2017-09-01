@@ -4,7 +4,7 @@
 <head>
     <script src="js/jquery.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="DataTables/datatables.js"></script>
-    <link href="css/estilo.css" rel="stylesheet" />
+    <link href="css/Estilo.css" rel="stylesheet" />
     <meta charset="UTF-8">
     <title>Inicio</title>
 

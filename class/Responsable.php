@@ -29,7 +29,7 @@ class Responsable{
 	public $empresa;
     	
 	function __construct(){
-        require_once("conexion.php");
+        require_once("Conexion.php");
         //error_reporting(E_ALL);
         // Always in development, disabled in production
         //ini_set('display_errors', 1);

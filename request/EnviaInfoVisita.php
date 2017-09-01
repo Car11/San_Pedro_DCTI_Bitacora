@@ -1,7 +1,7 @@
 <?php
     if (!isset($_SESSION))
 	   session_start();
-    require_once("../class/formulario.php");
+    require_once("../class/Formulario.php");
     $formulario= new formulario();
     //    
     if (isset($_POST['detalle'])) {

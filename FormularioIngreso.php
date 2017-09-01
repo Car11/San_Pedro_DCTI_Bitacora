@@ -4,15 +4,15 @@ if (!isset($_SESSION)) {
 }
 
 // Sesion de usuario
-require_once("class/sesion.php");
-$sesion = new sesion();
+require_once("class/Sesion.php");
+$sesion = new Sesion();
 if (!$sesion->estado) {
     $_SESSION['url']= explode('/', $_SERVER['REQUEST_URI'])[2];
-    header('Location: login.php');
+    header('Location: Login.php');
     exit;
 }
 
-//FORMULARIO - Cargar Datos en Formulario Ingreso para Modificar
+//formulario - Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
 $formulario = new Formulario();
 $estadoformulario=0;
@@ -43,7 +43,7 @@ if (isset($_GET['MOD'])) {
 }
 
 //SALA 
-include("class/sala.php");
+include("class/Sala.php");
 $sala= new Sala();
 $salas=$sala->Disponibles();
 
@@ -54,8 +54,8 @@ $responsables= $responsable->Consulta();
 
 
 //USER AND ROL
-include("class/usuario.php");
-$usuario = new usuario();
+include("class/Usuario.php");
+$usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
@@ -68,20 +68,20 @@ $rol=$_SESSION['rol'];
     <meta charset="UTF-8">
     <title>Control de Accesos</title>       
     <!-- CSS -->
-    <link rel="stylesheet" href="css/estilo.css"     type="text/css"/>        
+    <link rel="stylesheet" href="css/Estilo.css"     type="text/css"/>        
     <link rel="stylesheet" href="css/datatables.css" type="text/css"/>
-    <link rel="stylesheet" href="css/formulario.css" type="text/css"/>
+    <link rel="stylesheet" href="css/Formulario.css" type="text/css"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
  	  <script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
-    <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/sweetalert2.js"></script>
 </head>
 <body> 
     <header>
-    <h1>FORMULARIO DE INGRESO</h1>        
-    <div id="logo"><img src="img/logoice.png" height="75" ></div>
+    <h1>formulario DE INGRESO</h1>        
+    <div id="logo"><img src="img/Logoice.png" height="75" ></div>
     </header>
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
@@ -146,7 +146,7 @@ $rol=$_SESSION['rol'];
                 <div id="tabla">
                    <div id="distribuciontabla">
                         <div id="tablavisitante">
-                            <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL FORMULARIO-->
+                            <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
                             <?php
                             print "<table id='tblvisitanteform'>";
                             print "<thead>";

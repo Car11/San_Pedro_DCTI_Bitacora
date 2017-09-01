@@ -2,11 +2,11 @@
 if (!isset($_SESSION)) 
     session_start();
 // Sesion de usuario
-include("class/sesion.php");
-$sesion = new sesion();
+include("class/Sesion.php");
+$sesion = new Sesion();
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
-    header('Location: login.php');
+    header('Location: Login.php');
     exit;
 }
 // POST
@@ -77,10 +77,10 @@ if (isset($_SESSION['idformulario'])) {
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     
 
-    <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script>
-    <script src="js/funciones.js" languaje="javascript" type="text/javascript"></script>
+    <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script>
+    <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
     
-    <link href="css/estilo.css" rel="stylesheet" />
+    <link href="css/Estilo.css" rel="stylesheet" />
     <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
 
@@ -100,7 +100,7 @@ if (isset($_SESSION['idformulario'])) {
 <body oncopy="return false" oncut="return false" onpaste="return false">
     <header>
         <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
-        <div id="logo"><img src="img/logoice.png" height="75" onclick="onShowLogin()" > </div>  
+        <div id="logo"><img src="img/Logoice.png" height="75" onclick="onShowLogin()" > </div>  
         <div id="fechahora"><span id="date"></span></div>
         <div id="signin">
             <span>Usuario: 
@@ -139,7 +139,7 @@ if (isset($_SESSION['idformulario'])) {
 
     <aside>
         <div  id="IDsformulario" >
-            <!--ID DEL VISITANTE ACEPTADO EN EL FORMULARIO-->
+            <!--ID DEL VISITANTE ACEPTADO EN EL formulario-->
         </div>
         <div id= "mensajespersonales"  >
             <!--MENSAJES DE OPERACIONES-->            
@@ -147,7 +147,7 @@ if (isset($_SESSION['idformulario'])) {
         
     </aside>
 
-    <!-- MODAL FORMULARIO -->
+    <!-- MODAL formulario -->
     <div class="modal" id="modal-index">
         <!-- Modal content -->
         <div class="modal-content">

@@ -16,9 +16,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Bitácora de Ingreso DCTI Sabana</title>
-    <link href="../css/estilo.css" rel="stylesheet"/>
+    <link href="../css/Estilo.css" rel="stylesheet"/>
     <script src="../js/jquery.js"></script>
-    <script src="../js/funciones.js" languaje="javascript" type="text/javascript"></script>
+    <script src="../js/Funciones.js" languaje="javascript" type="text/javascript"></script>
      <script>
     function onVuelve(){
         location.href = "index.php";
@@ -29,7 +29,7 @@
 <body>
     <header>
         <h1>BITÁCORA DE INGRESO</h1>  
-        <div id="logo"><img src="img/logoice.png" height="75" > </div>
+        <div id="logo"><img src="img/Logoice.png" height="75" > </div>
         <div id="fechahora"><span id="date"></span></div>      
     </header>
         <div class="contenido">
