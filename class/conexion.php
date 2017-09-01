@@ -25,7 +25,7 @@ class DATA {
             }
         } catch (PDOException $e) {
             require_once("log.php");  
-            log::AddD('FATAL', 'Ha ocurrido al Conectar con la base de datos MySQL', $e->getMessage());
+            log::AddD('FATAL', 'Ha ocurrido al Conectar con la base de datos MySQL[01]', $e->getMessage());
             $_SESSION['errmsg']= 'Problemas de Conexión';
             header('Location: ../Error.php');
             exit;
@@ -41,7 +41,7 @@ class DATA {
             }
         } catch (PDOException $e) {
             require_once("log.php");  
-            log::AddD('FATAL', 'Ha ocurrido al Conectar con la base de datos SQL', $e->getMessage());
+            log::AddD('FATAL', 'Ha ocurrido al Conectar con la base de datos SQL[01]', $e->getMessage());
             //$_SESSION['errmsg']= $e->getMessage();
             header('Location: ../Error.php');
             exit;
@@ -64,7 +64,7 @@ class DATA {
             } else {
                 self::$conn->rollback(); 
                 require_once("log.php");  
-                log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );
+                log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL[02]', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );
                 return false;
             }
             
@@ -92,7 +92,7 @@ class DATA {
             } else {
                 self::$conn->rollback(); 
                 require_once("log.php");  
-                log::Add('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL');
+                log::Add('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL[02]');
                 return false;
             }
         } catch (Exception $e) {
