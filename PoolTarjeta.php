@@ -52,7 +52,7 @@ $rol=$_SESSION['rol'];
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
                 </div>
             </div>
-            
+            <div id="tarjetas"></div>            
 
         </div>
         <div id="derecha">
@@ -63,6 +63,69 @@ $rol=$_SESSION['rol'];
     
 <script>
 
+    $(document).ready( function () {
+        RecargarPool();
+    } );
+
+    function RecargarPool(){
+        $.ajax({
+            type: "POST",
+            url: "class/Tarjeta.php",
+            data: {
+                    action: "RecargaPool"
+                  }
+        })
+        .done(function( e ) {
+            var contarjeta=0;
+            $('#tarjetas').html("");
+            $('#tarjetas').append("<table id='pooltarjeta'class='display'>");
+            var col="<thead><tr><th class='enc_tajeta'>ADMINISTRATIVO</th><th class='enc_tajeta'>TELECOMUNICACIONES</th><th class='enc_tajeta'>ACCESO TOTAL</th><th class='enc_tajeta'>SALA 1</th><th class='enc_tajeta'>SALA 2</th class='enc_tajeta'><th class='enc_tajeta'>SALA 3</th></tr></thead>"+
+                     "<tbody id='tableBody'>"+
+                     "<td class='anchocolumna'><table id='tarjadmin'></table></td>"+
+                     "<td class='anchocolumna'><table id='tarjtele'></table></td>"+
+                     "<td class='anchocolumna'><table id='tarjtotal'></table></td>"+
+                     "<td class='anchocolumna'><table id='tarjs1'></table></td>"+
+                     "<td class='anchocolumna'><table id='tarjs2'></table></td>"+
+                     "<td class='anchocolumna'><table id='tarjs3'></table></td>"+
+                     "</tbody>";
+            $('#tarjetas').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                if(item.idsala==1){    
+                    var admin="<td class='tarjeta' id=tarj_"+ item.id +">" + item.id + "</td>";
+                    $('#tarjadmin').append(admin);
+                    if(item.estado==1)
+                        $("#tarj_"+item.id).css("background", "red");
+                }
+                if(item.idsala==2){    
+                    var tele="<td class='tarjeta'>" + item.id + "</td>";
+                    $('#tarjtele').append(tele);
+                }
+                if(item.idsala==3){    
+                    var total="<td class='tarjeta'>" + item.id + "</td>";
+                    $('#tarjtotal').append(total);
+                }
+                if(item.idsala==4){    
+                    var s1="<td class='tarjeta'>" + item.id + "</td>";
+                    $('#tarjs1').append(s1);
+                }
+                if(item.idsala==5){    
+                    var s2="<td class='tarjeta'>" + item.id + "</td>";
+                    $('#tarjs2').append(s2);
+                }
+                if(item.idsala==6){    
+                    var s3="<td class='tarjeta'>" + item.id + "</td>";
+                    $('#tarjs3').append(s3);
+                }
+            })
+            $('#pooltarjeta').DataTable();
+        })    
+        .fail(function(msg){
+            alert("Error al Cargar Pool de Tarjetas");
+        });    
+    }
     
 </script>
 </body>

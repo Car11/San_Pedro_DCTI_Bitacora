@@ -51,8 +51,9 @@ class Formulario
     function AgregarFormulario()
     {
         try {
+            
             $sql="INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,idestado,rfc)
-                VALUES (:fechaingreso,(SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala),:fechasalida,:placavehiculo,
+                VALUES (:fechaingreso,(SELECT id FROM sala WHERE nombre= :nombresala),:fechasalida,:placavehiculo,
                 :detalleequipo,:motivovisita,(SELECT id FROM responsable WHERE nombre= :nombreresponsable),
                 (SELECT id FROM usuario WHERE nombre= :nombreautorizador),(SELECT id FROM usuario WHERE nombre= :nombretramitante),:estado,:rfc)";
             $param= array(':fechaingreso'=>$this->fechaingreso,
@@ -67,8 +68,11 @@ class Formulario
                           ':estado'=>$this->estado,
                           ':rfc'=>$this->rfc);
             $result = DATA::Ejecutar($sql, $param);
+            //Consultar el Maximo ID insertado
+            $maxid="SELECT id FROM formulario ORDER BY consecutivo DESC LIMIT 0,1";
+            
             //Captura el id del formulario
-            $idformulario = DATA::$conn->lastInsertId();
+            $idformulario =DATA::Ejecutar($maxid);
             //Convierte el string en un arreglo
             $visitantearray = explode(",", $this->visitante);
             //Calcula la longitud del arreglo de visistantes 
@@ -76,7 +80,7 @@ class Formulario
             //Recorre el arreglo e inserta cada item en la tabla intermedia
             for ($i=0; $i<$longitud; $i++) {
                 $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES ((SELECT id from visitante WHERE cedula=:cedula),:idformulario)';
-                $param= array(':cedula'=>$visitantearray[$i],':idformulario'=>$idformulario);
+                $param= array(':cedula'=>$visitantearray[$i],':idformulario'=>$idformulario[0][0]);
                 $result = DATA::Ejecutar($sql, $param);
             }
             header('Location:../ListaFormulario.php');
@@ -183,24 +187,21 @@ class Formulario
 
     }
 
+    //FUNCIONAL 
     function Cargar()
     {
         try {
-            $sql = "SELECT id,fechasolicitud,idestado,motivovisita, 
+            $sql = "SELECT consecutivo,fechasolicitud,idestado,motivovisita, 
                 DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
-                DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,(
-                SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id
-                where f.id=:identificador)as nombretramitante , (
-                SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id
-                where f.id=:identificador) as nombreautorizador, (
-                SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id
-                where f.id=:identificador) as nombreresponsable,(
-                SELECT sa.nombre FROM sala sa inner join formulario fo on sa.id=fo.idsala 
-                where fo.id=:identificador) as nombresala ,
+                DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,
+                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id where consecutivo=:cons)as nombretramitante,
+                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id where consecutivo=:cons) as nombreautorizador,
+                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id where consecutivo=:cons) as nombreresponsable,
+                (SELECT sa.nombre FROM sala sa inner join formulario fo on sa.id=fo.idsala where consecutivo=:cons) as nombresala,
                 placavehiculo,detalleequipo, rfc
-            FROM formulario WHERE id = :identificador";
+            FROM formulario WHERE consecutivo = :cons";
 
-            $param= array(':identificador'=>$this->id);
+            $param= array(':cons'=>$this->id);
             $data = DATA::Ejecutar($sql, $param);
             //
             if (count($data)) {
@@ -292,7 +293,7 @@ class Formulario
 
     function ConsultarporVisitante(){
         try {
-            $sql = "SELECT f.id,f.fechasolicitud,(SELECT nombre FROM estado WHERE id=f.idestado) as estado,f.motivovisita,f.rfc
+            $sql = "SELECT f.consecutivo,f.fechasolicitud,(SELECT nombre FROM estado WHERE id=f.idestado) as estado,f.motivovisita,f.rfc
             FROM formulario f INNER JOIN  visitanteporformulario vxf ON f.id = vxf.idformulario INNER JOIN visitante v ON v.id=vxf.IDVISITANTE and v.CEDULA=:cedula";
 
             $param= array(':cedula'=>$_POST["cedula"]);
@@ -314,7 +315,7 @@ class Formulario
 
     function RecargaTabla(){
         try {
-            $sql = "SELECT id,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc FROM formulario";
+            $sql = "SELECT consecutivo,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc FROM formulario";
             $data = DATA::Ejecutar($sql);
             if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
