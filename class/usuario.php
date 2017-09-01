@@ -1,14 +1,14 @@
 <?php 
 //session_start();
-class usuario{
+class Usuario{
 	public $usuario;
 	public $contrasena;
     public $idrol;
     public $nombre;
 	
 	function __construct(){
-        require_once("conexion.php");
-        require_once("log.php");
+        require_once("Conexion.php");
+        require_once("Log.php");
     }
 	
     function Validar(){    

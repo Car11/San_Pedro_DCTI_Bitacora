@@ -40,8 +40,8 @@ class Formulario
         
     function __construct()
     {
-        require_once("conexion.php");
-        require_once("log.php");
+        require_once("Conexion.php");
+        require_once("Log.php");
         //error_reporting(E_ALL);
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
@@ -96,7 +96,7 @@ class Formulario
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
             idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
-            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT ID FROM SALA WHERE NOMBRE= :nombresala),rfc=:rfc WHERE id=:identificador";
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT ID FROM sala WHERE NOMBRE= :nombresala),rfc=:rfc WHERE id=:identificador";
             $param= array(':fechaingreso'=>$this->fechaingreso,
                           ':fechasalida'=>$this->fechasalida,
                           ':nombretramitante'=>$this->nombretramitante,
@@ -243,7 +243,7 @@ class Formulario
     
      function getID(){
         try{
-            $sql="SELECT ID FROM FORMULARIO ORDER BY FECHASOLICITUD DESC LIMIT 1";
+            $sql="SELECT ID FROM formulario ORDER BY FECHASOLICITUD DESC LIMIT 1";
             $data= DATA::Ejecutar($sql);
             $this->id= $data[0]['ID'];
         }
@@ -256,8 +256,8 @@ class Formulario
     {
         try {
             //agrega infomación del formulario temporal
-            $sql="insert into FORMULARIO (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD,IDSALA, MOTIVOVISITA, IDTRAMITANTE) 
-                VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM SALA sa WHERE NOMBRE= :nombresala), :motivovisita, 
+            $sql="insert into formulario (FECHAINGRESO,FECHASALIDA,FECHASOLICITUD,IDSALA, MOTIVOVISITA, IDTRAMITANTE) 
+                VALUES (NOW(),DATE_ADD(NOW(), INTERVAL 1 DAY), NOW(), (SELECT sa.ID FROM sala sa WHERE NOMBRE= :nombresala), :motivovisita, 
                 (SELECT u.id FROM usuario u where u.usuario=:usuario)) ";
             $param= array(
                 ':nombresala'=>$this->nombresala,
@@ -269,11 +269,11 @@ class Formulario
                  //busca id de formulario agregado
                  $this->getID();
                  //agrega visitantes
-                 $sql='insert into VISITANTEPORFORMULARIO(idvisitante , idformulario) VALUES(:idvisitante,:idformulario)';
+                 $sql='insert into visitanteporformulario(idvisitante , idformulario) VALUES(:idvisitante,:idformulario)';
                  $param= array(':idvisitante'=>$idvisitante,':idformulario'=>$this->id);
                  $data=  DATA::Ejecutar($sql, $param);
-                 include_once("email.php");
-                 email::Enviar($idvisitante, $this->id, "Formulario de Ingreso Pendiente", "FORMULARIO DE INGRESO PENDIENTE");
+                 include_once("Email.php");
+                 email::Enviar($idvisitante, $this->id, "Formulario de Ingreso Pendiente", "formulario DE INGRESO PENDIENTE");
                  // elimina sesion link para evitar redirect a paginas anteriores.
                  unset($_SESSION['link']);
                  $_SESSION['estado']='pendiente';

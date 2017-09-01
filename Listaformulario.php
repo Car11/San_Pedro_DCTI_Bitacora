@@ -6,11 +6,11 @@ if (isset($_GET['Message'])) {
     print '<script type="text/javascript">alert("' . $_GET['Message'] . '");</script>';
 }
 // Sesion de usuario
-include("class/sesion.php");
-$sesion = new sesion();
+include("class/Sesion.php");
+$sesion = new Sesion();
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
-    header('Location: login.php');
+    header('Location: Login.php');
     exit;
 }
 // es un formulario temporal
@@ -32,18 +32,18 @@ $listaformulario= $formulario->ConsultaFormulario();
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
     <!-- CSS -->
-    <link href="css/estilo.css" rel="stylesheet"/>
-    <link href="css/formulario.css" rel="stylesheet"/>
+    <link href="css/Estilo.css" rel="stylesheet"/>
+    <link href="css/Formulario.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
-    <script src="js/validaciones.js" languaje="javascript" type="text/javascript"></script> 
+    <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
 </head>
 <body onload="CargarEstiloTablas();"> 
     <header>
 	<h1>LISTA FORMULARIOS</h1>        
-    <div id="logo"><img src="img/logoice.png" height="75" > </div>
+    <div id="logo"><img src="img/Logoice.png" height="75" > </div>
 	</header>
     <div id="general">
         <div id="izquierda">
@@ -91,7 +91,7 @@ $listaformulario= $formulario->ConsultaFormulario();
                     alert(err);
                 }
                 //alert('enviando formulario temporal: ' + formtemp);
-                url='notificaciondinamica.php?msg='+formtemp;
+                url='NotificacionDinamica.php?msg='+formtemp;
                 xhr.open('GET', url, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {                    

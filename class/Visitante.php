@@ -58,8 +58,8 @@ class Visitante{
     public $visitanteexcluido;
 
 	function __construct(){
-        require_once("conexion.php");
-        require_once("log.php");
+        require_once("Conexion.php");
+        require_once("Log.php");
     }
 
     //
@@ -95,9 +95,9 @@ class Visitante{
             // Busca la tarjeta en estado 1 y su visitante asignado (visitanteporformulario)
             // Si no hay, muestra mensaje que la tarjeta no está en uso.
             $sql= "SELECT b.id as idbitacora  , idformulario, idvisitante, entrada, salida, idtarjeta
-                FROM TARJETA t inner join bitacora b on b.idtarjeta= t.id
+                FROM tarjeta t inner join bitacora b on b.idtarjeta= t.id
                 WHERE t.ID=:idtarjeta AND ESTADO=1 
-                order by b.FECHACREACION desc limit 1";
+                order by b.fechacreacion desc limit 1";
             $param= array(':idtarjeta'=>$this->cedula);   // cedula en este caso es el idtarjeta que viaja por POST
             $data = DATA::Ejecutar($sql,$param);      
             if (count($data)) {      
@@ -149,7 +149,7 @@ class Visitante{
                 $sql = "SELECT id, entrada, salida, idtarjeta
                     FROM bitacora 
                     where idvisitante=:idvisitante and idformulario=:idformulario
-                    order by FECHACREACION desc limit 1 ";
+                    order by fechacreacion desc limit 1 ";
                 $param= array(':idvisitante'=>$this->ID, ':idformulario'=>$formulario->id);
                 $data = DATA::Ejecutar($sql,$param);      
                 if (count($data)) {                                 
@@ -289,9 +289,9 @@ class Visitante{
 
     function getID(){
         try{
-            $sql="SELECT ID FROM VISITANTE ORDER BY FECHACREACION DESC LIMIT 1";
+            $sql="SELECT id FROM visitante ORDER BY fechacreacion DESC LIMIT 1";
             $data= DATA::Ejecutar($sql);
-            $this->ID= $data[0]['ID'];
+            $this->ID= $data[0]['id'];
         }
         catch(Exception $e){
 
@@ -320,18 +320,18 @@ class Visitante{
     // Carga visitante por cedula.
     function Cargar($cedula){
         try {
-            $sql="SELECT ID, CEDULA, NOMBRE, EMPRESA, PERMISOANUAL 
+            $sql="SELECT id,cedula,nombre,empresa,permisoanual 
                 FROM visitante 
                 where cedula=:cedula";
             $param= array(':cedula'=>$cedula);
             $data= DATA::Ejecutar($sql,$param);
             //
             if(count($data)){
-                $this->ID= $data[0]['ID'];
-                $this->cedula= $data[0]['CEDULA'];
-                $this->nombre= $data[0]['NOMBRE'];
-                $this->empresa= $data[0]['EMPRESA'];
-                $this->permisoanual= $data[0]['PERMISOANUAL'];
+                $this->ID= $data[0]['id'];
+                $this->cedula= $data[0]['cedula'];
+                $this->nombre= $data[0]['nombre'];
+                $this->empresa= $data[0]['empresa'];
+                $this->permisoanual= $data[0]['permisoanual'];
             }            
             //            
             return $data;            
@@ -345,18 +345,18 @@ class Visitante{
     // Carga visitante por ID (UUID)
     function CargarID(){
         try {
-            $sql="SELECT ID, CEDULA, NOMBRE, EMPRESA, PERMISOANUAL 
+            $sql="SELECT id,cedula,nombre,empresa,permisoanual 
                 FROM visitante 
                 where ID=:ID";
             $param= array(':ID'=>$this->ID);
             $data= DATA::Ejecutar($sql,$param);
             //
             if(count($data)){
-                $this->ID= $data[0]['ID'];
-                $this->cedula= $data[0]['CEDULA'];
-                $this->nombre= $data[0]['NOMBRE'];
-                $this->empresa= $data[0]['EMPRESA'];
-                $this->permisoanual= $data[0]['PERMISOANUAL'];
+                $this->ID= $data[0]['id'];
+                $this->cedula= $data[0]['cedula'];
+                $this->nombre= $data[0]['nombre'];
+                $this->empresa= $data[0]['empresa'];
+                $this->permisoanual= $data[0]['permisoanual'];
             }
             //            
             return $data;
@@ -370,8 +370,8 @@ class Visitante{
     function ValidarEliminar(){
         try{
             $sql="SELECT *
-                FROM VISITANTEPORFORMULARIO F, BITACORA B
-                WHERE F.IDVISITANTE= :ID OR B.IDVISITANTE= :ID";
+                FROM visitanteporformulario F, bitacora B
+                WHERE F.idvisitante= :ID OR B.idvisitante= :ID";
             $param= array(':ID'=>$this->ID);
             $data= DATA::Ejecutar($sql, $param);
             if(count($data))
@@ -391,7 +391,7 @@ class Visitante{
                 return false;
             }                
             $sql='DELETE FROM visitante 
-            WHERE ID= :ID';
+            WHERE id= :ID';
             $param= array(':ID'=>$this->ID);
             $data= DATA::Ejecutar($sql, $param, true);
             if($data)
@@ -406,7 +406,7 @@ class Visitante{
 
     function CargarTodos(){
         try {
-            $sql='SELECT ID, cedula, nombre, empresa, permisoanual 
+            $sql='SELECT id, cedula, nombre, empresa, permisoanual 
             FROM visitante 
             ORDER BY cedula';
             $data= DATA::Ejecutar($sql);
@@ -429,12 +429,12 @@ class Visitante{
     {
         try {
             if (empty($_POST['visitanteexcluido'])) {
-                $sql="SELECT CEDULA,NOMBRE,EMPRESA FROM visitante";
+                $sql="SELECT cedula,nombre,empresa FROM visitante";
                 $result = DATA::Ejecutar($sql);
             }
             else{
                 
-                $sql="SELECT CEDULA,NOMBRE,EMPRESA FROM visitante  WHERE NOT FIND_IN_SET(CEDULA,:EXCLUSION)";
+                $sql="SELECT cedula,nombre,empresa FROM visitante  WHERE NOT FIND_IN_SET(cedula,:EXCLUSION)";
                 $param= array(':EXCLUSION'=>$_POST['visitanteexcluido']);
                 $result = DATA::Ejecutar($sql,$param);  
             }
