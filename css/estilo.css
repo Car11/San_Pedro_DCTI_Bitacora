@@ -6,6 +6,29 @@ encabezado: #f29f05
 equivalentes: #d97904
 piepagina: #733702
 auxiliar: #401801
+
+*********
+header: 
+    fondo #222222
+    letra #F2F2F2
+    borde #343434
+
+html: 
+    fondo #2C2C2C
+    letra #B8B8B8
+
+btn azul: 
+    fondo #016DC4
+    texto #FFFFFF
+
+btn negro:
+    fondo: #3F3F3F
+    texto: #C9C9C9
+
+input
+    fondo: #555555
+    texto: #EDEDED
+    borde: #2893EF
 */
 
 
@@ -25,7 +48,8 @@ aside {
 html {
     margin: 0;
     padding: 0;
-    background: #1e5799;
+    /*background: #1e5799;*/
+    background: #252526;
 }
 
 body {
@@ -46,17 +70,24 @@ h3 {
 
 header {
     height: 120px;
-    background: #73A5FF;
+    background: #222222;
+    border-style: solid;
+    border-bottom-color: #343434;
 }
 
 #mensajetop {
-    padding: 10px;
     color: aliceblue;
     text-align: center;
     font-size: 25px;
     background-color: firebrick;
-    height: 30;
+    height: 40;
     display: none;
+}
+
+#mensajetop_display {    
+    text-align: center;
+    font-size: 25px;
+    height: 40;
 }
 
 .avisoFormulario{
@@ -201,13 +232,17 @@ h1 {
     position: relative;
     width: 100%;
     font-size: 38px;
+    color: #F2F2F2;
+}
+h2 {
+    color: #B8B8B8;
 }
 
 h1,
 h2 {
     text-align: center;
     padding-top: 1em;
-    color: aliceblue;
+    /*color: 5a5a5a;*/
     margin-bottom: 10px;
 }
 
@@ -238,10 +273,10 @@ label {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    border: 1px solid #C2C2C2;
+    /*border: 1px solid #C2C2C2;
     box-shadow: 1px 1px 4px #EBEBEB;
     -moz-box-shadow: 1px 1px 4px #EBEBEB;
-    -webkit-box-shadow: 1px 1px 4px #EBEBEB;
+    -webkit-box-shadow: 1px 1px 4px #EBEBEB;*/
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -249,7 +284,8 @@ label {
     outline: none;
     font-size: 28px;
     font-family: fantasy;
-    color: grey;
+    color: #EDEDED;
+    background: #555555;
 }
 
 .input-field-readonly {
@@ -260,7 +296,7 @@ label {
     padding: 7px;    
     font-size: 40px;
     font-family: fantasy;
-    color: aliceblue;
+    color: 5a5a5a;
     background: none;
 }
 /*
@@ -329,6 +365,29 @@ label {
     color: #fff;
 }
 
+.nbtn_blue {
+	background: #016DC4;
+	border: none;
+	color: #FFFFFF;
+	width: auto;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	border-radius: 2px;
+	letter-spacing: 1px;
+    /**/
+    display: block;
+    margin: 0 auto;
+    margin-top: 50;
+}
+
+.nbtn_blue:hover {
+	background: #1478b1;
+}
+
+
 #btncontinuar, #btnsalida{
     width: 200%;
     margin-bottom: 30px;
@@ -376,7 +435,7 @@ label {
 }
 
 .login {
-    padding: 30 30 30 30;
+    /*padding: 30 30 30 30;
     margin: 0 auto;
     height: auto;
     width: 350;
@@ -387,13 +446,30 @@ label {
     -webkit-box-shadow: 1px 1px 4px #DADADA;
     border-radius: 3px;
     -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
+    -moz-border-radius: 3px;*/
+    margin: 0 auto;
+    height: auto;
+    width: 350;
+    padding: 30 30 30 30;
+    background: #58585a;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    margin-top: 15%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-radius: 3px;
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 #fechahora {
     display: block;
     float: right;
-    color: aliceblue;
+    color: a5a5a5;
     font-size: 20;
     margin-right: 3%;
 }
@@ -402,7 +478,7 @@ label {
     display: block;
     float: left;
     width: 250;
-    color: white;
+    color: a5a5a5;
     font-size: 20;
     margin-left: 20px;
 }

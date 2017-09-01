@@ -35,8 +35,10 @@ if (!$sesion->estado) {
         <h1>LISTA DE VISITANTES</h1>        
         <div id="logo"><img src="img/Logoice.png" height="75" > </div>
     </header>
-    <div id="mensajetop">
-        <span id="textomensaje"></span>
+    <div id="mensajetop_display">
+        <div id="mensajetop">
+            <span id="textomensaje"></span>
+        </div>
     </div>
 
     <div id="general">
@@ -66,7 +68,7 @@ if (!$sesion->estado) {
         </aside>
 
     <!-- MODAL formulario -->
-    <div class="modal" id="modal-index" onkeypress="Guardar()">
+    <div class="modal" id="modal-index" >
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
@@ -92,6 +94,7 @@ if (!$sesion->estado) {
                             <input  required type="text" class="input-field" name="nombre" style="text-transform:uppercase" id="nombre"/>
                         </label>
                         <label for="permiso"><span class="campoperfil">Tiene permiso de Ingreso Anual?</span>
+                            <br>
                             <input type="checkbox" name="permiso" id="permiso" class="input-field" >
                         </label>
 
