@@ -314,8 +314,7 @@ class Visitante{
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
-    }
-    
+    }    
 
     // Carga visitante por cedula.
     function Cargar($cedula){
@@ -347,7 +346,7 @@ class Visitante{
         try {
             $sql="SELECT id,cedula,nombre,empresa,permisoanual 
                 FROM visitante 
-                where ID=:ID";
+                where id=:ID";
             $param= array(':ID'=>$this->ID);
             $data= DATA::Ejecutar($sql,$param);
             //
@@ -369,9 +368,13 @@ class Visitante{
 
     function ValidarEliminar(){
         try{
-            $sql="SELECT *
-                FROM visitanteporformulario F, bitacora B
-                WHERE F.idvisitante= :ID OR B.idvisitante= :ID";
+            $sql="SELECT ID
+                FROM visitanteporformulario F  
+                WHERE F.idvisitante= :ID 
+                UNION 
+                SELECT ID
+                FROM  bitacora B 
+                WHERE B.idvisitante= :ID";
             $param= array(':ID'=>$this->ID);
             $data= DATA::Ejecutar($sql, $param);
             if(count($data))
