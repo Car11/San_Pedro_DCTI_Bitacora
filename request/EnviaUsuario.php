@@ -1,8 +1,7 @@
 <?php 
-    require_once("../class/usuario.php");
+    require_once("../class/Usuario.php");
     require_once("../class/Sesion.php");
     require_once("../class/Log.php");
-    log::Add('info','log');
 
     $usuario= new Usuario();
     $sesion = new Sesion();

@@ -54,7 +54,7 @@ $responsables= $responsable->Consulta();
 
 
 //USER AND ROL
-include("class/usuario.php");
+include("class/Usuario.php");
 $usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
