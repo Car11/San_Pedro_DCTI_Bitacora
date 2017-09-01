@@ -162,7 +162,7 @@ $listaformulario= $formulario->ConsultaFormulario();
             // Recorre arreglo.
             $.each(data, function(i, item) {
                 var row="<tr>"+
-                    "<td>"+ item.id+"</td>" +
+                    "<td>"+ item.consecutivo+"</td>" +
                     "<td>"+ item.fechasolicitud + "</td>"+
                     "<td>"+ item.motivovisita + "</td>"+
                     "<td>"+ item.estado + "</td>"+
@@ -201,7 +201,7 @@ $listaformulario= $formulario->ConsultaFormulario();
             // Recorre arreglo.
             $.each(data, function(i, item) {
                 var row="<tr>"+
-                    "<td>"+ item.id+"</td>" +
+                    "<td>"+ item.consecutivo+"</td>" +
                     "<td>"+ item.fechasolicitud + "</td>"+
                     "<td>"+ item.motivovisita + "</td>"+
                     "<td>"+ item.estado + "</td>"+

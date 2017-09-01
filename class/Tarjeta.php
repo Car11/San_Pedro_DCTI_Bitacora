@@ -1,12 +1,25 @@
 <?php 
 if (!isset($_SESSION))
     session_start();
+
+if(isset($_POST["action"])){
+    if($_POST["action"]=="RecargaPool"){
+        $tarjeta= new tarjeta();
+        $tarjeta->Consulta();
+    }
+}
 class Tarjeta{
     public $id;
     public $consecutivo;
     public $idsala;
     public $nombresala;
     public $estado;
+
+    function __construct()
+    {
+        require_once("conexion.php");
+        require_once("log.php");
+    }
 
     function Asignar(){
         $sql="SELECT id , consecutivo
@@ -40,6 +53,22 @@ class Tarjeta{
             // Tarjeta no disponible
             $this->id = -1;
         }
+    }
+
+    function Consulta(){
+        try {
+            $sql = "SELECT id,idsala,estado FROM tarjeta";
+            $data = DATA::Ejecutar($sql);
+            if (count($data)) {
+                $this->id= $data[0]['id'];
+                $this->idsala= $data[0]['idsala'];
+                $this->estado= $data[0]['estado'];
+            }
+            echo json_encode($data);	 
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }           
     }
 }
 

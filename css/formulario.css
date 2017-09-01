@@ -576,3 +576,29 @@
 input[type=checkbox] {
     transform: scale(2);
 }
+
+
+/*TARJETAS*/
+.tarjeta{
+    width: 30px;
+    height: 70px;
+    border: 1px solid #1e5799;
+    background:#3CB371;
+    float: left;
+    color: white;
+    font-size: 30px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    text-align: center;
+    border-radius: 5px; 
+}
+.anchocolumna{
+    width: 250px;
+}
+.enc_tajeta{
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    border: 1px solid #1e5799;
+    height: 40px;
+    background: white;
+    border-radius: 8px; 
+    width: 16.6%;
+}
