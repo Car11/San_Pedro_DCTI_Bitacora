@@ -12,11 +12,11 @@ class Usuario{
     }
 	
     function Validar(){    
-        $sql='SELECT usuario, id FROM usuario where contrasena=:contrasena  AND usuario=:usuario';
+        $sql='SELECT usuario, idrol FROM usuario where contrasena=:contrasena  AND usuario=:usuario';
         $param= array(':usuario'=>$this->usuario, ':contrasena'=>$this->contrasena);        
         $data = DATA::Ejecutar($sql,$param);
         if (count($data) ) {
-            $this->idrol= $data[0]['id'];
+            $this->idrol= $data[0]['idrol'];
             log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
             return true;
         }else {        
