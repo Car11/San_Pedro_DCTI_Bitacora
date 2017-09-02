@@ -26,8 +26,6 @@ if (!$sesion->estado){
         <div id="logo"><img src="img/Logoice.png" height="75" > </div>
         <div id="fechahora"><span id="date"></span></div>
     </header>
-    
-    
     <div class="log">
         
         <nav class="dropdownmenu">
@@ -48,8 +46,6 @@ if (!$sesion->estado){
         </nav>
     </div>
     
-
-
 </body>
 </html>
 

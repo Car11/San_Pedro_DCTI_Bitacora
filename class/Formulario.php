@@ -96,7 +96,7 @@ class Formulario
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
             idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
-            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT ID FROM sala WHERE NOMBRE= :nombresala),rfc=:rfc WHERE id=:identificador";
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT id FROM sala WHERE nombre= :nombresala),rfc=:rfc WHERE consecutivo=:consecutivo;";
             $param= array(':fechaingreso'=>$this->fechaingreso,
                           ':fechasalida'=>$this->fechasalida,
                           ':nombretramitante'=>$this->nombretramitante,
@@ -108,7 +108,7 @@ class Formulario
                           ':estado'=>$this->estado,
                           ':nombresala'=>$this->nombresala,
                           ':rfc'=>$this->rfc,
-                          ':identificador'=>$this->id);
+                          ':consecutivo'=>$this->id);
             $result = DATA::Ejecutar($sql, $param);
             // sesion del formulario temporal
             
@@ -117,9 +117,9 @@ class Formulario
 
             //Elimina los registros segun el arreglo de visitantes
             $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET((SELECT cedula from visitante WHERE id=idvisitante),:EXCLUSION) 
-            AND idformulario=:idformulario";
+            AND idformulario=(SELECT id FROM formulario WHERE consecutivo=:consecutivo)";
             $param= array(':EXCLUSION'=>$this->visitante,
-            ':idformulario'=>$this->id);
+            ':consecutivo'=>$this->id);
 
             $result = DATA::Ejecutar($sql, $param);
             
@@ -128,13 +128,13 @@ class Formulario
             //Recorre el arreglo e inserta cada item en la tabla intermedia
             for ($i=0; $i<$longitud; $i++) {
                 //Si no existe Inserta
-                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = :idformulario";
-                $parametro= array(':cedula'=>$visitantearray[$i],':idformulario'=>$this->id);
+                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = (SELECT id FROM formulario WHERE consecutivo=:consecutivo)";
+                $parametro= array(':cedula'=>$visitantearray[$i],':consecutivo'=>$this->id);
                 $resultadoexiste= DATA::Ejecutar($existe, $parametro);
 
                 if(count($resultadoexiste)==0){
-                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),:idformulario)";
-                    $param= array(':cedula'=>$visitantearray[$i],':idformulario'=>$this->id);
+                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),(SELECT id FROM formulario WHERE consecutivo=:consecutivo))";
+                    $param= array(':cedula'=>$visitantearray[$i],':consecutivo'=>$this->id);
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
