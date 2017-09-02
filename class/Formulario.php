@@ -297,11 +297,12 @@ class Formulario
 
     function ConsultarporVisitante(){
         try {
-            $sql = "SELECT f.consecutivo,f.fechasolicitud,(SELECT nombre FROM estado WHERE id=f.idestado) as estado,f.motivovisita,f.rfc
-            FROM formulario f INNER JOIN  visitanteporformulario vxf ON f.id = vxf.idformulario INNER JOIN visitante v ON v.id=vxf.IDVISITANTE and v.CEDULA=:cedula";
+            $sql = "SELECT DISTINCT f.consecutivo,f.fechasolicitud,(SELECT nombre FROM estado WHERE id=f.idestado) as estado,f.motivovisita,f.rfc
+            FROM formulario f INNER JOIN  visitanteporformulario vxf ON f.id = vxf.idformulario INNER JOIN visitante v ON v.id=vxf.idvisitante 
+            and (v.cedula like '". $_POST["busqueda"] ."%' or v.nombre like '". $_POST["busqueda"] ."%') ORDER BY consecutivo DESC;";
 
-            $param= array(':cedula'=>$_POST["cedula"]);
-            $data = DATA::Ejecutar($sql, $param);
+            //$param= array(':BUSQUEDA'=>$_POST["busqueda"]);
+            $data = DATA::Ejecutar($sql);
             //
             if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
