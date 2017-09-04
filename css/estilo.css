@@ -391,6 +391,24 @@ label {
     margin-top: 50;
 }
 
+.nbtn_red {
+	background: firebrick;
+	border: none;
+	color: #FFFFFF;
+	width: auto;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	border-radius: 2px;
+	letter-spacing: 1px;
+    /**/
+    display: block;
+    margin: 0 auto;
+    margin-top: 50;
+}
+
 .nbtn_blue-sp-c {
 	background: #016DC4;
 	border: none;
@@ -474,6 +492,9 @@ label {
     border: 0.3px solid #2893EF;    
 }
 
+input[type=checkbox] {
+    transform: scale(2);
+}
 
 /********************************/
 

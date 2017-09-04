@@ -37,8 +37,8 @@ function inicio() {
             
     this.MensajeTop= function(msg){
         $("#textomensaje").text(msg);
-        $("#mensajetop").css("background-color", "60E800");
-        $("#mensajetop").css("color", "white");    
+        $("#mensajetop").css("background-color", "016DC4");
+        $("#mensajetop").css("color", "FFFFFF");    
         $("#mensajetop").css("visibility", "visible");
         $("#mensajetop").slideDown("slow");
         $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
@@ -65,8 +65,8 @@ function inicio() {
             //alert("Salida ok:"+ e + " ... "  + document.getElementById('modal-cedula').value  + 'f-'+ document.getElementById('idformulario').value +'v-' + document.getElementById('idtarjeta').value );
             //MensajeTop(e);
             $("#textomensaje").text(e);
-            $("#mensajetop").css("background-color", "60E800");
-            $("#mensajetop").css("color", "white");    
+            $("#mensajetop").css("background-color", "016DC4");
+            $("#mensajetop").css("color", "FFFFFF");    
             $("#mensajetop").css("visibility", "visible");
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
@@ -98,8 +98,8 @@ function inicio() {
             // mensaje de visitante salida correcta.
             modal.style.display = "none";
             $("#textomensaje").text(e);
-            $("#mensajetop").css("background-color", "60E800");
-            $("#mensajetop").css("color", "white");    
+            $("#mensajetop").css("background-color", "016DC4");
+            $("#mensajetop").css("color", "FFFFFF");    
             $("#mensajetop").css("visibility", "visible");
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
@@ -108,7 +108,7 @@ function inicio() {
             modal.style.display = "none";
             $("#textomensaje").text("Ha ocurrido un problema al realizar la entrada, comunicarse con Operaciones TI");
             $("#mensajetop").css("background-color", "firebrick");
-            $("#mensajetop").css("color", "white");    
+            $("#mensajetop").css("color", "FFFFFF");    
             $("#mensajetop").css("visibility", "visible");
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
@@ -215,7 +215,7 @@ function onMuestraFormulario(txt) {
                 bground="#cc9900";
                 break;
             case "1":
-                bground="#009933";
+                bground="#016DC4";
                 break;
             case "2":
                 bground="#990000";
@@ -238,7 +238,7 @@ function onMuestraPerfilSalida() {
     modal.style.display = "block";
     $("#btncontinuar").hide();
     $("#btnsalida").toggle("fadeIn");
-    $("#btnsalida").css("background", "#990000");
+    $("#btnsalida").css("background", "firebrick");
 }
 
 function onMuestraEstadoFormulario(estado) { // id del formulario a consultar       

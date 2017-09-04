@@ -19,6 +19,7 @@ if(isset($_POST["action"])){
 class Formulario
 {
     public $id;
+    public $consecutivo;
     public $fechaingreso;
     public $fechasalida;
     public $fechasolicitud;
@@ -164,7 +165,7 @@ class Formulario
     function ConsultaVisitantePorFormulario($idvisitante)
     {
         try{
-            $sql="SELECT f.id as ID , f.fechaingreso , f.fechasalida , f.idestado  as estado
+            $sql="SELECT f.id as ID , consecutivo ,f.fechaingreso , f.fechasalida , f.idestado  as estado
                 FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
                 where vf.idvisitante= :idvisitante
                 order by f.FECHASOLICITUD desc limit 1 ";
@@ -172,6 +173,7 @@ class Formulario
             $data = DATA::Ejecutar($sql,$param);
             if (count($data)) {  
                 $this->id= $data[0]['ID'];
+                $this->consecutivo= $data[0]['consecutivo'];
                 $this->fechaingreso= $data[0]['fechaingreso'];
                 $this->fechasalida= $data[0]['fechasalida'];                
                 $this->estado= $data[0]['estado'];
@@ -188,6 +190,7 @@ class Formulario
     }
 
     //FUNCIONAL 
+    // Carga formulario USANDO EL consecutivo
     function Cargar()
     {
         try {
@@ -198,13 +201,14 @@ class Formulario
                 (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id where consecutivo=:cons) as nombreautorizador,
                 (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id where consecutivo=:cons) as nombreresponsable,
                 (SELECT sa.nombre FROM sala sa inner join formulario fo on sa.id=fo.idsala where consecutivo=:cons) as nombresala,
-                placavehiculo,detalleequipo, rfc
+                placavehiculo,detalleequipo, rfc, id
             FROM formulario WHERE consecutivo = :cons";
 
             $param= array(':cons'=>$this->id);
             $data = DATA::Ejecutar($sql, $param);
             //
             if (count($data)) {
+                $this->consecutivo= $data[0]['consecutivo'];
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
                 $this->estado= $data[0]['idestado'];
                 $this->motivovisita= $data[0]['motivovisita'];
@@ -217,6 +221,7 @@ class Formulario
                 $this->placavehiculo= $data[0]['placavehiculo'];
                 $this->detalleequipo= $data[0]['detalleequipo'];
                 $this->rfc= $data[0]['rfc'];
+                $this->id= $data[0]['id'];
             }
             //
             return $data;
@@ -225,13 +230,55 @@ class Formulario
             exit;
         }
     }
+    // Carga formulario USANDO EL id
+    function CargarID()
+    {
+        try {
+            $sql = "SELECT id, consecutivo,fechasolicitud,idestado,motivovisita, 
+                DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
+                DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,
+                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id where f.id=:id)as nombretramitante,
+                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id where f.id=:id) as nombreautorizador,
+                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id where f.id=:id) as nombreresponsable,
+                (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala where f.id=:id) as nombresala,
+                idsala, placavehiculo,detalleequipo, rfc
+            FROM formulario WHERE id = :id";
+
+            $param= array(':id'=>$this->id);
+            $data = DATA::Ejecutar($sql, $param);
+            //
+            if (count($data)) {
+                $this->consecutivo= $data[0]['consecutivo'];
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['idestado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->fechaingreso= $data[0]['fechaingreso'];
+                $this->fechasalida= $data[0]['fechasalida'];
+                $this->nombretramitante= $data[0]['nombretramitante'];
+                $this->nombreautorizador= $data[0]['nombreautorizador'];
+                $this->nombreresponsable= $data[0]['nombreresponsable'];
+                $this->idsala= $data[0]['idsala'];
+                $this->nombresala= $data[0]['nombresala'];
+                $this->placavehiculo= $data[0]['placavehiculo'];
+                $this->detalleequipo= $data[0]['detalleequipo'];
+                $this->rfc= $data[0]['rfc'];
+                $this->id= $data[0]['id'];
+            }
+            //
+            return $data;
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
+    }
+
     //Carga los visitantes en la tabla principal del formulario
     function CargaVisitanteporFormulario()
     {
         try {
             //Adquiere el id de formulario con base al consecutivo
-            $sql_id="SELECT id FROM formulario WHERE consecutivo=:cons";
-            $id= array(':cons'=>$this->id);
+            $sql_id="SELECT id FROM formulario WHERE id=:id";
+            $id= array(':id'=>$this->id);
             $idformulario = DATA::Ejecutar($sql_id, $id);
             //Selecciona los visitantes con base al id del formulario
             $sql="SELECT DISTINCT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
