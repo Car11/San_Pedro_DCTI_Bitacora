@@ -18,17 +18,22 @@ html:
     letra #B8B8B8
 
 btn azul: 
-    fondo #016DC4
+    fondo #016DC4 
     texto #FFFFFF
 
-btn negro:
+btn gris:
     fondo: #3F3F3F
     texto: #C9C9C9
 
 input
     fondo: #555555
     texto: #EDEDED
-    borde: #2893EF
+    borde: 0.3px solid #C2C2C2
+    borde sel: #2893EF
+
+form
+    fondo claro: #58585a
+    
 */
 
 
@@ -90,6 +95,32 @@ header {
     height: 40;
 }
 
+#general{
+    width: 100%;
+    height: 84%;
+    margin-top: 0px;
+}
+
+#superiornavegacion{
+    margin-top: 0px;
+    width: 100%;
+    height: 50px;
+    float: left;
+}
+
+#nuevo{
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+#atras{
+    width: 50%;
+    height: 100%;
+    float: right;
+    text-align: right;
+}
+
 .avisoFormulario{
     display: block;  
     position: relative;  
@@ -120,7 +151,7 @@ header {
 
 .mensajeriaOk{
     display: block;
-    background: #009933;
+    background: #016DC4;
     height: auto;
     color: aliceblue;
     font-size: 30px;
@@ -162,7 +193,7 @@ header {
 
 .mensajeriaError{
     display: block;
-    background: #990000;
+    background: firebrick;
     height: auto;
     color: aliceblue;
     font-size: 30px;
@@ -225,6 +256,10 @@ footer {
     visibility: hidden;
 }
 
+.fila:hover{
+	background-color: #016DC4;
+    color: indianred;
+}
 
 /***********************************/
 
@@ -269,23 +304,18 @@ label {
 .input-field {
     display: block;
     text-align: center;
-    margin: 0 auto;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    /*border: 1px solid #C2C2C2;
-    box-shadow: 1px 1px 4px #EBEBEB;
-    -moz-box-shadow: 1px 1px 4px #EBEBEB;
-    -webkit-box-shadow: 1px 1px 4px #EBEBEB;*/
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
+    margin: 0 auto;    
+    border: 0.3px solid #C2C2C2;
     padding: 7px;
     outline: none;
     font-size: 28px;
     font-family: fantasy;
     color: #EDEDED;
     background: #555555;
+}
+
+.input-field:focus {
+    border: 0.3px solid #2893EF;
 }
 
 .input-field-readonly {
@@ -296,32 +326,10 @@ label {
     padding: 7px;    
     font-size: 40px;
     font-family: fantasy;
-    color: 5a5a5a;
+    color: #B8B8B8;    
+    font-style: italic;
     background: none;
 }
-/*
-[type=submit],
-[type=button] {    
-    border: none;
-    padding: 9px 17px 10px 17px;
-    background: #FF8500;
-    color: #fff;
-    box-shadow: 1px 1px 4px #DADADA;
-    -moz-box-shadow: 1px 1px 4px #DADADA;
-    -webkit-box-shadow: 1px 1px 4px #DADADA;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    display: block;
-    margin: 0 auto;
-    margin-top: 50;
-}
-
-[type=submit]:hover,
-[type=button]:hover {
-    background: #FFAB49;
-    color: #fff;
-}*/
 
 .chk-input {
     display: block;
@@ -383,7 +391,60 @@ label {
     margin-top: 50;
 }
 
+.nbtn_blue-sp-c {
+	background: #016DC4;
+	border: none;
+	color: #FFFFFF;
+	width: auto;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	border-radius: 2px;
+	letter-spacing: 1px;
+    /**/
+    display: block;
+    
+}
+
 .nbtn_blue:hover {
+	background: #1478b1;
+}
+
+.nbtn_gray {
+    background: #3F3F3F;
+	border: none;
+	color: #C9C9C9;
+	width: auto;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	border-radius: 2px;
+	letter-spacing: 1px;
+    /**/
+    display: block;
+    margin: 0 auto;
+    margin-top: 50;
+}
+
+.nbtn_gray-sp-c {
+    background: #3F3F3F;
+	border: none;
+	color: #C9C9C9;
+	width: auto;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	border-radius: 2px;
+	letter-spacing: 1px;
+}
+
+.nbtn_gray:hover {
 	background: #1478b1;
 }
 
@@ -399,21 +460,18 @@ label {
     display: block;
     margin: 0 auto;
     text-align: justify;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    border: 1px solid #C2C2C2;
-    box-shadow: 1px 1px 4px #EBEBEB;
-    -moz-box-shadow: 1px 1px 4px #EBEBEB;
-    -webkit-box-shadow: 1px 1px 4px #EBEBEB;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     padding: 7px;
     outline: none;
-    font-size: 15px;
-    color: grey;
+    font-size: 15px;    
     height: 100px;
+    /**/
+    border: 0.3px solid #C2C2C2;
+    color: #EDEDED;
+    background: #555555;
+}
+
+.textarea-field:focus {
+    border: 0.3px solid #2893EF;    
 }
 
 
@@ -424,6 +482,7 @@ label {
     display: block;
     margin: 50 50 50 50;
     height: auto;
+    border-bottom: 1px solid #58585a;
 }
 
 #logo {
@@ -435,41 +494,33 @@ label {
 }
 
 .login {
-    /*padding: 30 30 30 30;
+    
+    padding-top: 50px;
+    width: 350;
     margin: 0 auto;
     height: auto;
-    width: 350;
-    margin-top: 15%;
-    background:  #73A5FF;
-    box-shadow: 1px 1px 4px #DADADA;
-    -moz-box-shadow: 1px 1px 4px #DADADA;
-    -webkit-box-shadow: 1px 1px 4px #DADADA;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;*/
-    margin: 0 auto;
-    height: auto;
-    width: 350;
-    padding: 30 30 30 30;
+   /* 
+    
     background: #58585a;
-    -moz-border-radius: 4px;
+        
+    /*-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    margin-top: 15%;
-    position: absolute;
-    left: 0;
-    right: 0;
     border-radius: 3px;
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
+    margin-top: 15%;
+    position: absolute;
+    left: 0;
+    right: 0;*/
 }
 
 #fechahora {
     display: block;
     float: right;
-    color: a5a5a5;
+    color: #a5a5a5;
     font-size: 20;
     margin-right: 3%;
 }
@@ -478,7 +529,7 @@ label {
     display: block;
     float: left;
     width: 250;
-    color: a5a5a5;
+    color: #a5a5a5;
     font-size: 20;
     margin-left: 20px;
 }
@@ -503,21 +554,33 @@ nav.btnfrm ul {
     list-style-type: none;
     padding: 3;
     overflow: hidden;
-    width: 200;
+    width: 400;
 }
 
 nav.btnfrm li {
-    width: 100;
+    width: 200;
     display: block;
     margin: 0 auto;
     float: left;
 }
 
 
-/***********************combo box sala******************************/
+#imgdelete{
+    height: 17px;
+    text-align: center;
+    margin-left: 50px;
+}
+#imgagregar{
+    height: 17px;
+    text-align: center;
+    margin-left: 50px;
+}
 
+
+/***********************combo box sala******************************/
+ /*fondo #016DC4
+    texto #FFFFFF*/
 .sala {
-    /*background: blue;*/
     margin: 0 auto;
     margin-top: 20;
     width: 350;
@@ -525,19 +588,19 @@ nav.btnfrm li {
 
 .sala .field {
     width:100%; 
-    background: #FF8500; 
-    color:#fff;     
+    background: #016DC4; 
+    color:#FFFFFF;     
     padding:5px 5px; 
     border:none; 
     cursor:pointer;
 	font-family:'lucida sans unicode',sans-serif; font-size:1.2em;
-	border:solid 1px #EC6603;
+	border:solid 1px #C2C2C2;
 	-webkit-transition: all .4s ease-in-out;
 	transition: all .4s ease-in-out;
 }
 
 .sala .field:hover {
-    border: solid 1px #fff;
+    border: solid 1px #C2C2C2;
     -moz-box-shadow: 0 0 5px #999;
     -webkit-box-shadow: 0 0 5px #999;
     box-shadow: 0 0 5px #999
@@ -569,7 +632,7 @@ nav.btnfrm li {
 }
 
 .sala>ul.list li:hover {
-    background: #EC6603;
+    background: #1478b1;
     color: #fff;
 }
 
@@ -578,14 +641,13 @@ nav.btnfrm li {
 }
 
 .field::-webkit-input-placeholder {
-    /* Chrome/Opera/Safari */
-    color: white;
+    color: #FFFFFF;
     text-align: center;
 }
 
 .field::-moz-placeholder {
     /* Firefox 19+ */
-    color: white;
+    color: #FFFFFF;
     text-align: center;
 }
 
@@ -606,7 +668,14 @@ nav.btnfrm li {
 }
 
 /**************************VENTANA MODAL*******************/
+/*header: 
+    fondo #222222
+    letra #F2F2F2
+    borde #343434
 
+html: 
+    fondo #2C2C2C
+    letra #B8B8B8*/
 .modal {
     display: none;
     /* Hidden by default */
@@ -633,10 +702,10 @@ nav.btnfrm li {
 
 .modal-content {
     position: relative;
-    background-color: #1e5799;
+    background-color: #2c2c2c;
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
+    border: 1px solid #343434;
     width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-animation-name: animatetop;
@@ -670,7 +739,7 @@ nav.btnfrm li {
 /* The Close Button */
 
 .close {
-    color: white;
+    color: #58585a;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -685,8 +754,10 @@ nav.btnfrm li {
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #73A5FF;
-    color: white;
+    background-color: #222222;
+    color: #F2F2F2;
+    border-bottom: 1px solid #58585a;
+    margin-bottom: 10px;
 }
 
 .modal-body {
@@ -695,7 +766,7 @@ nav.btnfrm li {
 
 .modal-footer {
     padding: 2px 16px;
-    background-color: #73A5FF;
+    background-color: 58585a;
     color: white;
 }
 
@@ -710,3 +781,6 @@ nav.btnfrm li {
     width: 50%;
     margin-bottom: 100px;
 }
+
+
+

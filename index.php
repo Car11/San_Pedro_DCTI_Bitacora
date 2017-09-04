@@ -183,7 +183,7 @@ if (isset($_SESSION['idformulario'])) {
                     </div>
                     <nav class="btnfrm">
                         <ul>
-                            <li><button type="button" class="nbtn" value="entrada" id="btncontinuar" >Entrada</button></li>
+                            <li><button type="button" class="nbtn_azul" value="entrada" id="btncontinuar" >Entrada</button></li>
                             <li><button type="button" class="nbtn" value="salida" id="btnsalida" >Salida</button></li>
                             <!--<li><button type="button"  onclick="onCancelar()" id="btnvolver" >Volver</button> </li>-->
                         </ul>

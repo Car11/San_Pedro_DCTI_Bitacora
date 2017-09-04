@@ -68,8 +68,9 @@ $rol=$_SESSION['rol'];
     <meta charset="UTF-8">
     <title>Control de Accesos</title>       
     <!-- CSS -->
-    <link rel="stylesheet" href="css/Estilo.css"     type="text/css"/>        
-    <link rel="stylesheet" href="css/datatables.css" type="text/css"/>
+    <link rel="stylesheet" href="css/Estilo.css"     type="text/css"/>            
+    <link rel="stylesheet" href="css/datatables.css" type="text/css"/>    
+    
     <link rel="stylesheet" href="css/Formulario.css" type="text/css"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
@@ -104,12 +105,12 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput">
                         <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
-                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="inputformat" 
+                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
                     </div>
                     <div id="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
-                        <input type="text" id="txtresponsable" name="txtresponsable" placeholder="CLICK" class="inputformat" readonly="readonly"
+                        <input type="text" id="txtresponsable" name="txtresponsable" placeholder="CLICK" class="input-field" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][8];
 }?>" required/>  
@@ -118,12 +119,12 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput">
                         <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
-                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="inputformat" 
+                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
                     </div>
                     <div id="cajainput">
                         <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
-                        <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="inputformat" readonly="readonly"
+                        <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][9];}?>" required/> 
                     </div>
@@ -131,12 +132,12 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput">
                         <label for="txttramitante" class="labelformat">Tramitante</label></br>
-                        <input type="text" id="txttramitante" name="txttramitante" placeholder="" class="inputformat" readonly="readonly" 
+                        <input type="text" id="txttramitante" name="txttramitante" placeholder="" class="input-field" readonly="readonly" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>" />
                     </div>                   
                     <div id="cajainput">
                         <label for="txtautorizador" class="labelformat">Autorizador</label></br>
-                        <input type="text" id="txtautorizador" name="txtautorizador" placeholder="" class="inputformat" readonly="readonly" 
+                        <input type="text" id="txtautorizador" name="txtautorizador" placeholder="" class="input-field" readonly="readonly" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
 
                     </div>
@@ -148,9 +149,9 @@ $rol=$_SESSION['rol'];
                         <div id="tablavisitante">
                             <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
                             <?php
-                            print "<table id='tblvisitanteform'>";
+                            print "<table id='tblvisitanteform' class='display' cellspacing='0' width='100%' >";
                             print "<thead>";
-                            print "<tr>";
+                            print "<tr class='fila'>";
                             print "<th id='titulocedula'>Cedula</th>";
                             print "<th id='titulonombre'>Nombre</th>";
                             print "<th id='tituloempresa'>Empresa</th>";
@@ -160,7 +161,7 @@ $rol=$_SESSION['rol'];
                             if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                                 print "<tbody>";
                                 for ($i=0; $i<count($visitanteformulario); $i++) {
-                                    print "<tr>";
+                                    print "<tr class='fila'>";
                                     print "<td>".$visitanteformulario[$i][0]."</td>";
                                     print "<td>".$visitanteformulario[$i][1]."</td>";
                                     print "<td>".$visitanteformulario[$i][2]."</td>";
@@ -219,7 +220,7 @@ $rol=$_SESSION['rol'];
                 <div id="cajade3">
                     <div class="cajainput2">
                         <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
-                        <input type="text" id="placavehiculo" class="inputformat" name="placavehiculo" 
+                        <input type="text" id="placavehiculo" class="input-field" name="placavehiculo" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][10];
 }?>" 
@@ -227,7 +228,7 @@ $rol=$_SESSION['rol'];
                     </div>      
                     <div class="cajainput2">
                         <label for="detalleequipo" class="labelformat">Detalle Equipo</label>
-                        <input type="text" id="detalleequipo" class="inputformat" name="detalleequipo" 
+                        <input type="text" id="detalleequipo" class="input-field" name="detalleequipo" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][11];
 }?>" 
@@ -235,7 +236,7 @@ $rol=$_SESSION['rol'];
                     </div>
                     <div class="cajainput2">
                         <label for="txtrfc" class="labelformat">RFC          :</label>
-                        <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="inputformat" 
+                        <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][12]; }?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>
@@ -243,7 +244,7 @@ $rol=$_SESSION['rol'];
                 </div>
                 <div id="cajade3">
                     <label for="motivovisita" class="labelformat">Motivo Visita</label>
-                    <input type="text" id="motivovisita" name="motivovisita" 
+                    <input type="text" id="motivovisita" name="motivovisita" class="input-field"
                     value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
                     pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                 </div>
@@ -376,7 +377,7 @@ $rol=$_SESSION['rol'];
 
     $(document).ready( function () {  
         ExcluyeVisitanteCarga();
-
+        $("#EnviaFormulario").css("background-color", "cc9900");
         if (existeid!=0){
             EstadoFormulario();  
             //FechaFormMod();
@@ -387,6 +388,24 @@ $rol=$_SESSION['rol'];
         $('#tblresponsable').DataTable();          
         $('#tblsala').DataTable();
         MuestraEstados();
+        // Cambia color del botón enviar segun estado del formulario.
+        $('input[type=radio][name=estadoformulario]').change(function() {
+            if (this.value == '0') {
+                $("#EnviaFormulario").css("background-color", "cc9900");
+            }
+            else if (this.value == '1') {
+                $("#EnviaFormulario").css("background-color", "016DC4");
+            }
+            else if (this.value == '2') {
+                $("#EnviaFormulario").css("background-color", "firebrick");
+            }
+        });
+    
+         // cierra el modal
+        $(".close").click( function(){
+            // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
+            $(".modal").css({ display: "none" });
+        });
         
     } );
 
@@ -642,22 +661,26 @@ $rol=$_SESSION['rol'];
     }
 
     //Maneja el evento checked del estado del radio button formulario
-    function EstadoFormulario(){
+    function EstadoFormulario(){        
+        
         var estado = "<?php echo $estadoformulario; ?>";         
         if (estado==0) {
             document.getElementById("pendiente").checked = true;   
             document.getElementById("aprobado").checked = false;
             document.getElementById("denegado").checked = false; 
+            $("#EnviaFormulario").css("background-color", "cc9900");
         }
         if(estado==1){
             document.getElementById("pendiente").checked = false;   
             document.getElementById("aprobado").checked = true;
             document.getElementById("denegado").checked = false; 
+            $("#EnviaFormulario").css("background-color", "016DC4");
         }
         if(estado==2){
             document.getElementById("pendiente").checked = false;   
             document.getElementById("aprobado").checked = false;
             document.getElementById("denegado").checked = true; 
+            $("#EnviaFormulario").css("background-color", "firebrick");
         }
     }
 

@@ -21,10 +21,6 @@
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
      <script>
-        function onVuelve() {
-           // location.href = "index.php";
-        }
-        //
         $('#username').attr("autocomplete", "off");
         $('#password').attr("autocomplete", "off");
         setTimeout('$("#username").val("");', 100);
@@ -50,8 +46,7 @@
                     <input type="password" id="password" class="input-field" name="password" placeholder="CONTRASEÑA" maxlength="20" />
                     <nav class="btnfrm">
                         <ul>
-                            <li> <input class="nbtn" type="submit" value="Ingresar" id="login" /></li>
-                            <li><button class="nbtn" type="button" onclick="onVuelve()">Cancelar</button></li>
+                            <li> <input class="nbtn_blue" type="submit" value="Ingresar" id="login" /></li>
                         </ul>
                     </nav>
                 </form>      

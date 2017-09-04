@@ -30,9 +30,12 @@
     <aside>
     </aside>
     <section>
-        <h1>ERROR</h1>
-        <h3>Detalle del error: <?php print ($errmsg); ?></h3>
-        <button type="button" onclick="onVuelve()">Volver </button>
+        <div id="form">
+            <h1>ERROR</h1>
+            <h3>Detalle del error: <?php print ($errmsg); ?></h3>
+            <button type="button" class="nbtn_blue" onclick="onVuelve()">Volver </button>
+            <br>
+        </div>        
     </section>
     <aside>
     </aside>

@@ -17,10 +17,12 @@ if (!$sesion->estado) {
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
    <!-- CSS -->    
+    
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
-    <link href="css/Formulario.css" rel="stylesheet"/>
+    <!--<link rel="stylesheet" href="css/formulario.css"> -->
     <link rel="stylesheet" href="css/sweetalert2.css">
     <link href="css/Estilo.css" type="text/css" rel="stylesheet"/>
+    
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
@@ -34,6 +36,15 @@ if (!$sesion->estado) {
     <header>
         <h1>LISTA DE VISITANTES</h1>        
         <div id="logo"><img src="img/Logoice.png" height="75" > </div>
+        <div id="signin">
+            <span>Usuario: 
+                <?php
+                if ($sesion->estado) {
+                    print $_SESSION['username'];
+                } 
+                ?>
+            </span>
+        </div>
     </header>
     <div id="mensajetop_display">
         <div id="mensajetop">
@@ -53,10 +64,10 @@ if (!$sesion->estado) {
             </div>
             <div id="superiornavegacion">
                 <div id="nuevo">
-                    <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="Nuevo()";>      
-                </div>
-                <div id="atraslista">
-                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás" onclick="location.href='MenuAdmin.php'";>   
+                    <input type="button" id="btnnuevo" class="nbtn_blue-sp-c" value="Nuevo" onclick="Nuevo()";>      
+                </div>                
+                <div id="atras">
+                    <input type="button" id="btnatras" class="nbtn_gray-sp-c" value="Atrás" onclick="location.href='MenuAdmin.php'";>   
                 </div>
             </div>
 
@@ -100,8 +111,8 @@ if (!$sesion->estado) {
 
                         <nav class="btnfrm">
                             <ul>
-                                <li><button type="button" class="nbtn" onclick="Guardar()" >Guardar</button></li>
-                                <li><button type="button" class="nbtn" onclick="Cerrar()" >Cerrar</button></li>
+                                <li><button type="button" class="nbtn_blue" onclick="Guardar()" >Guardar</button></li>
+                                <li><button type="button" class="nbtn_gray" onclick="Cerrar()" >Cerrar</button></li>
                             </ul>
                         </nav>
 
@@ -111,6 +122,7 @@ if (!$sesion->estado) {
             </div>    
             
             <div class="modal-footer">
+                <br>
             </div>
 
         </div>
