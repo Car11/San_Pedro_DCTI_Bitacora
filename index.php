@@ -44,13 +44,14 @@ if (isset($_SESSION['idformulario'])) {
     include("class/Formulario.php");
     $formulario= new Formulario();
     $formulario->id=$_SESSION['idformulario'];
-    $formulario->Cargar();    
+    $formulario->CargarID();    
     // Carga info tarjeta
     include("class/Tarjeta.php");
     $tarjeta= new tarjeta();
     if($estado!="fin"){
         // Carga tarjeta asiganada si es un ingreso, no salida 
-        $tarjeta->nombresala= $formulario->nombresala;
+        // $tarjeta->nombresala= $formulario->nombresala;
+        $tarjeta->idsala= $formulario->idsala;
         $tarjeta->Asignar();
     }
     else {
@@ -154,7 +155,8 @@ if (isset($_SESSION['idformulario'])) {
             <div class="modal-header">
                 <span class="close">&times;</span>
                 <h2>Información del Formulario</h2>
-                <input readonly  id="idformulario" name="idformulario" class="input-field-readonly" value= "<?php if($formulario!="NULL") print $formulario->id; ?>"  >
+                <input readonly  id="consecutivo" name="consecutivo" class="input-field-readonly" value= "<?php if($formulario!="NULL") print $formulario->consecutivo; ?>"  >
+                <input  type="hidden"  id="idformulario" name="idformulario" class="input-field-readonly" value= "<?php if($formulario!="NULL") print $formulario->id; ?>"  >
                 <input  type="hidden"  id="idvisitante" name="idvisitante" class="input-field-readonly" value= "<?php if($visitante!="NULL") print $visitante->ID; ?>"  >
             </div>
         
@@ -175,7 +177,8 @@ if (isset($_SESSION['idformulario'])) {
                     </div>
                     <div class='modal-der'>
                         <h3>Tarjeta</h3>
-                        <input readonly id='idtarjeta' name='idtarjeta' class='input-field-readonly' value= "<?php if($tarjeta!="NULL") { if($tarjeta->id==-1) print 'NO DISPONIBLE'; else print $tarjeta->id; } ?>" >
+                        <input readonly id='numtarjeta' name='numtarjeta' class='input-field-readonly' value= "<?php if($tarjeta!="NULL") { if($tarjeta->id==-1) print 'NO DISPONIBLE'; else print $tarjeta->consecutivo; } ?>" >
+                        <input type="hidden" id='idtarjeta' name='idtarjeta' class='input-field-readonly' value= "<?php if($tarjeta!="NULL") { if($tarjeta->id==-1) print 'NO DISPONIBLE'; else print $tarjeta->id; } ?>" >
                         <h3>Autoriza</h3>
                         <input type="text" readonly id='idautorizador' name='idautorizador' class='input-field' value= "<?php if($formulario!="NULL") print $formulario->nombreautorizador; ?>" >
                         <h3>Fecha de la solicitud</h3>
@@ -183,8 +186,8 @@ if (isset($_SESSION['idformulario'])) {
                     </div>
                     <nav class="btnfrm">
                         <ul>
-                            <li><button type="button" class="nbtn" value="entrada" id="btncontinuar" >Entrada</button></li>
-                            <li><button type="button" class="nbtn" value="salida" id="btnsalida" >Salida</button></li>
+                            <li><button type="button" class="nbtn_blue" value="entrada" id="btncontinuar" >Entrada</button></li>
+                            <li><button type="button" class="nbtn_red" value="salida" id="btnsalida" >Salida</button></li>
                             <!--<li><button type="button"  onclick="onCancelar()" id="btnvolver" >Volver</button> </li>-->
                         </ul>
                     </nav>
@@ -193,6 +196,7 @@ if (isset($_SESSION['idformulario'])) {
             </div>
             
             <div class="modal-footer">
+            <br>
             </div>
         </div>
     </div>      
@@ -245,7 +249,7 @@ if (isset($_SESSION['idformulario'])) {
         // captura mensajes en línea de estado de formularios temporales.
         CapturaMensajeFormulario();
         // Captura estados del formulario. estado del formulario. Id del formulario
-        MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->id; else print "NULL" ?>');  
+        MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->consecutivo; else print "NULL" ?>');  
     });
     
 </script>

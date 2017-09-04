@@ -24,9 +24,9 @@ class Tarjeta{
     function Asignar(){
         $sql="SELECT id , consecutivo
             from tarjeta 
-            where estado=0 and idsala=(select id from sala where nombre= :nombresala) 
+            where estado=0 and idsala= :idsala
             order by consecutivo asc limit 1";
-        $param= array(':nombresala'=>$this->nombresala);
+        $param= array(':idsala'=>$this->idsala);
         $data = DATA::Ejecutar($sql,$param);
         if (count($data)) {
             // tarjeta disponible.

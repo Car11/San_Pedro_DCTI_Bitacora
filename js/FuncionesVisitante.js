@@ -1,5 +1,5 @@
-var formReady=false;
-var id="NULL";
+var formReady = false;
+var id = "NULL";
 
 $(document).ready( function () {
     //Da la apariencia del css datatable
@@ -37,13 +37,12 @@ $(document).ready( function () {
 function muestraInfo(){     
     $(".modal").css({ display: "none" });  
     $("#textomensaje").text("Información almacenada correctamente!!");
-    $("#mensajetop").css("background-color", "60E800");
-    $("#mensajetop").css("color", "white");    
+    $("#mensajetop").css("background-color", "#016DC4");
+    $("#mensajetop").css("color", "#FFFFFF");    
     $("#mensajetop").css("visibility", "visible");
     $("#mensajetop").slideDown("slow");
     $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
 };
-
 
 // Muestra errores en ventana
 function muestraError(){        
@@ -68,7 +67,7 @@ function ReCargar(){
     .done(function( e ) {            
         // Limpia el div que contiene la tabla.
         $('#lista').html(""); 
-        $('#lista').append("<br><br><br> <table id='tblLista'> </table>");
+        $('#lista').append("<br><br><br> <table id='tblLista' class='display' > </table>");
         var col= "<thead><tr> <th style='display:none;'>ID</th> <th>CEDULA</th> <th>NOMBRE</th>  <th>EMPRESA</th> <th>PERMISO ANUAL</th> <th>MODIFICAR</th> <th>ELIMINAR</th> </tr></thead>"+
             "<tbody id='tableBody'>  </tbody>";
         $('#tblLista').append(col); 
@@ -76,7 +75,7 @@ function ReCargar(){
         var data= JSON.parse(e);
         // Recorre arreglo.
         $.each(data, function(i, item) {
-            var row="<tr>"+
+            var row="<tr class=fila>"+
                 "<td style='display:none;' >" + item.id +"</td>" +
                 "<td>"+ item.cedula + "</td>"+
                 "<td>"+ item.nombre + "</td>"+
@@ -144,7 +143,7 @@ function EventoClickEliminar(){
 function EventoClickModificar(){
     $("#cedula").css({
         "border-color": "green",
-        "border-width": "5px"
+        "border-width": "0.3px"
     });
     //                
     id = $(this).parents("tr").find("td").eq(0).text();           
@@ -185,14 +184,14 @@ function validarForm(){
     } 
     if($("#cedula").val()=="")
     {
-        $("#cedula").css("border", "2px solid firebrick");
+        $("#cedula").css("border", "0.3px solid firebrick");
         document.getElementById('cedula').placeholder = "REQUERIDO";
         $("#cedula").focus();
         return false;
     }        
     else if($("#cedula").val().length<8)
     {
-        $("#cedula").css("border", "2px solid firebrick");
+        $("#cedula").css("border", "0.3px solid firebrick");
         // mensaje
         // ...
         return false;
@@ -200,7 +199,7 @@ function validarForm(){
     //
     if($("#empresa").val()=="")
     {
-        $("#empresa").css("border", "2px solid firebrick");
+        $("#empresa").css("border", "0.3px solid firebrick");
         document.getElementById('empresa').placeholder = "REQUERIDO";
         $("#empresa").focus();
         return false;
@@ -208,14 +207,14 @@ function validarForm(){
     //
     if($("#nombre").val()=="")
     {
-        $("#nombre").css("border", "2px solid firebrick");
+        $("#nombre").css("border", "0.3px solid firebrick");
         document.getElementById('nombre').placeholder = "REQUERIDO";
         $("#nombre").focus();
         return false;
     }
     else if($("#nombre").val().length<10)
     {
-        $("#nombre").css("border", "2px solid firebrick");
+        $("#nombre").css("border", "0.3px solid firebrick");
         // mensaje
         // ...
         return false;
@@ -295,14 +294,14 @@ function ValidaCedulaUnica(){
         if(e=="invalida"){
              $("#cedula").css({
                 "border-color": "firebrick",
-                "border-width": "5px"
+                "border-width": "0.3px"
             });
             $("#cedula").focus();
         }
         else {
             $("#cedula").css({
                 "border-color": "green",
-                "border-width": "5px"
+                "border-width": "0.3px"
             });
             formReady=true;
         }
