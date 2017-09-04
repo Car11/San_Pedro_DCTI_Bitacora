@@ -61,7 +61,6 @@ $listaformulario= $formulario->ConsultaFormulario();
                         <input type="text" id="txtbuscavisitante" name="txtbuscavisitante" class="inputformat" value=""/>       
                     </div>
                     <div id=botoncedvisitante>
-                        <input id="btnbuscaxvisiante" type="button" class="cbp-mc-submit" value="Buscar por Visitante"/>
                     </div>
                 </div>
                 <div id="supatras">
@@ -131,55 +130,13 @@ $listaformulario= $formulario->ConsultaFormulario();
         function ActivaConsultaVisitante(){
             if(document.getElementById("checkconsultavisitante").checked == true){
                 $("#txtbuscavisitante").prop("readonly", false);
-                $('#btnbuscaxvisiante').attr("disabled", false);
             }
             if(document.getElementById("checkconsultavisitante").checked == false){
                 $("#txtbuscavisitante").prop("readonly", true);
-                $('#btnbuscaxvisiante').attr("disabled", true);
                 $("#txtbuscavisitante").val("");
                 RecargarTabla();
             }
-        }
-
-        $(document).on('click', '#btnbuscaxvisiante', function (event) {
-        $.ajax({
-            type: "POST",
-            url: "class/Formulario.php",
-            data: {
-                    action: "Consultarporvisitante",
-                    cedula: document.getElementById('txtbuscavisitante').value,
-                  }
-        })
-        .done(function( e ) {
-            var formularioxvisitante = JSON.parse(e);
-            
-            $('#listavisitante').html("");
-            $('#listavisitante').append("<table id='listaformulario'class='display'>");
-            var col="<thead><tr> <th>ID</th> <th>FECHA SOLICITUD</th> <th>MOTIVO</th> <th>ESTADO</th> <th>RFC</th> <th>MODIFICAR</th></tr></thead><tbody id='tableBody'></tbody>";
-            $('#listaformulario').append(col);
-            // carga lista con datos.
-            var data= JSON.parse(e);
-            // Recorre arreglo.
-            $.each(data, function(i, item) {
-                var row="<tr>"+
-                    "<td>"+ item.consecutivo+"</td>" +
-                    "<td>"+ item.fechasolicitud + "</td>"+
-                    "<td>"+ item.motivovisita + "</td>"+
-                    "<td>"+ item.estado + "</td>"+
-                    "<td>"+ item.rfc +"</td>"+
-                    "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
-                "</tr>";
-                $('#tableBody').append(row);         
-            })
-            // formato tabla
-            $('#listaformulario').DataTable( {
-                "order": [[ 0, "desc" ]]
-            } );
-        })    
-        .fail(function(msg){
-            alert("Error al Eliminar");
-        });
-    });  
+        } 
     
     function RecargarTabla(){
         $.ajax({
@@ -219,6 +176,47 @@ $listaformulario= $formulario->ConsultaFormulario();
             alert("Error al Eliminar");
         });    
     }
+
+    $('#txtbuscavisitante').on('keyup', function() {
+        
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                    action: "Consultarporvisitante",
+                    busqueda: this.value
+                  }
+        })
+        .done(function( e ) {
+            var formularioxvisitante = JSON.parse(e);
+            
+            $('#listavisitante').html("");
+            $('#listavisitante').append("<table id='listaformulario'class='display'>");
+            var col="<thead><tr> <th>ID</th> <th>FECHA SOLICITUD</th> <th>MOTIVO</th> <th>ESTADO</th> <th>RFC</th> <th>MODIFICAR</th></tr></thead><tbody id='tableBody'></tbody>";
+            $('#listaformulario').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td>"+ item.consecutivo+"</td>" +
+                    "<td>"+ item.fechasolicitud + "</td>"+
+                    "<td>"+ item.motivovisita + "</td>"+
+                    "<td>"+ item.estado + "</td>"+
+                    "<td>"+ item.rfc +"</td>"+
+                    "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
+                "</tr>";
+                $('#tableBody').append(row);         
+            })
+            // formato tabla
+            $('#listaformulario').DataTable( {
+                "order": [[ 0, "desc" ]]
+            } );
+        })    
+        .fail(function(msg){
+            alert("Error al Eliminar");
+        });
+    });
 
     </script>
     </body>
