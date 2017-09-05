@@ -187,7 +187,7 @@ $rol=$_SESSION['rol'];
                         <div id="cajanumform2">
                             <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
                             value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                                echo $formdata[0][0];
+                                echo $formdata[0][13];
 } else {
     echo "nuevo";
 }?>"/>   
@@ -213,6 +213,11 @@ $rol=$_SESSION['rol'];
                         <input id="visitantearray" name="visitantearray" type="hidden">
                         <input id="visitantelargo" name="visitantelargo" type="hidden">
                         <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
+                        <input id="idformulario" name="idformulario" type="hidden" value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                echo $formdata[0][0];
+} else {
+    echo "nuevo";
+}?>"
                     </div>
                 </div>
             </div> 

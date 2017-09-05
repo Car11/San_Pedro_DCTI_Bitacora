@@ -57,8 +57,6 @@ if(isset($_SESSION['TEMP']))
                          <input type="checkbox" id="checkconsultavisitante" name="checkconsultavisitante" value="Bike">
                         <input type="text" id="txtbuscavisitante" name="txtbuscavisitante" class="inputformat" value=""/>       
                     </div>
-                    <div id=botoncedvisitante>
-                    </div>
                 </div>
                 <div id="supatras">
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   

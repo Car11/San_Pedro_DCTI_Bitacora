@@ -356,14 +356,12 @@ class Formulario
             and (v.cedula like '%". $_POST["busqueda"] ."%' or v.nombre like '%". $_POST["busqueda"] ."%') ORDER BY consecutivo DESC;";
 
             $data = DATA::Ejecutar($sql);
-            //
             if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
                 $this->estado= $data[0]['estado'];
                 $this->motivovisita= $data[0]['motivovisita'];
                 $this->rfc= $data[0]['rfc'];
             }
-            //
             echo json_encode($data);	 
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());

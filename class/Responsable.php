@@ -19,6 +19,14 @@ if(isset($_POST["action"])){
         $responsable= new Responsable();
         $responsable->Cargar();
     }
+    if($_POST["action"]=="CargarMod"){
+        $responsable= new Responsable();
+        $responsable->CargarMod();
+    }
+    if($_POST["action"]=="CargarTabla"){
+        $responsable= new Responsable();
+        $responsable->CargarTabla();
+    }
 }
 
 class Responsable{
@@ -37,9 +45,12 @@ class Responsable{
 	    
     //Modifica Responsable 
     function Modifica(){
-        try {                    
+        try {                
+            $sql="SELECT id FROM responsable WHERE cedula=:cedula";
+            $cedula= array(':cedula'=>$_POST["cedula"]);
+            $id = DATA::Ejecutar($sql,$cedula);
             $sql="UPDATE responsable SET nombre=:nombre,cedula=:cedula,empresa=:empresa WHERE id=:idresponsable";
-            $param= array(':idresponsable'=>$_POST["idresponsable"],
+            $param= array(':idresponsable'=>$id,
                           ':nombre'=>$_POST["nombre"],
                           ':cedula'=>$_POST["cedula"],
                           ':empresa'=>$_POST["empresa"]);            
@@ -75,13 +86,35 @@ class Responsable{
         try {
 			$sql = "SELECT id,nombre,cedula,empresa FROM responsable WHERE id=:idresponsable";
 			$param= array(':idresponsable'=>$_POST["idresponsable"]);            
-            $result = DATA::Ejecutar($sql,$param);
-			echo json_encode($result);			
+            $data = DATA::Ejecutar($sql,$param);
+            if (count($data)) {
+                $this->nombre= $data[0]['nombre'];
+                $this->cedula= $data[0]['cedula'];
+                $this->empresa= $data[0]['empresa'];
+            }
+            echo json_encode($data);			
 		}catch(Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }		 	
-    }    
+    } 
+    
+        //Carga la lista de responsables 
+        function CargarTabla(){
+            try {
+                $sql = "SELECT id,nombre,cedula,empresa FROM responsable";          
+                $data = DATA::Ejecutar($sql);
+                if (count($data)) {
+                    $this->nombre= $data[0]['nombre'];
+                    $this->cedula= $data[0]['cedula'];
+                    $this->empresa= $data[0]['empresa'];
+                }
+                echo json_encode($data);			
+            }catch(Exception $e) {
+                header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+                exit;
+            }		 	
+        } 
     
     //Consulta formulario para llenar tabla 
     function Consulta(){
@@ -133,6 +166,18 @@ class Responsable{
         try {
 			$sql = "SELECT count(id) FROM formulario WHERE idresponsable=:idresponsable";
             $param= array(':idresponsable'=>$_POST['idresponsable']);            
+            $result = DATA::Ejecutar($sql,$param); 
+			echo json_encode($result);			
+		}catch(Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+    function CargarMod(){
+        try {
+			$sql = "SELECT nombre,cedula,empresa FROM responsable WHERE cedula=:cedula";
+            $param= array(':cedula'=>$_POST['cedula']);            
             $result = DATA::Ejecutar($sql,$param); 
 			echo json_encode($result);			
 		}catch(Exception $e) {

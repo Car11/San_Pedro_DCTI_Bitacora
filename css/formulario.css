@@ -123,6 +123,7 @@
 }
 #motivovisita{
     width: 97%;
+    margin-top: 5px;
     /*margin-top: 5px;
     margin-left: 0px;
     
@@ -569,16 +570,10 @@ tr, thread{
     text-align: right;
 }
 #cedvisitante{
-    width: 50%;
+    width: 100%;
     height: 100%;
     float: left;
     text-align: right;
-}
-#botoncedvisitante{
-    width: 50%;
-    height: 100%;
-    float: left;
-    margin-top: 0px;
 }
 #btnbuscaxvisiante{
     margin-top: 0px;
@@ -588,7 +583,7 @@ tr, thread{
 #txtbuscavisitante{
     margin-left: 0px;
     margin-top: 5px;
-    width: 80%;
+    width: 40%;
     height: 35px;
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-size: 20px;
