@@ -97,7 +97,7 @@ $rol=$_SESSION['rol'];
                 <div id="nuevo">   
                 </div>
                 <div id="atras">
-                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás" onclick="location.href='ListaFormulario.php'";>   
+                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">   
                 </div>
                 <div id="extra"></div>
             </div>
@@ -413,6 +413,25 @@ $rol=$_SESSION['rol'];
         });
         
     } );
+
+    //Confirma no salvar cambios para volver al menu admin     
+    $(document).on('click', '#btnatras', function (event) {
+        swal({
+            title: 'Volver al Menu Administrador?',
+            text: "Esta acción no guardará el formulario!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Salir!',
+            cancelButtonText: 'No, cancelar!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            location.href='ListaFormulario.php';
+        });    
+    });
 
     //Establece la fecha de hoy a los datetme-local
     function FechaFormNuevo(){

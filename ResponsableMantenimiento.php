@@ -146,28 +146,60 @@ $rol=$_SESSION['rol'];
     $(document).on('click', '.borrar', function (event) {
         var idresponsable = $(this).parents("tr").find("td").eq(0).text();
         document.getElementById("idresponsable").value = idresponsable;
-        
+        swal({
+            title: 'Eliminar el Perfil?',
+            text: "Esta acción es irreversible!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'No, cancelar!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function () {
+            // eliminar registro.
+            Eliminar();
+        });
+        /*
+        swal({
+                title: "Está seguro?",
+                text: "El registro no podrá ser recuperado!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si, Eliminarlo!",
+                closeOnConfirm: false
+            },
+            function(){
+                alert("Prueba");
+                Eliminar();
+            });*/
+    });
+
+    function Eliminar(){
         $.ajax({
             type: "POST",
             url: "class/Responsable.php",
             data: {
                     action: "Eliminar",
                     idresponsable: document.getElementById('idresponsable').value
-                  }
-        })
-        .done(function( e ) {
+                }
+            })
+            .done(function( e ) {
             var existeresponsable = JSON.parse(e);
             if (existeresponsable[0][0]==0)
-                alert("Responsable Eliminado!");
+                swal("Eliminado!", "El registro ha sido eliminado correctamente.", "success");
             else
-                alert("No se puede eliminar Responsable, ya está asignado a un Formulario!");
-            location.reload();
-        })    
-        .fail(function(msg){
-            alert("Error al Eliminar");
-        });
-        
-    });
+                swal('Mensaje!','El registro se encuentra  en uso, no es posible eliminar.','error');
+            RecargarTabla();
+            })    
+            .fail(function(msg){
+                alert("Error al Eliminar");
+            }
+        );
+    }
     
     //CARGA EN LOS INPUTS *********/       
     $(document).on('click', '.modificar', function (event) {
@@ -179,7 +211,7 @@ $rol=$_SESSION['rol'];
             url: "class/Responsable.php",
             data: {
                     action: "CargarMod",
-                    cedula: $(this).parents("tr").find("td").eq(1).text()
+                    identificador: $(this).parents("tr").find("td").eq(0).text()
                   }
         })
         .done(function( e ) {
@@ -191,7 +223,7 @@ $rol=$_SESSION['rol'];
         .fail(function(msg){
             alert("Error al Cargar");
         });
-        
+        document.getElementById("idresponsable").value = $(this).parents("tr").find("td").eq(0).text();
     });
 
     //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
@@ -201,7 +233,7 @@ $rol=$_SESSION['rol'];
             url: "class/Responsable.php",
             data: {
                     action: "Modificar",
-                    idresponsable: idresponsabletbl,
+                    idresponsable: document.getElementById('idresponsable').value,
                     nombre: document.getElementById('txtnombre').value,
                     cedula: document.getElementById('txtcedula').value,
                     empresa: document.getElementById('txtempresa').value
@@ -209,8 +241,9 @@ $rol=$_SESSION['rol'];
         })
         .done(function( e ) {
             
-            alert("Responsable Modificado!");
-            location.reload();
+            //alert("Responsable Modificado!");
+            swal("Good job!", "Responsable Modificado!", "correctamente")
+            RecargarTabla();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
@@ -219,7 +252,7 @@ $rol=$_SESSION['rol'];
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     $(document).on('click', '#btnInsertaResponsable', function (event) {
-        LimpiaInputs();
+        
         $.ajax({
             type: "POST",
             url: "class/Responsable.php",
@@ -232,14 +265,18 @@ $rol=$_SESSION['rol'];
         })
         .done(function( e ) {
             
-            alert("Responsable Insertado!");
-            location.reload();
+            //alert("Responsable Insertado!");
+            swal("Good job!", "Responsable Insertado!", "correctamente")
+            RecargarTabla();
+            modalResponsable.style.display = "none";
+            LimpiaInputs();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
         });
     });  
 
+    //RECARGA LA TABLA CON RESPONSABLES AJAX
     function RecargarTabla(){
         $.ajax({
             type: "POST",
@@ -251,24 +288,27 @@ $rol=$_SESSION['rol'];
         .done(function( e ) {
             $('#listaresponsable').html("");
             $('#listaresponsable').append("<table id='tblresponsable'class='display'>");
-            var col="<thead><tr><th>NOMBRE</th><th>CEDULA</th><th>EMPRESA</th><th>MODIFICAR</th><th>ELIMINAR</th></tr></thead><tbody id='tableBody'></tbody>";
+            var col="<thead><tr><th id='titulo_idres'>ID</th><th>NOMBRE</th><th>CEDULA</th><th>EMPRESA</th><th>MODIFICAR</th><th>ELIMINAR</th></tr></thead><tbody id='tableBody'></tbody>";
             $('#tblresponsable').append(col);
             // carga lista con datos.
             var data= JSON.parse(e);
             // Recorre arreglo.
             $.each(data, function(i, item) {
                 var row="<tr>"+
+                    "<td class='columna_idres'>"+ item.id+"</td>" +
                     "<td>"+ item.nombre+"</td>" +
                     "<td>"+ item.cedula + "</td>"+
                     "<td>"+ item.empresa + "</td>"+
                     "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
                     "<td><img id=imgdelete src=img/file_delete.png class=borrar href='EnviaResponsable.php'></td>"+
                 "</tr>";
-                $('#tableBody').append(row);         
+                $('#tableBody').append(row);  
+                $('#titulo_idres').hide();
+                $('.columna_idres').hide();       
             })
             // formato tabla
             $('#tblresponsable').DataTable( {
-                "order": [[ 0, "asc" ]]
+                "order": [[ 1, "asc" ]]
             } );
         })    
         .fail(function(msg){
