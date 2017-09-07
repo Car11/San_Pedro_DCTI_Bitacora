@@ -120,7 +120,8 @@ function inicio() {
         modalVisitante.style.display = "none";
     });
     // tabla de busqueda
-    $('#tblvisitante-buscar').DataTable();
+    if($.fn.DataTable)
+        $('#tblvisitante-buscar').DataTable();
 
 }
 
@@ -266,8 +267,8 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
             htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
         }
     }else if(estado=="3"){
-        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Denegado, NO hay formulario para este día.";
-        htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
+        estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>Tiempo de visita excedido.";
+        htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
     }
     else if(estado=="4"){
         estado= estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>No hay formulario.";

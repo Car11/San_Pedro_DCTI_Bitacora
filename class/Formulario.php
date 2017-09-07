@@ -111,8 +111,7 @@ class Formulario
                           ':rfc'=>$this->rfc,
                           ':consecutivo'=>$this->id);
             $result = DATA::Ejecutar($sql, $param);
-            // sesion del formulario temporal
-            
+
             //Convierte el string en un arreglo
             $visitantearray = explode(",", $this->visitante);
 
@@ -126,8 +125,17 @@ class Formulario
             
             $longitud = count($visitantearray);
 
+            // formulario temporal, vacia la variable para llenarla con los id de los visitantes.
+            if(isset( $_SESSION['TEMP']))
+                $_SESSION['TEMP']="";
+
             //Recorre el arreglo e inserta cada item en la tabla intermedia
             for ($i=0; $i<$longitud; $i++) {
+                // formulario temporal, agrega los idvisitante.
+                if(isset( $_SESSION['TEMP'])){
+                    $_SESSION['TEMP'] = $_SESSION['TEMP'] . $visitantearray[$i] . '-' . $this->estado . ',';
+                }
+                
                 //Si no existe Inserta
                 $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = (SELECT id FROM formulario WHERE consecutivo=:consecutivo)";
                 $parametro= array(':cedula'=>$visitantearray[$i],':consecutivo'=>$this->id);
@@ -315,7 +323,7 @@ class Formulario
                 ':motivovisita'=>$this->motivovisita,
                 ':usuario'=>$_SESSION['username']
              );
-             $data= DATA::Ejecutar($sql, $param, true);
+            $data= DATA::Ejecutar($sql, $param, true);
             if ($data) {
                  //busca id de formulario agregado
                  $this->getID();
