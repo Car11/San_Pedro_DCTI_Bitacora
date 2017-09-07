@@ -29,7 +29,7 @@ if(isset($_SESSION['TEMP']))
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
     <!-- CSS -->
-    <link href="css/Estilo.css" rel="stylesheet"/>
+    <link href="css/Estilo.css?version=2.0" rel="stylesheet" />
     <link href="css/Formulario.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <!-- JS  -->

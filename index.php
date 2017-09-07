@@ -3,6 +3,7 @@ if (!isset($_SESSION))
     session_start();
 // Sesion de usuario
 include("class/Sesion.php");
+include_once('class/Globals.php');
 $sesion = new Sesion();
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
@@ -77,11 +78,10 @@ if (isset($_SESSION['idformulario'])) {
     <script src="js/jquery-ui.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     
-
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
     
-    <link href="css/Estilo.css" rel="stylesheet" />
+    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
 

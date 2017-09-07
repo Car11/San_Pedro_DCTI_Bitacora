@@ -2,6 +2,8 @@
 if (!isset($_SESSION))
     session_start();
 //
+include_once('class/Globals.php');
+include_once("class/Sesion.php");
 // Sesion de usuario
 include("class/Sesion.php");
 $sesion = new Sesion();
@@ -21,7 +23,7 @@ $listabitacora= $bitacora->Consulta();
     <meta charset="UTF-8">
     <title>Bitácora de Ingreso DCTI San Pedro</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="css/Estilo.css"     type="text/css"/>        
+    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" /> 
     <link rel="stylesheet" href="css/datatables.css" type="text/css"/>
     <link rel="stylesheet" href="css/Formulario.css" type="text/css"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>

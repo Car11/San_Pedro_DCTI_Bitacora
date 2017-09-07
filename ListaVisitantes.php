@@ -20,7 +20,7 @@ if (!$sesion->estado) {
     
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <!--<link rel="stylesheet" href="css/formulario.css"> -->
-    <link rel="stylesheet" href="css/sweetalert2.css">
+    <link href="css/Estilo.css?version=2.0" rel="stylesheet" />
     <link href="css/Estilo.css" type="text/css" rel="stylesheet"/>
     
     <!-- JS  -->

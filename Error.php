@@ -1,6 +1,7 @@
 <?php   
     if (!isset($_SESSION))
-		session_start();
+        session_start();
+    include_once('class/Globals.php');
     $errmsg="";
     if (isset($_SESSION['errmsg'])) {
         $errmsg=$_SESSION['errmsg'];
@@ -11,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Control de Accesos</title>
-    <link href="css/Estilo.css" rel="stylesheet" />
+    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <script src="js/jquery.js"></script>
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
     <script>

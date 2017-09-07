@@ -24,7 +24,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
-    <link href="css/Estilo.css" rel="stylesheet" />
+    <link href="css/Estilo.css?version=2.0" rel="stylesheet" />
     <script src="js/jquery.js"></script>
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>

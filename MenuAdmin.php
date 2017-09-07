@@ -1,8 +1,9 @@
 <?php
 if (!isset($_SESSION))
   session_start();
+include('class/Globals.php');
 // Sesion de usuario
-include("class/Sesion.php");
+include_once("class/Sesion.php");
 $sesion = new Sesion();
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
@@ -15,7 +16,7 @@ if (!$sesion->estado){
 <head>
     <meta charset="UTF-8">
     <title>Menu Administrador</title>
-    <link href="css/Estilo.css" rel="stylesheet"/>
+    <link href="css/Estilo.css?v= <?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <link href="css/dropdownmenu.css" rel="stylesheet"/>
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
