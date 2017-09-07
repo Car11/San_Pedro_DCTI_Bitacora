@@ -1,7 +1,7 @@
 <?php 
 if (!isset($_SESSION)) 
     session_start();
-
+include_once('class/Globals.php');
 // Sesion de usuario
 include("class/sesion.php");
 $sesion = new sesion();
@@ -24,7 +24,7 @@ $rol=$_SESSION['rol'];
     <meta charset="UTF-8">
     <title>Control de Accesos</title>       
     <!-- CSS -->
-    <link href="css/Estilo.css?version=2.0" rel="stylesheet" />   
+    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <link href="css/formulario.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>

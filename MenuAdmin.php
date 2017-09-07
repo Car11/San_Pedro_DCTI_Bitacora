@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SESSION))
   session_start();
-include('class/Globals.php');
+include_once('class/Globals.php');
 // Sesion de usuario
 include_once("class/Sesion.php");
 $sesion = new Sesion();

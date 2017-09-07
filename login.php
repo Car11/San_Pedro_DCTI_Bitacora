@@ -1,4 +1,5 @@
 <?php
+    include_once('class/Globals.php');
     $ID="";
     if (isset($_GET['ID'])) {
         $ID=$_GET['ID'];
@@ -17,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
-    <link href="css/Estilo.css?version=2.0" rel="stylesheet" />
+    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
      <script>

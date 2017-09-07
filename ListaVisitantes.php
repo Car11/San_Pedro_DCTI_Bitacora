@@ -2,6 +2,7 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+include_once('class/Globals.php');
 // Sesion de usuario
 require_once("class/Sesion.php");
 $sesion = new Sesion();
@@ -20,7 +21,7 @@ if (!$sesion->estado) {
     
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <!--<link rel="stylesheet" href="css/formulario.css"> -->
-    <link href="css/Estilo.css?version=2.0" rel="stylesheet" />
+    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <link href="css/Estilo.css" type="text/css" rel="stylesheet"/>
     
     <!-- JS  -->

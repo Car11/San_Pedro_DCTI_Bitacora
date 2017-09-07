@@ -1,7 +1,7 @@
 <?php 
 if (!isset($_SESSION)) 
     session_start();
-
+include_once('class/Globals.php');
 if (isset($_GET['Message'])) {
     print '<script type="text/javascript">alert("' . $_GET['Message'] . '");</script>';
 }
@@ -29,7 +29,7 @@ if(isset($_SESSION['TEMP']))
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
     <!-- CSS -->
-    <link href="css/Estilo.css?version=2.0" rel="stylesheet" />
+    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <link href="css/Formulario.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
     <!-- JS  -->
