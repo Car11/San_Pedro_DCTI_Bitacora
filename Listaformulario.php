@@ -17,13 +17,10 @@ if (!$sesion->estado){
 $formtemp="NULL";
 if(isset($_SESSION['TEMP']))
 {
-    $formtemp=$_SESSION['TEMP']; // ID del formulario temporal.
+    $formtemp=$_SESSION['TEMP'];
     unset($_SESSION['TEMP']);
 }
 
-include("class/Formulario.php");
-$formulario= new Formulario();
-$listaformulario= $formulario->ConsultaFormulario();
 ?>
 
 
@@ -56,12 +53,13 @@ $listaformulario= $formulario->ConsultaFormulario();
                     <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="location.href='FormularioIngreso.php'";>      
                 </div>
                 <div id="supbusca">
-                    <div id=cedvisitante>
-                         <input type="checkbox" id="checkconsultavisitante" name="checkconsultavisitante" value="Bike">
+                    <div id="izq_busqueda"></div>
+                    <div id="cen_busqueda">
+                        <label for="txtbuscavisitante" class="labelformat">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Busqueda por visitante:</label></br>
+                        <input type="checkbox" id="checkconsultavisitante" name="checkconsultavisitante" value="Bike">
                         <input type="text" id="txtbuscavisitante" name="txtbuscavisitante" class="inputformat" value=""/>       
                     </div>
-                    <div id=botoncedvisitante>
-                    </div>
+                    <div id="der_busqueda"></div>
                 </div>
                 <div id="supatras">
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
@@ -111,21 +109,35 @@ $listaformulario= $formulario->ConsultaFormulario();
         } );  // fin document ready.
         
         function CargarEstiloTablas() {
-            //$('#listaformulario').DataTable({"order": [[ 3, "desc" ]]});
             $('#listaformulario').DataTable();    
         }
 
         //MODIFICA EL REGISTRO SELECIONADO EN EL CAMPO MODIFICAR *********/       
         $(document).on('click', '.modificar', function (event) {    
-            var idtd = $(this).parents("tr").find("td").eq(0).text();
-            location.href='FormularioIngreso.php?MOD='+idtd;
+            //CAPTURAR UUID
+            $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                    action: "CargaIDFormulario",
+                    consecutivo: $(this).parents("tr").find("td").eq(0).text()
+                  }
+            })
+            .done(function( e ) {
+                // carga lista con datos.
+                var formulario= JSON.parse(e);
+                location.href='FormularioIngreso.php?MOD='+formulario[0][0];
+            })    
+                .fail(function(msg){
+                alert("Error al carga id del formulario");
+            }); 
+            
         }); 
 
         //FUNCIONALIDAD DEL CHECKBOX QUE ACTIVA LA CONSULTA DE VISITANTES *********/       
         $(document).on('click', '#checkconsultavisitante', function (event) {    
             ActivaConsultaVisitante();
         }); 
-
 
         function ActivaConsultaVisitante(){
             if(document.getElementById("checkconsultavisitante").checked == true){
@@ -173,7 +185,7 @@ $listaformulario= $formulario->ConsultaFormulario();
             } );
         })    
         .fail(function(msg){
-            alert("Error al Eliminar");
+            alert("Error al Cargar la lista de Formularios");
         });    
     }
 

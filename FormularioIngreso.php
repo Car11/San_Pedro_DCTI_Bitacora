@@ -81,7 +81,7 @@ $rol=$_SESSION['rol'];
 </head>
 <body> 
     <header>
-    <h1>formulario DE INGRESO</h1>        
+    <h1>FORMULARIO DE INGRESO</h1>        
     <div id="logo"><img src="img/Logoice.png" height="75" ></div>
     </header>
     <div id="general">
@@ -97,7 +97,7 @@ $rol=$_SESSION['rol'];
                 <div id="nuevo">   
                 </div>
                 <div id="atras">
-                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás" onclick="location.href='ListaFormulario.php'";>   
+                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">   
                 </div>
                 <div id="extra"></div>
             </div>
@@ -110,7 +110,7 @@ $rol=$_SESSION['rol'];
                     </div>
                     <div id="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
-                        <input type="text" id="txtresponsable" name="txtresponsable" placeholder="CLICK" class="input-field" readonly="readonly"
+                        <input type="text" id="txtresponsable" name="txtresponsable" class="input-field" placeholder="CLICK" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][8];
 }?>" required/>  
@@ -187,7 +187,7 @@ $rol=$_SESSION['rol'];
                         <div id="cajanumform2">
                             <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
                             value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                                echo $formdata[0][0];
+                                echo $formdata[0][13];
 } else {
     echo "nuevo";
 }?>"/>   
@@ -213,6 +213,11 @@ $rol=$_SESSION['rol'];
                         <input id="visitantearray" name="visitantearray" type="hidden">
                         <input id="visitantelargo" name="visitantelargo" type="hidden">
                         <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
+                        <input id="idformulario" name="idformulario" type="hidden" value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                echo $formdata[0][0];
+} else {
+    echo "nuevo";
+}?>"
                     </div>
                 </div>
             </div> 
@@ -406,8 +411,25 @@ $rol=$_SESSION['rol'];
             // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
             $(".modal").css({ display: "none" });
         });
-        
     } );
+
+    //Confirma no salvar cambios para volver al menu admin     
+    $(document).on('click', '#btnatras', function (event) {
+        swal({
+            title: 'Volver al Menu Administrador?',
+            text: "Esta acción no guardará el formulario!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Salir!',
+            cancelButtonText: 'No, cancelar!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger'
+        }).then(function () {
+            location.href='ListaFormulario.php';
+        });    
+    });
 
     //Establece la fecha de hoy a los datetme-local
     function FechaFormNuevo(){
@@ -449,7 +471,7 @@ $rol=$_SESSION['rol'];
         document.getElementById("fechasalida").value = salida;
     }
 
-        //Establece la fecha de hoy a los datetme-local
+    //Establece la fecha de hoy a los datetme-local
     function FechaFormMod(){
         var today = new Date();
         var dd = today.getDate();
@@ -704,7 +726,9 @@ $rol=$_SESSION['rol'];
             $('#imgflecha').addClass('imagen');
             return false;
         }
-        alert("Formulario Insertado Correctamente!");
+        swal("Insertado!", "Formulario Insertado Correctamente!", "success");
+        //location.href='ListaFormulario.php';
+        //alert("Formulario Insertado Correctamente!");
     }   
 
     //MODAL RESPONSABLES ********/

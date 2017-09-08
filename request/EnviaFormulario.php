@@ -55,11 +55,11 @@
     }
     else header('Location: ../Error.php');
 
-    if ($_POST['lblnumeroform']=="nuevo") {  
+    if ($_POST['idformulario']=="nuevo") {  
         $formulario->AgregarFormulario();
     }
     else {
-        $formulario->id=$_POST['lblnumeroform'];
+        $formulario->id=$_POST['idformulario'];
         $formulario->Modificar();
         
     } 

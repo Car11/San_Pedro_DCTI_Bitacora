@@ -123,6 +123,7 @@
 }
 #motivovisita{
     width: 97%;
+    margin-top: 5px;
     /*margin-top: 5px;
     margin-left: 0px;
     
@@ -339,7 +340,7 @@
 
 .close:hover,
 .close:focus {
-    color: #000;
+    /*color: #000;*/
     text-decoration: none;
     cursor: pointer;
 }
@@ -568,27 +569,15 @@ tr, thread{
     height: 100%;
     text-align: right;
 }
-#cedvisitante{
-    width: 50%;
-    height: 100%;
-    float: left;
-    text-align: right;
-}
-#botoncedvisitante{
-    width: 50%;
-    height: 100%;
-    float: left;
-    margin-top: 0px;
-}
+
 #btnbuscaxvisiante{
     margin-top: 0px;
     width: 80%;  
 }
-
 #txtbuscavisitante{
     margin-left: 0px;
     margin-top: 5px;
-    width: 80%;
+    width: 90%;
     height: 35px;
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-size: 20px;
@@ -598,13 +587,28 @@ tr, thread{
 input[type=checkbox] {
     transform: scale(2);
 }
-
+#izq_busqueda{
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+#cen_busqueda{
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+#der_bsuqueda{
+    width: 25%;
+    height: 100%;
+    float: left;
+}
 
 /*TARJETAS*/
 .tarjeta{
-    width: 30px;
+    margin-top: 0px;
+    width: 50px;
     height: 70px;
-    border: 1px solid #1e5799;
+    border: 1px solid #222222;
     background:#3CB371;
     float: left;
     color: white;
@@ -614,7 +618,7 @@ input[type=checkbox] {
     border-radius: 5px; 
 }
 .anchocolumna{
-    width: 250px;
+    width: 200px;
 }
 .enc_tajeta{
     font-family: 'Lato', Calibri, Arial, sans-serif;
@@ -622,5 +626,5 @@ input[type=checkbox] {
     height: 40px;
     background: white;
     border-radius: 8px; 
-    width: 16.6%;
+    width: 14.2%;
 }

@@ -14,6 +14,14 @@ if(isset($_POST["action"])){
         $formulario= new formulario();
         $formulario->RecargaTabla();
     }
+    if($_POST["action"]=="CargaIDFormulario"){
+        $formulario= new formulario();
+        $formulario->CargaIDFormulario();
+    }
+    if($_POST["action"]=="CargarTabla"){
+        $formulario= new formulario();
+        $formulario->CargarTabla();
+    }
 }
 
 class Formulario
@@ -47,7 +55,7 @@ class Formulario
         // Always in development, disabled in production
         //ini_set('display_errors', 1);
     }
-
+    //*****************
     //Agrega formulario
     function AgregarFormulario()
     {
@@ -92,12 +100,14 @@ class Formulario
         }
     }
     
+    //*********************
+    //Modifca el formulario
     function Modificar()
     {
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
             idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
-            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT id FROM sala WHERE nombre= :nombresala),rfc=:rfc WHERE consecutivo=:consecutivo;";
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT id FROM sala WHERE nombre= :nombresala),rfc=:rfc WHERE id=:id;";
             $param= array(':fechaingreso'=>$this->fechaingreso,
                           ':fechasalida'=>$this->fechasalida,
                           ':nombretramitante'=>$this->nombretramitante,
@@ -109,7 +119,7 @@ class Formulario
                           ':estado'=>$this->estado,
                           ':nombresala'=>$this->nombresala,
                           ':rfc'=>$this->rfc,
-                          ':consecutivo'=>$this->id);
+                          ':id'=>$this->id);
             $result = DATA::Ejecutar($sql, $param);
 
             //Convierte el string en un arreglo
@@ -117,9 +127,9 @@ class Formulario
 
             //Elimina los registros segun el arreglo de visitantes
             $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET((SELECT cedula from visitante WHERE id=idvisitante),:EXCLUSION) 
-            AND idformulario=(SELECT id FROM formulario WHERE consecutivo=:consecutivo)";
+            AND idformulario=:id";
             $param= array(':EXCLUSION'=>$this->visitante,
-            ':consecutivo'=>$this->id);
+            ':id'=>$this->id);
 
             $result = DATA::Ejecutar($sql, $param);
             
@@ -137,13 +147,13 @@ class Formulario
                 }
                 
                 //Si no existe Inserta
-                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = (SELECT id FROM formulario WHERE consecutivo=:consecutivo)";
-                $parametro= array(':cedula'=>$visitantearray[$i],':consecutivo'=>$this->id);
+                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = (SELECT id FROM formulario WHERE id=:id)";
+                $parametro= array(':cedula'=>$visitantearray[$i],':id'=>$this->id);
                 $resultadoexiste= DATA::Ejecutar($existe, $parametro);
 
                 if(count($resultadoexiste)==0){
-                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),(SELECT id FROM formulario WHERE consecutivo=:consecutivo))";
-                    $param= array(':cedula'=>$visitantearray[$i],':consecutivo'=>$this->id);
+                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),(SELECT id FROM formulario WHERE id=:id))";
+                    $param= array(':cedula'=>$visitantearray[$i],':id'=>$this->id);
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
@@ -197,22 +207,22 @@ class Formulario
 
     }
 
-    //FUNCIONAL 
+    //***************************************
     // Carga formulario USANDO EL consecutivo
     function Cargar()
     {
         try {
-            $sql = "SELECT consecutivo,fechasolicitud,idestado,motivovisita, 
+            $sql = "SELECT id,fechasolicitud,idestado,motivovisita, 
                 DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
                 DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,
-                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id where consecutivo=:cons)as nombretramitante,
-                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id where consecutivo=:cons) as nombreautorizador,
-                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id where consecutivo=:cons) as nombreresponsable,
-                (SELECT sa.nombre FROM sala sa inner join formulario fo on sa.id=fo.idsala where consecutivo=:cons) as nombresala,
-                placavehiculo,detalleequipo, rfc, id
-            FROM formulario WHERE consecutivo = :cons";
+                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id and f.id =:id)as nombretramitante,
+                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id and f.id =:id) as nombreautorizador,
+                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id and f.id =:id) as nombreresponsable,
+                (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala and f.id =:id) as nombresala,
+                placavehiculo,detalleequipo, rfc, consecutivo
+            FROM formulario WHERE id = :id;";
 
-            $param= array(':cons'=>$this->id);
+            $param= array(':id'=>$this->id);
             $data = DATA::Ejecutar($sql, $param);
             //
             if (count($data)) {
@@ -280,18 +290,19 @@ class Formulario
         }
     }
 
+    //*********************************************************
     //Carga los visitantes en la tabla principal del formulario
     function CargaVisitanteporFormulario()
     {
         try {
             //Adquiere el id de formulario con base al consecutivo
-            $sql_id="SELECT id FROM formulario WHERE id=:id";
+            /*$sql_id="SELECT id FROM formulario WHERE id=:id";
             $id= array(':id'=>$this->id);
-            $idformulario = DATA::Ejecutar($sql_id, $id);
+            $idformulario = DATA::Ejecutar($sql_id, $id);*/
             //Selecciona los visitantes con base al id del formulario
             $sql="SELECT DISTINCT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
-            on v.id=vpf.idvisitante and vpf.idformulario=:identificador";
-            $param= array(':identificador'=>$idformulario[0][0]);
+            on v.id=vpf.idvisitante and vpf.idformulario=:id";
+            $param= array(':id'=>$this->id);
             $result= DATA::Ejecutar($sql,$param);           
             return $result;
         } catch (Exception $e) {
@@ -354,18 +365,15 @@ class Formulario
         try {
             $sql = "SELECT DISTINCT f.consecutivo,f.fechasolicitud,(SELECT nombre FROM estado WHERE id=f.idestado) as estado,f.motivovisita,f.rfc
             FROM formulario f INNER JOIN  visitanteporformulario vxf ON f.id = vxf.idformulario INNER JOIN visitante v ON v.id=vxf.idvisitante 
-            and (v.cedula like '". $_POST["busqueda"] ."%' or v.nombre like '". $_POST["busqueda"] ."%') ORDER BY consecutivo DESC;";
+            and (v.cedula like '%". $_POST["busqueda"] ."%' or v.nombre like '%". $_POST["busqueda"] ."%') ORDER BY consecutivo DESC;";
 
-            //$param= array(':BUSQUEDA'=>$_POST["busqueda"]);
             $data = DATA::Ejecutar($sql);
-            //
             if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
                 $this->estado= $data[0]['estado'];
                 $this->motivovisita= $data[0]['motivovisita'];
                 $this->rfc= $data[0]['rfc'];
             }
-            //
             echo json_encode($data);	 
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
@@ -375,8 +383,41 @@ class Formulario
 
     function RecargaTabla(){
         try {
-            $sql = "SELECT consecutivo,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc FROM formulario";
+            $sql = "SELECT id,consecutivo,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc FROM formulario";
             $data = DATA::Ejecutar($sql);
+            if (count($data)) {
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['estado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->rfc= $data[0]['rfc'];
+            }
+            echo json_encode($data);	 
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+    function CargaIDFormulario(){
+        try {
+            $sql = "SELECT id FROM formulario WHERE consecutivo=:consecutivo";
+            $param= array(':consecutivo'=>$_POST["consecutivo"]);
+            $data = DATA::Ejecutar($sql,$param);
+            if (count($data)) {
+                $this->id= $data[0]['id'];
+            }
+            echo json_encode($data);	 
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }    
+    }
+
+    function CargarTabla(){
+        try {
+            $sql = "SELECT cedula,nombre,empresa FROM formulario WHERE id=:id";
+            $param = array(':id'=>$_POST["id"]);
+            $data = DATA::Ejecutar($sql,$param);
             if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
                 $this->estado= $data[0]['estado'];

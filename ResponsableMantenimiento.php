@@ -58,34 +58,8 @@ $rol=$_SESSION['rol'];
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
                 </div>
             </div>
-            <div id="tablaresponsable">
-                <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
-                <?php
-                print "<table id='tblresponsable' class='display'>";
-                print "<thead>";
-                print "<tr>";
-                print "<th id='tituloid'>ID</th>";
-                print "<th id='titulocedula'>NOMBRE</th>";
-                print "<th id='titulonombre'>CEDULA</th>";
-                print "<th id='tituloempresa'>EMPRESA</th>";
-                print "<th id='titulomodificar'>MODIFICAR</th>";
-                print "<th id='tituloeliminar'>ELIMINAR</th>";
-                print "</tr>";
-                print "</thead>";
-                print "<tbody>";
-                for($i=0; $i<count($responsables); $i++){
-                    print "<tr>";
-                    print "<td>".$responsables[$i][0]."</td>";
-                    print "<td>".$responsables[$i][1]."</td>";
-                    print "<td>".$responsables[$i][2]."</td>";
-                    print "<td>".$responsables[$i][3]."</td>";
-                    print "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>";
-                    print "<td><img id=imgdelete src=img/file_delete.png class=borrar href='EnviaResponsable.php'></td>";
-                    print "</tr>";
-                }
-                print "</tbody>";
-                print "</table>"; 
-                ?>
+            <div id="listaresponsable">
+
             </div>
 
         </div>
@@ -143,6 +117,8 @@ $rol=$_SESSION['rol'];
     span.onclick = function() {modalResponsable.style.display = "none";}
 
     btnnuevo.onclick = function() {
+        $('#btnInsertaResponsable').show();
+        $('#btnModificaResponsable').hide();
         modalResponsable.style.display = "block";
     }
 
@@ -152,7 +128,8 @@ $rol=$_SESSION['rol'];
         }
     }
     
-    $(document).ready( function () {             
+    $(document).ready( function () {      
+        RecargarTabla();       
         $('#btnModificaResponsable').hide();
         $('#btnInsertaResponsable').show();
         $('#tblresponsable').DataTable();   
@@ -171,53 +148,69 @@ $rol=$_SESSION['rol'];
     $(document).on('click', '.borrar', function (event) {
         var idresponsable = $(this).parents("tr").find("td").eq(0).text();
         document.getElementById("idresponsable").value = idresponsable;
-        
+        swal({
+            title: 'Eliminar Responsable?',
+            text: "Esta acción es irreversible!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'No, cancelar!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger'
+        }).then(function () {
+            // eliminar registro.
+            Eliminar();
+        });
+    });
+
+    function Eliminar(){
         $.ajax({
             type: "POST",
             url: "class/Responsable.php",
             data: {
                     action: "Eliminar",
                     idresponsable: document.getElementById('idresponsable').value
-                  }
-        })
-        .done(function( e ) {
+                }
+            })
+            .done(function( e ) {
             var existeresponsable = JSON.parse(e);
             if (existeresponsable[0][0]==0)
-                alert("Responsable Eliminado!");
+                swal("Eliminado!", "El registro ha sido eliminado correctamente.", "success");
             else
-                alert("No se puede eliminar Responsable, ya está asignado a un Formulario!");
-            location.reload();
-        })    
-        .fail(function(msg){
-            alert("Error al Eliminar");
-        });
-        
-    });
+                swal('Mensaje!','El registro se encuentra  en uso, no es posible eliminar.','error');
+            RecargarTabla();
+            })    
+            .fail(function(msg){
+                alert("Error al Eliminar");
+            }
+        );
+    }
     
-    //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
+    //CARGA EN LOS INPUTS *********/       
     $(document).on('click', '.modificar', function (event) {
         modalResponsable.style.display = "block";
-
-        idresponsabletbl = $(this).parents("tr").find("td").eq(0).text();
         $('#btnInsertaResponsable').hide();
         $('#btnModificaResponsable').show();
         $.ajax({
             type: "POST",
             url: "class/Responsable.php",
             data: {
-                    action: "Cargar",
-                    idresponsable:  idresponsabletbl
+                    action: "CargarMod",
+                    identificador: $(this).parents("tr").find("td").eq(0).text()
                   }
         })
         .done(function( e ) {
             var responsable = JSON.parse(e);
-            document.getElementById('txtnombre').value = responsable[0][1];
-            document.getElementById('txtcedula').value = responsable[0][2];
-            document.getElementById('txtempresa').value = responsable[0][3];      
+            document.getElementById('txtnombre').value = responsable[0][0];
+            document.getElementById('txtcedula').value = responsable[0][1];
+            document.getElementById('txtempresa').value = responsable[0][2];      
         })    
         .fail(function(msg){
             alert("Error al Cargar");
         });
+        document.getElementById("idresponsable").value = $(this).parents("tr").find("td").eq(0).text();
     });
 
     //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
@@ -227,25 +220,26 @@ $rol=$_SESSION['rol'];
             url: "class/Responsable.php",
             data: {
                     action: "Modificar",
-                    idresponsable: idresponsabletbl,
+                    idresponsable: document.getElementById('idresponsable').value,
                     nombre: document.getElementById('txtnombre').value,
                     cedula: document.getElementById('txtcedula').value,
                     empresa: document.getElementById('txtempresa').value
                   }
         })
         .done(function( e ) {
-            
-            alert("Responsable Modificado!");
-            location.reload();
+            swal("Responsable Modificado!", "correctamente", "success")
+            RecargarTabla();
+            modalResponsable.style.display = "none";
+            LimpiaInputs();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
         });
-        
     });
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     $(document).on('click', '#btnInsertaResponsable', function (event) {
+        
         $.ajax({
             type: "POST",
             url: "class/Responsable.php",
@@ -258,35 +252,56 @@ $rol=$_SESSION['rol'];
         })
         .done(function( e ) {
             
-            alert("Responsable Insertado!");
-            location.reload();
+            //alert("Responsable Insertado!");
+            swal("Responsable Insertado!", "correctamente", "success")
+            RecargarTabla();
+            modalResponsable.style.display = "none";
+            LimpiaInputs();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
         });
     });  
 
-    $( "#txtnombre" ).change(function() {
-        $("#txtnombre").css("border", "0px");
-        $("#txtnombre").css("color", "black");
-        $("#txtnombre").css("background", "white");
-        document.getElementById('txtnombre').placeholder = "";
-    });
-
-    $( "#txtcedula" ).change(function() {
-        $("#txtcedula").css("border", "0px");
-        $("#txtcedula").css("color", "black");
-        $("#txtcedula").css("background", "white");
-        document.getElementById('txtcedula').placeholder = "";
-    });
-
-    $( "#txtempresa" ).change(function() {
-        $("#txtempresa").css("border", "0px");
-        $("#txtempresa").css("color", "black");
-        $("#txtempresa").css("background", "white");
-        document.getElementById('txtempresa').placeholder = "";
-    });
-
+    //RECARGA LA TABLA CON RESPONSABLES AJAX
+    function RecargarTabla(){
+        $.ajax({
+            type: "POST",
+            url: "class/Responsable.php",
+            data: {
+                    action: "CargarTabla"
+                  }
+        })
+        .done(function( e ) {
+            $('#listaresponsable').html("");
+            $('#listaresponsable').append("<table id='tblresponsable'class='display'>");
+            var col="<thead><tr><th id='titulo_idres'>ID</th><th>NOMBRE</th><th>CEDULA</th><th>EMPRESA</th><th>MODIFICAR</th><th>ELIMINAR</th></tr></thead><tbody id='tableBody'></tbody>";
+            $('#tblresponsable').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td class='columna_idres'>"+ item.id+"</td>" +
+                    "<td>"+ item.nombre+"</td>" +
+                    "<td>"+ item.cedula + "</td>"+
+                    "<td>"+ item.empresa + "</td>"+
+                    "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
+                    "<td><img id=imgdelete src=img/file_delete.png class=borrar href='EnviaResponsable.php'></td>"+
+                "</tr>";
+                $('#tableBody').append(row);  
+                $('#titulo_idres').hide();
+                $('.columna_idres').hide();       
+            })
+            // formato tabla
+            $('#tblresponsable').DataTable( {
+                "order": [[ 1, "asc" ]]
+            } );
+        })    
+        .fail(function(msg){
+            alert("Error al Cargar la lista de Responsables");
+        });    
+    }
     
 </script>
 </body>
