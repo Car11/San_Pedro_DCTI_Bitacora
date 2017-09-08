@@ -117,6 +117,8 @@ $rol=$_SESSION['rol'];
     span.onclick = function() {modalResponsable.style.display = "none";}
 
     btnnuevo.onclick = function() {
+        $('#btnInsertaResponsable').show();
+        $('#btnModificaResponsable').hide();
         modalResponsable.style.display = "block";
     }
 
@@ -147,7 +149,7 @@ $rol=$_SESSION['rol'];
         var idresponsable = $(this).parents("tr").find("td").eq(0).text();
         document.getElementById("idresponsable").value = idresponsable;
         swal({
-            title: 'Eliminar el Perfil?',
+            title: 'Eliminar Responsable?',
             text: "Esta acción es irreversible!",
             type: 'warning',
             showCancelButton: true,
@@ -156,26 +158,11 @@ $rol=$_SESSION['rol'];
             confirmButtonText: 'Si, eliminar!',
             cancelButtonText: 'No, cancelar!',
             confirmButtonClass: 'btn btn-success',
-            cancelButtonClass: 'btn btn-danger',
-            buttonsStyling: false
+            cancelButtonClass: 'btn btn-danger'
         }).then(function () {
             // eliminar registro.
             Eliminar();
         });
-        /*
-        swal({
-                title: "Está seguro?",
-                text: "El registro no podrá ser recuperado!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Si, Eliminarlo!",
-                closeOnConfirm: false
-            },
-            function(){
-                alert("Prueba");
-                Eliminar();
-            });*/
     });
 
     function Eliminar(){
@@ -240,10 +227,10 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            
-            //alert("Responsable Modificado!");
-            swal("Good job!", "Responsable Modificado!", "correctamente")
+            swal("Responsable Modificado!", "correctamente", "success")
             RecargarTabla();
+            modalResponsable.style.display = "none";
+            LimpiaInputs();
         })    
         .fail(function(msg){
             alert("Error al Eliminar");
@@ -266,7 +253,7 @@ $rol=$_SESSION['rol'];
         .done(function( e ) {
             
             //alert("Responsable Insertado!");
-            swal("Good job!", "Responsable Insertado!", "correctamente")
+            swal("Responsable Insertado!", "correctamente", "success")
             RecargarTabla();
             modalResponsable.style.display = "none";
             LimpiaInputs();

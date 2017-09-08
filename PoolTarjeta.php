@@ -79,7 +79,7 @@ $rol=$_SESSION['rol'];
             var contarjeta=0;
             $('#tarjetas').html("");
             $('#tarjetas').append("<table id='pooltarjeta'class='display'>");
-            var col="<thead><tr><th class='enc_tajeta'>ADMINISTRATIVO</th><th class='enc_tajeta'>TELECOMUNICACIONES</th><th class='enc_tajeta'>ACCESO TOTAL</th><th class='enc_tajeta'>SALA 1</th><th class='enc_tajeta'>SALA 2</th class='enc_tajeta'><th class='enc_tajeta'>SALA 3</th></tr></thead>"+
+            var col="<thead><tr><th class='enc_tajeta'>ADMIN</th><th class='enc_tajeta'>TEL</th><th class='enc_tajeta'>TOTAL</th><th class='enc_tajeta'>SALA 1</th><th class='enc_tajeta'>SALA 2</th class='enc_tajeta'><th class='enc_tajeta'>SALA 3</th><th class='enc_tajeta'>NOC</th></tr></thead>"+
                      "<tbody id='tableBody'>"+
                      "<td class='anchocolumna'><table id='tarjadmin'></table></td>"+
                      "<td class='anchocolumna'><table id='tarjtele'></table></td>"+
@@ -87,45 +87,65 @@ $rol=$_SESSION['rol'];
                      "<td class='anchocolumna'><table id='tarjs1'></table></td>"+
                      "<td class='anchocolumna'><table id='tarjs2'></table></td>"+
                      "<td class='anchocolumna'><table id='tarjs3'></table></td>"+
+                     "<td class='anchocolumna'><table id='noc'></table></td>"+
                      "</tbody>";
             $('#tarjetas').append(col);
             // carga lista con datos.
             var data= JSON.parse(e);
             // Recorre arreglo.
-            $.each(data, function(i, item) {
-                if(item.idsala==1){    
-                    var admin="<td class='tarjeta' id=tarj_"+ item.id +">" + item.id + "</td>";
-                    $('#tarjadmin').append(admin);
-                    if(item.estado==1)
-                        $("#tarj_"+item.id).css("background", "red");
-                }
-                if(item.idsala==2){    
-                    var tele="<td class='tarjeta'>" + item.id + "</td>";
-                    $('#tarjtele').append(tele);
-                }
-                if(item.idsala==3){    
-                    var total="<td class='tarjeta'>" + item.id + "</td>";
-                    $('#tarjtotal').append(total);
-                }
-                if(item.idsala==4){    
-                    var s1="<td class='tarjeta'>" + item.id + "</td>";
-                    $('#tarjs1').append(s1);
-                }
-                if(item.idsala==5){    
-                    var s2="<td class='tarjeta'>" + item.id + "</td>";
-                    $('#tarjs2').append(s2);
-                }
-                if(item.idsala==6){    
-                    var s3="<td class='tarjeta'>" + item.id + "</td>";
-                    $('#tarjs3').append(s3);
-                }
-            })
-            $('#pooltarjeta').DataTable();
+            for (var i = 0; i < data.length; i++) {        
+                    if(data[i][1]=='Área Administrativa'){    
+                        var admin="<td class='tarjeta' id=tarj_"+ data[i][0] +">" + data[i][0] + "</td>";
+                        $('#tarjadmin').append(admin);
+                        if(data[i][2]==1)
+                            $("#tarj_"+data[i][0]).css("background", "red");
+                    }
+                    if(data[i][1]=='Telecomunicaciones'){    
+                        var tele="<td class='tarjeta' id=tarj_"+ data[i][0] +">" + data[i][0] + "</td>";
+                        $('#tarjtele').append(tele);
+                        if(data[i][2]==1)
+                            $("#tarj_"+data[i][0]).css("background", "red");
+                    }
+                    if(data[i][1]=='Acceso Total'){    
+                        var total="<td class='tarjeta' id=tarj_"+ data[i][0] +">" + data[i][0] + "</td>";
+                        $('#tarjtotal').append(total);
+                        if(data[i][2]==1)
+                            $("#tarj_"+data[i][0]).css("background", "red");
+                    }
+                    if(data[i][1]=='Sala 1'){    
+                        var s1="<td class='tarjeta' id=tarj_"+ data[i][0] +">" + data[i][0] + "</td>";
+                        $('#tarjs1').append(s1);
+                        if(data[i][2]==1)
+                            $("#tarj_"+data[i][0]).css("background", "red");
+                    }
+                    if(data[i][1]=='Sala 2'){    
+                        var s2="<td class='tarjeta' id=tarj_"+ data[i][0] +">" + data[i][0] + "</td>";
+                        $('#tarjs2').append(s2);
+                        if(data[i][2]==1)
+                            $("#tarj_"+data[i][0]).css("background", "red");
+                    }
+                    if(data[i][1]=='Sala 3'){    
+                        var s3="<td class='tarjeta' id=tarj_"+ data[i][0] +">" + data[i][0] + "</td>";
+                        $('#tarjs3').append(s3);
+                        if(data[i][2]==1)
+                            $("#tarj_"+data[i][0]).css("background", "red");
+                    }
+                    if(data[i][1]=='NOC'){    
+                        var noc="<td class='tarjeta' id=tarj_"+ data[i][0] +">" + data[i][0] + "</td>";
+                        $('#noc').append(noc);
+                        if(data[i][2]==1)
+                            $("#tarj_"+data[i][0]).css("background", "red");
+                    }
+            }
         })    
         .fail(function(msg){
             alert("Error al Cargar Pool de Tarjetas");
         });    
     }
+
+    $( "#tarj_1" ).mouseover(function() {
+        var children = $("tr td")[0].innerHTML;
+    });
     
 </script>
 </body>

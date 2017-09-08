@@ -53,10 +53,13 @@ if(isset($_SESSION['TEMP']))
                     <input type="button" id="btnnuevo" class="cbp-mc-submit" value="Nuevo" onclick="location.href='FormularioIngreso.php'";>      
                 </div>
                 <div id="supbusca">
-                    <div id=cedvisitante>
-                         <input type="checkbox" id="checkconsultavisitante" name="checkconsultavisitante" value="Bike">
+                    <div id="izq_busqueda"></div>
+                    <div id="cen_busqueda">
+                        <label for="txtbuscavisitante" class="labelformat">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Busqueda por visitante:</label></br>
+                        <input type="checkbox" id="checkconsultavisitante" name="checkconsultavisitante" value="Bike">
                         <input type="text" id="txtbuscavisitante" name="txtbuscavisitante" class="inputformat" value=""/>       
                     </div>
+                    <div id="der_busqueda"></div>
                 </div>
                 <div id="supatras">
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   

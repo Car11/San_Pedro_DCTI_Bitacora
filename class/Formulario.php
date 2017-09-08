@@ -18,6 +18,10 @@ if(isset($_POST["action"])){
         $formulario= new formulario();
         $formulario->CargaIDFormulario();
     }
+    if($_POST["action"]=="CargarTabla"){
+        $formulario= new formulario();
+        $formulario->CargarTabla();
+    }
 }
 
 class Formulario
@@ -399,5 +403,23 @@ class Formulario
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
         }    
+    }
+
+    function CargarTabla(){
+        try {
+            $sql = "SELECT cedula,nombre,empresa FROM formulario WHERE id=:id";
+            $param = array(':id'=>$_POST["id"]);
+            $data = DATA::Ejecutar($sql,$param);
+            if (count($data)) {
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['estado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->rfc= $data[0]['rfc'];
+            }
+            echo json_encode($data);	 
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
     }
 }
