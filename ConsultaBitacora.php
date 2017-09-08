@@ -97,7 +97,9 @@ $listabitacora= $bitacora->Consulta();
 
 	<script>
 		$(document).ready( function () {
-	    $('#tblbitacora').DataTable();
+	    $('#tblbitacora').DataTable({
+                "order": [[ 3, "desc" ]]
+        });
 	} );
 	</script>
 

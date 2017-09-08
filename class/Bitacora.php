@@ -135,13 +135,18 @@ class Bitacora{
     
     function Consulta(){
         try {
-			$sql = "SELECT id,idformulario,
+			$sql = "SELECT 
+                id,
+                (SELECT consecutivo FROM formulario WHERE id=idformulario),
                 (SELECT cedula from visitante WHERE id = idvisitante),
                 (SELECT nombre from visitante WHERE id = idvisitante),
-                entrada, salida,
-                (SELECT (SELECT nombre FROM sala WHERE id=idsala) 
-                FROM formulario 
-                WHERE id=idformulario),idtarjeta,(SELECT estado FROM tarjeta WHERE id=idtarjeta) FROM bitacora";
+                entrada, 
+                salida,
+                (SELECT (SELECT nombre FROM sala WHERE id=idsala) FROM formulario WHERE id=idformulario),
+                (SELECT consecutivo FROM tarjeta WHERE id=idtarjeta),
+                (SELECT estado FROM tarjeta WHERE id=idtarjeta) 
+                
+                FROM bitacora";
 			$data = DATA::Ejecutar($sql);
             if($data)
 			    return $data;	
