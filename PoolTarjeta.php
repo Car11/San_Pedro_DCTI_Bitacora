@@ -95,7 +95,7 @@ $rol=$_SESSION['rol'];
             // Recorre arreglo.
             for (var i = 0; i < data.length; i++) {        
                     if(data[i][1]=='Área Administrativa'){    
-                        var admin="<td class='tarjeta' id=tarj_"+ data[i][0] +" onmouseover='Visitante()'>" + data[i][0] + "</td>";
+                        var admin="<td class='tarjeta' id=tarj_"+ data[i][0] +"'>" + data[i][0] + "</td>";
                         $('#tarjadmin').append(admin);
                         if(data[i][2]==1)
                             $("#tarj_"+data[i][0]).css("background", "red");
