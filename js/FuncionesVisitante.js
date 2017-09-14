@@ -132,8 +132,7 @@ function EventoClickEliminar(){
         confirmButtonText: 'Si, eliminar!',
         cancelButtonText: 'No, cancelar!',
         confirmButtonClass: 'btn btn-success',
-        cancelButtonClass: 'btn btn-danger',
-        buttonsStyling: false
+        cancelButtonClass: 'btn btn-danger'
     }).then(function () {
         // eliminar registro.
         Eliminar();
