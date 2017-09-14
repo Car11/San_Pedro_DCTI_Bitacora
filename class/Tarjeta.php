@@ -17,8 +17,8 @@ class Tarjeta{
 
     function __construct()
     {
-        require_once("conexion.php");
-        require_once("log.php");
+        require_once("Conexion.php");
+        require_once("Log.php");
     }
 
     function Asignar(){

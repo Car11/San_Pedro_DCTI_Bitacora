@@ -17,13 +17,10 @@ if (!$sesion->estado) {
 <head>
     <meta charset="UTF-8">
     <title>Control de Acceso</title>
-   <!-- CSS -->    
-    
-    <link rel="stylesheet" type="text/css" href="css/datatables.css">
-    <!--<link rel="stylesheet" href="css/formulario.css"> -->
-    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
-    <link href="css/Estilo.css" type="text/css" rel="stylesheet"/>
-    
+    <!-- CSS -->    
+    <link rel="stylesheet" href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" />
+    <link rel="stylesheet" href="css/datatables.css" type="text/css">        
+    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>

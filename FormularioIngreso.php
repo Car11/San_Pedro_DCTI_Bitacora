@@ -69,8 +69,7 @@ $rol=$_SESSION['rol'];
     <title>Control de Accesos</title>       
     <!-- CSS -->
     <link href="css/Estilo.css?v= <?php echo Globals::cssversion; ?>" rel="stylesheet" />  
-    <link rel="stylesheet" href="css/datatables.css" type="text/css"/>    
-    
+    <link rel="stylesheet" href="css/datatables.css" type="text/css"/>        
     <link rel="stylesheet" href="css/Formulario.css" type="text/css"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->

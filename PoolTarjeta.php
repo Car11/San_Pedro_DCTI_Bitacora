@@ -3,8 +3,8 @@ if (!isset($_SESSION))
     session_start();
 include_once('class/Globals.php');
 // Sesion de usuario
-include("class/sesion.php");
-$sesion = new sesion();
+include("class/Sesion.php");
+$sesion = new Sesion();
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
     header('Location: login.php');
@@ -12,8 +12,8 @@ if (!$sesion->estado){
 }
 
 //USER AND ROL
-include("class/usuario.php");  
-$usuario = new usuario();
+include("class/Usuario.php");  
+$usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
@@ -37,7 +37,7 @@ $rol=$_SESSION['rol'];
 <body> 
     <header>
 	<h1>POOL TARJETAS</h1>        
-    <div id="logo"><img src="img/logoice.png" height="75" ></div>
+    <div id="logo"><img src="img/Logoice.png" height="75" ></div>
 	</header>
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaResponsable.php" onSubmit="return EnviaResponsable()">       

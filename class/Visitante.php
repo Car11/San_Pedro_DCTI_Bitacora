@@ -96,7 +96,7 @@ class Visitante{
             // Si no hay, muestra mensaje que la tarjeta no está en uso.
             $sql= "SELECT b.id as idbitacora  , idformulario, idvisitante, entrada, salida, idtarjeta
                 FROM tarjeta t inner join bitacora b on b.idtarjeta= t.id
-                WHERE t.consecutivo=:consecutivo AND ESTADO=1 
+                WHERE t.consecutivo=:consecutivo AND estado=1 
                 order by b.fechacreacion desc limit 1";
             $param= array(':consecutivo'=>$this->cedula);   // cedula en este caso es el idtarjeta que viaja por POST
             $data = DATA::Ejecutar($sql,$param);      
