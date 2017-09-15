@@ -9,13 +9,16 @@ class log{
     private static $evento='';
     private static $detalle='';
     private static $usuario='Sistema';
-    //private static $path='/var/www/html/log/xLog.xml';
-    //private static $dirpath='/var/www/html/log';
-    //private static $dirHistpath='/var/www/html/log/Historico';
     //
-    private static $path='c:\log\xLog.xml';
+    private static $path='/var/www/html/log/xLog.xml';
+    private static $dirpath='/var/www/html/log';
+    private static $dirHistpath='/var/www/html/log/Historico';
+    private static $dirHistpathRename= '/var/www/html/log/Historico/xLog_';
+    //
+    /*private static $path='c:\log\xLog.xml';
     private static $dirpath='c:\log';
-    private static $dirHistpath='c:\log\Historico';
+    private static $dirHistpath='c:\log\Historico'; 
+    private static $dirHistpathRename= 'c:\log\Historico\xLog_';*/
 
     public static function Add($cat, $e){
         try{
@@ -116,7 +119,7 @@ class log{
                     self::$usuario='Sistema';
                     self::Write();
                     // Renombra.
-                    rename($path, "/home/cachac6/log/Historico/xLog_". date("Ymd")  .".xml");
+                    rename($path, $dirHistpathRename . date("Ymd")  .".xml");
                     // Nuevo archivo.
                     self::Init();
                 }

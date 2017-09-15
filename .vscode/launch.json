@@ -21,6 +21,7 @@
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
+            "serverSourceRoot": "${workspaceRoot}/public",
             "port": 9000
         },
         {

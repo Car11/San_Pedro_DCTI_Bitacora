@@ -93,7 +93,11 @@ if (isset($_SESSION['idformulario'])) {
         if(login)
         {
             // valida el rol del usuario para mostrar el menu, el index o el formulario.
-            location.href= 'MenuAdmin.php';
+            var rol= '<?php print $sesion->rol; ?>';            
+            if(rol=='1')
+                location.href= 'MenuAdmin.php';
+            else if(rol=='2') // tramitante
+                location.href= 'FormularioIngreso.php';
         }
     };  
 </script>
