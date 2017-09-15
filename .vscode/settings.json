@@ -1,7 +1,11 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-       "php.validate.executablePath": "C:\\xampp\\php\\php.exe",
-       // Controls if quick suggestions should show up while typing
+    "php.validate.executablePath": "C:\\xampp\\php\\php.exe",
+    "php.runtimeExecutable" : "C:\\xampp\\php\\php.exe",
+    "php.validate.run": "onSave",
+    "php.validate.enable": true,
+    "php.suggest.basic": true,
+    // Controls if quick suggestions should show up while typing
     "editor.quickSuggestions": true,
 
     // Controls if suggestions should be accepted with "Enter" - in addition to "Tab". Helps to avoid ambiguity between inserting new lines and accepting suggestions.

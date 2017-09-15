@@ -9,7 +9,8 @@
     if(isset($_POST["username"]) && isset($_POST["password"])){
         $usuario->usuario=$_POST['username'];        
         $usuario->contrasena=$_POST['password'];
-        if($usuario->Validar())
+        // if($usuario->Validar())
+        if($usuario->ValidarUsuarioLDAP())
         {
             $sesion->Inicio($usuario->usuario, $usuario->idrol);
             if(isset($_SESSION['url'])){
