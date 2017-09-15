@@ -19,6 +19,7 @@ $estadoformulario=0;
 $id=0;
 $largo=0;
 $visitanteformulario=0;
+$btnmod=3;
 if (isset($_GET['ID'])) {
     $id=$_GET['ID'];
     // es formulario temporal
@@ -40,6 +41,7 @@ if (isset($_GET['MOD'])) {
     $estadoformulario= $formdata[0][2];
     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
     $largo=count($visitanteformulario);
+    $btnmod=1;
 }
 
 //SALA 
@@ -102,26 +104,25 @@ $rol=$_SESSION['rol'];
             </div>
             <div id="superior">
                 <div id="caja">
-                    <div id="cajainput">
+                    <div class="cajainput">
                         <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
                         <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
                     </div>
-                    <div id="cajainput">
+                    <div class="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
                         <input type="text" id="txtresponsable" name="txtresponsable" class="input-field" placeholder="CLICK" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][8];
-}?>" required/>  
+                            print $formdata[0][8];}?>" required/>  
                     </div>
                 </div>
                 <div id="caja">
-                    <div id="cajainput">
+                    <div class="cajainput">
                         <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
                         <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
                     </div>
-                    <div id="cajainput">
+                    <div class="cajainput">
                         <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
                         <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
@@ -129,14 +130,14 @@ $rol=$_SESSION['rol'];
                     </div>
                 </div>
                 <div id="caja">
-                    <div id="cajainput">
+                    <div id="cajainput_tramitante">
                         <label for="txttramitante" class="labelformat">Tramitante</label></br>
-                        <input type="text" id="txttramitante" name="txttramitante" placeholder="" class="input-field" readonly="readonly" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>" />
+                        <input type="text" id="txttramitante" name="txttramitante" class="input-field" readonly="readonly" 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>"/>
                     </div>                   
-                    <div id="cajainput">
+                    <div id="cajainput_autorizador">
                         <label for="txtautorizador" class="labelformat">Autorizador</label></br>
-                        <input type="text" id="txtautorizador" name="txtautorizador" placeholder="" class="input-field" readonly="readonly" 
+                        <input type="text" id="txtautorizador" name="txtautorizador" class="input-field" readonly="readonly" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
 
                     </div>
@@ -209,6 +210,8 @@ $rol=$_SESSION['rol'];
                     </div>
                     <div id="submitformulario">
                         <input id="EnviaFormulario" class="cbp-mc-submit" type="submit" value="Enviar Formulario">
+                        <input type="button" id="btnInsertaFormulario" class="cbp-mc-submit" value="Insertar">
+                        <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">
                         <input id="visitantearray" name="visitantearray" type="hidden">
                         <input id="visitantelargo" name="visitantelargo" type="hidden">
                         <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
@@ -222,31 +225,33 @@ $rol=$_SESSION['rol'];
             </div> 
             <div id="inferior">
                 <div id="cajade3">
+                    
                     <div class="cajainput2">
                         <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
                         <input type="text" id="placavehiculo" class="input-field" name="placavehiculo" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][10];
-}?>" 
+                            print $formdata[0][10];}?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                     </div>      
+                    
                     <div class="cajainput2">
                         <label for="detalleequipo" class="labelformat">Detalle Equipo</label>
                         <input type="text" id="detalleequipo" class="input-field" name="detalleequipo" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][11];
-}?>" 
+                            print $formdata[0][11];}?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                     </div>
+                    
                     <div class="cajainput2">
                         <label for="txtrfc" class="labelformat">RFC          :</label>
                         <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][12]; }?>" 
-                        pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>
+                        pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>    
                     </div>  
+                
                 </div>
-                <div id="cajade3">
+                <div id="cajainput3">
                     <label for="motivovisita" class="labelformat">Motivo Visita</label>
                     <input type="text" id="motivovisita" name="motivovisita" class="input-field"
                     value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
@@ -359,6 +364,7 @@ $rol=$_SESSION['rol'];
     
 <script type="text/javascript" language="javascript">
     //Se ejecuta al iniciar la pagina
+    var recargar=0;
     var existeid = "<?php echo $id;?>";      
     var jSala=[];
     var jResponsable=[];
@@ -378,8 +384,9 @@ $rol=$_SESSION['rol'];
     var inputSala = document.getElementById("selectsala");
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
-
+    var btnmod = <?php echo $btnmod;?>;
     $(document).ready( function () {  
+        MuestraBotonCorrecto();
         ExcluyeVisitanteCarga();
         $("#EnviaFormulario").css("background-color", "cc9900");
         if (existeid!=0){
@@ -395,13 +402,16 @@ $rol=$_SESSION['rol'];
         // Cambia color del botón enviar segun estado del formulario.
         $('input[type=radio][name=estadoformulario]').change(function() {
             if (this.value == '0') {
-                $("#EnviaFormulario").css("background-color", "cc9900");
+                $("#btnInsertarFormulario").css("background-color", "cc9900");
+                $("#btnModificarFormulario").css("background-color", "cc9900");
             }
             else if (this.value == '1') {
-                $("#EnviaFormulario").css("background-color", "016DC4");
+                $("#btnInsertarFormulario").css("background-color", "016DC4");
+                $("#btnModificarFormulario").css("background-color", "016DC4");
             }
             else if (this.value == '2') {
-                $("#EnviaFormulario").css("background-color", "firebrick");
+                $("#btnInsertarFormulario").css("background-color", "firebrick");
+                $("#btnModificarFormulario").css("background-color", "firebrick");
             }
         });
     
@@ -453,6 +463,9 @@ $rol=$_SESSION['rol'];
         if(min<10){
             min='0'+min
         }
+        if(hhs<10){
+            hhs='0'+hhs
+        }
         if(hhs==24){
             hhs='00'
         }
@@ -462,6 +475,7 @@ $rol=$_SESSION['rol'];
         if(hhs==26){
             hhs='02'
         }
+
         today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
         salida = yyyy+'-'+mm+'-'+dd+'T'+hhs+':'+min;
         document.getElementById("fechaingreso").setAttribute("min", today);
@@ -681,6 +695,21 @@ $rol=$_SESSION['rol'];
         }
     }
 
+    function MuestraBotonCorrecto(){
+        
+        $("#btnInsertaFormulario").hide();
+        $("#btnModificaFormulario").hide();
+        $("#EnviaFormulario").hide();
+        if(btnmod==1){
+            $("#btnInsertaFormulario").hide();
+            $("#btnModificaFormulario").show();
+        }
+        else{
+            $("#btnModificaFormulario").hide();
+            $("#btnInsertaFormulario").show();
+        }
+    }
+
     //Maneja el evento checked del estado del radio button formulario
     function EstadoFormulario(){        
         
@@ -725,10 +754,72 @@ $rol=$_SESSION['rol'];
             $('#imgflecha').addClass('imagen');
             return false;
         }
-        swal("Insertado!", "Formulario Insertado Correctamente!", "success");
-        //location.href='ListaFormulario.php';
-        //alert("Formulario Insertado Correctamente!");
+        //swal("Insertado!", "Formulario Insertado Correctamente!", "success");
     }   
+
+        //INSERTA UN FORMULARIO, SI ESTA CCORRECTO REDIRECCIONA A LISAT FORMULARIO ***/
+        $(document).on('click', '#btnInsertaFormulario', function (event) {
+        EnviaVisitante();
+        $.ajax({
+            type: "POST",
+            url: "class/formulario.php",
+            data: {
+                    action: "Insertar",
+                    fechaingreso: document.getElementById('fechaingreso').value,
+                    nombresala: document.getElementById('selectsala').value,
+                    fechasalida: document.getElementById('fechasalida').value,
+                    placavehiculo: document.getElementById('placavehiculo').value,
+                    detalleequipo: document.getElementById('detalleequipo').value,
+                    motivovisita: document.getElementById('motivovisita').value,
+                    nombreresponsable: document.getElementById('txtresponsable').value,
+                    nombreautorizador: document.getElementById('txtautorizador').value,
+                    nombretramitante: document.getElementById('txttramitante').value,
+                    estado: $('input:radio[name=estadoformulario]:checked').val(),
+                    rfc: document.getElementById('txtrfc').value,
+                    visitante: document.getElementById('visitantearray').value
+                  }
+        })
+        .done(function( e ) {
+            location.href='ListaFormulario.php?INS=1';
+            }
+        )    
+        .fail(function(msg){
+            location.href='ListaFormulario.php?INS=0';
+        });
+    }); 
+
+
+    $(document).on('click', '#btnModificaFormulario', function (event) {
+        EnviaVisitante();
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                    action: "Modificar",
+                    fechaingreso: document.getElementById('fechaingreso').value,
+                    fechasalida: document.getElementById('fechasalida').value,
+                    nombretramitante: document.getElementById('txttramitante').value,
+                    nombreautorizador: document.getElementById('txtautorizador').value,
+                    nombreresponsable: document.getElementById('txtresponsable').value,
+                    placavehiculo: document.getElementById('placavehiculo').value,
+                    detalleequipo: document.getElementById('detalleequipo').value,
+                    motivovisita: document.getElementById('motivovisita').value,
+                    estado: $('input:radio[name=estadoformulario]:checked').val(),
+                    nombresala: document.getElementById('selectsala').value,
+                    rfc: document.getElementById('txtrfc').value,
+                    id: document.getElementById('idformulario').value,
+                    visitante: document.getElementById('visitantearray').value
+                  }
+        })
+        .done(function( e ) {
+            location.href='ListaFormulario.php?INS=1';
+        })    
+        .fail(function(msg){
+            alert("Error al Eliminar");
+        });
+    });
+
+
 
     //MODAL RESPONSABLES ********/
     $('#tblresponsable tr').on('click', function(){        

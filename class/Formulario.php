@@ -22,6 +22,14 @@ if(isset($_POST["action"])){
         $formulario= new formulario();
         $formulario->CargarTabla();
     }
+    if($_POST["action"]=="Insertar"){
+        $formulario= new formulario();
+        $formulario->AgregarFormularioAJAX();
+    }
+    if($_POST["action"]=="Modificar"){
+        $formulario= new formulario();
+        $formulario->ModificarAJAX();
+    }
 }
 
 class Formulario
@@ -99,6 +107,51 @@ class Formulario
             exit;
         }
     }
+
+    //Agrega formulario
+    function AgregarFormularioAJAX()
+    {
+        try {
+            
+            $sql="INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,idestado,rfc)
+                VALUES (:fechaingreso,(SELECT id FROM sala WHERE nombre= :nombresala),:fechasalida,:placavehiculo,
+                :detalleequipo,:motivovisita,(SELECT id FROM responsable WHERE nombre= :nombreresponsable),
+                (SELECT id FROM usuario WHERE nombre= :nombreautorizador),(SELECT id FROM usuario WHERE nombre= :nombretramitante),:estado,:rfc)";
+            $param= array(':fechaingreso'=>$_POST["fechaingreso"],
+                            ':nombresala'=>$_POST["nombresala"],
+                            ':fechasalida'=>$_POST["fechasalida"],
+                            ':placavehiculo'=>$_POST["placavehiculo"],
+                            ':detalleequipo'=>$_POST["detalleequipo"],
+                            ':motivovisita'=>$_POST["motivovisita"],
+                            ':nombreresponsable'=>$_POST["nombreresponsable"],
+                            ':nombreautorizador'=>$_POST["nombreautorizador"],
+                            ':nombretramitante'=>$_POST["nombretramitante"],
+                            ':estado'=>$_POST["estado"],
+                            ':rfc'=>$_POST["rfc"]);
+
+                            $result = DATA::Ejecutar($sql, $param);
+            //Consultar el Maximo ID insertado
+            $maxid="SELECT id FROM formulario ORDER BY consecutivo DESC LIMIT 0,1";
+            
+            //Captura el id del formulario
+            $idformulario =DATA::Ejecutar($maxid);
+            //Convierte el string en un arreglo
+            $visitantearray = explode(",", $_POST["visitante"]);
+            //Calcula la longitud del arreglo de visistantes 
+            $longitud = count($visitantearray);
+            //Recorre el arreglo e inserta cada item en la tabla intermedia
+            for ($i=0; $i<$longitud; $i++) {
+                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES ((SELECT id from visitante WHERE cedula=:cedula),:idformulario)';
+                $param= array(':cedula'=>$visitantearray[$i],':idformulario'=>$idformulario[0][0]);
+                $result = DATA::Ejecutar($sql, $param);
+            }
+            header('Location:../ListaFormulario.php');
+            exit;
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            exit;
+        }
+    }
     
     //*********************
     //Modifca el formulario
@@ -154,6 +207,70 @@ class Formulario
                 if(count($resultadoexiste)==0){
                     $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),(SELECT id FROM formulario WHERE id=:id))";
                     $param= array(':cedula'=>$visitantearray[$i],':id'=>$this->id);
+                    $result = DATA::Ejecutar($sql, $param);
+                }
+            }       
+            header('Location:../ListaFormulario.php');           
+            exit;
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+    //*********************
+    //Modifca el formulario
+    function ModificarAJAX()
+    {
+        try {
+            $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
+            idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT id FROM sala WHERE nombre= :nombresala),rfc=:rfc WHERE id=:id;";
+            $param= array(':fechaingreso'=>$_POST["fechaingreso"],
+                            ':nombresala'=>$_POST["nombresala"],
+                            ':fechasalida'=>$_POST["fechasalida"],
+                            ':placavehiculo'=>$_POST["placavehiculo"],
+                            ':detalleequipo'=>$_POST["detalleequipo"],
+                            ':motivovisita'=>$_POST["motivovisita"],
+                            ':nombreresponsable'=>$_POST["nombreresponsable"],
+                            ':nombreautorizador'=>$_POST["nombreautorizador"],
+                            ':nombretramitante'=>$_POST["nombretramitante"],
+                            ':estado'=>$_POST["estado"],
+                            ':rfc'=>$_POST["rfc"],
+                            ':id'=>$_POST["id"]);
+            $result = DATA::Ejecutar($sql, $param);
+
+            //Convierte el string en un arreglo
+            $visitantearray = explode(",", $_POST["visitante"]);
+
+            //Elimina los registros segun el arreglo de visitantes
+            $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET((SELECT cedula from visitante WHERE id=idvisitante),:EXCLUSION) 
+            AND idformulario=:id";
+            $param= array(':EXCLUSION'=>$_POST["visitante"],':id'=>$_POST["id"]);
+
+            $result = DATA::Ejecutar($sql, $param);
+            
+            $longitud = count($visitantearray);
+
+            // formulario temporal, vacia la variable para llenarla con los id de los visitantes.
+            if(isset( $_SESSION['TEMP']))
+                $_SESSION['TEMP']="";
+
+            //Recorre el arreglo e inserta cada item en la tabla intermedia
+            for ($i=0; $i<$longitud; $i++) {
+                // formulario temporal, agrega los idvisitante.
+                if(isset( $_SESSION['TEMP'])){
+                    $_SESSION['TEMP'] = $_SESSION['TEMP'] . $visitantearray[$i] . '-' . $this->estado . ',';
+                }
+                
+                //Si no existe Inserta
+                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = (SELECT id FROM formulario WHERE id=:id)";
+                $parametro= array(':cedula'=>$visitantearray[$i],':id'=>$_POST["id"]);
+                $resultadoexiste= DATA::Ejecutar($existe, $parametro);
+
+                if(count($resultadoexiste)==0){
+                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),(SELECT id FROM formulario WHERE id=:id))";
+                    $param= array(':cedula'=>$visitantearray[$i],':id'=>$_POST["id"]);
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
