@@ -1,0 +1,636 @@
+#general{
+    width: 100%;
+    height: 84%;
+    margin-top: 0px;
+}
+
+#izquierda{
+    width: 11%;
+    height: 600px;
+    float:left;
+}
+#superiorizq{
+    width: 100%;
+    height: 41%;
+    float: lef;
+}
+#medioizq{
+    width: 100%;
+    height: 80px;
+    float: lef;
+}
+
+#principal{
+    margin-top: 0px;
+    width: 78%;
+    height: 600px;
+    float: left;
+}
+
+#derecha{
+    width: 11%;
+    height: 600px;
+    float: left;
+}
+/*CONTENEDORES DE PRINCIPAL*/
+#superior{
+    width: 100%;
+    height: 26%;
+    float: lef;
+}
+#medio{
+    width: 100%;
+    height: 48%;
+    float: left;
+    margin-bottom: 10px;    
+}
+#inferior{
+    width: 100%;
+    height: 26%;
+    float: left;
+    padding-bottom: 50px;  
+}
+#arriba{
+    width: 100%;
+    height: 20%;
+    float: left;
+}
+/*DIVS CONTENEDORES DE INPUTS*/
+#caja{
+    width: 33.33%;
+    height: 100%;
+    float: left;
+}
+#tabla{    
+    width: 66.66%;
+    height: 100%;
+    float: left;
+}
+#etiquetas{
+    width: 33.33%;
+    height: 100%;
+    float: left;
+}
+.cajainput{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+.cajainput2{
+    width: 33.3%;
+    height: 100%;
+    float: left;
+}
+#cajade3{
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+#cajainput3{
+    width: 100%;
+    height: 100%;
+    float: left;
+    margin-top: 0px;
+}
+#cajainput_tramitante{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+
+/*Sobre esribe valores de archivo /css/estilo.css*/
+.input-field{
+    margin-left: 0px;   
+    width: 90%;
+}
+/*fin de sobre escritura de css*/
+
+.inputformat{
+    margin-left: 0px;
+    margin-top: 5px;
+    width: 90%;
+    height: 35px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 15px;
+    background: white;
+    border: 2px solid #fff;
+}
+
+.labelformat{
+    display:inline-block;
+    margin-left: 0px;
+    margin-top: 5px;
+    font-size: 16px;
+}
+.labelradioformat{
+    font-size: 20px;
+    display:inline-block;
+    margin-left: 30px;
+    margin-top: 15px;  
+    content: '\A'; 
+    white-space: pre;
+}
+#motivovisita{
+    width: 97%;
+    margin-top: 5px;
+}
+
+#cajainput2{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+#numeroformulario{
+    width: 100%;
+    height: 25%;
+    float: left;
+}
+#estadoformulario{
+    width: 100%;
+    height: 50%;
+    float: left;
+}
+#submitformulario{
+    width: 100%;
+    height: 25%;
+    float: left;
+}
+.radioformat{
+    margin-left: 0px;
+    margin-top: 5px;
+}
+#tablavisitante{
+    width: 95%;
+    height: 100%;
+    float: left;
+    overflow: auto;
+}
+#btnagregarvisitante{
+    width: 5%;
+    float: left;
+    
+}
+
+#imgdelete{
+    height: 17px;
+    text-align: center;
+    margin-left: 50px;
+}
+#imgagregar{
+    height: 17px;
+    text-align: center;
+    margin-left: 50px;
+}
+#imgflecha{
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    transition-property: opacity, left, top, height;
+    transition-duration: 3s, 5s;
+}
+
+.imagenNO {
+  visibility: hidden;
+}
+.imagen {
+  visibility: visible;
+}
+
+#estadosform{
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-left: 0px;
+    width: 100%;
+    height: 80%;
+    float: left;
+}
+#numeroformulario{
+    width: 100%;    
+    height: 20%;
+}
+#cajanumform{
+    width: 60%;
+    height: 100%;
+    float: left;
+    text-align: left;
+    font-size: 35px;
+    font-family:"Helvetica";
+}
+#cajanumform2{
+    width: 30%;
+    height: 100%;
+    float: left;
+    text-align: left;
+    font-weight:bold;
+    font-family:"Helvetica";
+}
+.labelformatnum{
+    display:inline-block;
+    font-family: fantasy;
+    padding: 0px;
+    font-size: 40px;
+    color: aliceblue;
+}
+
+.radioformat{
+    border: 0px;
+    width: 20px;
+    height: 20px;
+}
+
+#distribuciontabla{
+    width: 95%;
+    /*background: white;*/
+}
+#distribuciontabla2{
+    width: 5%;
+}
+.inputreadonly {
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0 auto;
+    border:none;
+    padding: 0px;    
+    font-size: 40px;
+    font-family: fantasy;
+    color: aliceblue;
+    background: none;
+}
+
+/**************************VENTANA MODAL*******************/
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #2c2c2c;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #343434;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+.modal-content-sala {
+    position: relative;
+    background-color: #2c2c2c;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+/* Add Animation */
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+/* The Close Button */
+
+.close {
+    color: #58585a;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    /*color: #000;*/
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #222222;
+    color: #F2F2F2;
+    border-bottom: 1px solid #58585a;
+    margin-bottom: 10px;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #58585a;
+    color: white;
+}
+
+/*******************************************Tabla vistante*/
+#tblvisitanteform {
+   border-collapse: collapse;
+   width: 100%;
+   font-family:"Helvetica";
+    
+}
+th{
+    border-bottom: 1px solid #58585a;
+}
+tr, thread{
+    font-size: 20px;
+}
+
+.fila{
+    color: #B8B8B8;
+    margin-bottom: 13px;
+}
+
+.fila:hover{
+	background-color: #016DC4;
+    color: #FFFFFF;
+}
+
+/*Botones*/
+.modificar{
+    cursor: pointer;
+}
+
+.eliminar{
+    cursor: pointer;
+}
+
+.cbp-mc-submit {
+
+	background: #016DC4;
+	border: none;
+	color: #fff;
+	width: 90%;
+	cursor: pointer;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 15px 30px;
+	font-size: 15px;
+	/*border-radius: 2px;*/
+	letter-spacing: 1px;
+    margin-top: 10px;
+    margin-left: 0px;
+}
+
+.cbp-mc-submit:hover {
+	background: #1478b1;
+}
+
+
+#btnagregavisitante{
+    width: 100%;
+    height: 40px;
+    color: #FFFFFF;
+    cursor: pointer;
+    text-transform: uppercase;
+	display: inline-block;
+    background: #016DC4;
+    margin-top: 0;
+    font-size: 33;
+    border: none;
+}
+
+#btnnuevo{
+    margin-top: 0px;
+    width: 120px;   
+}
+#btnatras{
+    margin-top: 0px;
+    width: 120px;
+    background: #3F3F3F;
+	border: none;
+	color: #C9C9C9;
+}
+#espacio{
+    width: 100%;
+    height: 50px;
+}
+
+/*Lista Formularios*/
+#listavisitante{
+    margin-top: 0px;
+    width: 100%;
+    height: 560px;
+    float: left;
+}
+#tablaresponsable{
+    margin-top: 0px;
+    width: 100%;
+    height: 560px;
+    float: left;
+}
+#superiornavegacion{
+    margin-top: 0px;
+    width: 100%;
+    height: 50px;
+    float: left;
+}
+#nuevo{
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+#atras{
+    width: 46.5%;
+    height: 100%;
+    float: left;
+    text-align: right;
+}
+#atraslista{
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: right;
+}
+#extra{
+    width: 3.5%;
+    height: 100%;
+    float: left;
+}
+
+/*RESPONSABLES*/
+.modalmod{
+    width: 50%;
+    
+}
+#modalcontainer{
+    width: 50%;
+    float: left;
+}
+
+#resderecha{
+    width: 25%;
+    float: left;
+}
+#resizquierda{
+    width: 25%;
+    float: left;
+    background: yellow;
+}
+
+.cajainputresp{
+    width: 100%;
+    height: 22%;
+    float: left;
+}
+#titulocedula{
+	/*width:20%;
+    border: 1px solid black;
+    height: 40px;	*/
+}
+#titulonombre{
+	/*width:35%;	
+    border: 1px solid black;
+    height: 40px;*/
+}
+#tituloempresa{
+	/*width:25%;	
+    border: 1px solid black;
+    height: 40px;*/
+}
+#titulomodificar{
+	/*width:15%;	
+    border: 1px solid black;
+    height: 40px;*/
+}
+#tituloeliminar{
+	/*width:15%;	
+    border: 1px solid black;
+    height: 40px;*/
+}
+#tituloid{
+    /*width:15%;	
+    border: 1px solid black;
+    height: 40px;    */
+}
+#izq{
+     width:25%;   
+}
+#up{
+    height: 70px;
+}
+
+
+/*LISTA formulario*/
+#supnuevo{
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+#supbusca{
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+#supatras{
+    float: left;
+    width: 25%;
+    height: 100%;
+    text-align: right;
+}
+
+#btnbuscaxvisiante{
+    margin-top: 0px;
+    width: 80%;  
+}
+#txtbuscavisitante{
+    margin-left: 0px;
+    margin-top: 5px;
+    width: 90%;
+    height: 35px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 20px;
+    background: white;
+    border: 2px solid #fff;
+}
+input[type=checkbox] {
+    transform: scale(2);
+}
+#izq_busqueda{
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+#cen_busqueda{
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+#der_bsuqueda{
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+
+/*TARJETAS*/
+.tarjeta{
+    margin-top: 0px;
+    width: 50px;
+    height: 70px;
+    border: 1px solid #222222;
+    background:#3CB371;
+    float: left;
+    color: white;
+    font-size: 30px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    text-align: center;
+    border-radius: 5px; 
+}
+.anchocolumna{
+    width: 200px;
+}
+.enc_tajeta{
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    border: 1px solid #1e5799;
+    height: 40px;
+    background: white;
+    border-radius: 8px; 
+    width: 14.2%;
+}
