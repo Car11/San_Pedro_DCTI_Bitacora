@@ -20,6 +20,9 @@ if(isset($_SESSION['TEMP']))
     $formtemp=$_SESSION['TEMP'];
     unset($_SESSION['TEMP']);
 }
+$insert="null";
+if(isset($_GET['INS']))
+    $insert=$_GET['INS'];
 
 ?>
 
@@ -41,7 +44,12 @@ if(isset($_SESSION['TEMP']))
     <header>
 	<h1>LISTA FORMULARIOS</h1>        
     <div id="logo"><img src="img/Logoice.png" height="75" > </div>
-	</header>
+    </header>
+    <div id="mensajetop_display">
+        <div id="mensajetop">
+            <span id="textomensaje"></span>
+        </div>
+    </div>
     <div id="general">
         <div id="izquierda">
              
@@ -77,6 +85,13 @@ if(isset($_SESSION['TEMP']))
     <script>
         
         $(document).ready( function () {
+            var insert = <?php echo $insert;?>;
+            if(insert==1)
+                muestraInfo();
+            else
+                if(insert==0)
+                    muestraError();
+            
             ActivaConsultaVisitante();
             //Da la apariencia del css datatable
             //CargarEstiloTablas();
@@ -229,6 +244,26 @@ if(isset($_SESSION['TEMP']))
             alert("Error al Eliminar");
         });
     });
+
+    // Muestra información en ventana
+    function muestraInfo(){     
+        $("#textomensaje").text("Información almacenada correctamente!!");
+        $("#mensajetop").css("background-color", "#016DC4");
+        $("#mensajetop").css("color", "#FFFFFF");    
+        $("#mensajetop").css("visibility", "visible");
+        $("#mensajetop").slideDown("slow");
+        $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+    };
+
+    // Muestra errores en ventana
+    function muestraError(){        
+        $("#textomensaje").text("Error al procesar la información");
+        $("#mensajetop").css("background-color", "firebrick");
+        $("#mensajetop").css("color", "white");    
+        $("#mensajetop").css("visibility", "visible");
+        $("#mensajetop").slideDown("slow");
+        $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+    };
 
     </script>
     </body>
