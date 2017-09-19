@@ -77,7 +77,7 @@ $rol=$_SESSION['rol'];
                 <span class="close">&times;</span>
                 <h2>Responsables</h2>
             </div>
-            <div class="modal-body">
+            <!--<div class="modal-body">
                 <div id="resizquierda"></div>
                 
                     <div class="modalmod">
@@ -99,7 +99,42 @@ $rol=$_SESSION['rol'];
                     </div>    
                 
                 <div id="resderecha"></div>
+            </div>-->
+
+            <!-- Modal body -->
+            <div class="modal-body">
+            <div id="form">
+                <!-- <h1>Nuevo Visitante</h1> -->
+
+                <form name="perfil" id='perfil' method="POST" >
+                    <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
+                        <input autofocus type="text"  id="txtcedula"                                 
+                            class="input-field" name="txtcedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)" required >
+                    </label>
+                    <label for="empresa"><span class="campoperfil">Empresa / Dependencia <span class="required">*</span></span>
+                        <input type="text"   style="text-transform:uppercase"                                 
+                            class="input-field" name="txtempresa" value="" id="txtempresa" required >
+                    </label>
+                    <label for="nombre"><span class="campoperfil">Nombre Completo <span class="required">*</span></span>
+                        <input  required type="text" class="input-field" name="txtnombre" style="text-transform:uppercase" id="txtnombre"/>
+                    </label>
+
+                    <nav class="btnfrm">
+                        <ul>
+                            <input id="idresponsable" name="idresponsable" type="hidden">
+                            <li>
+                            <input id="btnInsertaResponsable" class="nbtn_blue" type="button" value="Guardar">
+                            <input id="btnModificaResponsable" class="nbtn_blue" type="button" value="Guardar">
+                            </li>
+                            <li><button type="button" class="nbtn_gray" onclick="Cerrar()" >Cerrar</button></li>
+                        </ul>
+                    </nav>
+
+                </form>
+                
             </div>
+        </div> 
+
             <div class="modal-footer">
             <br>
             </div>
@@ -128,6 +163,10 @@ $rol=$_SESSION['rol'];
         }
     }
     
+    this.Cerrar = function(){
+        $(".modal").css({ display: "none" });
+    }; 
+
     $(document).ready( function () {      
         RecargarTabla();       
         $('#btnModificaResponsable').hide();
