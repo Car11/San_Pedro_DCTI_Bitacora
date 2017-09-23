@@ -106,12 +106,12 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div class="cajainput">
                         <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
-                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field" 
+                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field-form" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
                     </div>
                     <div class="cajainput">
                         <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
-                        <input type="text" id="txtresponsable" name="txtresponsable" class="input-field" placeholder="CLICK" readonly="readonly"
+                        <input type="text" id="txtresponsable" name="txtresponsable" class="input-field-form" placeholder="CLICK" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][8];}?>" required/>  
                     </div>
@@ -119,12 +119,12 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div class="cajainput">
                         <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
-                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field" 
+                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field-form" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
                     </div>
                     <div class="cajainput">
                         <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
-                        <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field" readonly="readonly"
+                        <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][9];}?>" required/> 
                     </div>
@@ -132,12 +132,12 @@ $rol=$_SESSION['rol'];
                 <div id="caja">
                     <div id="cajainput_tramitante">
                         <label for="txttramitante" class="labelformat">Tramitante</label></br>
-                        <input type="text" id="txttramitante" name="txttramitante" class="input-field" readonly="readonly" 
+                        <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>"/>
                     </div>                   
                     <div id="cajainput_autorizador">
                         <label for="txtautorizador" class="labelformat">Autorizador</label></br>
-                        <input type="text" id="txtautorizador" name="txtautorizador" class="input-field" readonly="readonly" 
+                        <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
 
                     </div>
@@ -228,7 +228,7 @@ $rol=$_SESSION['rol'];
                     
                     <div class="cajainput2">
                         <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
-                        <input type="text" id="placavehiculo" class="input-field" name="placavehiculo" 
+                        <input type="text" id="placavehiculo" class="input-field-form" name="placavehiculo" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][10];}?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
@@ -236,7 +236,7 @@ $rol=$_SESSION['rol'];
                     
                     <div class="cajainput2">
                         <label for="detalleequipo" class="labelformat">Detalle Equipo</label>
-                        <input type="text" id="detalleequipo" class="input-field" name="detalleequipo" 
+                        <input type="text" id="detalleequipo" class="input-field-form" name="detalleequipo" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][11];}?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
@@ -244,7 +244,7 @@ $rol=$_SESSION['rol'];
                     
                     <div class="cajainput2">
                         <label for="txtrfc" class="labelformat">RFC          :</label>
-                        <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field" 
+                        <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field-form" 
                         value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
                             print $formdata[0][12]; }?>" 
                         pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>    
@@ -253,7 +253,7 @@ $rol=$_SESSION['rol'];
                 </div>
                 <div id="cajainput3">
                     <label for="motivovisita" class="labelformat">Motivo Visita</label>
-                    <input type="text" id="motivovisita" name="motivovisita" class="input-field"
+                    <input type="text" id="motivovisita" name="motivovisita" class="input-field-form"
                     value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
                     pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                 </div>

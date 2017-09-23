@@ -4,8 +4,8 @@ if (!isset($_SESSION))
 //
 include_once('class/Globals.php');
 include_once("class/Sesion.php");
+
 // Sesion de usuario
-include("class/Sesion.php");
 $sesion = new Sesion();
 if (!$sesion->estado){
 	$_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
