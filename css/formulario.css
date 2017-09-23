@@ -99,9 +99,37 @@
 }
 
 /*Sobre esribe valores de archivo /css/estilo.css*/
-.input-field{
-    margin-left: 0px;   
+
+.input-field-form {
     width: 90%;
+    display: block;
+    text-align: center;
+    margin: 0 auto;    
+    border: 0.3px solid #C2C2C2;
+    padding: 7px;
+    outline: none;
+    font-size: 28px;
+    font-family: fantasy;
+    color: #EDEDED;
+    background: #555555;
+    float: left;
+}
+
+.input-field-form:focus {
+    border: 0.3px solid #2893EF;
+}
+
+.input-field-readonly {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    border:none;
+    padding: 7px;    
+    font-size: 40px;
+    font-family: fantasy;
+    color: #B8B8B8;    
+    font-style: italic;
+    background: none;
 }
 /*fin de sobre escritura de css*/
 

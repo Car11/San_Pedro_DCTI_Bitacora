@@ -135,7 +135,7 @@ class Bitacora{
     
     function Consulta(){
         try {
-			$sql = "SELECT 
+			$sql = "SELECT DISTINCT
                 id,
                 (SELECT consecutivo FROM formulario WHERE id=idformulario),
                 (SELECT cedula from visitante WHERE id = idvisitante),
