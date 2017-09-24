@@ -44,6 +44,12 @@ if(isset($_POST["action"])){
             $visitante->ID= $_POST["idvisitante"];            
             $visitante->Eliminar();
             break;
+        case "Webnoc_proximo":
+            echo json_encode($visitante->Webnoc_proximo());
+            break;
+        case "Webnoc_ensitio":
+            echo json_encode($visitante->Webnoc_ensitio());
+            break;
     }
     
 }
@@ -449,5 +455,53 @@ class Visitante{
             exit;
         }
     } 
+
+    // consulta para mostrar información en la web NOC en pantalla
+    function Webnoc_proximo(){
+        try {
+            $sql='SELECT v.id as idvisitante ,f.id as idformulario, f.consecutivo, fechaingreso,nombre, cedula, empresa, motivovisita, rfc
+                from formulario f inner join visitanteporformulario vf on vf.idformulario=f.id
+                inner join visitante v on v.id=vf.idvisitante
+                where fechaingreso>now() and f.idestado=1
+                order by fechaingreso desc ';
+            $data= DATA::Ejecutar($sql);
+            if($data)
+                return $data;
+            else {
+                //log::Add('ERROR', 'Ha ocurrido un error al INFO WEB NOC - Proximo');
+                //var_dump(http_response_code(500)); // error
+            }        
+        } catch (Exception $e) {
+            log::AddD('ERROR', 'Ha ocurrido un error al INFO WEB NOC - Proximo', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax
+            exit;
+        }
+    }
+
+    // consulta para mostrar información en la web NOC en pantalla
+    function Webnoc_ensitio(){
+        try {
+            $sql='SELECT v.id as idvisitante ,  f.id as idformulario, f.consecutivo, b.entrada , t.consecutivo as tarjeta ,  cedula, nombre , empresa, motivovisita, rfc
+            from bitacora b inner join formulario f on f.id=b.idformulario
+                inner join visitante v on v.id=b.idvisitante    
+                inner join tarjeta t on t.id=b.idtarjeta
+            where entrada is not null and salida is null ';
+            $data= DATA::Ejecutar($sql);
+            if($data)
+                return $data;
+            else {
+                //log::Add('ERROR', 'Ha ocurrido un error al INFO WEB NOC - en sitio');
+                //var_dump(http_response_code(500)); // error
+            }     
+        
+        } catch (Exception $e) {
+            log::AddD('ERROR', 'Ha ocurrido un error al INFO WEB NOC - en sitio', $e->getMessage());
+            var_dump(http_response_code(500)); // error ajax
+            exit;
+        }
+    }
+
+
+
 }
 ?>
