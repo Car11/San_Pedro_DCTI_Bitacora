@@ -76,8 +76,11 @@ h3 {
 header {
     height: 120px;
     background: #222222;
-    border-style: solid;
-    border-bottom-color: #343434;
+    /*border-style: solid;
+    border-bottom-color: #343434;*/
+    border: 2px solid;
+    border-bottom-color: #0595B9;
+    margin-bottom: 5px;
 }
 
 #mensajetop {
@@ -86,6 +89,8 @@ header {
     font-size: 25px;
     background-color: firebrick;
     height: 40;
+    margin-top: -5px;
+    margin-bottom: 10px;
     display: none;
 }
 
@@ -93,6 +98,8 @@ header {
     text-align: center;
     font-size: 25px;
     height: 40;
+    margin-top: -5px;
+    margin-bottom: 10px;
 }
 
 #general{

@@ -1,0 +1,215 @@
+@charset "UTF-8";
+
+/* CSS Document 
+contenido: #f2b705
+encabezado: #f29f05
+equivalentes: #d97904
+piepagina: #733702
+auxiliar: #401801
+
+*********
+header: 
+    fondo #222222
+    letra #F2F2F2
+    borde #343434
+
+html: 
+    fondo #2C2C2C
+    letra #B8B8B8
+
+btn azul: 
+    fondo #016DC4 
+    texto #FFFFFF
+
+btn gris:
+    fondo: #3F3F3F
+    texto: #C9C9C9
+
+input
+    fondo: #555555
+    texto: #EDEDED
+    borde: 0.3px solid #C2C2C2
+    borde sel: #2893EF
+
+form
+    fondo claro: #58585a
+    
+*/
+
+
+
+/*Elementos de neutralidad*/
+
+header,
+article,
+footer,
+section,
+nav,
+aside {
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    /*background: #1e5799;*/
+    background: #252526;
+}
+
+body {
+    margin: 0 auto;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+p,
+h1,
+h2,
+h3 {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    position: relative;
+    width: 100%;
+    font-size: 38px;
+    color: #F2F2F2;
+}
+
+h2 {
+    color: #B8B8B8;
+}
+
+h1,
+h2 {
+    text-align: center;
+    padding-top: 1em;
+    margin-bottom: 10px;
+}
+
+h3 {
+    text-align: left;
+    padding-top: 5;
+    padding-right: 5;
+    color: aliceblue;
+}
+
+h4 {
+    color: aliceblue;
+    float: left;
+    margin: 0;
+}
+
+
+/*Etiquetas estructurales*/
+
+header {
+    height: 120px;
+    background: #222222;
+    border: 2px solid;
+    border-bottom-color: #0595B9;
+    margin-bottom: 5px;
+    /*border-bottom-color: #343434;*/
+    
+}
+
+
+section {
+    /*background: green;*/
+    height: 800;
+    width: 70%;
+    float: left;
+}
+
+#proximo, #ensitio{
+    height: 370;
+    width: 100%;
+    float: left;
+    border: 1px solid #343434;;
+    overflow: auto;
+}
+
+#sobretiempo{
+    height: 200;
+    width: 100%;
+    float: left;
+    overflow: auto;
+}
+
+aside {
+    /*background: yellow;*/
+    height: 800;
+    width: 15%;
+    float: left;
+}
+
+footer {
+    height: 10;    
+    background: #0595B9;
+}
+
+
+/****** Otros elementos *******/ 
+#logo {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    margin: 20 0 0 30;
+}
+
+.tarjeta{
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 650px;
+    height: 50px;
+    /*background:rgba(179, 60, 60, 0.2);*/
+    float: left;
+    border: 1px solid #222222;
+    border-radius: 5px; 
+}
+.bloq-normal{
+    margin-top: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: auto;
+    height: 50px;    
+    background: rgba(241, 237, 237, 0.47); /*rgba(60, 179, 112, 0.9);*/
+    float: left;
+    color: white;
+    font-size: 20px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    text-align: center;
+}
+.bloq-noflex{
+    margin-top: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 200px;
+    height: 50px;
+    background:rgba(60, 179, 112, 0.9);
+    float: left;
+    color: white;
+    font-size: 20px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    text-align: center; 
+}
+.bloq-dif{
+    margin-top: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: auto;
+    height: 50px;
+    background:rgba(60, 155, 179, 0.9);
+    float: left;
+    color: white;
+    font-size: 20px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    text-align: center;
+}
+.bloq-dif:hover{
+    cursor: pointer;
+    background:rgba(119, 194, 212, 0.9);
+}
