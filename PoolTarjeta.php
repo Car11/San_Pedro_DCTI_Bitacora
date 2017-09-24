@@ -26,7 +26,7 @@ $rol=$_SESSION['rol'];
     <!-- CSS -->
     <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
-    <link href="css/formulario.css" rel="stylesheet"/>
+    <link href="css/Formulario.css" rel="stylesheet"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
