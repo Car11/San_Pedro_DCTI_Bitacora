@@ -742,7 +742,7 @@ $rol=$_SESSION['rol'];
         $(document).on('click', '#btnInsertaFormulario', function (event) {
         $.ajax({
             type: "POST",
-            url: "class/formulario.php",
+            url: "class/Formulario.php",
             data: {
                     action: "Insertar",
                     fechaingreso: document.getElementById('fechaingreso').value,
