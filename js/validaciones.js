@@ -5,7 +5,8 @@ function inicio() {
     $("#enviar").click(onValidaInicio);
     $("#EnviaNuevoPerfil").click(onValidaNuevoPerfil);
     $("#EnviaInfoVisita").click(onValidaInfoVisita);
-    $("#EnviaFormulario").click(onValidaFormulario);
+    $("#btnInsertaFormulario").click(onValidaFormulario);
+    $("#btnModificaFormulario").click(onValidaFormulario);
     $("#btnInsertaResponsable").click(onValidaResponsable);
     $("#btnModificaResponsable").click(onValidaResponsable);
     
@@ -40,13 +41,14 @@ function isNumber(evt) {
 }
 
 function onValidaFormulario() {
+    EnviaVisitante();
     var sala = document.getElementById('selectsala').value;
     var responsable = document.getElementById('txtresponsable').value;
     var motivo = document.getElementById("motivovisita").value;
     var placa =  document.getElementById('placavehiculo').value;
     var equipo = document.getElementById('detalleequipo').value;
     var rfc = document.getElementById('txtrfc').value;
-    var visitante = document.getElementById("visitantelargo").value;
+    var visitante = document.getElementById("visitantearray").value;
     var fechaingreso = document.getElementsByName("fechaingreso").value;
     var fechasalida = document.getElementsByName("fechasalida").value;
 
@@ -69,9 +71,9 @@ function onValidaFormulario() {
         document.getElementById('motivovisita').placeholder = "REQUERIDO";
         return false;
     }
-
-
-
+    if(visitante == ""){
+        return false;
+    }
 }
 
 function onValidaResponsable() {
