@@ -349,11 +349,7 @@ $rol=$_SESSION['rol'];
             </div>
             <div id="visitante-modal" class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
-                <?php 
-                print "<table id='tblvisitante'class='display'>";
-                print "<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead>";	
-                print "</table>";
-                ?>     
+   
             </div>
             <div class="modal-footer">
             <br>
@@ -526,17 +522,20 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
+            $('#visitante-modal').html("");
+            $('#visitante-modal').append("<table id='tblvisitante'class='display'>");
+            var col="<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody id='tableBody'></tbody>";
+            $('#tblvisitante').append(col);
+
             visitantereal = JSON.parse(e);
-            $('#tblvisitante').append("<tbody>");
             for (var i = 0; i < visitantereal.length; i++) {                
                 var tr1="<tr>";
                 var td1="<td>"+visitantereal[i][0] +"</td>";
                 var td2="<td>"+visitantereal[i][1] +"</td>";
                 var td3="<td>"+visitantereal[i][2] +"</td>";
                 var tr2="</tr>";
-                $('#tblvisitante').append(tr1+td1+td2+td3+tr2);
+                $('#tableBody').append(tr1+td1+td2+td3+tr2);
             }
-            $('#tblvisitante').append("</tbody>"); 
             $('#tblvisitante').DataTable();
         })    
         .fail(function(msg){
@@ -659,26 +658,10 @@ $rol=$_SESSION['rol'];
         modalSala.style.display = "none";
         //Vacia el atg que contiene los visitantes excluidos
         document.getElementById("visitanteexcluido").value ="";
+        $('#visitante-modal').html("");
     }
 
-    //Cierra el MODAL en cualquier parte de la ventana
-    window.onclick = function(event) {
-        if (event.target == modalVisitante) {
-            modalVisitante.style.display = "none";
-            $('#tblvisitante').html("");
-            //Vacia el tag que contiene los visitantes excluidos
-            document.getElementById("visitanteexcluido").value ="";
-            $('#tblvisitante').DataTable().destroy();
-        }else{
-            if (event.target == modalResponsable) {
-                modalResponsable.style.display = "none";
-            }else{
-                if (event.target == modalSala) {
-                    modalSala.style.display = "none";
-                }
-            }
-        }
-    }
+
 
     //Oculta o Muestra el DIV de estados del formualario
     function MuestraEstados(){
@@ -750,16 +733,13 @@ $rol=$_SESSION['rol'];
         //valida si se han agregado visitantes a la tabla        
         var cantidadvisitante = document.getElementById("tblvisitanteform").rows.length;
         if(cantidadvisitante<2){
-            //alert("Debe de insertar al menos un Visitante!");
             $('#imgflecha').addClass('imagen');
             return false;
         }
-        //swal("Insertado!", "Formulario Insertado Correctamente!", "success");
     }   
 
         //INSERTA UN FORMULARIO, SI ESTA CCORRECTO REDIRECCIONA A LISAT FORMULARIO ***/
         $(document).on('click', '#btnInsertaFormulario', function (event) {
-        EnviaVisitante();
         $.ajax({
             type: "POST",
             url: "class/formulario.php",
@@ -790,7 +770,6 @@ $rol=$_SESSION['rol'];
 
 
     $(document).on('click', '#btnModificaFormulario', function (event) {
-        EnviaVisitante();
         $.ajax({
             type: "POST",
             url: "class/Formulario.php",
