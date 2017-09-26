@@ -13,8 +13,8 @@ if (!$sesion->estado){
     exit;
 }
 //
-include("class/bitacora.php");
-$bitacora= new bitacora();
+include("class/Bitacora.php");
+$bitacora= new Bitacora();
 $listabitacora= $bitacora->Consulta();
 ?>
 
@@ -100,7 +100,9 @@ $listabitacora= $bitacora->Consulta();
 	<script>
 		$(document).ready( function () {
 	    $('#tblbitacora').DataTable({
-                "order": [[ 3, "desc" ]]
+                "order": [[ 3, "desc" ]],
+                dom: 'Bfrtip',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
         });
 	} );
 	</script>
