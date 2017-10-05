@@ -15,6 +15,9 @@ if (isset($_POST['idvisitante'])) {
     if (isset($_POST['idtarjeta'])) { 
         $bitacora->idtarjeta=$_POST['idtarjeta'];        
     }
+    if (isset($_POST['numtarjeta'])) { 
+        $bitacora->numtarjeta=$_POST['numtarjeta'];        
+    }
     if (isset($_POST['accion'])) {
         switch($_POST['accion']){
             case 'salida':
@@ -35,6 +38,7 @@ class Bitacora{
     public $cedula;
     public $idformulario;
     public $idtarjeta;
+    public $numtarjeta;
     public $entrada;
     public $salida;
     
@@ -59,7 +63,9 @@ class Bitacora{
                 $data = DATA::Ejecutar($sql,$param,true);
                 if($data)
                 {    
-                    email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE INGRESO", $this->idtarjeta);                  
+                    require_once("Tarjeta.php");  
+                    $tarjeta= new Tarjeta();
+                    Email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE INGRESO", $this->numtarjeta);                  
                     echo "Bienvenid@ !!!"; 
                 }
                 else {
@@ -103,7 +109,7 @@ class Bitacora{
                 $param= array(':idtarjeta'=>$this->idtarjeta);
                 $data = DATA::Ejecutar($sql,$param,true);     
                 if($data){    
-                    email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE SALIDA", $this->idtarjeta);           
+                    Email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE SALIDA", $this->numtarjeta);           
                     echo "Salida Completa";
                 }
                 else {

@@ -3,7 +3,7 @@ class Email{
 
     //public $visitante;
 
-    static function Enviar($idvisitante, $idformulario, $asunto, $mensajeEncabezado, $idtarjeta="NULL"){
+    static function Enviar($idvisitante, $idformulario, $asunto, $mensajeEncabezado, $numTarjeta="NULL"){
         // smtpapl.correo.ice
         // puerto 25
         // ip 10.149.20.26
@@ -34,9 +34,9 @@ class Email{
                 $mensaje .= "<tr><td><strong>Nombre:</strong> </td><td>" .  $visitante->nombre  . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Empresa:</strong> </td><td>" . $visitante->empresa . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Detalle:</strong> </td><td>" . $formulario->motivovisita . "</td></tr>";
-                $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.149.20.26:8000/Cert/formularioingreso.php?ID=" . $idformulario . "</td></tr>";
-                if($idtarjeta!="NULL")
-                    $mensaje .= "<tr><td><strong>Tarjeta:</strong> </td><td>"  . $idtarjeta . "</td></tr>";
+                $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.3.2.197/BitacoraCDC/FormularioIngreso.php?MOD=" . $idformulario . "</td></tr>";
+                if($numTarjeta!="NULL")
+                    $mensaje .= "<tr><td><strong>Tarjeta:</strong> </td><td>"  . $numTarjeta . "</td></tr>";
                 $mensaje .= "</table>";
                 $mensaje .= "</body></html>";
                 //
@@ -44,11 +44,11 @@ class Email{
                 $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
                 $headers .= "From: ".$from."\r\n"; 
                 //
-                /*if(!mail($to, $asunto, $mensaje,$headers))
+                if(!mail($to, $asunto, $mensaje,$headers))
                 {
                     require_once("Log.php");  
-                    log::AddD('ERROR', 'Ha ocurrido un error al realizar el envío de correo');
-                }*/
+                    log::Add('ERROR', 'Ha ocurrido un error al realizar el envío de correo');
+                }
             }            
         }     
         catch(Exception $e) {
