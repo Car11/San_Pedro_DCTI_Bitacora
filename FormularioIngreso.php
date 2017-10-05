@@ -87,191 +87,207 @@ $rol=$_SESSION['rol'];
     </header>
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
-        <div id="izquierda">
-            <div id="superiorizq"></div>
-            <div id="medioizq">
-                <img id=imgflecha src=img/flecha-error.png class="imagenNO">
-            </div>    
-        </div>
-        <div id="principal">
-            <div id="superiornavegacion">
-                <div id="nuevo">   
-                </div>
-                <div id="atras">
-                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">   
-                </div>
-                <div id="extra"></div>
+            <div id="izquierda">
+                <div id="superiorizq"></div>
+                <div id="medioizq">
+                    <img id=imgflecha src=img/flecha-error.png class="imagenNO">
+                </div>    
             </div>
-            <div id="superior">
-                <div id="caja">
-                    <div class="cajainput">
-                        <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
-                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field-form" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
+            <div id="formularioenviado">
+                <h1>FORMULARIO ENVIADO</h1>        
+                <h2>SERÁ NOTIFICADO VÍA CORREO DE SU APROBACIÓN</h2>
+                <h2>Muchas Gracias!!!</h2>
+            </div>
+            <div id="principal">
+                <div id="superiornavegacion">
+                    <div id="nuevo">   
                     </div>
-                    <div class="cajainput">
-                        <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
-                        <input type="text" id="txtresponsable" name="txtresponsable" class="input-field-form" placeholder="CLICK" readonly="readonly"
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][8];}?>" required/>  
+                    <div id="atras">
+                        <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">   
                     </div>
+                    <div id="extra"></div>
                 </div>
-                <div id="caja">
-                    <div class="cajainput">
-                        <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
-                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field-form" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
+                <div id="superior">
+                    <div id="caja">
+                        <div class="cajainput">
+                            <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
+                            <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field-form" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
+                        </div>
+                        <div class="cajainput">
+                            <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
+                            <input type="text" id="txtresponsable" name="txtresponsable" class="input-field-form" placeholder="CLICK" readonly="readonly"
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][8];}?>" required/>
+                        </div>
                     </div>
-                    <div class="cajainput">
-                        <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
-                        <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][9];}?>" required/> 
+                    <div id="caja">
+                        <div class="cajainput">
+                            <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
+                            <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field-form" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
+                        </div>
+                        <div class="cajainput">
+                            <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
+                            <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][9];}?>" required/> 
+                        </div>
                     </div>
-                </div>
-                <div id="caja">
-                    <div id="cajainput_tramitante">
-                        <label for="txttramitante" class="labelformat">Tramitante</label></br>
-                        <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>"/>
-                    </div>                   
-                    <div id="cajainput_autorizador">
-                        <label for="txtautorizador" class="labelformat">Autorizador</label></br>
-                        <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
+                    <div id="caja">
+                        <div id="cajainput_tramitante">
+                            <label for="txttramitante" class="labelformat">Tramitante</label></br>
+                            <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>"/>
+                        </div>                   
+                        <div id="cajainput_autorizador">
+                            <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label></br>
+                            <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
+
+                        </div>
+                    </div>
+                </div>  
+                <div id="medio">
+                    <div id="tabla">
+                       <div id="distribuciontabla">
+                            <div id="tablavisitante">
+                                <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
+                                <?php
+                                print "<table id='tblvisitanteform' class='display' cellspacing='0' width='100%' >";
+                                print "<thead>";
+                                print "<tr class='fila'>";
+                                print "<th id='titulocedula'>Cedula</th>";
+                                print "<th id='titulonombre'>Nombre</th>";
+                                print "<th id='tituloempresa'>Empresa</th>";
+                                print "<th id='tituloeliminar'>Eliminar</th>";
+                                print "</tr>";
+                                print "</thead>";
+                                if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                    print "<tbody>";
+                                    for ($i=0; $i<count($visitanteformulario); $i++) {
+                                        print "<tr class='fila'>";
+                                        print "<td>".$visitanteformulario[$i][0]."</td>";
+                                        print "<td>".$visitanteformulario[$i][1]."</td>";
+                                        print "<td>".$visitanteformulario[$i][2]."</td>";
+                                        print "<td><img id=imgdelete src=img/file_delete.png class=borrar></td>";
+                                        print "</tr>";
+                                    }
+                                    print "</tbody>";
+                                }
+                                print "</table>";
+                                ?>
+                            </div>
+                        <div id="btnagregarvisitante">
+                            <input type="button" id="btnagregavisitante" value="+">  
+                        </div>
+                       </div>
+                       <div id="distribuciontabla2"></div>
+                    </div>
+                    <div id="etiquetas">
+                        <div id="numeroformulario">
+                            <div id="cajanumform">
+                                <label class="labelformatnum">Formulario #</label>    
+                            </div>
+                            <div id="cajanumform2">
+                                <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
+                                value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                    echo $formdata[0][13];
+    } else {
+        echo "nuevo";
+    }?>"/>   
+                            </div>
+
+                        </div>
+                        <div id="estadoformulario">
+                            <div id="estadosform">
+                                <form id="formularioestados">
+                                    <input type="radio" class="radioformat" id="pendiente" name="estadoformulario" value="0" checked>
+                                    <label class="labelradioformat">Pendiente</label>
+                                    </br>
+                                    <input type="radio" class="radioformat" id="aprobado" name="estadoformulario" value="1">
+                                    <label class="labelradioformat">Aprobado</label>
+                                    </br>
+                                    <input type="radio" class="radioformat" id="denegado" name="estadoformulario" value="2">
+                                    <label class="labelradioformat">Denegado</label>
+                                </form>     
+                            </div>
+                        </div>
+                        <div id="submitformulario">
+                            <input id="EnviaFormulario" class="cbp-mc-submit" type="submit" value="Enviar Formulario">
+                            <input type="button" id="btnInsertaFormulario" class="cbp-mc-submit" value="Insertar">
+                            <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">
+                            <input id="visitantearray" name="visitantearray" type="hidden">
+                            <input id="visitantelargo" name="visitantelargo" type="hidden">
+                            <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
+                            <input id="idformulario" name="idformulario" type="hidden" value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                    echo $formdata[0][0];
+    } else {
+        echo "nuevo";
+    }?>"
+                        </div>
+                    </div>
+                </div> 
+                <div id="inferior">
+                    <div id="cajade3">
+
+                        <div class="cajainput2">
+                        <div class="positionlabel">
+                            <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
+                            </div>
+                            <div class="positioninput">
+                            <input type="text" id="placavehiculo" class="input-field-form" name="placavehiculo" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][10];}?>" 
+                            pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
+                            </div>
+                        </div>      
+
+                        <div class="cajainput2">
+                        <div class="positionlabel">
+                            <label for="detalleequipo" class="labelformat">Detalle Equipo</label>
+                            </div>
+                            <div class="positioninput">
+                            <input type="text" id="detalleequipo" class="input-field-form" name="detalleequipo" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][11];}?>" 
+                            pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
+                            </div>
+                        </div>
+
+                        <div class="cajainput2">
+                            <div class="positionlabel">
+                                <label for="txtrfc" class="labelformat">RFC</label>
+                            </div>
+                            <div class="positioninput">
+                                <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field-form" 
+                                value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][12]; }?>" 
+                                pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>    
+                                </div>
+                        </div>  
 
                     </div>
-                </div>
-            </div>  
-            <div id="medio">
-                <div id="tabla">
-                   <div id="distribuciontabla">
-                        <div id="tablavisitante">
-                            <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
-                            <?php
-                            print "<table id='tblvisitanteform' class='display' cellspacing='0' width='100%' >";
-                            print "<thead>";
-                            print "<tr class='fila'>";
-                            print "<th id='titulocedula'>Cedula</th>";
-                            print "<th id='titulonombre'>Nombre</th>";
-                            print "<th id='tituloempresa'>Empresa</th>";
-                            print "<th id='tituloeliminar'>Eliminar</th>";
-                            print "</tr>";
-                            print "</thead>";
-                            if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                                print "<tbody>";
-                                for ($i=0; $i<count($visitanteformulario); $i++) {
-                                    print "<tr class='fila'>";
-                                    print "<td>".$visitanteformulario[$i][0]."</td>";
-                                    print "<td>".$visitanteformulario[$i][1]."</td>";
-                                    print "<td>".$visitanteformulario[$i][2]."</td>";
-                                    print "<td><img id=imgdelete src=img/file_delete.png class=borrar></td>";
-                                    print "</tr>";
-                                }
-                                print "</tbody>";
-                            }
-                            print "</table>";
-                            ?>
-                        </div>
-                    <div id="btnagregarvisitante">
-                        <input type="button" id="btnagregavisitante" value="+">  
+                    <div id="cajainput3">
+                        <label for="motivovisita" class="labelformat">Motivo Visita</label>
+                        <input type="text" id="motivovisita" name="motivovisita" class="input-field-form"
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
+                        pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                     </div>
-                   </div>
-                   <div id="distribuciontabla2"></div>
-                </div>
-                <div id="etiquetas">
-                    <div id="numeroformulario">
-                        <div id="cajanumform">
-                            <label class="labelformatnum">Formulario #</label>    
-                        </div>
-                        <div id="cajanumform2">
-                            <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
-                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                                echo $formdata[0][13];
-} else {
-    echo "nuevo";
-}?>"/>   
-                        </div>
-                        
-                    </div>
-                    <div id="estadoformulario">
-                        <div id="estadosform">
-                            <form id="formularioestados">
-                                <input type="radio" class="radioformat" id="pendiente" name="estadoformulario" value="0" checked>
-                                <label class="labelradioformat">Pendiente</label>
-                                </br>
-                                <input type="radio" class="radioformat" id="aprobado" name="estadoformulario" value="1">
-                                <label class="labelradioformat">Aprobado</label>
-                                </br>
-                                <input type="radio" class="radioformat" id="denegado" name="estadoformulario" value="2">
-                                <label class="labelradioformat">Denegado</label>
-                            </form>     
-                        </div>
-                    </div>
-                    <div id="submitformulario">
-                        <input id="EnviaFormulario" class="cbp-mc-submit" type="submit" value="Enviar Formulario">
-                        <input type="button" id="btnInsertaFormulario" class="cbp-mc-submit" value="Insertar">
-                        <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">
-                        <input id="visitantearray" name="visitantearray" type="hidden">
-                        <input id="visitantelargo" name="visitantelargo" type="hidden">
-                        <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
-                        <input id="idformulario" name="idformulario" type="hidden" value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                                echo $formdata[0][0];
-} else {
-    echo "nuevo";
-}?>"
-                    </div>
-                </div>
-            </div> 
-            <div id="inferior">
-                <div id="cajade3">
-                    
-                    <div class="cajainput2">
-                        <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
-                        <input type="text" id="placavehiculo" class="input-field-form" name="placavehiculo" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][10];}?>" 
-                        pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
-                    </div>      
-                    
-                    <div class="cajainput2">
-                        <label for="detalleequipo" class="labelformat">Detalle Equipo</label>
-                        <input type="text" id="detalleequipo" class="input-field-form" name="detalleequipo" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][11];}?>" 
-                        pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
-                    </div>
-                    
-                    <div class="cajainput2">
-                        <label for="txtrfc" class="labelformat">RFC          :</label>
-                        <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field-form" 
-                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                            print $formdata[0][12]; }?>" 
-                        pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>    
-                    </div>  
-                
-                </div>
-                <div id="cajainput3">
-                    <label for="motivovisita" class="labelformat">Motivo Visita</label>
-                    <input type="text" id="motivovisita" name="motivovisita" class="input-field-form"
-                    value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
-                    pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
-                </div>
-            </div>  
-        </div>
-        <div id="derecha">
-            
-        </div>
-    </form>
+                </div>  
+            </div>
+            </div>
+            <div id="derecha"></div>
+        </form>
     </div>    
 
     <!-- MODAL RESPONSABLE -->
     <div id="ModalResponsable" class="modal">
         <!-- Modal content -->
-        <div class="modal-content">
+        <div class="modal-content-responsable">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Seleccione el Responsable</h2>
+                <h2>Seleccione Responsable</h2>
             </div>
             <div class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR RESPONSABLES -->
@@ -279,7 +295,7 @@ $rol=$_SESSION['rol'];
                 print "<table id='tblresponsable'class='display'>";
                 print "<thead>";
                 print "<tr>";
-                print "<th>ID</th>";
+                print "<th class='id_oculto'>ID</th>";
                 print "<th>Nombre</th>";
                 print "<th>Cedula</th>";
                 print "<th>Empresa</th>";
@@ -288,7 +304,7 @@ $rol=$_SESSION['rol'];
                 print "<tbody>";
                 for ($i=0; $i<count($responsables); $i++) {
                     print "<tr>";
-                    print "<td>".$responsables[$i][0]."</td>";
+                    print "<td class='id_oculto'>".$responsables[$i][0]."</td>";
                     print "<td>".$responsables[$i][1]."</td>";
                     print "<td>".$responsables[$i][2]."</td>";
                     print "<td>".$responsables[$i][3]."</td>";
@@ -311,7 +327,7 @@ $rol=$_SESSION['rol'];
         <div class="modal-content-sala">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Seleccione el Sala</h2>
+                <h2>Seleccione Sala</h2>
             </div>
             <div class="modal-body">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR RESPONSABLES -->
@@ -356,7 +372,6 @@ $rol=$_SESSION['rol'];
             </div>
         </div>
     </div>
-    <!--FINAL MODAL VISITANTE-->
     
 <script type="text/javascript" language="javascript">
     //Se ejecuta al iniciar la pagina
@@ -398,16 +413,16 @@ $rol=$_SESSION['rol'];
         // Cambia color del botón enviar segun estado del formulario.
         $('input[type=radio][name=estadoformulario]').change(function() {
             if (this.value == '0') {
-                $("#btnInsertarFormulario").css("background-color", "cc9900");
-                $("#btnModificarFormulario").css("background-color", "cc9900");
+                $("#btnInsertaFormulario").css("background-color", "cc9900");
+                $("#btnModificaFormulario").css("background-color", "cc9900");
             }
             else if (this.value == '1') {
-                $("#btnInsertarFormulario").css("background-color", "016DC4");
-                $("#btnModificarFormulario").css("background-color", "016DC4");
+                $("#btnInsertaFormulario").css("background-color", "016DC4");
+                $("#btnModificaFormulario").css("background-color", "016DC4");
             }
             else if (this.value == '2') {
-                $("#btnInsertarFormulario").css("background-color", "firebrick");
-                $("#btnModificarFormulario").css("background-color", "firebrick");
+                $("#btnInsertaFormulario").css("background-color", "firebrick");
+                $("#btnModificaFormulario").css("background-color", "firebrick");
             }
         });
     
@@ -416,6 +431,12 @@ $rol=$_SESSION['rol'];
             // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
             $(".modal").css({ display: "none" });
         });
+
+        //Oculta Mensaje de Formulario enciado por el Tramitante
+        $('#formularioenviado').hide();
+
+        //OCulto ID de Responsable
+        //$('.id_oculto').hide();
     } );
 
     //Confirma no salvar cambios para volver al menu admin     
@@ -661,13 +682,34 @@ $rol=$_SESSION['rol'];
         $('#visitante-modal').html("");
     }
 
-
+    //Cierra el MODAL en cualquier parte de la ventana
+        window.onclick = function(event) {
+        if (event.target == modalVisitante) {
+            //$('#tblvisitante').clear();
+            modalVisitante.style.display = "none";   
+            document.getElementById("visitanteexcluido").value ="";
+            $('#visitante-modal').html("");
+        }
+    }
 
     //Oculta o Muestra el DIV de estados del formualario
     function MuestraEstados(){
         var rol = "<?php echo $rol ?>";
-        if (rol==1) {$('#estadosform').show();}else{$('#estadosform').hide();}
+        if (rol==1) {
+            $('#estadosform').show();
+        }else{
+            $('#estadosform').hide();
+            $('#btnatras').hide();
+            $('#lblautorizador').hide();
+            $('#txtautorizador').hide();
+        }
     }
+
+    //Mientras se digita en el Campo Motivo
+    $('#motivovisita').on('keyup', function() {
+        $("#motivovisita").css("border", "0px");
+        document.getElementById('motivovisita').placeholder ="";
+    });
 
     //Muestra u Oculta el numero del Formulario 
     function NumFormulario(){
@@ -692,6 +734,14 @@ $rol=$_SESSION['rol'];
             $("#btnInsertaFormulario").show();
         }
     }
+
+    //Valida Caracteres Especiales en el campo motivo 
+    $('#motivovisita').keydown(function(e){
+        if (e.keyCode == 226 ){
+            document.getElementById('motivovisita').placeholder = "CARACTER INVÁLIDO";
+            return false;
+        } 
+    });
 
     //Maneja el evento checked del estado del radio button formulario
     function EstadoFormulario(){        
@@ -760,7 +810,13 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            location.href='ListaFormulario.php?INS=1';
+            var rol = "<?php echo $rol ?>";
+            if (rol==1) 
+                location.href='ListaFormulario.php?INS=1';
+            else
+                $('#formularioenviado').show();
+                $('#principal').hide();
+                //location.href='FormularioEnviado.php?';
             }
         )    
         .fail(function(msg){

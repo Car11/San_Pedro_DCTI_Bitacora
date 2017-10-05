@@ -67,8 +67,13 @@ function onValidaFormulario() {
     }
     if(motivo == ""){
         $("#motivovisita").css("border", "2px solid red");
-        $("#motivovisita").css("color", "red");
         document.getElementById('motivovisita').placeholder = "REQUERIDO";
+        return false;
+    }
+    if(motivo.length<8){
+        $('#motivovisita').val('');
+        $("#motivovisita").css("border", "2px solid red");
+        document.getElementById('motivovisita').placeholder = "8 CARACTERES MÍNIMO";
         return false;
     }
     if(visitante == ""){
