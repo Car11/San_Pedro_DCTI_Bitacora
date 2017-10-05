@@ -33,6 +33,18 @@ $listabitacora= $bitacora->Consulta();
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/sweetalert2.js"></script>
 
+    <!-- EXPORTAR ARCHIVOS  -->
+    <script type="text/javascript" src="https://cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
 </head>
 <body> 
 	<header>
@@ -63,12 +75,8 @@ $listabitacora= $bitacora->Consulta();
 					print "<th>Entrada</th>";
 					print "<th>Salida</th>";
 			        print "<th>Locación</th>";		
-                    print "<th>Tarjeta</th>";
-                    print "<th>Estado</th>";
-                    
 					print "</tr>";
 					print "</thead>";	
-					
 					print "<tbody>";
 					for($i=0; $i<count($listabitacora); $i++){
 						print "<tr>";
@@ -78,11 +86,6 @@ $listabitacora= $bitacora->Consulta();
 						print "<td>".$listabitacora[$i][4]."</td>";
 						print "<td>".$listabitacora[$i][5]."</td>";
 						print "<td>".$listabitacora[$i][6]."</td>";
-                        print "<td>".$listabitacora[$i][7]."</td>";
-                        if($listabitacora[$i][8]==1)
-                            print "<td>USO</td>";    
-                        else
-                            print "<td>LIBRE</td>";
 						print "</tr>";
 					}
 					print "</tbody>";
