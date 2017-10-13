@@ -94,9 +94,12 @@ $rol=$_SESSION['rol'];
                 </div>    
             </div>
             <div id="formularioenviado">
+                <div id="mensajeform">
                 <h1>FORMULARIO ENVIADO</h1>        
                 <h2>SERÁ NOTIFICADO VÍA CORREO DE SU APROBACIÓN</h2>
                 <h2>Muchas Gracias!!!</h2>
+                </div>
+                <div id="espacioform"></div>
             </div>
             <div id="principal">
                 <div id="superiornavegacion">
