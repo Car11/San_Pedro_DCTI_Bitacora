@@ -413,6 +413,9 @@ $rol=$_SESSION['rol'];
         $('#tblresponsable').DataTable();          
         $('#tblsala').DataTable();
         MuestraEstados();
+        //Pone por default el color de los botones
+        $("#btnInsertaFormulario").css("background-color", "cc9900");
+        $("#btnModificaFormulario").css("background-color", "cc9900");
         // Cambia color del botón enviar segun estado del formulario.
         $('input[type=radio][name=estadoformulario]').change(function() {
             if (this.value == '0') {
