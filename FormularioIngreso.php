@@ -88,7 +88,11 @@ $rol=$_SESSION['rol'];
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
             <div id="izquierda">
-                <div id="superiorizq"></div>
+                <div id="superiorizq">
+                <label for="selectdatacenter" class="labelformat">Seleccione Data Center</label></br>
+                            <input type="text" id="selectdatacenter" name="selectsaladatacenter" placeholder="CLICK" class="input-field-form" readonly="readonly"
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][9];}?>" required/>  
+                </div>
                 <div id="medioizq">
                     <img id=imgflecha src=img/flecha-error.png class="imagenNO">
                 </div>    
@@ -134,7 +138,7 @@ $rol=$_SESSION['rol'];
                             <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
                             <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
                             value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                                print $formdata[0][9];}?>" required/> 
+                                print $formdata[0][9];}?>" required/>
                         </div>
                     </div>
                     <div id="caja">
@@ -375,6 +379,25 @@ $rol=$_SESSION['rol'];
             </div>
         </div>
     </div>
+
+    <!-- MODAL DATACENTER -->
+    <div id="ModalDataCenter" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Seleccione el Data Center</h2>
+            </div>
+            <div id="datacenter-modal" class="modal-body">
+                <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
+            </div>
+            <div class="modal-footer">
+            <br>
+            </div>
+        </div>
+    </div>
+
+
     
 <script type="text/javascript" language="javascript">
     //Se ejecuta al iniciar la pagina
@@ -392,10 +415,12 @@ $rol=$_SESSION['rol'];
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     
     var modalSala = document.getElementById('ModalSala');
+    var modalDataCenter = document.getElementById('ModalDataCenter');
     // Botón que abre el MODAL
     var btn = document.getElementById("btnagregavisitante");
     var inputResponsable = document.getElementById("txtresponsable");
     var inputSala = document.getElementById("selectsala");
+    var inputDataCenter = document.getElementById("selectdatacenter");
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
     var btnmod = <?php echo $btnmod;?>;
@@ -668,6 +693,43 @@ $rol=$_SESSION['rol'];
         }
     });
 
+    //Carga los Data center
+    $(document).on('click', '#selectdatacenter', function (event) {
+        
+        $.ajax({
+            type: "POST",
+            url: "class/DataCenter.php",
+            data: {
+                    action: "SeleccionarDataCenter",
+                  }
+        })
+        .done(function( e ) {
+            $('#datacenter-modal').html("");
+            $('#datacenter-modal').append("<table id='tbldatacenter'class='display'>");
+            var col="<thead><tr><th id='titulo_iddc'>ID</th><th>NOMBRE</th></thead><tbody id='tableBody'></tbody>";
+            $('#tbldatacenter').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td class='columna_iddc'>"+ item.id+"</td>" +
+                    "<td>"+ item.nombre+"</td>" +
+                "</tr>";
+                $('#tableBody').append(row);  
+                $('#titulo_iddc').hide();
+                $('.columna_iddc').hide();       
+            })
+            // formato tabla
+            $('#tbldatacenter').DataTable( {
+                "order": [[ 1, "asc" ]]
+            } );
+        })    
+        .fail(function(msg){
+            alert("Error al Cargar Data Centers");
+        });
+    }); 
+
     //Abre el modal de responsables
     inputResponsable.onclick = function() {
         modalResponsable.style.display = "block";
@@ -676,6 +738,11 @@ $rol=$_SESSION['rol'];
     inputSala.onclick = function() {
         modalSala.style.display = "block";
     }
+    //Abre el modal Data Center
+    inputDataCenter.onclick = function() {
+        modalDataCenter.style.display = "block";
+    }
+
     //Cierra el MODAL en la X
     span.onclick = function() {
         modalResponsable.style.display = "none";
