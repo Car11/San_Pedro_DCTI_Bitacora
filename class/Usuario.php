@@ -64,7 +64,7 @@ class Usuario{
                 echo '</pre>';*/
                 //$userDn = $info[$i]["distinguishedname"][0]; 
                 $this::BuscaRol();
-                log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
+                //log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
                 return true;  
             }
             @ldap_close($ldap);

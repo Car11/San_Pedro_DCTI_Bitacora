@@ -665,3 +665,12 @@ input[type=checkbox] {
 .id_oculto{
     display: none;
 }
+
+#mensajeform{
+    width: 78%;
+    float: left;
+}
+#espacioform{
+    width: 22%;
+    float: left;
+}
