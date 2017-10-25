@@ -49,7 +49,7 @@ class Usuario{
         if ($bind) {
             $filter="(sAMAccountName=$ldapUser)";
             $result = ldap_search($ldap,"dc=icetel,dc=ice",$filter);
-            ldap_sort($ldap,$result,"sn");
+            //ldap_sort($ldap,$result,"sn");
             $info = ldap_get_entries($ldap, $result);
             for ($i=0; $i<$info["count"]; $i++)
             {

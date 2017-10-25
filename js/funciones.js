@@ -2,7 +2,7 @@ $(document).ready(inicio);
 var formularioConsultado='NULL'; // formulario consultado por medio de la cedula del visitante en punto de seguridad.
 var formularioID= []; // formularios temporales aprobado/Denegado en tiempo real por operaciones.
 var modal;
-var modalVisitante;
+var modalVisitante; 
 
 function inicio() {    
     // Cierra el MODAL en cualquier parte de la ventana

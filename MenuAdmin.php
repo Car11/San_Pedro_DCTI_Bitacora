@@ -38,8 +38,9 @@ if (!$sesion->estado){
                 <li><a href="ListaFormulario.php">Formulario</a></li>
                   <li><a href="ResponsableMantenimiento.php">Responsables</a></li>
                 <li><a href="PoolTarjeta.php">Pool Tarjetas</a></li>
-                <li><a href="ListaVisitantes.php">Visitantes</a></li>
+                <li><a href="ListaVisitantes.php">Visitantes</a></li>                
                 <li><a href="">Salas</a></li>
+                <li><a href="WebNOC.php">Web NOC</a></li>
               </ul>
             </li>
           </ul>
