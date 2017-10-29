@@ -54,14 +54,13 @@ function onValidaFormulario() {
 
     if (responsable == ""){
         $("#txtresponsable").css("border", "2px solid red");
-        $("#txtresponsable").css("color", "red");
         document.getElementById('txtresponsable').placeholder = "REQUERIDO";
         //alert("Debe de asignar un responsable!");
         return false;
     }
+    
     if (sala == ""){
         $("#selectsala").css("border", "2px solid red");
-        $("#selectsala").css("color", "red");
         document.getElementById('selectsala').placeholder = "REQUERIDO";
         return false;
     }

@@ -20,29 +20,29 @@ $id=0;
 $largo=0;
 $visitanteformulario=0;
 $btnmod=3;
-// if (isset($_GET['ID'])) {
-//     $id=$_GET['ID'];
-//     // es formulario temporal
-//     $_SESSION['TEMP']=$id;
-//     $formulario->id=$id;
-//     //Carga la sala según el link
-//     $formdata= $formulario->Cargar();
-//     //Si hay un link carga el estado en el radio
-//     $estadoformulario= $formdata[0][2];
-//     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
-//     $largo=count($visitanteformulario);
-// }
-// if (isset($_GET['MOD'])) {
-//     $id=$_GET['MOD'];
-//     $formulario->id=$id;
-//     //Carga la sala según el link
-//     $formdata= $formulario->Cargar();
-//     //Si hay un link carga el estado en el radio
-//     $estadoformulario= $formdata[0][2];
-//     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
-//     $largo=count($visitanteformulario);
-//     $btnmod=1;
-// }
+if (isset($_GET['ID'])) {
+    $id=$_GET['ID'];
+    // es formulario temporal
+    $_SESSION['TEMP']=$id;
+    $formulario->id=$id;
+    //Carga la sala según el link
+    $formdata= $formulario->Cargar();
+    //Si hay un link carga el estado en el radio
+    $estadoformulario= $formdata[0][2];
+    $visitanteformulario=$formulario->CargaVisitanteporFormulario();
+    $largo=count($visitanteformulario);
+}
+if (isset($_GET['MOD'])) {
+    $id=$_GET['MOD'];
+    $formulario->id=$id;
+    //Carga la sala según el link
+    $formdata= $formulario->Cargar();
+    //Si hay un link carga el estado en el radio
+    $estadoformulario= $formdata[0][2];
+    $visitanteformulario=$formulario->CargaVisitanteporFormulario();
+    $largo=count($visitanteformulario);
+    $btnmod=1;
+}
 
 //SALA 
 //include("class/Sala.php");
@@ -91,7 +91,7 @@ $rol=$_SESSION['rol'];
                 <div id="superiorizq">
                 <label for="selectdatacenter" class="labelformat">Seleccione Data Center</label></br>
                             <input type="text" id="selectdatacenter" name="selectsaladatacenter" placeholder="CLICK" class="input-field-form" readonly="readonly"
-                            value="" required/>  
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][9];}?>" required/>  
                 </div>
                 <div id="medioizq">
                     <img id=imgflecha src=img/flecha-error.png class="imagenNO">
@@ -119,36 +119,38 @@ $rol=$_SESSION['rol'];
                         <div class="cajainput">
                             <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
                             <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field-form" 
-                            value="" required/>
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][4];}?>" required/>
                         </div>
                         <div class="cajainput">
                             <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
                             <input type="text" id="txtresponsable" name="txtresponsable" class="input-field-form" placeholder="CLICK" readonly="readonly"
-                            value="" required/>
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][8];}?>" required/>
                         </div>
                     </div>
                     <div id="caja">
                         <div class="cajainput">
                             <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
                             <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field-form" 
-                            value="" required/> 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {print $formdata[0][5];}?>" required/> 
                         </div>
                         <div class="cajainput">
                             <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
                             <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
-                            value="" required/>
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][9];}?>" required/>
                         </div>
                     </div>
                     <div id="caja">
                         <div id="cajainput_tramitante">
                             <label for="txttramitante" class="labelformat">Tramitante</label></br>
                             <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" 
-                            value=""/>
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) print $formdata[0][6]; else echo($usuario->nombre);?>"/>
                         </div>                   
                         <div id="cajainput_autorizador">
                             <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label></br>
                             <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
-                            value="" /> 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { if($formdata[0][7]==null and $rol==1)echo($usuario->nombre); else print $formdata[0][7];} else { if ($rol==1) echo($usuario->nombre);} ?>" /> 
 
                         </div>
                     </div>
@@ -196,7 +198,11 @@ $rol=$_SESSION['rol'];
                             </div>
                             <div id="cajanumform2">
                                 <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
-                                value=""/>   
+                                value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                    echo $formdata[0][13];
+    } else {
+        echo "nuevo";
+    }?>"/>   
                             </div>
 
                         </div>
@@ -221,7 +227,11 @@ $rol=$_SESSION['rol'];
                             <input id="visitantearray" name="visitantearray" type="hidden">
                             <input id="visitantelargo" name="visitantelargo" type="hidden">
                             <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
-                            <input id="idformulario" name="idformulario" type="hidden" value=""
+                            <input id="idformulario" name="idformulario" type="hidden" value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                    echo $formdata[0][0];
+    } else {
+        echo "nuevo";
+    }?>"
                         </div>
                     </div>
                 </div> 
@@ -234,7 +244,8 @@ $rol=$_SESSION['rol'];
                             </div>
                             <div class="positioninput">
                             <input type="text" id="placavehiculo" class="input-field-form" name="placavehiculo" 
-                            value="" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][10];}?>" 
                             pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                             </div>
                         </div>      
@@ -245,7 +256,8 @@ $rol=$_SESSION['rol'];
                             </div>
                             <div class="positioninput">
                             <input type="text" id="detalleequipo" class="input-field-form" name="detalleequipo" 
-                            value="" 
+                            value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][11];}?>" 
                             pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                             </div>
                         </div>
@@ -256,7 +268,8 @@ $rol=$_SESSION['rol'];
                             </div>
                             <div class="positioninput">
                                 <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field-form" 
-                                value="" 
+                                value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
+                                print $formdata[0][12]; }?>" 
                                 pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>    
                                 </div>
                         </div>  
@@ -265,7 +278,7 @@ $rol=$_SESSION['rol'];
                     <div id="cajainput3">
                         <label for="motivovisita" class="labelformat">Motivo Visita</label>
                         <input type="text" id="motivovisita" name="motivovisita" class="input-field-form"
-                        value="" required 
+                        value="<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo $formdata[0][3];?>" required 
                         pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                     </div>
                 </div>  
@@ -946,7 +959,7 @@ $rol=$_SESSION['rol'];
         });
     }); 
 
-    //EVENTO DEL BOTON MODIFICAR FORMULARIO
+
     $(document).on('click', '#btnModificaFormulario', function (event) {
         $.ajax({
             type: "POST",
@@ -976,19 +989,18 @@ $rol=$_SESSION['rol'];
         });
     });
 
-    //CARGAR TODOS LOS CONTROLES CON LOS DATOS DEL FORMULARIO
     function CargarFormularioModificar(){
         $.ajax({
             type: "POST",
             url: "class/Formulario.php",
             data: {
                     action: "CargaMOD",
-                    id: '5d93c949-bcde-11e7-aea0-000c297ea70d'
+                    id: $_GET["MOD"];
                   }
         })
         .done(function( e ) {
+            //CARGAR TODOS LOS CONTROLES CON LOS DATOS DEL FORMULARIO
             
-
         })    
         .fail(function(msg){
             alert("Error al Modificar Formulario");
@@ -997,7 +1009,7 @@ $rol=$_SESSION['rol'];
 
 
 
-    //SELECCION MODAL RESPONSABLES ********/
+    //MODAL RESPONSABLES ********/
     $('#tblresponsable tr').on('click', function(){        
         $(this).toggleClass('selected');
         jResponsable.length = 0;
@@ -1029,7 +1041,6 @@ $rol=$_SESSION['rol'];
         ValidacionCorrecta();
     });*/
 
-    //SELECCION MODAL SALA
     $(document).on('click','#tblsala tr', function(){
         $(this).toggleClass('selected');
         jSala.length = 0;

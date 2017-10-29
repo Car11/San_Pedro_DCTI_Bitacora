@@ -30,6 +30,10 @@ if(isset($_POST["action"])){
         $formulario= new formulario();
         $formulario->ModificarAJAX();
     }
+    if($_POST["action"]=="CargaMOD"){
+        $formulario= new formulario();
+        $formulario->Carga();
+    }
 }
 
 class Formulario
@@ -54,6 +58,7 @@ class Formulario
     public $nombreestado;
     public $estado;
     public $rfc;
+    public $iddatacenter;
         
     function __construct()
     {
@@ -114,16 +119,16 @@ class Formulario
         try {
             
             $sql="INSERT INTO formulario(fechaingreso,idsala,fechasalida,placavehiculo,detalleequipo,motivovisita,idresponsable,idautorizador,idtramitante,idestado,rfc)
-                VALUES (:fechaingreso,(SELECT id FROM sala WHERE nombre= :nombresala),:fechasalida,:placavehiculo,
-                :detalleequipo,:motivovisita,(SELECT id FROM responsable WHERE nombre= :nombreresponsable),
+                VALUES (:fechaingreso,:idsala,:fechasalida,:placavehiculo,
+                :detalleequipo,:motivovisita,:idresponsable,
                 (SELECT id FROM usuario WHERE nombre= :nombreautorizador),(SELECT id FROM usuario WHERE nombre= :nombretramitante),:estado,:rfc)";
             $param= array(':fechaingreso'=>$_POST["fechaingreso"],
-                            ':nombresala'=>$_POST["nombresala"],
+                            ':idsala'=>$_POST["idsala"],
                             ':fechasalida'=>$_POST["fechasalida"],
                             ':placavehiculo'=>$_POST["placavehiculo"],
                             ':detalleequipo'=>$_POST["detalleequipo"],
                             ':motivovisita'=>$_POST["motivovisita"],
-                            ':nombreresponsable'=>$_POST["nombreresponsable"],
+                            ':idresponsable'=>$_POST["idresponsable"],
                             ':nombreautorizador'=>$_POST["nombreautorizador"],
                             ':nombretramitante'=>$_POST["nombretramitante"],
                             ':estado'=>$_POST["estado"],
@@ -224,15 +229,15 @@ class Formulario
     {
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
-            idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre= :nombreresponsable),placavehiculo=:placavehiculo,
-            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT id FROM sala WHERE nombre= :nombresala),rfc=:rfc WHERE id=:id;";
+            idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=:idresponsable,placavehiculo=:placavehiculo,
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=:idsala,rfc=:rfc WHERE id=:id;";
             $param= array(':fechaingreso'=>$_POST["fechaingreso"],
-                            ':nombresala'=>$_POST["nombresala"],
+                            ':idsala'=>$_POST["idsala"],
                             ':fechasalida'=>$_POST["fechasalida"],
                             ':placavehiculo'=>$_POST["placavehiculo"],
                             ':detalleequipo'=>$_POST["detalleequipo"],
                             ':motivovisita'=>$_POST["motivovisita"],
-                            ':nombreresponsable'=>$_POST["nombreresponsable"],
+                            ':idresponsable'=>$_POST["idresponsable"],
                             ':nombreautorizador'=>$_POST["nombreautorizador"],
                             ':nombretramitante'=>$_POST["nombretramitante"],
                             ':estado'=>$_POST["estado"],
@@ -336,10 +341,10 @@ class Formulario
                 (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id and f.id =:id) as nombreautorizador,
                 (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id and f.id =:id) as nombreresponsable,
                 (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala and f.id =:id) as nombresala,
-                placavehiculo,detalleequipo, rfc, consecutivo
+                placavehiculo,detalleequipo, rfc, consecutivo, idsala, idresponsable
             FROM formulario WHERE id = :id;";
 
-            $param= array(':id'=>$this->id);
+            $param= array(':id'=>$_POST["MOD"]);
             $data = DATA::Ejecutar($sql, $param);
             //
             if (count($data)) {
@@ -357,47 +362,8 @@ class Formulario
                 $this->detalleequipo= $data[0]['detalleequipo'];
                 $this->rfc= $data[0]['rfc'];
                 $this->id= $data[0]['id'];
-            }
-            //
-            return $data;
-        } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
-            exit;
-        }
-    }
-    // Carga formulario USANDO EL id
-    function CargarID()
-    {
-        try {
-            $sql = "SELECT id, consecutivo,fechasolicitud,idestado,motivovisita, 
-                DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
-                DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,
-                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id where f.id=:id)as nombretramitante,
-                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id where f.id=:id) as nombreautorizador,
-                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id where f.id=:id) as nombreresponsable,
-                (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala where f.id=:id) as nombresala,
-                idsala, placavehiculo,detalleequipo, rfc
-            FROM formulario WHERE id = :id";
-
-            $param= array(':id'=>$this->id);
-            $data = DATA::Ejecutar($sql, $param);
-            //
-            if (count($data)) {
-                $this->consecutivo= $data[0]['consecutivo'];
-                $this->fechasolicitud= $data[0]['fechasolicitud'];
-                $this->estado= $data[0]['idestado'];
-                $this->motivovisita= $data[0]['motivovisita'];
-                $this->fechaingreso= $data[0]['fechaingreso'];
-                $this->fechasalida= $data[0]['fechasalida'];
-                $this->nombretramitante= $data[0]['nombretramitante'];
-                $this->nombreautorizador= $data[0]['nombreautorizador'];
-                $this->nombreresponsable= $data[0]['nombreresponsable'];
                 $this->idsala= $data[0]['idsala'];
-                $this->nombresala= $data[0]['nombresala'];
-                $this->placavehiculo= $data[0]['placavehiculo'];
-                $this->detalleequipo= $data[0]['detalleequipo'];
-                $this->rfc= $data[0]['rfc'];
-                $this->id= $data[0]['id'];
+                $this->idresponsable= $data[0]['idresponsable'];
             }
             //
             return $data;
@@ -406,6 +372,48 @@ class Formulario
             exit;
         }
     }
+
+    // Carga formulario USANDO EL id
+    // function CargarID()
+    // {
+    //     try {
+    //         $sql = "SELECT id, consecutivo,fechasolicitud,idestado,motivovisita, 
+    //             DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
+    //             DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,
+    //             (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id where f.id=:id)as nombretramitante,
+    //             (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id where f.id=:id) as nombreautorizador,
+    //             (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id where f.id=:id) as nombreresponsable,
+    //             (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala where f.id=:id) as nombresala,
+    //             idsala, placavehiculo,detalleequipo, rfc
+    //         FROM formulario WHERE id = :id";
+
+    //         $param= array(':id'=>$this->id);
+    //         $data = DATA::Ejecutar($sql, $param);
+    //         //
+    //         if (count($data)) {
+    //             $this->consecutivo= $data[0]['consecutivo'];
+    //             $this->fechasolicitud= $data[0]['fechasolicitud'];
+    //             $this->estado= $data[0]['idestado'];
+    //             $this->motivovisita= $data[0]['motivovisita'];
+    //             $this->fechaingreso= $data[0]['fechaingreso'];
+    //             $this->fechasalida= $data[0]['fechasalida'];
+    //             $this->nombretramitante= $data[0]['nombretramitante'];
+    //             $this->nombreautorizador= $data[0]['nombreautorizador'];
+    //             $this->nombreresponsable= $data[0]['nombreresponsable'];
+    //             $this->idsala= $data[0]['idsala'];
+    //             $this->nombresala= $data[0]['nombresala'];
+    //             $this->placavehiculo= $data[0]['placavehiculo'];
+    //             $this->detalleequipo= $data[0]['detalleequipo'];
+    //             $this->rfc= $data[0]['rfc'];
+    //             $this->id= $data[0]['id'];
+    //         }
+    //         //
+    //         return $data;
+    //     } catch (Exception $e) {
+    //         header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+    //         exit;
+    //     }
+    // }
 
     //*********************************************************
     //Carga los visitantes en la tabla principal del formulario
