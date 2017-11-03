@@ -103,7 +103,7 @@ if (isset($_SESSION['idformulario'])) {
     };  
 </script>
 
-<body oncopy="return false" oncut="return false" onpaste="return false">
+<body>
     <header>
         <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
         <div id="logo"><img src="img/Logoice.png" height="75" onclick="onShowLogin()" > </div>  
