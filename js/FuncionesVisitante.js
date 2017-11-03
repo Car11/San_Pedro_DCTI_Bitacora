@@ -55,6 +55,16 @@ function muestraError(){
     $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
 };
 
+// Muestra errores en ventana
+function muestraError_Visita(msg){        
+    $("#textomensaje-secundario").text(msg);
+    $("#mensajetop-secundario").css("background-color", "firebrick");
+    $("#mensajetop-secundario").css("color", "white");    
+    $("#mensajetop-secundario").css("visibility", "visible");
+    $("#mensajetop-secundario").slideDown("slow");
+    $("#mensajetop-secundario").slideDown("slow").delay(3000).slideUp("slow");
+};
+
 // AJAX: Carga la lista 
 function ReCargar(){
     $.ajax({
@@ -175,12 +185,22 @@ function EventoClickModificar(){
     });
 };
 
+function wait(ms){
+          
+    var start = new Date().getTime();
+    var end = start;
+    while(end < start + ms) {
+      end = new Date().getTime();
+   }
+   
+}
+
 function validarForm(){
     ValidaCedulaUnica();
-    //
-    if(!formReady){
-        return false;
-    } 
+    //$("#loadinggif").css("display", "block");  
+    //wait(3000); 
+    //$("#loadinggif").css("display", "none");
+    //   
     if($("#cedula").val()=="")
     {
         $("#cedula").css("border", "0.3px solid firebrick");
@@ -192,7 +212,7 @@ function validarForm(){
     {
         $("#cedula").css("border", "0.3px solid firebrick");
         // mensaje
-        // ...
+        muestraError_Visita("Formato de cedula: Mínimo 8 digitos sin guiones ni espacios");
         return false;
     }
     //
@@ -215,9 +235,12 @@ function validarForm(){
     {
         $("#nombre").css("border", "0.3px solid firebrick");
         // mensaje
-        // ...
+        muestraError_Visita("El nombre del visitante debe tener mínimo 10 caracteres");
         return false;
     }
+    if(!formReady){
+        return false;
+    } 
     //        
     return true;
 };
@@ -279,7 +302,7 @@ function Eliminar(){
 };
 
 //valida cedula unica.
-function ValidaCedulaUnica(){
+function ValidaCedulaUnica(){    
     $.ajax ({
         type: "POST",
         url: "class/Visitante.php",
@@ -296,6 +319,8 @@ function ValidaCedulaUnica(){
                 "border-width": "0.3px"
             });
             $("#cedula").focus();
+            muestraError_Visita('Número de cédula duplicado');         
+            formReady=false;   
         }
         else {
             $("#cedula").css({
@@ -307,6 +332,7 @@ function ValidaCedulaUnica(){
      })
     .fail(function( e ) {    
         // ...
+        formReady=false;
      });
 };
 

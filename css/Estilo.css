@@ -83,7 +83,7 @@ header {
     margin-bottom: 5px;
 }
 
-#mensajetop {
+#mensajetop, #mensajetop-secundario {
     color: aliceblue;
     text-align: center;
     font-size: 25px;
@@ -94,7 +94,7 @@ header {
     display: none;
 }
 
-#mensajetop_display {    
+#mensajetop_display, #mensajetop_display-secundario {    
     text-align: center;
     font-size: 25px;
     height: 40;
@@ -307,6 +307,10 @@ label {
 
 
 /*******************************/
+#loadinggif{
+    display: none;
+    float: right;
+}
 
 .input-field {
     display: block;

@@ -82,9 +82,15 @@ if (!$sesion->estado) {
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>Información del Visitante</h2>                
+                <h2>Información del Visitante
+                    <div id="loadinggif"><img src="img/loading.gif" height="40" > </div>         
+                </h2>                       
             </div>
-        
+            <div id="mensajetop_display-secundario">
+                <div id="mensajetop-secundario">
+                    <span id="textomensaje-secundario"></span>
+                </div>
+            </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <div id="form">
@@ -93,7 +99,7 @@ if (!$sesion->estado) {
                     <form name="perfil" id='perfil' method="POST" >
                         <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
                             <input autofocus type="text"  id="cedula"                                 
-                                class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)" required >
+                                class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)" required >                                
                         </label>
                         <label for="empresa"><span class="campoperfil">Empresa / Dependencia <span class="required">*</span></span>
                             <input type="text"   style="text-transform:uppercase"                                 
@@ -112,7 +118,7 @@ if (!$sesion->estado) {
                                 <li><button type="button" class="nbtn_blue" onclick="Guardar()" >Guardar</button></li>
                                 <li><button type="button" class="nbtn_gray" onclick="Cerrar()" >Cerrar</button></li>
                             </ul>
-                        </nav>
+                        </nav>                       
 
                     </form>
                     

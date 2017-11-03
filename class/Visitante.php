@@ -274,7 +274,7 @@ class Visitante{
     //
     function Agregar(){
         try {
-            $sql="INSERT INTO visitante (nombre, cedula, empresa, permisoanual) VALUES (:nombre, :cedula, :empresa, :permisoanual);";
+            $sql="INSERT INTO visitante (nombre, cedula, empresa, permisoanual) VALUES (upper(:nombre), :cedula, upper(:empresa), :permisoanual);";
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, ':permisoanual'=>$this->permisoanual=="true"?1:0);
             $data = DATA::Ejecutar($sql,$param,true);
             if($data)
@@ -307,7 +307,7 @@ class Visitante{
     function Modificar(){
         try {
             $sql="UPDATE visitante
-                SET  nombre= :nombre, cedula= :cedula, empresa= :empresa , permisoanual= :permisoanual
+                SET  nombre= upper(:nombre), cedula= :cedula, empresa= upper(:empresa) , permisoanual= :permisoanual
                 WHERE ID=:ID";
             $param= array(':nombre'=>$this->nombre,':cedula'=>$this->cedula,':empresa'=>$this->empresa, 'permisoanual'=>$this->permisoanual=="true"?1:0, ':ID'=>$this->ID);
             $data = DATA::Ejecutar($sql,$param,true);

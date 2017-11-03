@@ -123,9 +123,9 @@ function onValidaInicio() {
         MuestraMensajeTarjeta();
         return false;
     }
-    else if (cedula.length < 9) {
+    else if (cedula.length < 8) {
         $("#mensajetop").css("background-color", "firebrick");
-        $("#textomensaje").text("Formato de cedula: mínimo 9 digitos sin guiones ni espacios");
+        $("#textomensaje").text("Formato de cedula: mínimo 8 digitos sin guiones ni espacios");
         $("#mensajetop").css("visibility", "visible");
         $("#mensajetop").slideDown("slow");
         //
@@ -166,9 +166,9 @@ function onValidaNuevoPerfil() {
         formlisto = false;
     } 
     //
-    if (cedula.length < 9) {    
+    if (cedula.length < 8) {    
         $("#mensajetop").css("background-color", "firebrick");
-        $("#textomensaje").text("Formato de cedula: Mínimo 9 digitos sin guiones ni espacios");
+        $("#textomensaje").text("Formato de cedula: Mínimo 8 digitos sin guiones ni espacios");
         $("#mensajetop").css("visibility", "visible");
         $("#mensajetop").slideDown("slow");
         //
@@ -214,9 +214,9 @@ function onValidaInfoVisita() {
         formlisto = false;
     } 
     //
-    if (cedula.length < 9) {
+    if (cedula.length < 8) {
         $("#mensajetop").css("background-color", "firebrick");
-        $("#textomensaje").text("Formato de cedula: Mínimo 9 digitos sin guiones ni espacios");
+        $("#textomensaje").text("Formato de cedula: Mínimo 8 digitos sin guiones ni espacios");
         $("#mensajetop").css("visibility", "visible");
         $("#mensajetop").slideDown("slow");
         //
