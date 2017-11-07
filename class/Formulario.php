@@ -32,7 +32,11 @@ if(isset($_POST["action"])){
     }
     if($_POST["action"]=="CargaMOD"){
         $formulario= new formulario();
-        $formulario->Carga();
+        $formulario->Cargar();
+    }
+    if($_POST["action"]=="CargaVisitantesFORM"){
+        $formulario= new formulario();
+        $formulario->CargaVisitanteporFormulario();
     }
 }
 
@@ -344,7 +348,7 @@ class Formulario
                 placavehiculo,detalleequipo, rfc, consecutivo, idsala, idresponsable
             FROM formulario WHERE id = :id;";
 
-            $param= array(':id'=>$_POST["MOD"]);
+            $param= array(':id'=>$_POST["id"]);
             $data = DATA::Ejecutar($sql, $param);
             //
             if (count($data)) {
@@ -366,7 +370,7 @@ class Formulario
                 $this->idresponsable= $data[0]['idresponsable'];
             }
             //
-            return $data;
+            echo json_encode($data);
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
@@ -420,16 +424,17 @@ class Formulario
     function CargaVisitanteporFormulario()
     {
         try {
-            //Adquiere el id de formulario con base al consecutivo
-            /*$sql_id="SELECT id FROM formulario WHERE id=:id";
-            $id= array(':id'=>$this->id);
-            $idformulario = DATA::Ejecutar($sql_id, $id);*/
-            //Selecciona los visitantes con base al id del formulario
-            $sql="SELECT DISTINCT v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
+            $sql="SELECT DISTINCT v.id,v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
             on v.id=vpf.idvisitante and vpf.idformulario=:id";
-            $param= array(':id'=>$this->id);
-            $result= DATA::Ejecutar($sql,$param);           
-            return $result;
+            $param= array(':id'=>$_POST["id"]);
+            $result= DATA::Ejecutar($sql,$param);   
+            if (count($result)) {
+                $this->id= $result[0]['id'];
+                $this->cedula= $result[0]['cedula'];
+                $this->nombre= $result[0]['nombre'];
+                $this->empresa= $result[0]['empresa'];
+            }        
+            echo json_encode($result);
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;

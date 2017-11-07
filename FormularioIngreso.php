@@ -20,6 +20,14 @@ $id=0;
 $largo=0;
 $visitanteformulario=0;
 $btnmod=3;
+$idformulario=null;
+if (isset($_GET['ID'])){
+    $btnmod=1;
+}
+if (isset($_GET['MOD'])) {
+    $btnmod=1;
+    $idformulario = $_GET['MOD'];
+}
 // if (isset($_GET['ID'])) {
 //     $id=$_GET['ID'];
 //     // es formulario temporal
@@ -48,6 +56,8 @@ $btnmod=3;
 //include("class/Sala.php");
 //$sala= new Sala();
 //$salas=$sala->Disponibles();
+
+
 
 //RESPONSABLE
 include("class/Responsable.php");
@@ -156,32 +166,8 @@ $rol=$_SESSION['rol'];
                 <div id="medio">
                     <div id="tabla">
                        <div id="distribuciontabla">
-                            <div id="tablavisitante">
+                            <div id="listavisitante">
                                 <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
-                                <?php
-                                print "<table id='tblvisitanteform' class='display' cellspacing='0' width='100%' >";
-                                print "<thead>";
-                                print "<tr class='fila'>";
-                                print "<th id='titulocedula'>Cedula</th>";
-                                print "<th id='titulonombre'>Nombre</th>";
-                                print "<th id='tituloempresa'>Empresa</th>";
-                                print "<th id='tituloeliminar'>Eliminar</th>";
-                                print "</tr>";
-                                print "</thead>";
-                                if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-                                    print "<tbody>";
-                                    for ($i=0; $i<count($visitanteformulario); $i++) {
-                                        print "<tr class='fila'>";
-                                        print "<td>".$visitanteformulario[$i][0]."</td>";
-                                        print "<td>".$visitanteformulario[$i][1]."</td>";
-                                        print "<td>".$visitanteformulario[$i][2]."</td>";
-                                        print "<td><img id=imgdelete src=img/file_delete.png class=borrar></td>";
-                                        print "</tr>";
-                                    }
-                                    print "</tbody>";
-                                }
-                                print "</table>";
-                                ?>
                             </div>
                         <div id="btnagregarvisitante">
                             <input type="button" id="btnagregavisitante" value="+">  
@@ -398,13 +384,19 @@ $rol=$_SESSION['rol'];
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
     var btnmod = <?php echo $btnmod;?>;
+    //ID DEL FORMULARIO
+    var idformulario = "<?php echo $idformulario;?>";
 
     $(document).ready( function () {  
+        CargarFormularioModificar();
+        CargaVisitantesFormulario();
         //RecargarSala();
         DataCenterDefault();
         MuestraBotonCorrecto();
         ExcluyeVisitanteCarga();
-        $("#EnviaFormulario").css("background-color", "cc9900");
+        MuestraEstados();
+
+        
         if (existeid!=0){
             EstadoFormulario();  
             //FechaFormMod();
@@ -413,9 +405,9 @@ $rol=$_SESSION['rol'];
             FechaFormNuevo();
         // OBTIENE EL CSS PARA LOS TABLES
         $('#tblresponsable').DataTable();          
-        //$('#tblsala').DataTable();
-        MuestraEstados();
+        
         //Pone por default el color de los botones
+        $("#EnviaFormulario").css("background-color", "cc9900");
         $("#btnInsertaFormulario").css("background-color", "cc9900");
         $("#btnModificaFormulario").css("background-color", "cc9900");
 
@@ -435,7 +427,7 @@ $rol=$_SESSION['rol'];
             }
         });
     
-         // cierra el modal
+        // cierra el modal
         $(".close").click( function(){
             // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
             $(".modal").css({ display: "none" });
@@ -504,7 +496,6 @@ $rol=$_SESSION['rol'];
             alert("Error al Cargar Data Center Default");
         });    
     }
-
 
     //SELECIONA EL DATACENTER Y LO INSERTA EN EL INPUT *********/                             
         $(document).on('click','#tbldatacenter tr', function(){        
@@ -606,7 +597,6 @@ $rol=$_SESSION['rol'];
         document.getElementById("fechaingreso").setAttribute("min", today);
         document.getElementById("fechasalida").setAttribute("min", today);
     }
-
 
     //Abre el modal con el evento click en el boton (+) , contruye la tabla visitante en el modal
     $('#btnagregavisitante').click(function() {
@@ -910,8 +900,8 @@ $rol=$_SESSION['rol'];
         }
     }   
 
-        //INSERTA UN FORMULARIO, SI ESTA CCORRECTO REDIRECCIONA A LISAT FORMULARIO ***/
-        $(document).on('click', '#btnInsertaFormulario', function (event) {
+    //INSERTA UN FORMULARIO, SI ESTA CCORRECTO REDIRECCIONA A LISAT FORMULARIO ***/
+    $(document).on('click', '#btnInsertaFormulario', function (event) {
         $.ajax({
             type: "POST",
             url: "class/Formulario.php",
@@ -983,19 +973,100 @@ $rol=$_SESSION['rol'];
             url: "class/Formulario.php",
             data: {
                     action: "CargaMOD",
-                    id: '5d93c949-bcde-11e7-aea0-000c297ea70d'
+                    id: idformulario
                   }
         })
         .done(function( e ) {
+            var data= JSON.parse(e);
+            //$('#lblnumeroform').val($data[0]['consecutivo']);
+            //$('#').val($data[0]['fechasolicitud']);
+            //$('#').val($data[0]['idestado']);
+            $('#motivovisita').val(data[0]['motivovisita']);
+            $('#fechaingreso').val(data[0]['fechaingreso']);
+            $('#fechasalida').val(data[0]['fechasalida']);
+            $('#txttramitante').val(data[0]['nombretramitante']);
+            $('#txtautorizador').val(data[0]['nombreautorizador']);
+            $('#txtresponsable').val(data[0]['nombreresponsable']);
+            $('#selectsala').val(data[0]['nombresala']);
+            $('#placavehiculo').val(data[0]['placavehiculo']);
+            $('#detalleequipo').val(data[0]['detalleequipo']);
+            $('#txtrfc').val(data[0]['rfc']);
+            //$('#').val($data[0]['id']);
+            //$('#').val($data[0]['idsala']);
+            //$('#').val($data[0]['idresponsable']);
             
-
+            if (data[0]['idestado']==0) {
+            document.getElementById("pendiente").checked = true;   
+            document.getElementById("aprobado").checked = false;
+            document.getElementById("denegado").checked = false; 
+            $("#EnviaFormulario").css("background-color", "cc9900");
+            $("#btnModificaFormulario").css("background-color", "cc9900");
+            }
+            if(data[0]['idestado']==1){
+            document.getElementById("pendiente").checked = false;   
+            document.getElementById("aprobado").checked = true;
+            document.getElementById("denegado").checked = false; 
+            $("#EnviaFormulario").css("background-color", "016DC4");
+            $("#btnModificaFormulario").css("background-color", "016DC4");
+            }
+            if(data[0]['idestado']==2){
+            document.getElementById("pendiente").checked = false;   
+            document.getElementById("aprobado").checked = false;
+            document.getElementById("denegado").checked = true; 
+            $("#EnviaFormulario").css("background-color", "firebrick");
+            $("#btnModificaFormulario").css("background-color", "firebrick");
+            }
         })    
         .fail(function(msg){
             alert("Error al Modificar Formulario");
         });    
     }
 
-
+    //RECARGA LA TABLA CON LOS VISITANTES POR FORMULARIO AJAX
+    function CargaVisitantesFormulario(){
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                    action: "CargaVisitantesFORM",
+                    id: idformulario
+                  }
+        })
+        .done(function( e ) {
+            alert(e);
+            $('#listavisitante').html("");
+            $('#listavisitante').append("<table id='tblvisitanteform'class='display'>");
+            var col="<thead><tr><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
+            $('#tblvisitanteform').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td class='columna_idvisform'>"+ item.id+"</td>" +
+                    "<td>"+ item.cedula+"</td>" +
+                    "<td>"+ item.nombre + "</td>"+
+                    "<td>"+ item.empresa + "</td>"+
+                    "<td><img id=imgdelete src=img/file_delete.png class=borrar href='EnviaResponsable.php'></td>"+
+                "</tr>";
+                $('#BodyVisintantesForm').append(row);  
+                $('#titulo_idvisform').hide();
+                $('.columna_idvisform').hide();       
+            })
+            // formato tabla
+            $('#tblvisitanteform').DataTable( {
+                "order": [[ 1, "asc" ]],
+                searching: false, 
+                paging: false,
+                bFilter: false, 
+                bInfo: false,
+                autoWidth: false
+            } );
+        })    
+        .fail(function(msg){
+            alert("Error al Cargar la lista de Responsables");
+        });    
+    }
 
     //SELECCION MODAL RESPONSABLES ********/
     $('#tblresponsable tr').on('click', function(){        
@@ -1043,7 +1114,6 @@ $rol=$_SESSION['rol'];
         idsala = $(this).find('td:first').html();
         ValidacionCorrecta();
     });
-    
     
     function ValidacionCorrecta() {
         $("#txtresponsable").css("border", "0px");
