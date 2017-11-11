@@ -32,7 +32,7 @@ if(isset($_POST["action"])){
     }
     if($_POST["action"]=="CargaMOD"){
         $formulario= new formulario();
-        $formulario->Cargar();
+        $formulario->CargarFormulario();
     }
     if($_POST["action"]=="CargaVisitantesFORM"){
         $formulario= new formulario();
@@ -150,8 +150,8 @@ class Formulario
             $longitud = count($visitantearray);
             //Recorre el arreglo e inserta cada item en la tabla intermedia
             for ($i=0; $i<$longitud; $i++) {
-                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES ((SELECT id from visitante WHERE cedula=:cedula),:idformulario)';
-                $param= array(':cedula'=>$visitantearray[$i],':idformulario'=>$idformulario[0][0]);
+                $sql='INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES (:idvisitante,:idformulario)';
+                $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario[0][0]);
                 $result = DATA::Ejecutar($sql, $param);
             }
             header('Location:../ListaFormulario.php');
@@ -233,15 +233,15 @@ class Formulario
     {
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
-            idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=:idresponsable,placavehiculo=:placavehiculo,
-            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=:idsala,rfc=:rfc WHERE id=:id;";
+            idautorizador=(SELECT id FROM usuario WHERE nombre= :nombreautorizador),idresponsable=(SELECT id FROM responsable WHERE nombre=:nombreresponsable),placavehiculo=:placavehiculo,
+            detalleequipo=:detalleequipo,motivovisita=:motivovisita,idestado=:estado,idsala=(SELECT id FROM sala WHERE nombre=:nombresala),rfc=:rfc WHERE id=:id;";
             $param= array(':fechaingreso'=>$_POST["fechaingreso"],
-                            ':idsala'=>$_POST["idsala"],
+                            ':nombresala'=>$_POST["nombresala"],
                             ':fechasalida'=>$_POST["fechasalida"],
                             ':placavehiculo'=>$_POST["placavehiculo"],
                             ':detalleequipo'=>$_POST["detalleequipo"],
                             ':motivovisita'=>$_POST["motivovisita"],
-                            ':idresponsable'=>$_POST["idresponsable"],
+                            ':nombreresponsable'=>$_POST["nombreresponsable"],
                             ':nombreautorizador'=>$_POST["nombreautorizador"],
                             ':nombretramitante'=>$_POST["nombretramitante"],
                             ':estado'=>$_POST["estado"],
@@ -253,8 +253,7 @@ class Formulario
             $visitantearray = explode(",", $_POST["visitante"]);
 
             //Elimina los registros segun el arreglo de visitantes
-            $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET((SELECT cedula from visitante WHERE id=idvisitante),:EXCLUSION) 
-            AND idformulario=:id";
+            $sql="DELETE FROM visitanteporformulario WHERE NOT FIND_IN_SET(:id,:EXCLUSION) AND idformulario=:id";
             $param= array(':EXCLUSION'=>$_POST["visitante"],':id'=>$_POST["id"]);
 
             $result = DATA::Ejecutar($sql, $param);
@@ -273,13 +272,13 @@ class Formulario
                 }
                 
                 //Si no existe Inserta
-                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = (SELECT id FROM visitante WHERE cedula=:cedula) AND idformulario = (SELECT id FROM formulario WHERE id=:id)";
-                $parametro= array(':cedula'=>$visitantearray[$i],':id'=>$_POST["id"]);
+                $existe="SELECT id FROM visitanteporformulario  WHERE idvisitante = :idvisitante AND idformulario = :id";
+                $parametro= array(':idvisitante'=>$visitantearray[$i],':id'=>$_POST["id"]);
                 $resultadoexiste= DATA::Ejecutar($existe, $parametro);
 
                 if(count($resultadoexiste)==0){
-                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES((SELECT id FROM visitante WHERE cedula=:cedula),(SELECT id FROM formulario WHERE id=:id))";
-                    $param= array(':cedula'=>$visitantearray[$i],':id'=>$_POST["id"]);
+                    $sql="INSERT INTO visitanteporformulario(idvisitante,idformulario) VALUES(:idvisitante,:id)";
+                    $param= array(':idvisitante'=>$visitantearray[$i],':id'=>$_POST["id"]);
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
@@ -335,7 +334,7 @@ class Formulario
 
     //***************************************
     // Carga formulario USANDO EL consecutivo
-    function Cargar()
+    function CargarFormulario()
     {
         try {
             $sql = "SELECT id,fechasolicitud,idestado,motivovisita, 
@@ -345,7 +344,8 @@ class Formulario
                 (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id and f.id =:id) as nombreautorizador,
                 (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id and f.id =:id) as nombreresponsable,
                 (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala and f.id =:id) as nombresala,
-                placavehiculo,detalleequipo, rfc, consecutivo, idsala, idresponsable
+                placavehiculo,detalleequipo, rfc, consecutivo, idsala, idresponsable, (SELECT d.nombre FROM sala s INNER JOIN 
+                datacenter d ON s.iddatacenter =  d.id INNER JOIN formulario f ON s.id =  f.idsala and f.id=:id) as datacenter 
             FROM formulario WHERE id = :id;";
 
             $param= array(':id'=>$_POST["id"]);
@@ -368,6 +368,7 @@ class Formulario
                 $this->id= $data[0]['id'];
                 $this->idsala= $data[0]['idsala'];
                 $this->idresponsable= $data[0]['idresponsable'];
+                $this->datacenter=$data[0]['datacenter'];
             }
             //
             echo json_encode($data);

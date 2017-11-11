@@ -23,10 +23,14 @@ $btnmod=3;
 $idformulario=null;
 if (isset($_GET['ID'])){
     $btnmod=1;
+    $id=$_GET['ID'];
+    
 }
 if (isset($_GET['MOD'])) {
     $btnmod=1;
     $idformulario = $_GET['MOD'];
+    $id=$_GET['MOD'];
+    
 }
 // if (isset($_GET['ID'])) {
 //     $id=$_GET['ID'];
@@ -153,13 +157,12 @@ $rol=$_SESSION['rol'];
                         <div id="cajainput_tramitante">
                             <label for="txttramitante" class="labelformat">Tramitante</label></br>
                             <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" 
-                            value=""/>
+                            value="<?php if (!isset($_GET['ID'])&&!isset($_GET['MOD'])) echo $usuario->nombre;?>"/>
                         </div>                   
                         <div id="cajainput_autorizador">
                             <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label></br>
                             <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
-                            value="" /> 
-
+                            value="<?php if (!isset($_GET['ID']) and !isset($_GET['MOD']) and $rol==1) echo($usuario->nombre);?>"/> 
                         </div>
                     </div>
                 </div>  
@@ -388,21 +391,26 @@ $rol=$_SESSION['rol'];
     var idformulario = "<?php echo $idformulario;?>";
 
     $(document).ready( function () {  
-        CargarFormularioModificar();
-        CargaVisitantesFormulario();
+      
         //RecargarSala();
-        DataCenterDefault();
         MuestraBotonCorrecto();
         ExcluyeVisitanteCarga();
         MuestraEstados();
 
-        
         if (existeid!=0){
+            //MODIFICA FORMULARIO
             EstadoFormulario();  
-            //FechaFormMod();
+            CargarFormularioModificar();
+            CargaVisitantesFormulario();  
         }  
-        else
+        else{
+            //FORMULARIO NUEVO
             FechaFormNuevo();
+            DataCenterDefault();
+            CreaTblVisitanteFormulario();
+        }
+            
+
         // OBTIENE EL CSS PARA LOS TABLES
         $('#tblresponsable').DataTable();          
         
@@ -616,17 +624,20 @@ $rol=$_SESSION['rol'];
         .done(function( e ) {
             $('#visitante-modal').html("");
             $('#visitante-modal').append("<table id='tblvisitante'class='display'>");
-            var col="<thead><tr id=encabezado><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody id='BodyVisitante'></tbody>";
+            var col="<thead><tr id=encabezado><th id='titulo_idvisitante'>Id</th><th>Cedula</th><th>Nombre</th><th>Empresa</th></tr></thead><tbody id='BodyVisitante'></tbody>";
             $('#tblvisitante').append(col);
 
             visitantereal = JSON.parse(e);
             for (var i = 0; i < visitantereal.length; i++) {                
                 var tr1="<tr>";
-                var td1="<td>"+visitantereal[i][0] +"</td>";
+                var td1="<td class='idvisitante'>"+visitantereal[i][0] +"</td>";
                 var td2="<td>"+visitantereal[i][1] +"</td>";
                 var td3="<td>"+visitantereal[i][2] +"</td>";
+                var td4="<td>"+visitantereal[i][3] +"</td>";
                 var tr2="</tr>";
-                $('#BodyVisitante').append(tr1+td1+td2+td3+tr2);
+                $('#BodyVisitante').append(tr1+td1+td2+td3+td4+tr2);
+                $('.idvisitante').hide();
+                $('#titulo_idvisitante').hide();
             }
             $('#tblvisitante').DataTable();
         })    
@@ -670,8 +681,23 @@ $rol=$_SESSION['rol'];
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function ExcluyeVisitanteCarga() {     
         //**********MODIFICAR
-        if(longitudvisitanteform!=0){    
-            jVisitante = JSON.parse('<?php echo json_encode($visitanteformulario);?>');   
+        if(longitudvisitanteform!=0){        
+            $.ajax({
+                type: "POST",
+                url: "class/Formulario.php",
+                data: {
+                        action: "CargaVisitantesFORM",
+                        id: idformulario
+                    }
+            })
+            .done(function( e ) {
+                
+                jVisitante = JSON.parse(e);
+                
+            })    
+            .fail(function(msg){
+                alert("Error al Cargar los Visitantes a Excluir");
+            });    
             for (var i = 0; i < jVisitante.length; i++) {
                 var element = jVisitante[i][0];
                 if(i==0){
@@ -708,7 +734,7 @@ $rol=$_SESSION['rol'];
     });
 
     //SELECION DE LAS LINEAS DEL MODAL **********************/                        
-    $(document).on('click','#tblvisitante tr', function(){        
+    $(document).on('click','#tblvisitantex tr', function(){        
         var data={
             "id":$(this).find('td:first').html(),
             "nombre":$(this).find('td:nth-child(2)').html(),
@@ -947,14 +973,14 @@ $rol=$_SESSION['rol'];
                     fechasalida: document.getElementById('fechasalida').value,
                     nombretramitante: document.getElementById('txttramitante').value,
                     nombreautorizador: document.getElementById('txtautorizador').value,
-                    idresponsable: idresponsable,
+                    nombreresponsable: document.getElementById('txtresponsable').value,
                     placavehiculo: document.getElementById('placavehiculo').value,
                     detalleequipo: document.getElementById('detalleequipo').value,
                     motivovisita: document.getElementById('motivovisita').value,
                     estado: $('input:radio[name=estadoformulario]:checked').val(),
-                    idsala: idsala,
+                    nombresala: document.getElementById('selectsala').value,
                     rfc: document.getElementById('txtrfc').value,
-                    id: document.getElementById('idformulario').value,
+                    id: idformulario,
                     visitante: document.getElementById('visitantearray').value
                   }
         })
@@ -978,9 +1004,7 @@ $rol=$_SESSION['rol'];
         })
         .done(function( e ) {
             var data= JSON.parse(e);
-            //$('#lblnumeroform').val($data[0]['consecutivo']);
-            //$('#').val($data[0]['fechasolicitud']);
-            //$('#').val($data[0]['idestado']);
+            $('#lblnumeroform').val(data[0]['consecutivo']);
             $('#motivovisita').val(data[0]['motivovisita']);
             $('#fechaingreso').val(data[0]['fechaingreso']);
             $('#fechasalida').val(data[0]['fechasalida']);
@@ -991,6 +1015,7 @@ $rol=$_SESSION['rol'];
             $('#placavehiculo').val(data[0]['placavehiculo']);
             $('#detalleequipo').val(data[0]['detalleequipo']);
             $('#txtrfc').val(data[0]['rfc']);
+            $('#selectdatacenter').val(data[0]['datacenter']);
             //$('#').val($data[0]['id']);
             //$('#').val($data[0]['idsala']);
             //$('#').val($data[0]['idresponsable']);
@@ -1033,7 +1058,6 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            alert(e);
             $('#listavisitante').html("");
             $('#listavisitante').append("<table id='tblvisitanteform'class='display'>");
             var col="<thead><tr><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
@@ -1042,7 +1066,7 @@ $rol=$_SESSION['rol'];
             var data= JSON.parse(e);
             // Recorre arreglo.
             $.each(data, function(i, item) {
-                var row="<tr>"+
+                var row="<tr class='fila'>"+
                     "<td class='columna_idvisform'>"+ item.id+"</td>" +
                     "<td>"+ item.cedula+"</td>" +
                     "<td>"+ item.nombre + "</td>"+
@@ -1054,19 +1078,56 @@ $rol=$_SESSION['rol'];
                 $('.columna_idvisform').hide();       
             })
             // formato tabla
-            $('#tblvisitanteform').DataTable( {
+/*             $('#tblvisitanteform').DataTable( {
                 "order": [[ 1, "asc" ]],
                 searching: false, 
                 paging: false,
                 bFilter: false, 
                 bInfo: false,
                 autoWidth: false
-            } );
+            } ); */
         })    
         .fail(function(msg){
             alert("Error al Cargar la lista de Responsables");
         });    
     }
+
+    function CreaTblVisitanteFormulario(){
+        $('#listavisitante').append("<table id='tblvisitanteform'class='display'>");
+        var col="<thead><tr><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
+        $('#tblvisitanteform').append(col);
+    }
+
+    //SELECION DE LAS LINEAS DEL MODAL **********************/                        
+    $(document).on('click','#tblvisitante tr', function(){        
+        var data={
+            "id":$(this).find('td:first').html(),
+            "cedula":$(this).find('td:nth-child(2)').html(),
+            "nombre":$(this).find('td:nth-child(3)').html(),
+            "empresa":$(this).find('td:nth-child(4)').html()
+        };
+
+        var result = $.grep(jVisitante, function(e){  return e.id== data.id; });
+        if (result.length  == 0) { // El visitante no esta en la lista
+            jVisitante.push(data); 
+
+            var row="<tr class='fila'>"+
+                    "<td class='columna_idvisform'>"+ jVisitante[jVisitante.length-1].id+"</td>" +
+                    "<td>"+ jVisitante[jVisitante.length-1].cedula+"</td>" +
+                    "<td>"+ jVisitante[jVisitante.length-1].nombre + "</td>"+
+                    "<td>"+ jVisitante[jVisitante.length-1].empresa + "</td>"+
+                    "<td><img id=imgdelete src=img/file_delete.png class=borrar href='EnviaResponsable.php'></td>"+
+                "</tr>";
+                $('#BodyVisintantesForm').append(row); 
+                $('#titulo_idvisform').hide();
+                $('.columna_idvisform').hide();
+            if(jVisitante[jVisitante.length-1].id==undefined)
+                return false;
+            $('#imgflecha').removeClass('imagen');
+            $('#imgflecha').addClass('imagenNO');
+            $(this).css('display', 'none');
+        }
+    });
 
     //SELECCION MODAL RESPONSABLES ********/
     $('#tblresponsable tr').on('click', function(){        
