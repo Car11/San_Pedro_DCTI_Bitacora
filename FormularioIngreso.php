@@ -169,7 +169,7 @@ $rol=$_SESSION['rol'];
                 <div id="medio">
                     <div id="tabla">
                        <div id="distribuciontabla">
-                            <div id="listavisitante">
+                            <div id="listavisitanteform">
                                 <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
                             </div>
                         <div id="btnagregarvisitante">
@@ -1058,9 +1058,9 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            $('#listavisitante').html("");
-            $('#listavisitante').append("<table id='tblvisitanteform'class='display'>");
-            var col="<thead><tr><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
+            $('#listavisitanteform').html("");
+            $('#listavisitanteform').append("<table id='tblvisitanteform'class='display'>");
+            var col="<thead><tr class='filatitulo'><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
             $('#tblvisitanteform').append(col);
             // carga lista con datos.
             var data= JSON.parse(e);
@@ -1077,15 +1077,6 @@ $rol=$_SESSION['rol'];
                 $('#titulo_idvisform').hide();
                 $('.columna_idvisform').hide();       
             })
-            // formato tabla
-/*             $('#tblvisitanteform').DataTable( {
-                "order": [[ 1, "asc" ]],
-                searching: false, 
-                paging: false,
-                bFilter: false, 
-                bInfo: false,
-                autoWidth: false
-            } ); */
         })    
         .fail(function(msg){
             alert("Error al Cargar la lista de Responsables");
@@ -1093,9 +1084,10 @@ $rol=$_SESSION['rol'];
     }
 
     function CreaTblVisitanteFormulario(){
-        $('#listavisitante').append("<table id='tblvisitanteform'class='display'>");
-        var col="<thead><tr><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
+        $('#listavisitanteform').append("<table id='tblvisitanteform'class='display'>");
+        var col="<thead><tr class='filatitulo'><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
         $('#tblvisitanteform').append(col);
+        $('#titulo_idvisform').hide();
     }
 
     //SELECION DE LAS LINEAS DEL MODAL **********************/                        

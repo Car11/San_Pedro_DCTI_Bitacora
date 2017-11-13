@@ -201,12 +201,7 @@
     margin-left: 0px;
     margin-top: 5px;
 }
-#tablavisitante{
-    width: 95%;
-    height: 100%;
-    float: left;
-    overflow: auto;
-}
+
 #btnagregarvisitante{
     width: 5%;
     float: left;
@@ -438,6 +433,11 @@ th{
 tr, thread{
     font-size: 20px;
 }
+.filatitulo{
+    color: #B8B8B8;
+    margin-bottom: 13px;
+    text-align: left;
+}
 
 .fila{
     color: #B8B8B8;
@@ -479,10 +479,16 @@ tr, thread{
 	background: #1478b1;
 }
 
+#listavisitante {
+    margin-top: 0px;
+    width: 100%;
+    height: 560px;
+    float: left;
+}
 
 #btnagregavisitante{
     width: 100%;
-    height: 20px;
+    height: 40px;
     color: #FFFFFF;
     cursor: pointer;
     text-transform: uppercase;
@@ -510,11 +516,11 @@ tr, thread{
 }
 
 /*Lista Formularios*/
-#listavisitante{
-    margin-top: 0px;
-    width: 90%;
-    height: 560px;
+#listavisitanteform{
+    width: 95%;
+    height: 100%;
     float: left;
+    overflow: auto;
 }
 #tablaresponsable{
     margin-top: 0px;
