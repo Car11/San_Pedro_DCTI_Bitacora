@@ -24,7 +24,7 @@ $idformulario=null;
 if (isset($_GET['ID'])){
     $btnmod=1;
     $id=$_GET['ID'];
-    
+    $_SESSION['TEMP']=$id;
 }
 if (isset($_GET['MOD'])) {
     $btnmod=1;
@@ -32,36 +32,6 @@ if (isset($_GET['MOD'])) {
     $id=$_GET['MOD'];
     
 }
-// if (isset($_GET['ID'])) {
-//     $id=$_GET['ID'];
-//     // es formulario temporal
-//     $_SESSION['TEMP']=$id;
-//     $formulario->id=$id;
-//     //Carga la sala según el link
-//     $formdata= $formulario->Cargar();
-//     //Si hay un link carga el estado en el radio
-//     $estadoformulario= $formdata[0][2];
-//     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
-//     $largo=count($visitanteformulario);
-// }
-// if (isset($_GET['MOD'])) {
-//     $id=$_GET['MOD'];
-//     $formulario->id=$id;
-//     //Carga la sala según el link
-//     $formdata= $formulario->Cargar();
-//     //Si hay un link carga el estado en el radio
-//     $estadoformulario= $formdata[0][2];
-//     $visitanteformulario=$formulario->CargaVisitanteporFormulario();
-//     $largo=count($visitanteformulario);
-//     $btnmod=1;
-// }
-
-//SALA 
-//include("class/Sala.php");
-//$sala= new Sala();
-//$salas=$sala->Disponibles();
-
-
 
 //RESPONSABLE
 include("class/Responsable.php");
@@ -357,8 +327,6 @@ $rol=$_SESSION['rol'];
         </div>
     </div>
 
-
-    
 <script type="text/javascript" language="javascript">
     //Se ejecuta al iniciar la pagina
     var iddatacenter=null;
@@ -369,11 +337,7 @@ $rol=$_SESSION['rol'];
     var jSala=[];
     var jResponsable=[];
     var jVisitante=[]; 
-    var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) {
-        echo count($visitanteformulario);
-} else {
-    echo 0;
-}?>";
+    var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { echo count($visitanteformulario);} else {echo 0;}?>";
     // Obtiene el MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     
@@ -506,7 +470,7 @@ $rol=$_SESSION['rol'];
     }
 
     //SELECIONA EL DATACENTER Y LO INSERTA EN EL INPUT *********/                             
-        $(document).on('click','#tbldatacenter tr', function(){        
+    $(document).on('click','#tbldatacenter tr', function(){        
             //SELECCIONA LA FILA Y LA INSERTA EN EL INPUT DC
             document.getElementById('selectdatacenter').value = $(this).find('td:nth-child(2)').html();
             //GUARDA EL ID EN LA GLOBAL IDDATACENTER
@@ -1138,20 +1102,6 @@ $rol=$_SESSION['rol'];
         idresponsable=$(this).find('td:first').html();
         ValidacionCorrecta();                       
     });
-
-    //MODAL SALAS ********/
-    /*$('#tblsala tr').on('click', function(){        
-        $(this).toggleClass('selected');
-        jSala.length = 0;
-        $("#selectsala").val('');
-        var data={
-            "sala":$(this).find('td:first').html()
-        };
-        jSala.push(data); 
-        $("#selectsala").val(jSala[jSala.length-1].sala);
-        modalSala.style.display = "none";
-        ValidacionCorrecta();
-    });*/
 
     //SELECCION MODAL SALA
     $(document).on('click','#tblsala tr', function(){
