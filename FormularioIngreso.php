@@ -30,7 +30,6 @@ if (isset($_GET['MOD'])) {
     $btnmod=1;
     $idformulario = $_GET['MOD'];
     $id=$_GET['MOD'];
-    
 }
 
 //RESPONSABLE
@@ -38,15 +37,12 @@ include("class/Responsable.php");
 $responsable= new Responsable();
 $responsables= $responsable->Consulta();
 
-
 //USER AND ROL
 include("class/Usuario.php");
 $usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
-
-
 ?>
 
 <html>
@@ -72,10 +68,10 @@ $rol=$_SESSION['rol'];
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
             <div id="izquierda">
+            <label for="txttramitante" class="labelformat" style="visibility:hidden">Tramitante</label></br>
+                            <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" style="visibility:hidden"
+                            value="<?php if (!isset($_GET['ID'])&&!isset($_GET['MOD'])) echo $usuario->nombre;?>"/>
                 <div id="superiorizq">
-                <label for="selectdatacenter" class="labelformat">Seleccione Data Center</label></br>
-                            <input type="text" id="selectdatacenter" name="selectsaladatacenter" placeholder="CLICK" class="input-field-form" readonly="readonly"
-                            value="" required/>  
                 </div>
                 <div id="medioizq">
                     <img id=imgflecha src=img/flecha-error.png class="imagenNO">
@@ -118,21 +114,21 @@ $rol=$_SESSION['rol'];
                             value="" required/> 
                         </div>
                         <div class="cajainput">
-                            <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
-                            <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
-                            value="" required/>
+                        <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label></br>
+                            <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
+                            value="<?php if (!isset($_GET['ID']) and !isset($_GET['MOD']) and $rol==1) echo($usuario->nombre);?>"/>
                         </div>
                     </div>
                     <div id="caja">
                         <div id="cajainput_tramitante">
-                            <label for="txttramitante" class="labelformat">Tramitante</label></br>
-                            <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" 
-                            value="<?php if (!isset($_GET['ID'])&&!isset($_GET['MOD'])) echo $usuario->nombre;?>"/>
+                            <label for="selectdatacenter" class="labelformat">Seleccione Data Center</label></br>
+                            <input type="text" id="selectdatacenter" name="selectsaladatacenter" placeholder="CLICK" class="input-field-form" readonly="readonly"
+                            value="" required/>  
                         </div>                   
                         <div id="cajainput_autorizador">
-                            <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label></br>
-                            <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
-                            value="<?php if (!isset($_GET['ID']) and !isset($_GET['MOD']) and $rol==1) echo($usuario->nombre);?>"/> 
+                            <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
+                            <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
+                            value="" required/>
                         </div>
                     </div>
                 </div>  
@@ -313,7 +309,7 @@ $rol=$_SESSION['rol'];
     <!-- MODAL DATACENTER -->
     <div id="ModalDataCenter" class="modal">
         <!-- Modal content -->
-        <div class="modal-content">
+        <div class="modal-content-datacenter">
             <div class="modal-header">
                 <span class="close">&times;</span>
                 <h2>Seleccione el Data Center</h2>
@@ -338,6 +334,8 @@ $rol=$_SESSION['rol'];
     var jResponsable=[];
     var jVisitante=[]; 
     var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { echo count($visitanteformulario);} else {echo 0;}?>";
+    var idformulario = "<?php echo $idformulario;?>";
+    var btnmod = <?php echo $btnmod;?>;
     // Obtiene el MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     
@@ -350,13 +348,8 @@ $rol=$_SESSION['rol'];
     var inputDataCenter = document.getElementById("selectdatacenter");
     // Obtiene el <span> que  cierra el MODAL
     var span = document.getElementsByClassName("close")[0];
-    var btnmod = <?php echo $btnmod;?>;
-    //ID DEL FORMULARIO
-    var idformulario = "<?php echo $idformulario;?>";
-
+    
     $(document).ready( function () {  
-      
-        //RecargarSala();
         MuestraBotonCorrecto();
         ExcluyeVisitanteCarga();
         MuestraEstados();
@@ -374,9 +367,12 @@ $rol=$_SESSION['rol'];
             CreaTblVisitanteFormulario();
         }
             
-
         // OBTIENE EL CSS PARA LOS TABLES
-        $('#tblresponsable').DataTable();          
+        $('#tblresponsable').DataTable({
+                "order": [[ 1, "asc" ]],
+                searching: false, 
+                paging: false
+        });          
         
         //Pone por default el color de los botones
         $("#EnviaFormulario").css("background-color", "cc9900");
@@ -421,13 +417,11 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            
             $('#sala-modal').html("");
             $('#sala-modal').append("<table id='tblsala'class='display'>");
             var col="<thead><tr><th id='titulo_idsala'>ID</th><th>NOMBRE</th></tr></thead><tbody id='BodySala'></tbody>";
             $('#tblsala').append(col);
             // carga lista con datos.
-
             var data = jQuery.parseJSON(e);
             // Recorre arreglo.
             $.each(data, function(i, item) {
@@ -442,7 +436,9 @@ $rol=$_SESSION['rol'];
             $('.columna_idsala').hide();
             // formato tabla
             $('#tblsala').DataTable( {
-                "order": [[ 1, "asc" ]]
+                "order": [[ 1, "asc" ]],
+                searching: false, 
+                paging: false
             } );
         })    
         .fail(function(msg){
@@ -752,7 +748,9 @@ $rol=$_SESSION['rol'];
             })
             // formato tabla
             $('#tbldatacenter').DataTable( {
-                "order": [[ 1, "asc" ]]
+                "order": [[ 1, "asc" ]],
+                searching: false, 
+                paging: false
             } );
         })    
         .fail(function(msg){
@@ -786,7 +784,7 @@ $rol=$_SESSION['rol'];
     }
 
     //Cierra el MODAL en cualquier parte de la ventana
-        window.onclick = function(event) {
+    window.onclick = function(event) {
         if (event.target == modalVisitante) {
             modalVisitante.style.display = "none";   
             document.getElementById("visitanteexcluido").value ="";
@@ -822,6 +820,7 @@ $rol=$_SESSION['rol'];
         }
     }
 
+    //ELIJE EL BOTON PARA INSERTAR O MODIFICAR
     function MuestraBotonCorrecto(){
         
         $("#btnInsertaFormulario").hide();
@@ -918,7 +917,6 @@ $rol=$_SESSION['rol'];
             else
                 $('#formularioenviado').show();
                 $('#principal').hide();
-                //location.href='FormularioEnviado.php?';
             }
         )    
         .fail(function(msg){
@@ -980,8 +978,8 @@ $rol=$_SESSION['rol'];
             $('#detalleequipo').val(data[0]['detalleequipo']);
             $('#txtrfc').val(data[0]['rfc']);
             $('#selectdatacenter').val(data[0]['datacenter']);
-            //$('#').val($data[0]['id']);
-            //$('#').val($data[0]['idsala']);
+            iddatacenter = $data[0]['idsala'];
+            //$('#').val($data[0]['id']);            
             //$('#').val($data[0]['idresponsable']);
             
             if (data[0]['idestado']==0) {
@@ -1047,6 +1045,7 @@ $rol=$_SESSION['rol'];
         });    
     }
 
+    //CREA LA TABLA DE VISITANTES DEL FORMULARIO
     function CreaTblVisitanteFormulario(){
         $('#listavisitanteform').append("<table id='tblvisitanteform'class='display'>");
         var col="<thead><tr class='filatitulo'><th id='titulo_idvisform'>ID</th><th>CEDULA</th><th>NOMBRE</th><th>EMPRESA</th><th>ELIMINAR</th></tr></thead><tbody id='BodyVisintantesForm'></tbody>";
@@ -1118,19 +1117,17 @@ $rol=$_SESSION['rol'];
         ValidacionCorrecta();
     });
     
+    //VALIDA RESPONSABLE Y SALA, BORDE ROJOS
     function ValidacionCorrecta() {
         $("#txtresponsable").css("border", "0px");
-        //$("#txtresponsable").css("color", "black");
         document.getElementById('txtresponsable').placeholder = "CLICK";    
         $("#selectsala").css("border", "0px");
-        //$("#selectsala").css("color", "black");
         document.getElementById('selectsala').placeholder = "CLICK";
     }
 
+    //VALIDA EL MOTIVO DE LA VISITA
     $("#motivovisita" ).change(function() {
         $("#motivovisita").css("border", "0px");
-        //$("#motivovisita").css("color", "black");
-        //$("#motivovisita").css("background", "white");
         document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
     });
 
