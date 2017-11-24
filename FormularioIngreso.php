@@ -68,9 +68,6 @@ $rol=$_SESSION['rol'];
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
             <div id="izquierda">
-            <label for="txttramitante" class="labelformat" style="visibility:hidden">Tramitante</label></br>
-                            <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" style="visibility:hidden"
-                            value="<?php if (!isset($_GET['ID'])&&!isset($_GET['MOD'])) echo $usuario->nombre;?>"/>
                 <div id="superiorizq">
                 </div>
                 <div id="medioizq">
@@ -114,9 +111,12 @@ $rol=$_SESSION['rol'];
                             value="" required/> 
                         </div>
                         <div class="cajainput">
-                        <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label></br>
+                            <label for="txttramitante" id="lbltxttramitante" class="labelformat">Tramitante</label>
+                            <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly"
+                            value="<?php if (!isset($_GET['ID']) && !isset($_GET['MOD'])) echo $usuario->nombre;?>"/>
+                            <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label>
                             <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
-                            value="<?php if (!isset($_GET['ID']) and !isset($_GET['MOD']) and $rol==1) echo($usuario->nombre);?>"/>
+                            value="<?php if (!isset($_GET['ID']) || !isset($_GET['MOD']) && $rol==1) echo $usuario->nombre;?>"/>
                         </div>
                     </div>
                     <div id="caja">
@@ -336,6 +336,7 @@ $rol=$_SESSION['rol'];
     var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { echo count($visitanteformulario);} else {echo 0;}?>";
     var idformulario = "<?php echo $idformulario;?>";
     var btnmod = <?php echo $btnmod;?>;
+    var autorizador = "<?php echo $usuario->nombre;?>";
     // Obtiene el MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     
@@ -359,6 +360,7 @@ $rol=$_SESSION['rol'];
             EstadoFormulario();  
             CargarFormularioModificar();
             CargaVisitantesFormulario();  
+            CargaAutorizador();
         }  
         else{
             //FORMULARIO NUEVO
@@ -405,6 +407,52 @@ $rol=$_SESSION['rol'];
         $('#formularioenviado').hide();
 
     } );
+
+
+    function CargaAutorizador(){
+        if (document.getElementById('txtautorizador').value==null)
+            document.getElementById('txtautorizador').value = autorizador;
+    }
+
+    //RECARGA LA TABLA SALAS
+    function RecargarSalaporDataCenter(){
+        $.ajax({
+            type: "POST",
+            url: "class/Sala.php",
+            data: {
+                    action: "CargarporDataCenter",
+                    nombredatacenter: document.getElementById('selectdatacenter').value
+                  }
+        })
+        .done(function( e ) {
+            $('#sala-modal').html("");
+            $('#sala-modal').append("<table id='tblsala'class='display'>");
+            var col="<thead><tr><th id='titulo_idsala'>ID</th><th>NOMBRE</th></tr></thead><tbody id='BodySala'></tbody>";
+            $('#tblsala').append(col);
+            // carga lista con datos.
+            var data = jQuery.parseJSON(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td class='columna_idsala'>"+ item.id+"</td>" +
+                    "<td>"+ item.nombre+"</td>"+
+                "</tr>";
+                $('#BodySala').append(row);  
+                $('#titulo_idsala').hide();    
+            })
+            //OCULTA EL ID DE LA SALA
+            $('.columna_idsala').hide();
+            // formato tabla
+            $('#tblsala').DataTable( {
+                "order": [[ 1, "asc" ]],
+                searching: false, 
+                paging: false
+            } );
+        })    
+        .fail(function(msg){
+            alert("Error al Cargar Salas");
+        });    
+    }
 
     //RECARGA LA TABLA SALAS
     function RecargarSala(){
@@ -765,7 +813,16 @@ $rol=$_SESSION['rol'];
     //Abre el modal de Salas
     inputSala.onclick = function() {
         modalSala.style.display = "block";
-        RecargarSala();
+        if (existeid!=0){
+            //MODIFICA FORMULARIO
+            RecargarSalaporDataCenter();
+        }  
+        else{
+            //FORMULARIO NUEVO
+            RecargarSala();
+        }
+
+        
     }
     //Abre el modal Data Center
     inputDataCenter.onclick = function() {
@@ -797,11 +854,15 @@ $rol=$_SESSION['rol'];
         var rol = "<?php echo $rol ?>";
         if (rol==1) {
             $('#estadosform').show();
+            $('#txttramitante').hide();
+            $('#lbltxttramitante').hide();
         }else{
             $('#estadosform').hide();
             $('#btnatras').hide();
             $('#lblautorizador').hide();
             $('#txtautorizador').hide();
+            $('#txttramitante').show();
+            $('#lbltxttramitante').show();
         }
     }
 
@@ -870,6 +931,7 @@ $rol=$_SESSION['rol'];
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function EnviaVisitante() {
+        document.getElementById("visitantearray").value = null;
         for (var i = 0; i < jVisitante.length; i++) {
             var element = jVisitante[i].id;
             if(element==undefined)
@@ -971,14 +1033,16 @@ $rol=$_SESSION['rol'];
             $('#fechaingreso').val(data[0]['fechaingreso']);
             $('#fechasalida').val(data[0]['fechasalida']);
             $('#txttramitante').val(data[0]['nombretramitante']);
-            $('#txtautorizador').val(data[0]['nombreautorizador']);
+            //SI ES VACIO PONE AL USUARIO ACTUAL COMO ATORIZADOR
+            if(data[0]['nombreautorizador']!=null)
+                $('#txtautorizador').val(data[0]['nombreautorizador']);
             $('#txtresponsable').val(data[0]['nombreresponsable']);
             $('#selectsala').val(data[0]['nombresala']);
             $('#placavehiculo').val(data[0]['placavehiculo']);
             $('#detalleequipo').val(data[0]['detalleequipo']);
             $('#txtrfc').val(data[0]['rfc']);
             $('#selectdatacenter').val(data[0]['datacenter']);
-            iddatacenter = $data[0]['idsala'];
+            //iddatacenter = $data[0]['idsala'];
             //$('#').val($data[0]['id']);            
             //$('#').val($data[0]['idresponsable']);
             
@@ -1003,6 +1067,7 @@ $rol=$_SESSION['rol'];
             $("#EnviaFormulario").css("background-color", "firebrick");
             $("#btnModificaFormulario").css("background-color", "firebrick");
             }
+
         })    
         .fail(function(msg){
             alert("Error al Modificar Formulario");
@@ -1053,6 +1118,15 @@ $rol=$_SESSION['rol'];
         $('#titulo_idvisform').hide();
     }
 
+/*     $("#btnagregavisitante").click(function() {
+        var valores = "";
+		$(".columna_idvisform").parent("tr").find("td").each(function() {
+        valores += $(this).html() + " ";
+        });
+        valores = valores + "\n";
+        alert(valores);
+      }); */
+
     //SELECION DE LAS LINEAS DEL MODAL **********************/                        
     $(document).on('click','#tblvisitante tr', function(){        
         var data={
@@ -1064,7 +1138,7 @@ $rol=$_SESSION['rol'];
 
         var result = $.grep(jVisitante, function(e){  return e.id== data.id; });
         if (result.length  == 0) { // El visitante no esta en la lista
-            jVisitante.push(data); 
+            jVisitante.push(data);
 
             var row="<tr class='fila'>"+
                     "<td class='columna_idvisform'>"+ jVisitante[jVisitante.length-1].id+"</td>" +
@@ -1119,16 +1193,35 @@ $rol=$_SESSION['rol'];
     
     //VALIDA RESPONSABLE Y SALA, BORDE ROJOS
     function ValidacionCorrecta() {
-        $("#txtresponsable").css("border", "0px");
+        $("#txtresponsable").css("border", "0.3px solid #C2C2C2");
         document.getElementById('txtresponsable').placeholder = "CLICK";    
-        $("#selectsala").css("border", "0px");
+        $("#selectsala").css("border", "0.3px solid #C2C2C2");
         document.getElementById('selectsala').placeholder = "CLICK";
     }
 
-    //VALIDA EL MOTIVO DE LA VISITA
+    //DEVUELVE EL CSS A MOTIVO DE LA VISITA
     $("#motivovisita" ).change(function() {
-        $("#motivovisita").css("border", "0px");
-        document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
+        $("#motivovisita").css("color", "#EDEDED");
+        $("#motivovisita").css("border", "0.3px solid #C2C2C2");
+        //document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
+    });
+    
+    //DEVUELVE EL CSS A LAS FECHAS
+    $("#fechaingreso" ).change(function() {
+        $("#fechaingreso").css("color", "#EDEDED");
+        $("#fechasalida").css("color", "#EDEDED");
+        $("#fechaingreso").css("border", "0.3px solid #C2C2C2");
+        $("#fechasalida").css("border", "0.3px solid #C2C2C2");
+        //document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
+    });
+
+    //DEVUELVE EL CSS A LAS FECHAS
+    $("#fechasalida" ).change(function() {
+        $("#fechaingreso").css("color", "#EDEDED");
+        $("#fechasalida").css("color", "#EDEDED");
+        $("#fechaingreso").css("border", "0.3px solid #C2C2C2");
+        $("#fechasalida").css("border", "0.3px solid #C2C2C2");
+        //document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
     });
 
 </script>
