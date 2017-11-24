@@ -7,7 +7,7 @@
             "type": "chrome",
             "request": "launch",
 
-            "url": "http://localhost/san_pedro_dcti_bitacora/PoolTarjeta.php",
+            "url": "http://localhost/san_pedro_dcti_bitacora/js/validaciones.js",
 
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}",

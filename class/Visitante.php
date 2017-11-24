@@ -438,12 +438,12 @@ class Visitante{
     {
         try {
             if (empty($_POST['visitanteexcluido'])) {
-                $sql="SELECT cedula,nombre,empresa FROM visitante";
+                $sql="SELECT id,cedula,nombre,empresa FROM visitante";
                 $result = DATA::Ejecutar($sql);
             }
             else{
                 
-                $sql="SELECT cedula,nombre,empresa FROM visitante  WHERE NOT FIND_IN_SET(cedula,:EXCLUSION)";
+                $sql="SELECT id,cedula,nombre,empresa FROM visitante  WHERE NOT FIND_IN_SET(id,:EXCLUSION)";
                 $param= array(':EXCLUSION'=>$_POST['visitanteexcluido']);
                 $result = DATA::Ejecutar($sql,$param);  
             }

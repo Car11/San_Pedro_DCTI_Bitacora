@@ -49,19 +49,18 @@ function onValidaFormulario() {
     var equipo = document.getElementById('detalleequipo').value;
     var rfc = document.getElementById('txtrfc').value;
     var visitante = document.getElementById("visitantearray").value;
-    var fechaingreso = document.getElementsByName("fechaingreso").value;
-    var fechasalida = document.getElementsByName("fechasalida").value;
+    var fechaingreso = document.getElementById("fechaingreso").value;
+    var fechasalida = document.getElementById("fechasalida").value;
 
     if (responsable == ""){
         $("#txtresponsable").css("border", "2px solid red");
-        $("#txtresponsable").css("color", "red");
         document.getElementById('txtresponsable').placeholder = "REQUERIDO";
         //alert("Debe de asignar un responsable!");
         return false;
     }
+    
     if (sala == ""){
         $("#selectsala").css("border", "2px solid red");
-        $("#selectsala").css("color", "red");
         document.getElementById('selectsala').placeholder = "REQUERIDO";
         return false;
     }
@@ -79,6 +78,48 @@ function onValidaFormulario() {
     if(visitante == ""){
         return false;
     }
+    if(ComparaFechas(fechaingreso,fechasalida)==false){
+        //alert("FECHA DE INGRESO ES ES MAYOR A LA FECHA SALIDA!");
+        //$('#fechaingreso').val('');
+        //$('#fechasalida').val('');
+        $("#fechaingreso").css("border", "2px solid red");
+        $("#fechaingreso").css("color", "red");
+        $("#fechasalida").css("border", "2px solid red");
+        $("#fechasalida").css("color", "red");
+        document.getElementById('fechaingreso').placeholder = "FECHA INVALIDA";
+        document.getElementById('fechasalida').placeholder = "FECHA INVALIDA";
+        return false;
+    }
+}
+
+function ComparaFechas(Fecha_1,Fecha_2){
+    Ano1 = parseInt(Fecha_1.substring(0,4));
+    Ano2 = parseInt(Fecha_2.substring(0,4));    
+    Mes1 = parseInt(Fecha_1.substring(5,7));    
+    Mes2 = parseInt(Fecha_2.substring(5,7));
+    Dia1 = parseInt(Fecha_1.substring(8,10));
+    Dia2 = parseInt(Fecha_2.substring(8,10));
+    Hor1 = parseInt(Fecha_1.substring(11,13));
+    Hor2 = parseInt(Fecha_2.substring(11,13));
+    Min1 = parseInt(Fecha_1.substring(14,16));
+    Min2 = parseInt(Fecha_2.substring(14,16));
+
+    if(Ano1>Ano2)
+        return false;
+    else
+        if(Mes1>Mes2)
+            return false;
+        else
+            if(Dia1>Dia2)
+                return false;
+            else
+                if(Ano1==Ano2 && Mes1==Mes2 && Dia1==Dia2 && Hor1>Hor2)
+                    return false;
+                else
+                    if(Ano1==Ano2 && Mes1==Mes2 && Dia1==Dia2 && Hor1==Hor2 && Min1>Min2)
+                        return false;
+                    else
+                        return true;
 }
 
 function onValidaResponsable() {
