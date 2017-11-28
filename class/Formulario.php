@@ -368,20 +368,21 @@ class Formulario
     }
 
     // Carga formulario USANDO EL consecutivo
-    function Cargar(){    
-        try {    
-                $sql = "SELECT id,fechasolicitud,idestado,motivovisita, 
+    function CargarID()
+    {
+        try {
+            $sql = "SELECT id, consecutivo,fechasolicitud,idestado,motivovisita, 
                 DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
                 DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,
-                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id and f.id =:id)as nombretramitante,
-                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id and f.id =:id) as nombreautorizador,
-                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id and f.id =:id) as nombreresponsable,
-                (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala and f.id =:id) as nombresala,
-                placavehiculo,detalleequipo, rfc, consecutivo
-            FROM formulario WHERE id = :id;";
+                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id where f.id=:id)as nombretramitante,
+                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id where f.id=:id) as nombreautorizador,
+                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id where f.id=:id) as nombreresponsable,
+                (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala where f.id=:id) as nombresala,
+                idsala, placavehiculo,detalleequipo, rfc
+            FROM formulario WHERE id = :id";
             $param= array(':id'=>$this->id);
             $data = DATA::Ejecutar($sql, $param);
-            //    
+            //
             if (count($data)) {
                 $this->consecutivo= $data[0]['consecutivo'];
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
@@ -392,6 +393,7 @@ class Formulario
                 $this->nombretramitante= $data[0]['nombretramitante'];
                 $this->nombreautorizador= $data[0]['nombreautorizador'];
                 $this->nombreresponsable= $data[0]['nombreresponsable'];
+                $this->idsala= $data[0]['idsala'];
                 $this->nombresala= $data[0]['nombresala'];
                 $this->placavehiculo= $data[0]['placavehiculo'];
                 $this->detalleequipo= $data[0]['detalleequipo'];
@@ -405,6 +407,7 @@ class Formulario
             exit;
         }
     }
+
 
     //Carga los visitantes en la tabla principal del formulario
     function CargaVisitanteporFormulario(){

@@ -214,10 +214,15 @@ class Visitante{
         try{
             $this::Cargar($this->cedula);
             if ($this->permisoanual=="1") {  
+                /***** falta codigo para seleccionar el centro de datos y la sala 
                 unset($_SESSION['estado']);
                 $_SESSION['link']="true";                    
                 header('Location: ../InfoVisita.php?id='. $this->cedula);
                 exit;
+                */
+                // temporalmente envia estado = 4 (sin formulario) hasta desarrollar el datacenter.
+                $_SESSION['estado']='3';
+                
             } else return false;
         }
         catch(Exception $e) {
