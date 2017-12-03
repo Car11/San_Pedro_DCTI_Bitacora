@@ -83,10 +83,10 @@
         closeOnEscape: false,
         open: function(event, ui) { $(".ui-dialog-titlebar-close").hide(); },
         buttons: {
-            Nuevo: function() {
+            /*Nuevo: function() {
                 $( this ).dialog( "close" );         
                 return true;
-            },            
+            },*/            
             Buscar: function(){
                 $( this ).dialog( "close" );
                 // llama a ventana para buscar identificaciones por NOMBRE COMPLETO.

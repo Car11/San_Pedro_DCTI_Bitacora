@@ -105,7 +105,7 @@ if (isset($_SESSION['idformulario'])) {
 
 <body>
     <header>
-        <h1>Control de Acceso - Centros de Datos Corporativos</h1>        
+        <h1>Centros de Datos Corporativos</h1>        
         <div id="logo"><img src="img/Logoice.png" height="75" onclick="onShowLogin()" > </div>  
         <div id="fechahora"><span id="date"></span></div>
         <div id="signin">

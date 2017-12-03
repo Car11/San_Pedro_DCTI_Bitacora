@@ -273,7 +273,7 @@ function onMuestraEstadoFormulario(estado) { // id del formulario a consultar
         htmltext= "<div class=mensajeriaError id=" + divId + ">" + estado + "</div>";
     }
     else if(estado=="4"){
-        estado= estado="Formulario (<b><i>"+ formularioConsultado + "</b></i>) <br>No hay formulario.";
+        estado= estado="No hay formulario.";
         htmltext= "<div class=mensajeriaAdvertencia id=" + divId + ">" + estado + "</div>";
     }
     //
