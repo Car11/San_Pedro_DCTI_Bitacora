@@ -505,8 +505,8 @@ $rol=$_SESSION['rol'];
         })
         .done(function( e ) {
             var data= JSON.parse(e);
-            document.getElementById("selectdatacenter").value = data[0][1];
-            iddatacenter = data[0][0];
+            document.getElementById("selectdatacenter").value = data[0].nombre;
+            iddatacenter = data[0].id;
         })    
         .fail(function(msg){
             alert("Error al Cargar Data Center Default");
