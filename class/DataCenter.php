@@ -11,7 +11,7 @@ if(isset($_POST["action"])){
     }
     if($_POST["action"]=="Default"){
             $DataCenter= new DataCenter();
-            $DataCenter->Default();
+            $DataCenter->DataCenterporDefecto();
     }
 }
 
@@ -36,10 +36,11 @@ class DataCenter{
         }
     }
 
-    function Default(){
+    function DataCenterporDefecto(){
         try {
-            $sql="SELECT id,nombre FROM datacenter WHERE nombre = 'SAN PEDRO'";         
-            $data = DATA::Ejecutar($sql);
+            $sql="SELECT id,nombre FROM datacenter WHERE nombre =:sanpedro";   
+            $param= array(':sanpedro'=>"SAN PEDRO");      
+            $data = DATA::Ejecutar($sql,$param);
             if (count($data)) {
                 $this->id= $data[0]['id'];
                 $this->nombre= $data[0]['nombre'];
