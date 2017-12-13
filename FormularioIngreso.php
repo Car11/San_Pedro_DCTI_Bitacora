@@ -70,8 +70,7 @@ $rol=$_SESSION['rol'];
             <div id="izquierda">
                 <div id="superiorizq">
                 </div>
-                <div id="medioizq">
-                    <img id=imgflecha src=img/flecha-error.png class="imagenNO">
+                <div id="medioizq">                  
                 </div>    
             </div>
             <div id="formularioenviado">
@@ -135,8 +134,9 @@ $rol=$_SESSION['rol'];
                 <div id="medio">
                     <div id="tabla">
                        <div id="distribuciontabla">
-                            <div id="listavisitanteform">
+                            <div id="listavisitanteform" style="text-transform:uppercase">
                                 <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
+                                
                             </div>
                         <div id="btnagregarvisitante">
                             <input type="button" id="btnagregavisitante" value="+">  
@@ -297,7 +297,7 @@ $rol=$_SESSION['rol'];
                 <span class="close">&times;</span>
                 <h2>Seleccione los Visitantes a Autorizar</h2>
             </div>
-            <div id="visitante-modal" class="modal-body">
+            <div id="visitante-modal" class="modal-body" style="text-transform:uppercase">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
             </div>
             <div class="modal-footer">
@@ -767,6 +767,9 @@ $rol=$_SESSION['rol'];
         }
     });
 
+    //Muestra la imagen de Insertar Insertar Visitantes
+
+
     //Carga los Data center
     $(document).on('click', '#selectdatacenter', function (event) {
         
@@ -946,6 +949,17 @@ $rol=$_SESSION['rol'];
         //valida si se han agregado visitantes a la tabla        
         var cantidadvisitante = document.getElementById("tblvisitanteform").rows.length;
         if(cantidadvisitante<2){
+            
+            $('#listavisitanteform').append("<div id=novisitante><label for=imgflecha style=opacity:0.5>Inserte Visitante</label><br><br><img id=imgflecha src=img/flecha-error.png></div>");
+            
+            
+            ////////////////////////////////*//////////////////////////////////
+            
+            
+            
+            
+            
+            
             $('#imgflecha').addClass('imagen');
             return false;
         }
@@ -1152,9 +1166,10 @@ $rol=$_SESSION['rol'];
                 $('.columna_idvisform').hide();
             if(jVisitante[jVisitante.length-1].id==undefined)
                 return false;
-            $('#imgflecha').removeClass('imagen');
-            $('#imgflecha').addClass('imagenNO');
+            //$('#imgflecha').removeClass('imagen');
+            //$('#imgflecha').addClass('imagenNO');
             $(this).css('display', 'none');
+            $('#novisitante').html("");
         }
     });
 
