@@ -215,7 +215,6 @@ $rol=$_SESSION['rol'];
                                 pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>    
                                 </div>
                         </div>  
-
                     </div>
                     <div id="cajainput3">
                         <label for="motivovisita" class="labelformat">Motivo Visita</label>
