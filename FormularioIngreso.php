@@ -934,6 +934,7 @@ $rol=$_SESSION['rol'];
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
     function EnviaVisitante() {
+        $('#novisitante').remove();
         document.getElementById("visitantearray").value = null;
         for (var i = 0; i < jVisitante.length; i++) {
             var element = jVisitante[i].id;
@@ -949,17 +950,7 @@ $rol=$_SESSION['rol'];
         //valida si se han agregado visitantes a la tabla        
         var cantidadvisitante = document.getElementById("tblvisitanteform").rows.length;
         if(cantidadvisitante<2){
-            
             $('#listavisitanteform').append("<div id=novisitante><label for=imgflecha style=opacity:0.5>Inserte Visitante</label><br><br><img id=imgflecha src=img/flecha-error.png></div>");
-            
-            
-            ////////////////////////////////*//////////////////////////////////
-            
-            
-            
-            
-            
-            
             $('#imgflecha').addClass('imagen');
             return false;
         }
@@ -1131,15 +1122,6 @@ $rol=$_SESSION['rol'];
         $('#tblvisitanteform').append(col);
         $('#titulo_idvisform').hide();
     }
-
-/*     $("#btnagregavisitante").click(function() {
-        var valores = "";
-		$(".columna_idvisform").parent("tr").find("td").each(function() {
-        valores += $(this).html() + " ";
-        });
-        valores = valores + "\n";
-        alert(valores);
-      }); */
 
     //SELECION DE LAS LINEAS DEL MODAL **********************/                        
     $(document).on('click','#tblvisitante tr', function(){        
