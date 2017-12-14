@@ -153,7 +153,6 @@ $rol=$_SESSION['rol'];
                                 <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
                                 value=""/>   
                             </div>
-
                         </div>
                         <div id="estadoformulario">
                             <div id="estadosform">
