@@ -579,9 +579,12 @@ $rol=$_SESSION['rol'];
         if(hhs==26){
             hhs='02'
         }
-
         today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
-        salida = yyyy+'-'+mm+'-'+dd+'T'+hhs+':'+min;
+        //SUMA UN DIA A LA FECHA DE SALIDA 
+        if(hh>=22)
+            salida = yyyy+'-'+mm+'-'+(dd+1)+'T'+hhs+':'+min;
+        else
+            salida = yyyy+'-'+mm+'-'+dd+'T'+hhs+':'+min;
         document.getElementById("fechaingreso").setAttribute("min", today);
         document.getElementById("fechasalida").setAttribute("min", today);
         document.getElementById("fechaingreso").value = today;
