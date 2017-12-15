@@ -58,7 +58,7 @@ $rol=$_SESSION['rol'];
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
                 </div>
             </div>
-            <div id="listaresponsable">
+            <div id="listaresponsable" style="text-transform:uppercase">
 
             </div>
 
@@ -77,29 +77,6 @@ $rol=$_SESSION['rol'];
                 <span class="close">&times;</span>
                 <h2>Responsables</h2>
             </div>
-            <!--<div class="modal-body">
-                <div id="resizquierda"></div>
-                
-                    <div class="modalmod">
-                        <label for="txttramitante" class="labelformat">Nombre</label></br>
-                        <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="input-field" value="" pattern="[\.áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/>
-                    </div>                   
-                    <div class="modalmod">
-                        <label for="txtautorizador" class="labelformat">Cedula</label></br>
-                        <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="input-field" value="" pattern="[\.-_0-9A-Za-z/\s/]*"/> 
-                    </div>
-                    <div class="modalmod">
-                        <label for="txtautorizador" class="labelformat">Empresa</label></br>
-                        <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="input-field" value="" pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/> 
-                    </div>
-                    <div class="modalmod">
-                        <input id="btnInsertaResponsable" class="cbp-mc-submit" type="button" value="Inserta Responsable">
-                        <input id="btnModificaResponsable" class="cbp-mc-submit" type="button" value="Modifica Responsable">
-                        <input id="idresponsable" name="idresponsable" type="hidden">
-                    </div>    
-                
-                <div id="resderecha"></div>
-            </div>-->
 
             <!-- Modal body -->
             <div class="modal-body">
@@ -157,7 +134,7 @@ $rol=$_SESSION['rol'];
         LimpiaInputs();
     } );
 
-    
+    //CIERRA EL MODAL EN LA (X)
     span.onclick = function() {
         modalResponsable.style.display = "none";
     }
@@ -171,16 +148,15 @@ $rol=$_SESSION['rol'];
 
     //CIERRA EL MODAL RESPONSABLE 
     window.onclick = function(event) {
-    if (event.target == modalResponsable) {
-        modalResponsable.style.display = "none";
-        }
+        if (event.target == modalResponsable) {
+            modalResponsable.style.display = "none";
+            }
     }
     
     //CIERRA EL MODAL EN CUALQUIER PARTE DE LA PANTALLA
     this.Cerrar = function(){
         $(".modal").css({ display: "none" });
     }; 
-
 
     //LIMPIA LOS INPUTS DESPUES DE INSERTAR O MODIFICAR
     function LimpiaInputs(){
