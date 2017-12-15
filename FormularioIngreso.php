@@ -12,7 +12,7 @@ if (!$sesion->estado) {
     exit;
 }
 
-//formulario - Cargar Datos en Formulario Ingreso para Modificar
+//Formulario - Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
 $formulario = new Formulario();
 $estadoformulario=0;
@@ -322,7 +322,7 @@ $rol=$_SESSION['rol'];
     </div>
 
 <script type="text/javascript" language="javascript">
-    //Se ejecuta al iniciar la pagina
+    //SE EJECUTA AL INICIAR LA PAGINA
     var iddatacenter=null;
     var idsala=null;
     var idresponsable=null;
@@ -335,17 +335,17 @@ $rol=$_SESSION['rol'];
     var idformulario = "<?php echo $idformulario;?>";
     var btnmod = <?php echo $btnmod;?>;
     var autorizador = "<?php echo $usuario->nombre;?>";
-    // Obtiene el MODAL
+    // OBTIENE EL MODAL
     var modalVisitante = document.getElementById('ModalVisitante');    
     var modalResponsable = document.getElementById('ModalResponsable');     
     var modalSala = document.getElementById('ModalSala');
     var modalDataCenter = document.getElementById('ModalDataCenter');
-    // Botón que abre el MODAL
+    // BOTONES QUE ABREN EL MODAL
     var btn = document.getElementById("btnagregavisitante");
     var inputResponsable = document.getElementById("txtresponsable");
     var inputSala = document.getElementById("selectsala");
     var inputDataCenter = document.getElementById("selectdatacenter");
-    // Obtiene el <span> que  cierra el MODAL
+    // OBTIENE EL <span> QUE CIERRA EL MODAL
     var span = document.getElementsByClassName("close")[0];
     
     $(document).ready( function () {  
@@ -406,13 +406,13 @@ $rol=$_SESSION['rol'];
 
     } );
 
-
+    //CARGA EL AUTORIZADOR AL FORMULARIO
     function CargaAutorizador(){
         if (document.getElementById('txtautorizador').value==null)
             document.getElementById('txtautorizador').value = autorizador;
     }
 
-    //RECARGA LA TABLA SALAS
+    //RECARGA LA TABLA DATACENTER
     function RecargarSalaporDataCenter(){
         $.ajax({
             type: "POST",
@@ -511,7 +511,7 @@ $rol=$_SESSION['rol'];
         });    
     }
 
-    //SELECIONA EL DATACENTER Y LO INSERTA EN EL INPUT *********/                             
+    //SELECIONA EL DATACENTER Y LO INSERTA EN EL INPUT                            
     $(document).on('click','#tbldatacenter tr', function(){        
             //SELECCIONA LA FILA Y LA INSERTA EN EL INPUT DC
             document.getElementById('selectdatacenter').value = $(this).find('td:nth-child(2)').html();
@@ -525,7 +525,7 @@ $rol=$_SESSION['rol'];
             $("#selectsala").val("");
     });
 
-    //Confirma no salvar cambios para volver al menu admin     
+    //CONFIRMA NO SALVAR CAMBIOS PARA VOLVER AL MENU ADMIN
     $(document).on('click', '#btnatras', function (event) {
         swal({
             title: 'Volver al Menu Administrador?',
@@ -543,7 +543,7 @@ $rol=$_SESSION['rol'];
         });    
     });
 
-    //Establece la fecha de hoy a los datetme-local
+    //ESTABLECE LA FECHA DE HOY A LOS DATETIME LOCAL CUANDO SE CREA UN FORMULARIO NUEVO
     function FechaFormNuevo(){
         var today = new Date();
         var salida = new Date();
@@ -590,7 +590,7 @@ $rol=$_SESSION['rol'];
         document.getElementById("fechasalida").value = salida;
     }
 
-    //Establece la fecha de hoy a los datetme-local
+    //ESTABLECE LA FECHA DE HOY A LOS DATETIME LOCAL CUANDO SE MODIFICA UN FORMULARIO
     function FechaFormMod(){
         var today = new Date();
         var dd = today.getDate();
@@ -615,7 +615,7 @@ $rol=$_SESSION['rol'];
         document.getElementById("fechasalida").setAttribute("min", today);
     }
 
-    //Abre el modal con el evento click en el boton (+) , contruye la tabla visitante en el modal
+    //ABRE EL MODAL EN EL BOTON (+), CONSTRUYE LA TABLA VISITANTE MODAL
     $('#btnagregavisitante').click(function() {
         modalVisitante.style.display = "block";
         var visitantereal =[];
@@ -656,7 +656,7 @@ $rol=$_SESSION['rol'];
         
     });     
 
-    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
+    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     function ExcluyeVisitante() {     
         document.getElementById("visitanteexcluido").value = "";
         //**********MODIFICAR
@@ -687,7 +687,7 @@ $rol=$_SESSION['rol'];
         }
     } 
 
-    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
+    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     function ExcluyeVisitanteCarga() {     
         //**********MODIFICAR
         if(longitudvisitanteform!=0){        
@@ -731,7 +731,7 @@ $rol=$_SESSION['rol'];
         }
     } 
 
-    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
+    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO      
     $(document).on('click', '.borrar', function (event) {
         var ced = $(this).parents("tr").find("td").eq(0).text();
         for (var i = 0; i < jVisitante.length; i++) {
@@ -742,7 +742,7 @@ $rol=$_SESSION['rol'];
         ExcluyeVisitante();
     });
 
-    //SELECION DE LAS LINEAS DEL MODAL **********************/                        
+    //SELECIONA LOS REGISTROS DEL MODAL Y LOS CARGA EN tblvisitanteform                        
     $(document).on('click','#tblvisitantex tr', function(){        
         var data={
             "id":$(this).find('td:first').html(),
@@ -768,10 +768,7 @@ $rol=$_SESSION['rol'];
         }
     });
 
-    //Muestra la imagen de Insertar Insertar Visitantes
-
-
-    //Carga los Data center
+    //CARGA LOS DATACENTERS AL INPUT SELECT
     $(document).on('click', '#selectdatacenter', function (event) {
         
         $.ajax({
@@ -810,11 +807,11 @@ $rol=$_SESSION['rol'];
         });
     }); 
 
-    //Abre el modal de responsables
+    //ABRE EL MODAL RESPONSABLES
     inputResponsable.onclick = function() {
         modalResponsable.style.display = "block";
     }
-    //Abre el modal de Salas
+    //ABRE EL MDOAL SALA
     inputSala.onclick = function() {
         modalSala.style.display = "block";
         if (existeid!=0){
@@ -828,12 +825,12 @@ $rol=$_SESSION['rol'];
 
         
     }
-    //Abre el modal Data Center
+    //ABRE EL MODAL DATACENTER
     inputDataCenter.onclick = function() {
         modalDataCenter.style.display = "block";
     }
 
-    //Cierra el MODAL en la X
+    //CIERRA EL MODAL EN LA X Y VACIA LOS VISITANTES EXCLUIDOS
     span.onclick = function() {
         modalResponsable.style.display = "none";
         modalVisitante.style.display = "none";
@@ -844,7 +841,7 @@ $rol=$_SESSION['rol'];
         $('#visitante-modal').html("");
     }
 
-    //Cierra el MODAL en cualquier parte de la ventana
+    //CIERRA EL MODAL EN CUALQUIER PARTE DE LA VENTANA
     window.onclick = function(event) {
         if (event.target == modalVisitante) {
             modalVisitante.style.display = "none";   
@@ -853,7 +850,7 @@ $rol=$_SESSION['rol'];
         }
     }
 
-    //Oculta o Muestra el DIV de estados del formualario
+    //OCULTA O MUESTRA EL DIV DE ESTADOS DEL FORMULARIO
     function MuestraEstados(){
         var rol = "<?php echo $rol ?>";
         if (rol==1) {
@@ -870,13 +867,13 @@ $rol=$_SESSION['rol'];
         }
     }
 
-    //Mientras se digita en el Campo Motivo
+    //CAMBIA EL CSS DEL CAMPO MOTIVO MIENTRAS SE DIGITA
     $('#motivovisita').on('keyup', function() {
         $("#motivovisita").css("border", "0px");
         document.getElementById('motivovisita').placeholder ="";
     });
 
-    //Muestra u Oculta el numero del Formulario 
+    //MUESTRA U OCULTA EL NUMERO DE FORMUARIO
     function NumFormulario(){
         if (isset($_GET['ID'])) {
             document.getElementById("formnum").className = '';    
@@ -901,15 +898,7 @@ $rol=$_SESSION['rol'];
         }
     }
 
-    //Valida Caracteres Especiales en el campo motivo 
-    $('#motivovisita').keydown(function(e){
-        if (e.keyCode == 226 ){
-            document.getElementById('motivovisita').placeholder = "CARACTER INVÁLIDO";
-            return false;
-        } 
-    });
-
-    //Maneja el evento checked del estado del radio button formulario
+    //MANEJA EL EVENTO CHECHED DEL ESTADO DEL RADIO BUTTON DEL FORMULARIO
     function EstadoFormulario(){        
         
         var estado = "<?php echo $estadoformulario; ?>";         
@@ -933,7 +922,7 @@ $rol=$_SESSION['rol'];
         }
     }
 
-    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
+    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     function EnviaVisitante() {
         $('#novisitante').remove();
         document.getElementById("visitantearray").value = null;
@@ -957,7 +946,7 @@ $rol=$_SESSION['rol'];
         }
     }   
 
-    //INSERTA UN FORMULARIO, SI ESTA CCORRECTO REDIRECCIONA A LISAT FORMULARIO ***/
+    //INSERTA UN FORMULARIO, SI ESTA CCORRECTO REDIRECCIONA A LISAT FORMULARIO
     $(document).on('click', '#btnInsertaFormulario', function (event) {
         $.ajax({
             type: "POST",
@@ -1124,7 +1113,7 @@ $rol=$_SESSION['rol'];
         $('#titulo_idvisform').hide();
     }
 
-    //SELECION DE LAS LINEAS DEL MODAL **********************/                        
+    //SELECION DE LAS LINEAS DEL MODAL VISITANTE                       
     $(document).on('click','#tblvisitante tr', function(){        
         var data={
             "id":$(this).find('td:first').html(),
@@ -1156,7 +1145,7 @@ $rol=$_SESSION['rol'];
         }
     });
 
-    //SELECCION MODAL RESPONSABLES ********/
+    //SELECCION MODAL RESPONSABLES
     $('#tblresponsable tr').on('click', function(){        
         $(this).toggleClass('selected');
         jResponsable.length = 0;
@@ -1220,6 +1209,14 @@ $rol=$_SESSION['rol'];
         $("#fechaingreso").css("border", "0.3px solid #C2C2C2");
         $("#fechasalida").css("border", "0.3px solid #C2C2C2");
         //document.getElementById('motivovisita').placeholder = "8 Caracteres Mínimo";    
+    });
+
+    //VALIDA CARACTERES ESPECIALES EN EL CAMPO MOTIVO
+    $('#motivovisita').keydown(function(e){
+        if (e.keyCode == 226 ){
+            document.getElementById('motivovisita').placeholder = "CARACTER INVÁLIDO";
+            return false;
+        } 
     });
 
 </script>

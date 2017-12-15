@@ -149,24 +149,6 @@ $rol=$_SESSION['rol'];
     var btnnuevo  = document.getElementById('btnnuevo');
     var span = document.getElementsByClassName("close")[0];
 
-    span.onclick = function() {modalResponsable.style.display = "none";}
-
-    btnnuevo.onclick = function() {
-        $('#btnInsertaResponsable').show();
-        $('#btnModificaResponsable').hide();
-        modalResponsable.style.display = "block";
-    }
-
-    window.onclick = function(event) {
-    if (event.target == modalResponsable) {
-        modalResponsable.style.display = "none";
-        }
-    }
-    
-    this.Cerrar = function(){
-        $(".modal").css({ display: "none" });
-    }; 
-
     $(document).ready( function () {      
         RecargarTabla();       
         $('#btnModificaResponsable').hide();
@@ -175,15 +157,39 @@ $rol=$_SESSION['rol'];
         LimpiaInputs();
     } );
 
+    
+    span.onclick = function() {
+        modalResponsable.style.display = "none";
+    }
 
-    //Limpia los input despues de insertar o modificar
+    //ABRE EL MODAL RESPOSABLE
+    btnnuevo.onclick = function() {
+        $('#btnInsertaResponsable').show();
+        $('#btnModificaResponsable').hide();
+        modalResponsable.style.display = "block";
+    }
+
+    //CIERRA EL MODAL RESPONSABLE 
+    window.onclick = function(event) {
+    if (event.target == modalResponsable) {
+        modalResponsable.style.display = "none";
+        }
+    }
+    
+    //CIERRA EL MODAL EN CUALQUIER PARTE DE LA PANTALLA
+    this.Cerrar = function(){
+        $(".modal").css({ display: "none" });
+    }; 
+
+
+    //LIMPIA LOS INPUTS DESPUES DE INSERTAR O MODIFICAR
     function LimpiaInputs(){
         document.getElementById("txtnombre").value = "";
         document.getElementById("txtcedula").value = "";
         document.getElementById("txtempresa").value = "";
     }
     
-    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
+    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO    
     $(document).on('click', '.borrar', function (event) {
         var idresponsable = $(this).parents("tr").find("td").eq(0).text();
         document.getElementById("idresponsable").value = idresponsable;
@@ -204,6 +210,7 @@ $rol=$_SESSION['rol'];
         });
     });
 
+    //ELIMINA EL RESPONSABLE O MUESTRA MENSAJE
     function Eliminar(){
         $.ajax({
             type: "POST",
@@ -227,7 +234,7 @@ $rol=$_SESSION['rol'];
         );
     }
     
-    //CARGA EN LOS INPUTS *********/       
+    //CARGA EN LOS INPUTS EN EL MODAL PARA MODIFICAR      
     $(document).on('click', '.modificar', function (event) {
         modalResponsable.style.display = "block";
         $('#btnInsertaResponsable').hide();
@@ -252,7 +259,7 @@ $rol=$_SESSION['rol'];
         document.getElementById("idresponsable").value = $(this).parents("tr").find("td").eq(0).text();
     });
 
-    //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
+    //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS     
     $(document).on('click', '#btnModificaResponsable', function (event) {
         $.ajax({
             type: "POST",
@@ -276,7 +283,7 @@ $rol=$_SESSION['rol'];
         });
     });
 
-    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
+    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     $(document).on('click', '#btnInsertaResponsable', function (event) {
         
         $.ajax({

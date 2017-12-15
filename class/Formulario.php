@@ -368,8 +368,7 @@ class Formulario
     }
 
     // Carga formulario USANDO EL consecutivo
-    function CargarID()
-    {
+    function CargarID(){
         try {
             $sql = "SELECT id, consecutivo,fechasolicitud,idestado,motivovisita, 
                 DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,

@@ -21,6 +21,7 @@ class DataCenter{
     
     }
 
+    //CONSULTA TODOS LOS DATA CENTERS
     function SeleccionarDataCenter(){
         try {
             $sql='SELECT id,nombre FROM datacenter order by nombre asc';         
@@ -36,6 +37,7 @@ class DataCenter{
         }
     }
 
+    //CONSULTA EL DATACENTER POR DEFECTO SAN PEDRO
     function DataCenterporDefecto(){
         try {
             $sql="SELECT id,nombre FROM datacenter WHERE nombre =:sanpedro";   
