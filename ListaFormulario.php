@@ -84,87 +84,90 @@ if(isset($_GET['INS']))
     </div>    
     <script>
         
-        $(document).ready( function () {
-            var insert = <?php echo $insert;?>;
-            if(insert==1)
-                muestraInfo();
-            else
-                if(insert==0)
-                    muestraError();
-            
-            ActivaConsultaVisitante();
-            //Da la apariencia del css datatable
-            //CargarEstiloTablas();
-            //envía notificación al servidor
-            this.ajaxSent = function() {
-                try {
-                    xhr = new XMLHttpRequest();
-                } catch (err) {
-                    alert(err);
-                }
-                //alert('enviando formulario temporal: ' + formtemp);
-                url='NotificacionDinamica.php?msg='+formtemp;
-                xhr.open('GET', url, true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4) {                    
-                        if (xhr.status == 200) {   
-                            formtemp.value = "";
-                            //alert('finalizando formulario temporal: ' + formtemp);
-                        }
-                    }
-                };
-                xhr.send();
-            };
-
-            var formtemp= "<?php echo $formtemp; ?>";
-            //alert(formtemp);
-
-            if(formtemp!="NULL")
-                this.ajaxSent();
-        } );  // fin document ready.
+    $(document).ready( function () {
+        var insert = <?php echo $insert;?>;
+        if(insert==1)
+            muestraInfo();
+        else
+            if(insert==0)
+                muestraError();
         
-        function CargarEstiloTablas() {
-            $('#listaformulario').DataTable();    
-        }
-
-        //MODIFICA EL REGISTRO SELECIONADO EN EL CAMPO MODIFICAR *********/       
-        $(document).on('click', '.modificar', function (event) {    
-            //CAPTURAR UUID
-            $.ajax({
-            type: "POST",
-            url: "class/Formulario.php",
-            data: {
-                    action: "CargaIDFormulario",
-                    consecutivo: $(this).parents("tr").find("td").eq(0).text()
-                  }
-            })
-            .done(function( e ) {
-                // carga lista con datos.
-                var formulario= JSON.parse(e);
-                location.href='FormularioIngreso.php?MOD='+formulario[0][0];
-            })    
-                .fail(function(msg){
-                alert("Error al carga id del formulario");
-            }); 
-            
-        }); 
-
-        //FUNCIONALIDAD DEL CHECKBOX QUE ACTIVA LA CONSULTA DE VISITANTES *********/       
-        $(document).on('click', '#checkconsultavisitante', function (event) {    
-            ActivaConsultaVisitante();
-        }); 
-
-        function ActivaConsultaVisitante(){
-            if(document.getElementById("checkconsultavisitante").checked == true){
-                $("#txtbuscavisitante").prop("readonly", false);
+        ActivaConsultaVisitante();
+        //Da la apariencia del css datatable
+        //CargarEstiloTablas();
+        //envía notificación al servidor
+        this.ajaxSent = function() {
+            try {
+                xhr = new XMLHttpRequest();
+            } catch (err) {
+                alert(err);
             }
-            if(document.getElementById("checkconsultavisitante").checked == false){
-                $("#txtbuscavisitante").prop("readonly", true);
-                $("#txtbuscavisitante").val("");
-                RecargarTabla();
-            }
-        } 
+            //alert('enviando formulario temporal: ' + formtemp);
+            url='NotificacionDinamica.php?msg='+formtemp;
+            xhr.open('GET', url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {                    
+                    if (xhr.status == 200) {   
+                        formtemp.value = "";
+                        //alert('finalizando formulario temporal: ' + formtemp);
+                    }
+                }
+            };
+            xhr.send();
+        };
+
+        var formtemp= "<?php echo $formtemp; ?>";
+        //alert(formtemp);
+
+        if(formtemp!="NULL")
+            this.ajaxSent();
+    } );  // fin document ready.
     
+    //CARGA EL ESTILO DATATABLE A LA LISTA DE VISITANTES
+    function CargarEstiloTablas() {
+        $('#listaformulario').DataTable();    
+    }
+
+    //MODIFICA EL REGISTRO SELECIONADO EN EL CAMPO MODIFICAR     
+    $(document).on('click', '.modificar', function (event) {    
+        //CAPTURAR UUID
+        $.ajax({
+        type: "POST",
+        url: "class/Formulario.php",
+        data: {
+                action: "CargaIDFormulario",
+                consecutivo: $(this).parents("tr").find("td").eq(0).text()
+                }
+        })
+        .done(function( e ) {
+            // carga lista con datos.
+            var formulario= JSON.parse(e);
+            location.href='FormularioIngreso.php?MOD='+formulario[0][0];
+        })    
+            .fail(function(msg){
+            alert("Error al carga id del formulario");
+        }); 
+        
+    }); 
+
+    //FUNCIONALIDAD DEL CHECKBOX QUE ACTIVA LA CONSULTA DE VISITANTES      
+    $(document).on('click', '#checkconsultavisitante', function (event) {    
+        ActivaConsultaVisitante();
+    }); 
+
+    //ACTIVA CONSULTA FORMULARIOS POR VISITANTE 
+    function ActivaConsultaVisitante(){
+        if(document.getElementById("checkconsultavisitante").checked == true){
+            $("#txtbuscavisitante").prop("readonly", false);
+        }
+        if(document.getElementById("checkconsultavisitante").checked == false){
+            $("#txtbuscavisitante").prop("readonly", true);
+            $("#txtbuscavisitante").val("");
+            RecargarTabla();
+        }
+    } 
+    
+    //CARGA LA LISTA FORMULARIO
     function RecargarTabla(){
         $.ajax({
             type: "POST",
@@ -204,6 +207,7 @@ if(isset($_GET['INS']))
         });    
     }
 
+    //CARGA LOS VISITANTES RELACIONADOS CON LO QUE SE ESCRIBA EN EL BSUCADOR
     $('#txtbuscavisitante').on('keyup', function() {
         
         $.ajax({
@@ -245,7 +249,7 @@ if(isset($_GET['INS']))
         });
     });
 
-    // Muestra información en ventana
+    //DESPLIEGA MENSAJE QUE INDICA QUE SE GUARDO EL FORMULARIO
     function muestraInfo(){     
         $("#textomensaje").text("Información almacenada correctamente!!");
         $("#mensajetop").css("background-color", "#016DC4");
@@ -255,7 +259,7 @@ if(isset($_GET['INS']))
         $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
     };
 
-    // Muestra errores en ventana
+    //MUESTRA UN ERROR AL GUARDAR
     function muestraError(){        
         $("#textomensaje").text("Error al procesar la información");
         $("#mensajetop").css("background-color", "firebrick");

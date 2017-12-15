@@ -52,6 +52,7 @@ function onValidaFormulario() {
     var fechaingreso = document.getElementById("fechaingreso").value;
     var fechasalida = document.getElementById("fechasalida").value;
 
+    //MUESTRA LA PALABRA REQUERIDO SI EL RESPOSANBLE ESTA VACIO
     if (responsable == ""){
         $("#txtresponsable").css("border", "2px solid red");
         document.getElementById('txtresponsable').placeholder = "REQUERIDO";
@@ -59,29 +60,35 @@ function onValidaFormulario() {
         return false;
     }
     
+    //MUESTRA LA PALABRA REQUERIDO SI EL SALA ESTA VACIO
     if (sala == ""){
         $("#selectsala").css("border", "2px solid red");
         document.getElementById('selectsala').placeholder = "REQUERIDO";
         return false;
     }
+
+    //MUESTRA LA PALABRA REQUERIDO SI EL MOTIVO ESTA VACIO
     if(motivo == ""){
         $("#motivovisita").css("border", "2px solid red");
         document.getElementById('motivovisita').placeholder = "REQUERIDO";
         return false;
     }
+
+    //MUESTRA UNA ALERTA SI HAY MENOS DE 8 CARACTERES
     if(motivo.length<8){
         $('#motivovisita').val('');
         $("#motivovisita").css("border", "2px solid red");
         document.getElementById('motivovisita').placeholder = "8 CARACTERES MÍNIMO";
         return false;
     }
+
+    //MUESTRA LA PALABRA REQUERIDO SI EL VISITANTE ESTA VACIO
     if(visitante == ""){
         return false;
     }
+
+    //MUESTRA ALERTA SI LAS FECHAS NO SON VALIDAS
     if(ComparaFechas(fechaingreso,fechasalida)==false){
-        //alert("FECHA DE INGRESO ES ES MAYOR A LA FECHA SALIDA!");
-        //$('#fechaingreso').val('');
-        //$('#fechasalida').val('');
         $("#fechaingreso").css("border", "2px solid red");
         $("#fechaingreso").css("color", "red");
         $("#fechasalida").css("border", "2px solid red");

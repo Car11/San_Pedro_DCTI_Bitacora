@@ -72,7 +72,7 @@ class Formulario
         //ini_set('display_errors', 1);
     }
 
-    //Agrega formulario
+    //AGREGA EL FORMULARIO
     function AgregarFormulario(){
         try {
             
@@ -115,7 +115,7 @@ class Formulario
         }
     }
 
-    //Agrega formulario
+    //AGREGA EL FORMULARIO
     function AgregarFormularioAJAX(){
         try {
             
@@ -159,7 +159,7 @@ class Formulario
         }
     }
     
-    //Modifca el formulario
+    //MODIFICA EL FORMULARIO
     function Modificar(){
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
@@ -222,7 +222,7 @@ class Formulario
         }
     }
 
-    //Modifca el formulario
+    //MODIFICA EL FORMULARIO
     function ModificarAJAX(){
         try {
             $sql="UPDATE formulario SET fechaingreso=:fechaingreso,fechasalida=:fechasalida,idtramitante=(SELECT id FROM usuario WHERE nombre= :nombretramitante),
@@ -283,7 +283,7 @@ class Formulario
         }
     }
     
-    //Consulta formulario para llenar tabla
+    //CONSULTA FORMULARIO PARA LLENAR TABLA
     function ConsultaFormulario(){
         try {
             $sql = "SELECT id,fechasolicitud,motivovisita,(SELECT nombre FROM estado WHERE id=idestado),fechaingreso,fechasalida,(SELECT nombre FROM usuario WHERE id=idtramitante),
@@ -297,6 +297,7 @@ class Formulario
         }
     }
 
+    //CONSULTA VISITANTE POR ID VISITANTE
     function ConsultaVisitantePorFormulario($idvisitante){
         try{
             $sql="SELECT f.id as ID , consecutivo ,f.fechaingreso , f.fechasalida , f.idestado  as estado
@@ -323,7 +324,7 @@ class Formulario
 
     }
 
-    // Carga formulario USANDO EL consecutivo
+    //CARGA EL FORMULARIO USANDO EL CONSECUTIVO 
     function CargarFormulario(){
         try {
             $sql = "SELECT id,fechasolicitud,idestado,motivovisita, 
@@ -367,9 +368,8 @@ class Formulario
         }
     }
 
-    // Carga formulario USANDO EL consecutivo
-    function CargarID()
-    {
+    //CARGA EL FORMULARIO USANDO EL ID
+    function CargarID(){
         try {
             $sql = "SELECT id, consecutivo,fechasolicitud,idestado,motivovisita, 
                 DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
@@ -408,8 +408,7 @@ class Formulario
         }
     }
 
-
-    //Carga los visitantes en la tabla principal del formulario
+    //CARGA LOS VISITANTES EN LA TABLA PRINCIPAL DEL FORMULARIO
     function CargaVisitanteporFormulario(){
         try {
             $sql="SELECT DISTINCT v.id,v.cedula,v.nombre,v.empresa from visitante v inner join visitanteporformulario vpf 
@@ -429,6 +428,7 @@ class Formulario
         }
     }
     
+    //OBTIENE EL ID DEL FORMULARIO
     function getID(){
         try{
             $sql="SELECT ID FROM formulario ORDER BY FECHASOLICITUD DESC LIMIT 1";
@@ -440,6 +440,7 @@ class Formulario
         }
     }
 
+    //INSERTA EL FORMULARIO TEMPORAL
     function AgregarTemporal($idvisitante){
         try {
             //agrega infomación del formulario temporal
@@ -477,6 +478,7 @@ class Formulario
         }
     }
 
+    //CONSULTA FORMULARIO POR VISITANTES
     function ConsultarporVisitante(){
         try {
             $sql = "SELECT DISTINCT f.consecutivo,f.fechasolicitud,(SELECT nombre FROM estado WHERE id=f.idestado) as estado,f.motivovisita,f.rfc
@@ -497,6 +499,7 @@ class Formulario
         }    
     }
 
+    //RECARGA LOS DATOS DEL FORMULARIO
     function RecargaTabla(){
         try {
             $sql = "SELECT id,consecutivo,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc FROM formulario";
@@ -514,6 +517,7 @@ class Formulario
         }
     }
 
+    //OBTIENE EL ID DEL FORMULARIO SEGUN EL CONSECUTIVO
     function CargaIDFormulario(){
         try {
             $sql = "SELECT id FROM formulario WHERE consecutivo=:consecutivo";
@@ -529,6 +533,7 @@ class Formulario
         }    
     }
 
+    //CARGA LA CEDULA NOMBRE Y EMPRESA CON BASE AL ID DEL FORMULARIO
     function CargarTabla(){
         try {
             $sql = "SELECT cedula,nombre,empresa FROM formulario WHERE id=:id";

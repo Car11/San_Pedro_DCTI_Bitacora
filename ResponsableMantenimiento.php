@@ -58,7 +58,7 @@ $rol=$_SESSION['rol'];
                     <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
                 </div>
             </div>
-            <div id="listaresponsable">
+            <div id="listaresponsable" style="text-transform:uppercase">
 
             </div>
 
@@ -77,29 +77,6 @@ $rol=$_SESSION['rol'];
                 <span class="close">&times;</span>
                 <h2>Responsables</h2>
             </div>
-            <!--<div class="modal-body">
-                <div id="resizquierda"></div>
-                
-                    <div class="modalmod">
-                        <label for="txttramitante" class="labelformat">Nombre</label></br>
-                        <input type="text" id="txtnombre" name="txtnombre" placeholder="" class="input-field" value="" pattern="[\.áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/>
-                    </div>                   
-                    <div class="modalmod">
-                        <label for="txtautorizador" class="labelformat">Cedula</label></br>
-                        <input type="text" id="txtcedula" name="txtcedula" placeholder="" class="input-field" value="" pattern="[\.-_0-9A-Za-z/\s/]*"/> 
-                    </div>
-                    <div class="modalmod">
-                        <label for="txtautorizador" class="labelformat">Empresa</label></br>
-                        <input type="text" id="txtempresa" name="txtempresa" placeholder="" class="input-field" value="" pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*"/> 
-                    </div>
-                    <div class="modalmod">
-                        <input id="btnInsertaResponsable" class="cbp-mc-submit" type="button" value="Inserta Responsable">
-                        <input id="btnModificaResponsable" class="cbp-mc-submit" type="button" value="Modifica Responsable">
-                        <input id="idresponsable" name="idresponsable" type="hidden">
-                    </div>    
-                
-                <div id="resderecha"></div>
-            </div>-->
 
             <!-- Modal body -->
             <div class="modal-body">
@@ -149,24 +126,6 @@ $rol=$_SESSION['rol'];
     var btnnuevo  = document.getElementById('btnnuevo');
     var span = document.getElementsByClassName("close")[0];
 
-    span.onclick = function() {modalResponsable.style.display = "none";}
-
-    btnnuevo.onclick = function() {
-        $('#btnInsertaResponsable').show();
-        $('#btnModificaResponsable').hide();
-        modalResponsable.style.display = "block";
-    }
-
-    window.onclick = function(event) {
-    if (event.target == modalResponsable) {
-        modalResponsable.style.display = "none";
-        }
-    }
-    
-    this.Cerrar = function(){
-        $(".modal").css({ display: "none" });
-    }; 
-
     $(document).ready( function () {      
         RecargarTabla();       
         $('#btnModificaResponsable').hide();
@@ -175,15 +134,38 @@ $rol=$_SESSION['rol'];
         LimpiaInputs();
     } );
 
+    //CIERRA EL MODAL EN LA (X)
+    span.onclick = function() {
+        modalResponsable.style.display = "none";
+    }
 
-    //Limpia los input despues de insertar o modificar
+    //ABRE EL MODAL RESPOSABLE
+    btnnuevo.onclick = function() {
+        $('#btnInsertaResponsable').show();
+        $('#btnModificaResponsable').hide();
+        modalResponsable.style.display = "block";
+    }
+
+    //CIERRA EL MODAL RESPONSABLE 
+    window.onclick = function(event) {
+        if (event.target == modalResponsable) {
+            modalResponsable.style.display = "none";
+            }
+    }
+    
+    //CIERRA EL MODAL EN CUALQUIER PARTE DE LA PANTALLA
+    this.Cerrar = function(){
+        $(".modal").css({ display: "none" });
+    }; 
+
+    //LIMPIA LOS INPUTS DESPUES DE INSERTAR O MODIFICAR
     function LimpiaInputs(){
         document.getElementById("txtnombre").value = "";
         document.getElementById("txtcedula").value = "";
         document.getElementById("txtempresa").value = "";
     }
     
-    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO *********/       
+    //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO    
     $(document).on('click', '.borrar', function (event) {
         var idresponsable = $(this).parents("tr").find("td").eq(0).text();
         document.getElementById("idresponsable").value = idresponsable;
@@ -204,6 +186,7 @@ $rol=$_SESSION['rol'];
         });
     });
 
+    //ELIMINA EL RESPONSABLE O MUESTRA MENSAJE
     function Eliminar(){
         $.ajax({
             type: "POST",
@@ -227,7 +210,7 @@ $rol=$_SESSION['rol'];
         );
     }
     
-    //CARGA EN LOS INPUTS *********/       
+    //CARGA EN LOS INPUTS EN EL MODAL PARA MODIFICAR      
     $(document).on('click', '.modificar', function (event) {
         modalResponsable.style.display = "block";
         $('#btnInsertaResponsable').hide();
@@ -252,7 +235,7 @@ $rol=$_SESSION['rol'];
         document.getElementById("idresponsable").value = $(this).parents("tr").find("td").eq(0).text();
     });
 
-    //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS *********/       
+    //MODIFICA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO CARGA EN LOS INPUTS     
     $(document).on('click', '#btnModificaResponsable', function (event) {
         $.ajax({
             type: "POST",
@@ -276,7 +259,7 @@ $rol=$_SESSION['rol'];
         });
     });
 
-    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST ***/
+    //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     $(document).on('click', '#btnInsertaResponsable', function (event) {
         
         $.ajax({
