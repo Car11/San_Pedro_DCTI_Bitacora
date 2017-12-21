@@ -302,7 +302,7 @@ class Formulario
         try{
             $sql="SELECT f.id as ID , consecutivo ,f.fechaingreso , f.fechasalida , f.idestado  as estado
                 FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
-                where vf.idvisitante= :idvisitante and DATE_ADD(NOW(), INTERVAL 1 HOUR)  between fechaingreso and fechasalida and idestado=1 "; 
+                where vf.idvisitante= :idvisitante and now() between DATE_SUB(fechaingreso, INTERVAL 1 HOUR) and fechasalida and idestado=1 "; 
                 // order by f.FECHASOLICITUD desc limit 1 ";
             $param= array(':idvisitante'=>$idvisitante);
             $data = DATA::Ejecutar($sql,$param);
@@ -502,13 +502,14 @@ class Formulario
     //RECARGA LOS DATOS DEL FORMULARIO
     function RecargaTabla(){
         try {
-            $sql = "SELECT id,consecutivo,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc FROM formulario";
+            $sql = "SELECT id,consecutivo,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc,fechaingreso FROM formulario";
             $data = DATA::Ejecutar($sql);
             if (count($data)) {
                 $this->fechasolicitud= $data[0]['fechasolicitud'];
                 $this->estado= $data[0]['estado'];
                 $this->motivovisita= $data[0]['motivovisita'];
                 $this->rfc= $data[0]['rfc'];
+                $this->fechaingreso= $data[0]['fechaingreso'];
             }
             echo json_encode($data);	 
         } catch (Exception $e) {
@@ -546,6 +547,48 @@ class Formulario
                 $this->rfc= $data[0]['rfc'];
             }
             echo json_encode($data);	 
+        } catch (Exception $e) {
+            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            exit;
+        }
+    }
+
+     //***************************************
+    // Carga formulario USANDO EL consecutivo
+    function Cargar()
+    {
+        try {
+            $sql = "SELECT id,fechasolicitud,idestado,motivovisita, 
+                DATE_FORMAT(fechaingreso, '%Y-%m-%dT%H:%i') as fechaingreso,
+                DATE_FORMAT(fechasalida, '%Y-%m-%dT%H:%i') as fechasalida,
+                (SELECT nombre from usuario u inner join formulario f on f.idtramitante=u.id and f.id =:id)as nombretramitante,
+                (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id and f.id =:id) as nombreautorizador,
+                (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id and f.id =:id) as nombreresponsable,
+                (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala and f.id =:id) as nombresala,
+                placavehiculo,detalleequipo, rfc, consecutivo
+            FROM formulario WHERE id = :id;";
+            //
+            $param= array(':id'=>$this->id);
+            $data = DATA::Ejecutar($sql, $param);
+            //
+            if (count($data)) {
+                $this->consecutivo= $data[0]['consecutivo'];
+                $this->fechasolicitud= $data[0]['fechasolicitud'];
+                $this->estado= $data[0]['idestado'];
+                $this->motivovisita= $data[0]['motivovisita'];
+                $this->fechaingreso= $data[0]['fechaingreso'];
+                $this->fechasalida= $data[0]['fechasalida'];
+                $this->nombretramitante= $data[0]['nombretramitante'];
+                $this->nombreautorizador= $data[0]['nombreautorizador'];
+                $this->nombreresponsable= $data[0]['nombreresponsable'];
+                $this->nombresala= $data[0]['nombresala'];
+                $this->placavehiculo= $data[0]['placavehiculo'];
+                $this->detalleequipo= $data[0]['detalleequipo'];
+                $this->rfc= $data[0]['rfc'];
+                $this->id= $data[0]['id'];
+            }
+            //
+            return $data;
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
             exit;
