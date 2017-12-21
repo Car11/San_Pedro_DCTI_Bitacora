@@ -302,7 +302,7 @@ class Formulario
         try{
             $sql="SELECT f.id as ID , consecutivo ,f.fechaingreso , f.fechasalida , f.idestado  as estado
                 FROM formulario f inner join visitanteporformulario vf on f.id=vf.idformulario 
-                where vf.idvisitante= :idvisitante and now() between fechaingreso and fechasalida and idestado=1 "; 
+                where vf.idvisitante= :idvisitante and DATE_ADD(NOW(), INTERVAL 1 HOUR)  between fechaingreso and fechasalida and idestado=1 "; 
                 // order by f.FECHASOLICITUD desc limit 1 ";
             $param= array(':idvisitante'=>$idvisitante);
             $data = DATA::Ejecutar($sql,$param);
