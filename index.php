@@ -10,6 +10,8 @@ if (!$sesion->estado){
     header('Location: Login.php');
     exit;
 }
+else if ($sesion->rol=="2")
+    header('Location: ListaFormulario.php?username=' . $sesion->username); 
 // POST
 $estado="NULL";
 if (isset($_GET['estado']))
