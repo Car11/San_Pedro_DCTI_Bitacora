@@ -68,9 +68,9 @@ $rol=$_SESSION['rol'];
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
             <div id="izquierda">
-                <div id="superiorizq">
+                <div id="superiorizq">                
                 </div>
-                <div id="medioizq">                  
+                <div id="medioizq">                                  
                 </div>    
             </div>
             <div id="formularioenviado">
@@ -84,6 +84,7 @@ $rol=$_SESSION['rol'];
             <div id="principal">
                 <div id="superiornavegacion">
                     <div id="nuevo">   
+                    <input type="button" id="btncopiar" class="nbtn_blue-sp-c" value="Copiar" onclick="Copiar()";>   
                     </div>
                     <div id="atras">
                         <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">   
@@ -171,7 +172,7 @@ $rol=$_SESSION['rol'];
                         <div id="submitformulario">
                             <input id="EnviaFormulario" class="cbp-mc-submit" type="submit" value="Enviar Formulario">
                             <input type="button" id="btnInsertaFormulario" class="cbp-mc-submit" value="Insertar">
-                            <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">
+                            <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">                            
                             <input id="visitantearray" name="visitantearray" type="hidden">
                             <input id="visitantelargo" name="visitantelargo" type="hidden">
                             <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
@@ -365,6 +366,8 @@ $rol=$_SESSION['rol'];
             FechaFormNuevo();
             DataCenterDefault();
             CreaTblVisitanteFormulario();
+            // oculta btn copiar
+            $("#btncopiar").css({ display: "none" });
         }
             
         // OBTIENE EL CSS PARA LOS TABLES
@@ -405,6 +408,56 @@ $rol=$_SESSION['rol'];
         $('#formularioenviado').hide();
 
     } );
+
+    //COPIA FORM
+    function Copiar(){        
+        // copiar datos generales del form. Fecha actual + 2h    
+        FechaFormNuevo();
+        EnviaVisitante();
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                action: "Insertar",
+                iscopy: "1",
+                fechaingreso: document.getElementById('fechaingreso').value,
+                idsala: idsala,
+                fechasalida: document.getElementById('fechasalida').value,
+                placavehiculo: document.getElementById('placavehiculo').value,
+                detalleequipo: document.getElementById('detalleequipo').value,
+                motivovisita: document.getElementById('motivovisita').value,
+                idresponsable: idresponsable,
+                nombreautorizador: document.getElementById('txtautorizador').value,
+                nombretramitante: document.getElementById('txttramitante').value,
+                estado: $('input:radio[name=estadoformulario]:checked').val(),
+                rfc: document.getElementById('txtrfc').value,
+                visitante: document.getElementById('visitantearray').value
+            }
+        })
+        .done(function( e ) {            
+            // mesaje NUEVO formulario copiado!
+            swal({
+                title: 'Formulario Copiado!!',
+                type: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'No, cancelar!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger'
+            }).then(function () {
+                location.href= "FormularioIngreso.php?MOD=" + e;  
+            });    
+                      
+        })    
+        .fail(function(msg){
+            location.href='ListaFormulario.php?INS=0';
+        });
+        // copiar lista de visitantes en nuevo form
+        // cargar ventana con info y nuevo id.
+
+    };
 
     //CARGA EL AUTORIZADOR AL FORMULARIO
     function CargaAutorizador(){
@@ -859,7 +912,7 @@ $rol=$_SESSION['rol'];
             $('#lbltxttramitante').hide();
         }else{
             $('#estadosform').hide();
-            $('#btnatras').hide();
+            //$('#btnatras').hide();
             $('#lblautorizador').hide();
             $('#txtautorizador').hide();
             $('#txttramitante').show();
@@ -1032,11 +1085,14 @@ $rol=$_SESSION['rol'];
             if(data[0]['nombreautorizador']!=null)
                 $('#txtautorizador').val(data[0]['nombreautorizador']);
             $('#txtresponsable').val(data[0]['nombreresponsable']);
+            idresponsable= data[0]['idresponsable'];
             $('#selectsala').val(data[0]['nombresala']);
+            idsala= data[0]['idsala'];
             $('#placavehiculo').val(data[0]['placavehiculo']);
             $('#detalleequipo').val(data[0]['detalleequipo']);
             $('#txtrfc').val(data[0]['rfc']);
             $('#selectdatacenter').val(data[0]['datacenter']);
+
             //iddatacenter = $data[0]['idsala'];
             //$('#').val($data[0]['id']);            
             //$('#').val($data[0]['idresponsable']);

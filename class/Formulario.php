@@ -38,6 +38,7 @@ if(isset($_POST["action"])){
         $formulario= new formulario();
         $formulario->CargaVisitanteporFormulario();
     }
+    
 }
 
 class Formulario
@@ -151,8 +152,16 @@ class Formulario
                 $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario[0][0]);
                 $result = DATA::Ejecutar($sql, $param);
             }
-            header('Location:../ListaFormulario.php');
-            exit;
+            // si no es una copia del formulario, muestra lista.
+            if(!isset($_POST["iscopy"]))
+            {
+                header('Location:../ListaFormulario.php');
+                exit;
+            }
+            else // es una copia de formulario, retorna el idformulario 
+            {
+                echo $idformulario[0][0]; 
+            }
         } catch (Exception $e) {
             header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
             exit;
