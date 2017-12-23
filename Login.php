@@ -39,7 +39,7 @@
     <aside></aside>
     
     <section>
-       <h2>Ingrese su usuario y contraseña</h2>
+       <h2>Ingrese su Usuario y Contraseña de Dominio</h2>
         <div id="form">
             <div class="login">    
                 <form  name="Usuario" action="request/EnviaUsuario.php" method="POST">                      

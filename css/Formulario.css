@@ -158,6 +158,19 @@
     border: 2px solid #fff;
 }
 
+.linkButton {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 1px solid rgb(224, 220, 220);
+    color: rgb(224, 220, 220);
+    float: left;
+    width: 50px;
+    text-align: center;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
 .labelformat{
     display:inline-block;
     margin-left: 0px;
