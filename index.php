@@ -10,6 +10,8 @@ if (!$sesion->estado){
     header('Location: Login.php');
     exit;
 }
+else if ($sesion->rol=="2")
+    header('Location: ListaFormulario.php?username=' . $sesion->username); 
 // POST
 $estado="NULL";
 if (isset($_GET['estado']))
@@ -82,7 +84,6 @@ if (isset($_SESSION['idformulario'])) {
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
     
     <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
-    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
 
 </head>
@@ -94,11 +95,12 @@ if (isset($_SESSION['idformulario'])) {
         {
             // valida el rol del usuario para mostrar el menu, el index o el formulario.
             var rol= '<?php print $_SESSION["rol"]; ?>';  
+            var username= '<?php print $_SESSION["username"]; ?>';  
             // alert('r:' + rol);          
             if(rol=='1')
                 location.href= 'MenuAdmin.php';
             else if(rol=='2') // tramitante
-                location.href= 'FormularioIngreso.php';
+                location.href= 'ListaFormulario.php?username=' + username;
         }
     };  
 </script>

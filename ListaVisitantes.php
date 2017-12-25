@@ -76,7 +76,7 @@ if (!$sesion->estado) {
         <aside> 
         </aside>
 
-    <!-- MODAL formulario -->
+    <!-- MODAL visitante -->
     <div class="modal" id="modal-index" >
         <!-- Modal content -->
         <div class="modal-content">

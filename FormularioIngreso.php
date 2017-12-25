@@ -48,17 +48,20 @@ $rol=$_SESSION['rol'];
 <html>
 <head>
     <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <title>Control de Accesos</title>       
     <!-- CSS -->
     <link href="css/Estilo.css?v= <?php echo Globals::cssversion; ?>" rel="stylesheet" />  
     <link rel="stylesheet" href="css/datatables.css" type="text/css"/>        
     <link rel="stylesheet" href="css/Formulario.css" type="text/css"/>
-    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
+    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>    
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>    -->
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
- 	  <script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
+ 	<script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/sweetalert2.js"></script>
+    <!--<script src="js/bootstrap.min.js"></script>-->
 </head>
 <body> 
     <header>
@@ -68,9 +71,9 @@ $rol=$_SESSION['rol'];
     <div id="general">
         <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
             <div id="izquierda">
-                <div id="superiorizq">
+                <div id="superiorizq">                
                 </div>
-                <div id="medioizq">                  
+                <div id="medioizq">                                  
                 </div>    
             </div>
             <div id="formularioenviado">
@@ -84,6 +87,7 @@ $rol=$_SESSION['rol'];
             <div id="principal">
                 <div id="superiornavegacion">
                     <div id="nuevo">   
+                    <input type="button" id="btncopiar" class="nbtn_blue-sp-c" value="Copiar" onclick="Copiar()";>   
                     </div>
                     <div id="atras">
                         <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">   
@@ -171,7 +175,7 @@ $rol=$_SESSION['rol'];
                         <div id="submitformulario">
                             <input id="EnviaFormulario" class="cbp-mc-submit" type="submit" value="Enviar Formulario">
                             <input type="button" id="btnInsertaFormulario" class="cbp-mc-submit" value="Insertar">
-                            <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">
+                            <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">                            
                             <input id="visitantearray" name="visitantearray" type="hidden">
                             <input id="visitantelargo" name="visitantelargo" type="hidden">
                             <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
@@ -291,15 +295,17 @@ $rol=$_SESSION['rol'];
     <div id="ModalVisitante" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
+            <div class="modal-header">                
+                <input type="button" id="btnVisitante" class="linkButton" value="Nuevo" onclick="NuevoVisitante()";>  
                 <h2>Seleccione los Visitantes a Autorizar</h2>
+                <span class="close">&times;</span>
             </div>
             <div id="visitante-modal" class="modal-body" style="text-transform:uppercase">
                 <!-- CREA EL TABLE DEL MODAL PARA SELECIONAR VISITANTES -->
             </div>
             <div class="modal-footer">
-            <br>
+                <br>
+
             </div>
         </div>
     </div>
@@ -321,7 +327,57 @@ $rol=$_SESSION['rol'];
         </div>
     </div>
 
+        <!-- MODAL NUEVO VISITANTE -->
+        <div id="ModalNuevoVisitante" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">                                
+                <h2>Nuevo Visitante</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div id="mensajetop_display-secundario">
+                <div id="mensajetop-secundario">
+                    <span id="textomensaje-secundario"></span>
+                </div>
+            </div>
+            <div id="nuevovisitante-modal" class="modal-body" style="text-transform:uppercase">
+                <div id="form">
+                    <form name="perfil" id='perfil' method="POST" >
+                        <label for="cedula"><span class="campoperfil">Cédula / Identificación <span class="required">*</span></span>
+                            <input autofocus type="text"  id="cedula"                                 
+                                class="input-field" name="cedula" placeholder="0 0000 0000" title="Número de cédula separado con CEROS"  onkeypress="return isNumber(event)" required >                                
+                        </label>
+                        <label for="empresa"><span class="campoperfil">Empresa / Dependencia <span class="required">*</span></span>
+                            <input type="text"   style="text-transform:uppercase"                                 
+                                class="input-field" name="empresa" value="" id="empresa" required >
+                        </label>
+                        <label for="nombre"><span class="campoperfil">Nombre Completo <span class="required">*</span></span>
+                            <input  required type="text" class="input-field" name="nombre" style="text-transform:uppercase" id="nombre"/>
+                        </label>
+                        <label for="permiso"><span class="campoperfil">Tiene permiso de Ingreso Anual?</span>
+                            <br>
+                            <input type="checkbox" name="permiso" id="permiso" class="input-field" >
+                        </label>
+
+                        <nav class="btnfrm">
+                            <ul>
+                                <li><button type="button" class="nbtn_blue" onclick="Guardar()" >Guardar</button></li>
+                                <li><button type="button" class="nbtn_gray" onclick="Cerrar()" >Cerrar</button></li>
+                            </ul>
+                        </nav>  
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <br>
+            </div>
+        </div>
+    </div>
+
 <script type="text/javascript" language="javascript">
+    // visitante
+    var formReady = false;
+    var id = "NULL";
     //SE EJECUTA AL INICIAR LA PAGINA
     var iddatacenter=null;
     var idsala=null;
@@ -365,6 +421,8 @@ $rol=$_SESSION['rol'];
             FechaFormNuevo();
             DataCenterDefault();
             CreaTblVisitanteFormulario();
+            // oculta btn copiar
+            $("#btncopiar").css({ display: "none" });
         }
             
         // OBTIENE EL CSS PARA LOS TABLES
@@ -395,7 +453,7 @@ $rol=$_SESSION['rol'];
             }
         });
     
-        // cierra el modal
+        // cierra el modal 
         $(".close").click( function(){
             // muestra modal con info básica formulario. y btn cerrar./ x para cerrar
             $(".modal").css({ display: "none" });
@@ -404,7 +462,234 @@ $rol=$_SESSION['rol'];
         //Oculta Mensaje de Formulario enciado por el Tramitante
         $('#formularioenviado').hide();
 
+        //vuelve a la lista de visitantes
+        this.Cerrar = function(){
+            $("#ModalNuevoVisitante").css({ display: "none" });
+        }; 
+
+        //valida cedula unica al perder el foco en el input cedula.
+        $('#cedula').focusout(ValidaCedulaUnica);
+
     } );
+
+    //NUEVO VISITANTE
+    function NuevoVisitante(){
+         // limpia valores.        
+        id="NULL";
+        $("#cedula").val("");
+        $("#empresa").val("");
+        $("#nombre").val("");
+        $("#permiso")[0].checked = false;
+        $("#cedula").css({
+            "border": "1px solid #C2C2C2"
+        });
+        $("#nombre").css({
+            "border": "1px solid #C2C2C2"
+        });
+        $("#empresa").css({
+            "border": "1px solid #C2C2C2"
+        });
+        $("#ModalNuevoVisitante").css({ display: "block" }); 
+    }
+
+        
+    function validarForm(){
+        ValidaCedulaUnica();
+        //   
+        if($("#cedula").val()=="")
+        {
+            $("#cedula").css("border", "0.3px solid firebrick");
+            document.getElementById('cedula').placeholder = "REQUERIDO";
+            $("#cedula").focus();
+            return false;
+        }        
+        else if($("#cedula").val().length<8)
+        {
+            $("#cedula").css("border", "0.3px solid firebrick");
+            // mensaje
+            muestraError_Visita("Formato de cedula: Mínimo 8 digitos sin guiones ni espacios");
+            return false;
+        }
+        //
+        if($("#empresa").val()=="")
+        {
+            $("#empresa").css("border", "0.3px solid firebrick");
+            document.getElementById('empresa').placeholder = "REQUERIDO";
+            $("#empresa").focus();
+            return false;
+        }
+        //
+        if($("#nombre").val()=="")
+        {
+            $("#nombre").css("border", "0.3px solid firebrick");
+            document.getElementById('nombre').placeholder = "REQUERIDO";
+            $("#nombre").focus();
+            return false;
+        }
+        else if($("#nombre").val().length<10)
+        {
+            $("#nombre").css("border", "0.3px solid firebrick");
+            // mensaje
+            muestraError_Visita("El nombre del visitante debe tener mínimo 10 caracteres");
+            return false;
+        }
+        if(!formReady){
+            return false;
+        } 
+        //        
+        return true;
+    };
+
+    // Muestra errores en ventana
+    function muestraError_Visita(msg){        
+        $("#textomensaje-secundario").text(msg);
+        $("#mensajetop-secundario").css("background-color", "firebrick");
+        $("#mensajetop-secundario").css("color", "white");    
+        $("#mensajetop-secundario").css("visibility", "visible");
+        $("#mensajetop-secundario").slideDown("slow");
+        $("#mensajetop-secundario").slideDown("slow").delay(3000).slideUp("slow");
+    };
+
+    // Muestra información en ventana
+    function muestraInfo(){             
+        // mesaje NUEVO formulario copiado!
+        swal({
+                title: 'Visitante Agregado!!',
+                type: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'No, cancelar!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger'
+            }).then(function () {
+                $("#ModalNuevoVisitante").css({ display: "none" });  
+                CargarListaVisitantes();
+        });  
+
+    };
+
+    //valida cedula unica.
+    function ValidaCedulaUnica(){    
+        $.ajax ({
+            type: "POST",
+            url: "class/Visitante.php",
+            data: { 
+                action: "ValidaCedulaUnica",
+                cedula:  $("#cedula").val(),
+                nombre: $("#nombre").val(),
+            }
+        })
+        .done(function( e ) {    
+            if(e=="invalida"){
+                $("#cedula").css({
+                    "border-color": "firebrick",
+                    "border-width": "0.3px"
+                });
+                $("#cedula").focus();
+                muestraError_Visita('Número de cédula duplicado');         
+                formReady=false;   
+            }
+            else {
+                $("#cedula").css({
+                    "border-color": "green",
+                    "border-width": "0.3px"
+                });
+                formReady=true;
+            }
+        })
+        .fail(function( e ) {    
+            // ...
+            formReady=false;
+        });
+    };
+
+    // guarda el nuevo visitante
+    function Guardar(){   
+        // Ajax: insert / Update.
+        if(!validarForm())
+            return false;
+        var miAccion= id=='NULL' ? 'Insertar' : 'Modificar';
+        $.ajax({
+            type: "POST",
+            url: "class/Visitante.php",
+            data: { 
+                action: miAccion,  
+                idvisitante: id,              
+                cedula:  $("#cedula").val(),
+                nombre: $("#nombre").val(),
+                empresa: $("#empresa").val(),
+                permiso: $("#permiso")[0].checked
+            }
+        })
+        .done(muestraInfo)
+        .fail(function( e ) {               
+            swal({
+                title: 'Error!!',
+                type: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'No, cancelar!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger'
+            }).then(function () {
+                $(".Modal").css({ display: "none" });  
+            });  
+        });
+    };  
+
+    //COPIA FORM
+    function Copiar(){        
+        // copiar datos generales del form. Fecha actual + 2h    
+        FechaFormNuevo();
+        EnviaVisitante();
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                action: "Insertar",
+                iscopy: "1",
+                fechaingreso: document.getElementById('fechaingreso').value,
+                idsala: idsala,
+                fechasalida: document.getElementById('fechasalida').value,
+                placavehiculo: document.getElementById('placavehiculo').value,
+                detalleequipo: document.getElementById('detalleequipo').value,
+                motivovisita: document.getElementById('motivovisita').value,
+                idresponsable: idresponsable,
+                nombreautorizador: document.getElementById('txtautorizador').value,
+                nombretramitante: document.getElementById('txttramitante').value,
+                estado: $('input:radio[name=estadoformulario]:checked').val(),
+                rfc: document.getElementById('txtrfc').value,
+                visitante: document.getElementById('visitantearray').value
+            }
+        })
+        .done(function( e ) {            
+            // mesaje NUEVO formulario copiado!
+            swal({
+                title: 'Formulario Copiado!!',
+                type: 'info',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'No, cancelar!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger'
+            }).then(function () {
+                location.href= "FormularioIngreso.php?MOD=" + e;  
+            });    
+                      
+        })    
+        .fail(function(msg){
+            location.href='ListaFormulario.php?INS=0';
+        });
+        // copiar lista de visitantes en nuevo form
+        // cargar ventana con info y nuevo id.
+
+    };
 
     //CARGA EL AUTORIZADOR AL FORMULARIO
     function CargaAutorizador(){
@@ -622,6 +907,11 @@ $rol=$_SESSION['rol'];
 
         ExcluyeVisitante();    
         
+        CargarListaVisitantes();
+        
+    });     
+
+    function CargarListaVisitantes(){
         $.ajax({
             type: "POST",
             url: "class/Visitante.php",
@@ -653,8 +943,8 @@ $rol=$_SESSION['rol'];
         .fail(function(msg){
             alert("Error al cargar visitantes Modal");
         });
-        
-    });     
+    };
+
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     function ExcluyeVisitante() {     
@@ -859,7 +1149,7 @@ $rol=$_SESSION['rol'];
             $('#lbltxttramitante').hide();
         }else{
             $('#estadosform').hide();
-            $('#btnatras').hide();
+            //$('#btnatras').hide();
             $('#lblautorizador').hide();
             $('#txtautorizador').hide();
             $('#txttramitante').show();
@@ -1032,11 +1322,14 @@ $rol=$_SESSION['rol'];
             if(data[0]['nombreautorizador']!=null)
                 $('#txtautorizador').val(data[0]['nombreautorizador']);
             $('#txtresponsable').val(data[0]['nombreresponsable']);
+            idresponsable= data[0]['idresponsable'];
             $('#selectsala').val(data[0]['nombresala']);
+            idsala= data[0]['idsala'];
             $('#placavehiculo').val(data[0]['placavehiculo']);
             $('#detalleequipo').val(data[0]['detalleequipo']);
             $('#txtrfc').val(data[0]['rfc']);
             $('#selectdatacenter').val(data[0]['datacenter']);
+
             //iddatacenter = $data[0]['idsala'];
             //$('#').val($data[0]['id']);            
             //$('#').val($data[0]['idresponsable']);
