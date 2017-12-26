@@ -8,6 +8,7 @@ if (isset($_GET['Message'])) {
 // Sesion de usuario
 include("class/Sesion.php");
 $sesion = new Sesion();
+
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
     header('Location: Login.php');
@@ -24,6 +25,8 @@ $insert="null";
 if(isset($_GET['INS']))
     $insert=$_GET['INS'];
 
+$user= $_SESSION['username'];
+$rol=$_SESSION['rol'];
 ?>
 
 
@@ -83,7 +86,11 @@ if(isset($_GET['INS']))
         </div>
     </div>    
     <script>
-        
+    
+    //USUARIO Y ROL
+    var usuario = "<?php echo $user;?>";
+    var rol = <?php echo $rol;?>;
+
     $(document).ready( function () {
         var insert = <?php echo $insert;?>;
         if(insert==1)
@@ -163,7 +170,11 @@ if(isset($_GET['INS']))
         if(document.getElementById("checkconsultavisitante").checked == false){
             $("#txtbuscavisitante").prop("readonly", true);
             $("#txtbuscavisitante").val("");
-            RecargarTabla();
+            if(rol==2)
+                RecargarTablaTramitante();
+            else
+                RecargarTabla();
+
         }
     } 
     
@@ -174,6 +185,47 @@ if(isset($_GET['INS']))
             url: "class/Formulario.php",
             data: {
                     action: "RecargaTabla"
+                  }
+        })
+        .done(function( e ) {
+            var formularioxvisitante = JSON.parse(e);
+            
+            $('#listavisitante').html("");
+            $('#listavisitante').append("<table id='listaformulario'class='display'>");
+            var col="<thead><tr> <th>ID</th> <th>FECHA SOLICITUD</th> <th>MOTIVO</th> <th>ESTADO</th> <th>RFC</th> <th>MODIFICAR</th></tr></thead><tbody id='tableBody'></tbody>";
+            $('#listaformulario').append(col);
+            // carga lista con datos.
+            var data= JSON.parse(e);
+            // Recorre arreglo.
+            $.each(data, function(i, item) {
+                var row="<tr>"+
+                    "<td>"+ item.consecutivo+"</td>" +
+                    "<td>"+ item.fechasolicitud + "</td>"+
+                    "<td>"+ item.motivovisita + "</td>"+
+                    "<td>"+ item.estado + "</td>"+
+                    "<td>"+ item.rfc +"</td>"+
+                    "<td><img id=imgdelete src=img/file_mod.png class=modificar></td>"+
+                "</tr>";
+                $('#tableBody').append(row);         
+            })
+            // formato tabla
+            $('#listaformulario').DataTable( {
+                "order": [[ 0, "desc" ]]
+            } );
+        })    
+        .fail(function(msg){
+            alert("Error al Cargar la lista de Formularios");
+        });    
+    }
+
+    //CARGA LA LISTA FORMULARIO POR TRAMITANTE
+    function RecargarTablaTramitante(){
+        $.ajax({
+            type: "POST",
+            url: "class/Formulario.php",
+            data: {
+                    action: "RecargaTablaTramitante",
+                    usuario: usuario
                   }
         })
         .done(function( e ) {
