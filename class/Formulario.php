@@ -553,11 +553,12 @@ class Formulario
     //OBTIENE EL ID DEL FORMULARIO SEGUN EL CONSECUTIVO
     function CargaIDFormulario(){
         try {
-            $sql = "SELECT id FROM formulario WHERE consecutivo=:consecutivo";
+            $sql = "SELECT id,idestado FROM formulario WHERE consecutivo=:consecutivo";
             $param= array(':consecutivo'=>$_POST["consecutivo"]);
             $data = DATA::Ejecutar($sql,$param);
             if (count($data)) {
                 $this->id= $data[0]['id'];
+                $this->idestado= $data[0]['idestado'];
             }
             echo json_encode($data);	 
         } catch (Exception $e) {

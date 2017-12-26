@@ -43,6 +43,8 @@ $usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
+$estadoformulario = $_GET['ESTADO'];
+
 ?>
 
 <html>
@@ -375,6 +377,8 @@ $rol=$_SESSION['rol'];
     </div>
 
 <script type="text/javascript" language="javascript">
+    //Estado Formulario
+    var estadoformulario = "<?php echo $estadoformulario;?>";
     // visitante
     var formReady = false;
     var id = "NULL";
@@ -408,6 +412,9 @@ $rol=$_SESSION['rol'];
         MuestraBotonCorrecto();
         ExcluyeVisitanteCarga();
         MuestraEstados();
+
+        if(estadoformulario=='3')
+            SoloLectura();
 
         if (existeid!=0){
             //MODIFICA FORMULARIO
@@ -690,6 +697,24 @@ $rol=$_SESSION['rol'];
         // cargar ventana con info y nuevo id.
 
     };
+
+    //CARGA UN FORMULARIO FINALIZADO COMO SOLO LECTURA
+    function SoloLectura(){
+        document.getElementById('btnagregavisitante').disabled=true;
+        document.getElementById('btnModificaFormulario').disabled=true;
+        document.getElementById("fechaingreso").readOnly = true;
+        document.getElementById("fechasalida").readOnly = true;
+        document.getElementById("placavehiculo").readOnly = true;
+        document.getElementById("detalleequipo").readOnly = true;
+        document.getElementById("txtrfc").readOnly = true;
+        document.getElementById("motivovisita").readOnly = true;
+        document.getElementById("pendiente").checked = false;
+        document.getElementById("aprobado").checked = false;
+        document.getElementById("denegado").checked = false;
+        document.getElementById("pendiente").disabled = false;
+        document.getElementById("aprobado").disabled = false;
+        document.getElementById("denegado").disabled = false;
+    }
 
     //CARGA EL AUTORIZADOR AL FORMULARIO
     function CargaAutorizador(){
@@ -1023,13 +1048,16 @@ $rol=$_SESSION['rol'];
 
     //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO      
     $(document).on('click', '.borrar', function (event) {
-        var ced = $(this).parents("tr").find("td").eq(0).text();
-        for (var i = 0; i < jVisitante.length; i++) {
-            if (jVisitante[i][0]==ced||jVisitante[i].id==ced)
-                jVisitante.splice(i,1);                 
+        if(estadoformulario!='3')
+        {
+            var ced = $(this).parents("tr").find("td").eq(0).text();
+            for (var i = 0; i < jVisitante.length; i++) {
+                if (jVisitante[i][0]==ced||jVisitante[i].id==ced)
+                    jVisitante.splice(i,1);                 
+            }
+            $(this).closest('tr').remove();
+            ExcluyeVisitante();
         }
-        $(this).closest('tr').remove();
-        ExcluyeVisitante();
     });
 
     //SELECIONA LOS REGISTROS DEL MODAL Y LOS CARGA EN tblvisitanteform                        
@@ -1099,25 +1127,28 @@ $rol=$_SESSION['rol'];
 
     //ABRE EL MODAL RESPONSABLES
     inputResponsable.onclick = function() {
-        modalResponsable.style.display = "block";
+        if(estadoformulario!='3')
+            modalResponsable.style.display = "block";
     }
     //ABRE EL MDOAL SALA
     inputSala.onclick = function() {
-        modalSala.style.display = "block";
-        if (existeid!=0){
-            //MODIFICA FORMULARIO
-            RecargarSalaporDataCenter();
-        }  
-        else{
-            //FORMULARIO NUEVO
-            RecargarSala();
+        if(estadoformulario!='3')
+        {
+            modalSala.style.display = "block";
+            if (existeid!=0){
+                //MODIFICA FORMULARIO
+                RecargarSalaporDataCenter();
+            }  
+            else{
+                //FORMULARIO NUEVO
+                RecargarSala();
+            }
         }
-
-        
     }
     //ABRE EL MODAL DATACENTER
     inputDataCenter.onclick = function() {
-        modalDataCenter.style.display = "block";
+        if(estadoformulario!='3')
+            modalDataCenter.style.display = "block";
     }
 
     //CIERRA EL MODAL EN LA X Y VACIA LOS VISITANTES EXCLUIDOS
