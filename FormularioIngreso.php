@@ -643,6 +643,23 @@ $rol=$_SESSION['rol'];
 
     //COPIA FORM
     function Copiar(){        
+        swal({
+            title: 'Copiar Formulario?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Copiar!',
+            cancelButtonText: 'No, cancelar!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger'
+        }).then(function () {
+            SetNewForm();
+        });    
+        
+    };
+
+    function SetNewForm(){
         // copiar datos generales del form. Fecha actual + 2h    
         FechaFormNuevo();
         EnviaVisitante();
@@ -686,16 +703,13 @@ $rol=$_SESSION['rol'];
         .fail(function(msg){
             location.href='ListaFormulario.php?INS=0';
         });
-        // copiar lista de visitantes en nuevo form
-        // cargar ventana con info y nuevo id.
-
     };
 
     //CARGA EL AUTORIZADOR AL FORMULARIO
     function CargaAutorizador(){
         if (document.getElementById('txtautorizador').value==null)
             document.getElementById('txtautorizador').value = autorizador;
-    }
+    };
 
     //RECARGA LA TABLA DATACENTER
     function RecargarSalaporDataCenter(){

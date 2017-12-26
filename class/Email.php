@@ -34,7 +34,7 @@ class Email{
                 $mensaje .= "<tr><td><strong>Nombre:</strong> </td><td>" .  $visitante->nombre  . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Empresa:</strong> </td><td>" . $visitante->empresa . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Detalle:</strong> </td><td>" . $formulario->motivovisita . "</td></tr>";
-                $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://10.3.2.197/BitacoraCDC/FormularioIngreso.php?MOD=" . $idformulario . "</td></tr>";
+                $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://operacionesTI/BitacoraCDC/FormularioIngreso.php?MOD=" . $idformulario . "</td></tr>";
                 if($numTarjeta!="NULL")
                     $mensaje .= "<tr><td><strong>Tarjeta:</strong> </td><td>"  . $numTarjeta . "</td></tr>";
                 $mensaje .= "</table>";
@@ -50,6 +50,58 @@ class Email{
                     log::Add('ERROR', 'Ha ocurrido un error al realizar el envío de correo');
                 }
             }            
+        }     
+        catch(Exception $e) {
+            // no debe detener el proceso si no se envía el email.
+            // log
+            require_once("Log.php");  
+            log::AddD('FATAL', 'Ha ocurrido un error al realizar el envío de correo', $e->getMessage());
+        }
+    }
+
+    static function Formulario($idformulario,  $mensajeEncabezado, $asunto){
+        // smtpapl.correo.ice
+        // puerto 25
+        // ip 10.149.20.26
+        // ICETEL\OperTI
+        // Clave: Icetel2017
+        // Buzón: OperacionesTI@ice.go.cr
+       try{
+            //busca mail del tramitante.
+            //$tramitanteEmail= '';
+            //info Formulario.
+            require_once("Formulario.php");        
+            $formulario= new Formulario();
+            require_once("DataCenter.php");        
+            $datacenter= new DataCenter();
+            //
+            $formulario->id=$idformulario;
+            $formulario->Cargar();    
+            $datacenter->DataCenterporSala($formulario->idsala);
+            //email.
+            ini_set('SMTP','smtpapl.correo.ice');
+            //$to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>; " . $tramitanteEmail;
+            $to= $_SESSION["user-email"];   
+            $from = "operTI@ice.go.cr";
+            // mensaje - encabezado
+            $mensaje = "<h2><i>".$mensajeEncabezado."<i><h2>";
+            $mensaje .= '<html><body>';
+            $mensaje .= '<table rules="all" style="border-color: #666;" cellpadding="10">';
+            $mensaje .= "<tr style='background: #eee;'><td><strong>FORMULARIO:</strong> </td><td>". $formulario->consecutivo ."</td></tr>";
+            $mensaje .= "<tr style='background: #eee;'><td><strong>ENTRADA:</strong> </td><td>". $formulario->fechaingreso ."</td></tr>";
+            $mensaje .= "<tr style='background: #eee;'><td><strong>SALIDA:</strong> </td><td>". $formulario->fechasalida ."</td></tr>";
+            $mensaje .= "<tr style='background: #eee;'><td><strong>SALA:</strong> </td><td>". $formulario->nombresala ."[". $datacenter->nombre  ."]</td></tr>";
+            $mensaje .= "<tr style='background: #eee;'><td><strong>MOTIVO:</strong> </td><td>". $formulario->motivovisita ."</td></tr>";
+            $mensaje .= "<tr style='background: #eee;'><td><strong>RFC:</strong> </td><td>". $formulario->rfc ."</td></tr>";
+            $mensaje .= "<tr><td><strong>Link:</strong> </td><td> http://http://operacionesTI/BitacoraCDC/FormularioIngreso.php?MOD=" . $formulario->id . "</td></tr>";            
+            $mensaje .= "</table>";
+            $mensaje .= "</body></html>";
+            //
+            $headers = "MIME-Version: 1.0\r\n"; 
+            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $headers .= "From: ".$from."\r\n"; 
+            //
+            mail($to, $asunto, $mensaje,$headers);        
         }     
         catch(Exception $e) {
             // no debe detener el proceso si no se envía el email.

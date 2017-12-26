@@ -5,6 +5,7 @@ class Usuario{
 	public $contrasena;
     public $idrol;
     public $nombre;
+    public $email;
 	
 	function __construct(){
         require_once("Conexion.php");
@@ -63,6 +64,7 @@ class Usuario{
                 //var_dump($info);
                 echo '</pre>';*/
                 //$userDn = $info[$i]["distinguishedname"][0]; 
+                $_SESSION["user-email"]= $info[$i]["mail"][0];
                 $this::BuscaRol();
                 //log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
                 return true;  

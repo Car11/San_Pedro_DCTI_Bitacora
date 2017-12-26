@@ -54,6 +54,25 @@ class DataCenter{
         }
     }
 
+    //CONSULTA EL DATACENTER POR SALA
+    function DataCenterporSala($idsala){
+        try {
+            $sql="SELECT d.id, d.nombre 
+                FROM controlaccesocdc_dbp.sala s inner join controlaccesocdc_dbp.datacenter d on s.iddatacenter=d.id
+                where s.id=:idsala";   
+            $param= array(':idsala'=>$idsala);      
+            $data = DATA::Ejecutar($sql,$param);
+            if (count($data)) {
+                $this->id= $data[0]['id'];
+                $this->nombre= $data[0]['nombre'];
+            }
+            return $data;
+        }catch(Exception $e) {
+            header('Location: ../Error.php?id='.$e->getMessage());
+            exit;
+        }
+    }
+
 }
     
 
