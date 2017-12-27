@@ -38,7 +38,10 @@ if(isset($_POST["action"])){
         $formulario= new formulario();
         $formulario->CargaVisitanteporFormulario();
     }
-    
+    if($_POST["action"]=="RecargaTablaTramitante"){
+        $formulario= new formulario();
+        $formulario->RecargaTablaTramitante();
+    }
 }
 
 class Formulario
@@ -527,14 +530,35 @@ class Formulario
         }
     }
 
+        //RECARGA LOS DATOS DEL FORMULARIO
+        function RecargaTablaTramitante(){
+            try {
+                $sql = "SELECT id,consecutivo,fechasolicitud,(SELECT nombre FROM estado WHERE id=idestado) as estado,motivovisita,rfc,fechaingreso FROM formulario WHERE idtramitante= (SELECT id FROM usuario WHERE usuario=:usuario)";
+                $param= array(':usuario'=>$_POST["usuario"]);
+                $data = DATA::Ejecutar($sql,$param);
+                if (count($data)) {
+                    $this->fechasolicitud= $data[0]['fechasolicitud'];
+                    $this->estado= $data[0]['estado'];
+                    $this->motivovisita= $data[0]['motivovisita'];
+                    $this->rfc= $data[0]['rfc'];
+                    $this->fechaingreso= $data[0]['fechaingreso'];
+                }
+                echo json_encode($data);	 
+            } catch (Exception $e) {
+                header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+                exit;
+            }
+        }
+
     //OBTIENE EL ID DEL FORMULARIO SEGUN EL CONSECUTIVO
     function CargaIDFormulario(){
         try {
-            $sql = "SELECT id FROM formulario WHERE consecutivo=:consecutivo";
+            $sql = "SELECT id,idestado FROM formulario WHERE consecutivo=:consecutivo";
             $param= array(':consecutivo'=>$_POST["consecutivo"]);
             $data = DATA::Ejecutar($sql,$param);
             if (count($data)) {
                 $this->id= $data[0]['id'];
+                $this->idestado= $data[0]['idestado'];
             }
             echo json_encode($data);	 
         } catch (Exception $e) {

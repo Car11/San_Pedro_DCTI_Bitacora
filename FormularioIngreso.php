@@ -14,8 +14,8 @@ if (!$sesion->estado) {
 
 //Formulario - Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
-$formulario = new Formulario();
 $estadoformulario=0;
+$formulario = new Formulario();
 $id=0;
 $largo=0;
 $visitanteformulario=0;
@@ -43,6 +43,7 @@ $usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
+    
 ?>
 
 <html>
@@ -327,8 +328,8 @@ $rol=$_SESSION['rol'];
         </div>
     </div>
 
-        <!-- MODAL NUEVO VISITANTE -->
-        <div id="ModalNuevoVisitante" class="modal">
+    <!-- MODAL NUEVO VISITANTE -->
+    <div id="ModalNuevoVisitante" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">                                
@@ -375,6 +376,15 @@ $rol=$_SESSION['rol'];
     </div>
 
 <script type="text/javascript" language="javascript">
+    //DATOS RELEVANTES
+    var fecha_ingreso;
+    var fecha_salida;
+    var responsable;
+    var datacenter;
+    var sala;
+    var visitantes;
+    //Estado Formulario
+    var estadoformulario = 0;
     // visitante
     var formReady = false;
     var id = "NULL";
@@ -491,8 +501,7 @@ $rol=$_SESSION['rol'];
         });
         $("#ModalNuevoVisitante").css({ display: "block" }); 
     }
-
-        
+    
     function validarForm(){
         ValidaCedulaUnica();
         //   
@@ -570,7 +579,7 @@ $rol=$_SESSION['rol'];
 
     };
 
-    //valida cedula unica.
+    //Valida cedula unica.
     function ValidaCedulaUnica(){    
         $.ajax ({
             type: "POST",
@@ -605,7 +614,7 @@ $rol=$_SESSION['rol'];
         });
     };
 
-    // guarda el nuevo visitante
+    //Guarda el nuevo visitante
     function Guardar(){   
         // Ajax: insert / Update.
         if(!validarForm())
@@ -661,7 +670,7 @@ $rol=$_SESSION['rol'];
                 idresponsable: idresponsable,
                 nombreautorizador: document.getElementById('txtautorizador').value,
                 nombretramitante: document.getElementById('txttramitante').value,
-                estado: $('input:radio[name=estadoformulario]:checked').val(),
+                estado: 0,
                 rfc: document.getElementById('txtrfc').value,
                 visitante: document.getElementById('visitantearray').value
             }
@@ -690,6 +699,25 @@ $rol=$_SESSION['rol'];
         // cargar ventana con info y nuevo id.
 
     };
+
+    //CARGA UN FORMULARIO FINALIZADO COMO SOLO LECTURA
+    function SoloLectura(){
+        document.getElementById('btnagregavisitante').disabled=true;
+        document.getElementById('btnModificaFormulario').disabled=true;
+        document.getElementById("fechaingreso").readOnly = true;
+        document.getElementById("fechasalida").readOnly = true;
+        document.getElementById("placavehiculo").readOnly = true;
+        document.getElementById("detalleequipo").readOnly = true;
+        document.getElementById("txtrfc").readOnly = true;
+        document.getElementById("motivovisita").readOnly = true;
+        document.getElementById("pendiente").checked = false;
+        document.getElementById("aprobado").checked = false;
+        document.getElementById("denegado").checked = false;
+        document.getElementById("pendiente").disabled = false;
+        document.getElementById("aprobado").disabled = false;
+        document.getElementById("denegado").disabled = false;
+        $('#txtresponsable').removeAttr('onclick');
+    }
 
     //CARGA EL AUTORIZADOR AL FORMULARIO
     function CargaAutorizador(){
@@ -945,7 +973,6 @@ $rol=$_SESSION['rol'];
         });
     };
 
-
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     function ExcluyeVisitante() {     
         document.getElementById("visitanteexcluido").value = "";
@@ -1023,13 +1050,16 @@ $rol=$_SESSION['rol'];
 
     //BORRA FILA DE UN TABLE AL SELECCIONAR EL BOTÓN Y LO QUITA DEL ARREGLO      
     $(document).on('click', '.borrar', function (event) {
-        var ced = $(this).parents("tr").find("td").eq(0).text();
-        for (var i = 0; i < jVisitante.length; i++) {
-            if (jVisitante[i][0]==ced||jVisitante[i].id==ced)
-                jVisitante.splice(i,1);                 
+        if(estadoformulario!='3')
+        {
+            var ced = $(this).parents("tr").find("td").eq(0).text();
+            for (var i = 0; i < jVisitante.length; i++) {
+                if (jVisitante[i][0]==ced||jVisitante[i].id==ced)
+                    jVisitante.splice(i,1);                 
+            }
+            $(this).closest('tr').remove();
+            ExcluyeVisitante();
         }
-        $(this).closest('tr').remove();
-        ExcluyeVisitante();
     });
 
     //SELECIONA LOS REGISTROS DEL MODAL Y LOS CARGA EN tblvisitanteform                        
@@ -1099,25 +1129,28 @@ $rol=$_SESSION['rol'];
 
     //ABRE EL MODAL RESPONSABLES
     inputResponsable.onclick = function() {
-        modalResponsable.style.display = "block";
+        if(estadoformulario!='3')
+            modalResponsable.style.display = "block";
     }
     //ABRE EL MDOAL SALA
     inputSala.onclick = function() {
-        modalSala.style.display = "block";
-        if (existeid!=0){
-            //MODIFICA FORMULARIO
-            RecargarSalaporDataCenter();
-        }  
-        else{
-            //FORMULARIO NUEVO
-            RecargarSala();
+        if(estadoformulario!='3')
+        {
+            modalSala.style.display = "block";
+            if (existeid!=0){
+                //MODIFICA FORMULARIO
+                RecargarSalaporDataCenter();
+            }  
+            else{
+                //FORMULARIO NUEVO
+                RecargarSala();
+            }
         }
-
-        
     }
     //ABRE EL MODAL DATACENTER
     inputDataCenter.onclick = function() {
-        modalDataCenter.style.display = "block";
+        if(estadoformulario!='3')
+            modalDataCenter.style.display = "block";
     }
 
     //CIERRA EL MODAL EN LA X Y VACIA LOS VISITANTES EXCLUIDOS
@@ -1258,14 +1291,8 @@ $rol=$_SESSION['rol'];
                   }
         })
         .done(function( e ) {
-            var rol = "<?php echo $rol ?>";
-            if (rol==1) 
-                location.href='ListaFormulario.php?INS=1';
-            else
-                $('#formularioenviado').show();
-                $('#principal').hide();
-            }
-        )    
+            location.href='ListaFormulario.php?INS=1';
+        })    
         .fail(function(msg){
             location.href='ListaFormulario.php?INS=0';
         });
@@ -1273,33 +1300,94 @@ $rol=$_SESSION['rol'];
 
     //EVENTO DEL BOTON MODIFICAR FORMULARIO
     $(document).on('click', '#btnModificaFormulario', function (event) {
-        $.ajax({
-            type: "POST",
-            url: "class/Formulario.php",
-            data: {
-                    action: "Modificar",
-                    fechaingreso: document.getElementById('fechaingreso').value,
-                    fechasalida: document.getElementById('fechasalida').value,
-                    nombretramitante: document.getElementById('txttramitante').value,
-                    nombreautorizador: document.getElementById('txtautorizador').value,
-                    nombreresponsable: document.getElementById('txtresponsable').value,
-                    placavehiculo: document.getElementById('placavehiculo').value,
-                    detalleequipo: document.getElementById('detalleequipo').value,
-                    motivovisita: document.getElementById('motivovisita').value,
-                    estado: $('input:radio[name=estadoformulario]:checked').val(),
-                    nombresala: document.getElementById('selectsala').value,
-                    rfc: document.getElementById('txtrfc').value,
-                    id: idformulario,
-                    visitante: document.getElementById('visitantearray').value
-                  }
-        })
-        .done(function( e ) {
-            location.href='ListaFormulario.php?INS=1';
-        })    
-        .fail(function(msg){
-            alert("Error al Modificar Formulario");
-        });
+        var rol = "<?php echo $rol ?>";
+        var visitantes_str = document.getElementById('visitantearray').value;
+        var visitantes_actuales = visitantes_str.split(",");
+        var cont=0;
+        if(visitantes.length == visitantes_actuales.length)
+        {
+            for (x=0;x<visitantes.length;x++) 
+            { 
+                for (y=0;y<visitantes_actuales.length;y++) 
+                { 
+                    if (visitantes[x][0] == visitantes_actuales[y]) 
+                    { 
+                        cont++;       
+                    } 
+                } 
+            } 
+        }
+        if((fecha_ingreso != document.getElementById('fechaingreso').value ||
+           fecha_salida != document.getElementById('fechasalida').value ||
+           responsable != document.getElementById('txtresponsable').value ||
+           sala != document.getElementById('selectsala').value ||
+           visitantes.length != visitantes_actuales.length ||
+           cont != visitantes_actuales.length) && rol ==2)
+            ModificaFormularioTramitante();
+        else
+            ModificaFormularioAutorizador();
     });
+
+    //MODIFICA UN FORMULARIO REALIZADO POR UN AUTORIZADOR
+    function ModificaFormularioAutorizador(){
+        $.ajax({
+                type: "POST",
+                url: "class/Formulario.php",
+                data: {
+                        action: "Modificar",
+                        fechaingreso: document.getElementById('fechaingreso').value,
+                        fechasalida: document.getElementById('fechasalida').value,
+                        nombretramitante: document.getElementById('txttramitante').value,
+                        nombreautorizador: document.getElementById('txtautorizador').value,
+                        nombreresponsable: document.getElementById('txtresponsable').value,
+                        placavehiculo: document.getElementById('placavehiculo').value,
+                        detalleequipo: document.getElementById('detalleequipo').value,
+                        motivovisita: document.getElementById('motivovisita').value,
+                        estado: $('input:radio[name=estadoformulario]:checked').val(),
+                        nombresala: document.getElementById('selectsala').value,
+                        rfc: document.getElementById('txtrfc').value,
+                        id: idformulario,
+                        visitante: document.getElementById('visitantearray').value
+                    }
+            })
+            .done(function( e ) {
+                location.href='ListaFormulario.php?INS=1';
+            })    
+            .fail(function(msg){
+                alert("Error al Modificar Formulario");
+            });
+    }
+
+    //MODIFICA FORMULARIO TRAMITANTE EN CASO DE QUE SE CAMBIE UN DATO IMPORTANTE,
+    //SE CAMBIA EL ESTADO A PENDEINTE
+    function ModificaFormularioTramitante(){
+        $.ajax({
+                type: "POST",
+                url: "class/Formulario.php",
+                data: {
+                        action: "Modificar",
+                        fechaingreso: document.getElementById('fechaingreso').value,
+                        fechasalida: document.getElementById('fechasalida').value,
+                        nombretramitante: document.getElementById('txttramitante').value,
+                        nombreautorizador: document.getElementById('txtautorizador').value,
+                        nombreresponsable: document.getElementById('txtresponsable').value,
+                        placavehiculo: document.getElementById('placavehiculo').value,
+                        detalleequipo: document.getElementById('detalleequipo').value,
+                        motivovisita: document.getElementById('motivovisita').value,
+                        estado: 0,
+                        nombresala: document.getElementById('selectsala').value,
+                        rfc: document.getElementById('txtrfc').value,
+                        id: idformulario,
+                        visitante: document.getElementById('visitantearray').value
+                    }
+            })
+            .done(function( e ) {
+                location.href='ListaFormulario.php?INS=1';
+            })    
+            .fail(function(msg){
+                alert("Error al Modificar Formulario");
+            });    
+    }
 
     //CARGAR TODOS LOS CONTROLES CON LOS DATOS DEL FORMULARIO
     function CargarFormularioModificar(){
@@ -1329,10 +1417,6 @@ $rol=$_SESSION['rol'];
             $('#detalleequipo').val(data[0]['detalleequipo']);
             $('#txtrfc').val(data[0]['rfc']);
             $('#selectdatacenter').val(data[0]['datacenter']);
-
-            //iddatacenter = $data[0]['idsala'];
-            //$('#').val($data[0]['id']);            
-            //$('#').val($data[0]['idresponsable']);
             
             if (data[0]['idestado']==0) {
             document.getElementById("pendiente").checked = true;   
@@ -1355,6 +1439,17 @@ $rol=$_SESSION['rol'];
             $("#EnviaFormulario").css("background-color", "firebrick");
             $("#btnModificaFormulario").css("background-color", "firebrick");
             }
+            if(data[0]['idestado']==3){
+                SoloLectura();
+                estadoformulario = data[0]['idestado'];
+            }
+
+            //Datos importantes que no deben cambiar
+            fecha_ingreso = data[0]['fechaingreso'];
+            fecha_salida = data[0]['fechasalida'];
+            responsable = data[0]['nombreresponsable'];
+            datacenter = data[0]['datacenter'];
+            sala = data[0]['nombresala'];
 
         })    
         .fail(function(msg){
@@ -1379,6 +1474,7 @@ $rol=$_SESSION['rol'];
             $('#tblvisitanteform').append(col);
             // carga lista con datos.
             var data= JSON.parse(e);
+            visitantes = data;
             // Recorre arreglo.
             $.each(data, function(i, item) {
                 var row="<tr class='fila'>"+
