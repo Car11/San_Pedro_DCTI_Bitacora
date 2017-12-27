@@ -417,9 +417,6 @@ $rol=$_SESSION['rol'];
     $(document).ready( function () {  
         MuestraBotonCorrecto();
         ExcluyeVisitanteCarga();
-
-
-
         MuestraEstados();
 
         if (existeid!=0){
@@ -582,7 +579,7 @@ $rol=$_SESSION['rol'];
 
     };
 
-    //valida cedula unica.
+    //Valida cedula unica.
     function ValidaCedulaUnica(){    
         $.ajax ({
             type: "POST",
@@ -617,7 +614,7 @@ $rol=$_SESSION['rol'];
         });
     };
 
-    // guarda el nuevo visitante
+    //Guarda el nuevo visitante
     function Guardar(){   
         // Ajax: insert / Update.
         if(!validarForm())
