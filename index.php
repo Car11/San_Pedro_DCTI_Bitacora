@@ -84,6 +84,7 @@ if (isset($_SESSION['idformulario'])) {
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
     
     <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/datatables.css">
 
 </head>

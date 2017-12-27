@@ -82,8 +82,8 @@ class Email{
             $usuario->CargarTramitanteForm($formulario->id);
             //email.
             ini_set('SMTP','smtpapl.correo.ice');
-            //$to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>; " . $_SESSION["user-email"];
-            $to= $usuario->email;   
+            $to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>; " . $usuario->email;
+            //$to= $usuario->email;   
             $from = "operTI@ice.go.cr";
             // mensaje - encabezado
             $mensaje = "<h2><i>".$mensajeEncabezado."<i><h2>";
