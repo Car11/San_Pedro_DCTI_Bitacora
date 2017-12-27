@@ -67,21 +67,23 @@ class Email{
         // Clave: Icetel2017
         // Buzón: OperacionesTI@ice.go.cr
        try{
-            //busca mail del tramitante.
-            //$tramitanteEmail= '';
             //info Formulario.
             require_once("Formulario.php");        
             $formulario= new Formulario();
             require_once("DataCenter.php");        
             $datacenter= new DataCenter();
+            require_once("Usuario.php");        
+            $usuario= new Usuario();
             //
             $formulario->id=$idformulario;
             $formulario->Cargar();    
             $datacenter->DataCenterporSala($formulario->idsala);
+            // busca usuario tramitante          
+            $usuario->CargarTramitanteForm($formulario->id);
             //email.
             ini_set('SMTP','smtpapl.correo.ice');
-            //$to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>; " . $tramitanteEmail;
-            $to= $_SESSION["user-email"];   
+            //$to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>; " . $_SESSION["user-email"];
+            $to= $usuario->email;   
             $from = "operTI@ice.go.cr";
             // mensaje - encabezado
             $mensaje = "<h2><i>".$mensajeEncabezado."<i><h2>";
@@ -92,8 +94,9 @@ class Email{
             $mensaje .= "<tr style='background: #eee;'><td><strong>SALIDA:</strong> </td><td>". $formulario->fechasalida ."</td></tr>";
             $mensaje .= "<tr style='background: #eee;'><td><strong>SALA:</strong> </td><td>". $formulario->nombresala ."[". $datacenter->nombre  ."]</td></tr>";
             $mensaje .= "<tr style='background: #eee;'><td><strong>MOTIVO:</strong> </td><td>". $formulario->motivovisita ."</td></tr>";
-            $mensaje .= "<tr style='background: #eee;'><td><strong>RFC:</strong> </td><td>". $formulario->rfc ."</td></tr>";
-            $mensaje .= "<tr><td><strong>Link:</strong> </td><td> http://http://operacionesTI/BitacoraCDC/FormularioIngreso.php?MOD=" . $formulario->id . "</td></tr>";            
+            $mensaje .= "<tr style='background: #eee;'><td><strong>RFC:</strong> </td><td>". $formulario->rfc ."</td></tr>";            
+            $strfrm= "http://operacionesTI/BitacoraCDC/FormularioIngreso.php?MOD=". $formulario->id;
+            $mensaje .= "<tr><td><strong>Link:</strong> </td><td> <a href=$strfrm>Formulario</a>  </td></tr>";                        
             $mensaje .= "</table>";
             $mensaje .= "</body></html>";
             //

@@ -158,12 +158,12 @@ class Formulario
                 $estado="PENDIENTE";
             else if($_POST["estado"]=="1")
                 $estado="APROBADO";
-            else if($_POST["estado"]=="3")
-                $estado="DENEGADO";
-            email::Formulario($idformulario[0][0], "Notificación de Formulario" , "Formulario Creado (" . $estado .")");
+            else if($_POST["estado"]=="2")
+                $estado="DENEGADO";            
             // si no es una copia del formulario, muestra lista.
             if(!isset($_POST["iscopy"]))
             {
+                email::Formulario($idformulario[0][0], "Notificación de Formulario" , "Formulario Creado (" . $estado .")");
                 header('Location:../ListaFormulario.php');
                 exit;
             }
@@ -231,7 +231,8 @@ class Formulario
                     $param= array(':cedula'=>$visitantearray[$i],':id'=>$this->id);
                     $result = DATA::Ejecutar($sql, $param);
                 }
-            }       
+            }              
+            //vuelve a la lista.     
             header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {
@@ -293,6 +294,16 @@ class Formulario
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
+            //notifica email.
+            include_once("Email.php");
+            $estado= "";
+            if($_POST["estado"]=="0")
+                $estado="PENDIENTE";
+            else if($_POST["estado"]=="1")
+                $estado="APROBADO";
+            else if($_POST["estado"]=="2")
+                $estado="DENEGADO";        
+            email::Formulario($_POST["id"], "Notificación de Formulario" , "Formulario Modificado (" . $estado .")");
             header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {

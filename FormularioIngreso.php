@@ -645,7 +645,7 @@ $rol=$_SESSION['rol'];
     function Copiar(){        
         swal({
             title: 'Copiar Formulario?',
-            type: 'warning',
+            type: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -678,7 +678,7 @@ $rol=$_SESSION['rol'];
                 idresponsable: idresponsable,
                 nombreautorizador: document.getElementById('txtautorizador').value,
                 nombretramitante: document.getElementById('txttramitante').value,
-                estado: $('input:radio[name=estadoformulario]:checked').val(),
+                estado: 0,
                 rfc: document.getElementById('txtrfc').value,
                 visitante: document.getElementById('visitantearray').value
             }
@@ -828,7 +828,7 @@ $rol=$_SESSION['rol'];
     $(document).on('click', '#btnatras', function (event) {
         swal({
             title: 'Volver al Menu Administrador?',
-            text: "Esta acción no guardará el formulario!",
+            text: "Esta acción no guardará los cambios.",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
