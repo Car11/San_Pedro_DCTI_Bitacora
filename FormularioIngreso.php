@@ -652,6 +652,23 @@ $rol=$_SESSION['rol'];
 
     //COPIA FORM
     function Copiar(){        
+        swal({
+            title: 'Copiar Formulario?',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Copiar!',
+            cancelButtonText: 'No, cancelar!',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger'
+        }).then(function () {
+            SetNewForm();
+        });    
+        
+    };
+
+    function SetNewForm(){
         // copiar datos generales del form. Fecha actual + 2h    
         FechaFormNuevo();
         EnviaVisitante();
@@ -695,9 +712,6 @@ $rol=$_SESSION['rol'];
         .fail(function(msg){
             location.href='ListaFormulario.php?INS=0';
         });
-        // copiar lista de visitantes en nuevo form
-        // cargar ventana con info y nuevo id.
-
     };
 
     //CARGA UN FORMULARIO FINALIZADO COMO SOLO LECTURA
@@ -723,7 +737,7 @@ $rol=$_SESSION['rol'];
     function CargaAutorizador(){
         if (document.getElementById('txtautorizador').value==null)
             document.getElementById('txtautorizador').value = autorizador;
-    }
+    };
 
     //RECARGA LA TABLA DATACENTER
     function RecargarSalaporDataCenter(){
@@ -842,7 +856,7 @@ $rol=$_SESSION['rol'];
     $(document).on('click', '#btnatras', function (event) {
         swal({
             title: 'Volver al Menu Administrador?',
-            text: "Esta acción no guardará el formulario!",
+            text: "Esta acción no guardará los cambios.",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

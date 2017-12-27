@@ -141,8 +141,7 @@ class Formulario
 
                             $result = DATA::Ejecutar($sql, $param);
             //Consultar el Maximo ID insertado
-            $maxid="SELECT id FROM formulario ORDER BY consecutivo DESC LIMIT 0,1";
-            
+            $maxid="SELECT id FROM formulario ORDER BY consecutivo DESC LIMIT 0,1";            
             //Captura el id del formulario
             $idformulario =DATA::Ejecutar($maxid);
             //Convierte el string en un arreglo
@@ -155,9 +154,19 @@ class Formulario
                 $param= array(':idvisitante'=>$visitantearray[$i],':idformulario'=>$idformulario[0][0]);
                 $result = DATA::Ejecutar($sql, $param);
             }
+            //email 
+            include_once("Email.php");
+            $estado= "";
+            if($_POST["estado"]=="0")
+                $estado="PENDIENTE";
+            else if($_POST["estado"]=="1")
+                $estado="APROBADO";
+            else if($_POST["estado"]=="2")
+                $estado="DENEGADO";            
             // si no es una copia del formulario, muestra lista.
             if(!isset($_POST["iscopy"]))
             {
+                email::Formulario($idformulario[0][0], "Notificación de Formulario" , "Formulario Creado (" . $estado .")");
                 header('Location:../ListaFormulario.php');
                 exit;
             }
@@ -225,7 +234,8 @@ class Formulario
                     $param= array(':cedula'=>$visitantearray[$i],':id'=>$this->id);
                     $result = DATA::Ejecutar($sql, $param);
                 }
-            }       
+            }              
+            //vuelve a la lista.     
             header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {
@@ -287,6 +297,16 @@ class Formulario
                     $result = DATA::Ejecutar($sql, $param);
                 }
             }       
+            //notifica email.
+            include_once("Email.php");
+            $estado= "";
+            if($_POST["estado"]=="0")
+                $estado="PENDIENTE";
+            else if($_POST["estado"]=="1")
+                $estado="APROBADO";
+            else if($_POST["estado"]=="2")
+                $estado="DENEGADO";        
+            email::Formulario($_POST["id"], "Notificación de Formulario" , "Formulario Modificado (" . $estado .")");
             header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {
@@ -598,7 +618,7 @@ class Formulario
                 (SELECT nombre from usuario u inner join formulario f on f.idautorizador=u.id and f.id =:id) as nombreautorizador,
                 (SELECT nombre from responsable r inner join formulario f on f.idresponsable=r.id and f.id =:id) as nombreresponsable,
                 (SELECT sa.nombre FROM sala sa inner join formulario f on sa.id=f.idsala and f.id =:id) as nombresala,
-                placavehiculo,detalleequipo, rfc, consecutivo
+                placavehiculo,detalleequipo, rfc, consecutivo, idsala
             FROM formulario WHERE id = :id;";
             //
             $param= array(':id'=>$this->id);
@@ -619,6 +639,7 @@ class Formulario
                 $this->detalleequipo= $data[0]['detalleequipo'];
                 $this->rfc= $data[0]['rfc'];
                 $this->id= $data[0]['id'];
+                $this->idsala= $data[0]['idsala'];
             }
             //
             return $data;
