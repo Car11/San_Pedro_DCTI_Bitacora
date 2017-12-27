@@ -105,13 +105,14 @@ class Usuario{
     }
 
     function CargarTramitanteForm($idformulario){    
-        $sql='SELECT idtramitante , email
+        $sql='SELECT idtramitante , email , u.nombre
             FROM formulario f inner join usuario u on u.id=f.idtramitante
             WHERE f.id=:idformulario';
         $param= array(':idformulario'=>$idformulario);        
         $data = DATA::Ejecutar($sql,$param);
         if (count($data) ) {
             $this->id= $data[0]['idtramitante'];
+            $this->nombre= $data[0]['nombre'];
             $this->email= $data[0]['email'];
             return true;
         }else {        

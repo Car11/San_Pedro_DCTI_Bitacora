@@ -166,7 +166,7 @@ class Formulario
             // si no es una copia del formulario, muestra lista.
             if(!isset($_POST["iscopy"]))
             {
-                email::Formulario($idformulario[0][0], "Notificación de Formulario" , "Formulario Creado (" . $estado .")");
+                email::Formulario($idformulario[0][0], "Nuevo Formulario" , $estado);
                 header('Location:../ListaFormulario.php');
                 exit;
             }
@@ -306,7 +306,7 @@ class Formulario
                 $estado="APROBADO";
             else if($_POST["estado"]=="2")
                 $estado="DENEGADO";        
-            email::Formulario($_POST["id"], "Notificación de Formulario" , "Formulario Modificado (" . $estado .")");
+            email::Formulario($_POST["id"], "Formulario Modificado" , $estado);
             header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {

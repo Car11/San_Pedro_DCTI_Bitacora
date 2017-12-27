@@ -34,7 +34,8 @@ class Email{
                 $mensaje .= "<tr><td><strong>Nombre:</strong> </td><td>" .  $visitante->nombre  . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Empresa:</strong> </td><td>" . $visitante->empresa . "</td></tr>";
                 $mensaje .= "<tr><td><strong>Detalle:</strong> </td><td>" . $formulario->motivovisita . "</td></tr>";
-                $mensaje .= "<tr><td><strong>Link:</strong> </td><td>" . "http://operacionesTI/BitacoraCDC/FormularioIngreso.php?MOD=" . $idformulario . "</td></tr>";
+                $strfrm= "http://operacionesTI/BitacoraCDC/FormularioIngreso.php?MOD=". $idformulario;
+                $mensaje .= "<tr><td><strong>Link:</strong> </td><td> <a href=$strfrm>Formulario</a>  </td></tr>";
                 if($numTarjeta!="NULL")
                     $mensaje .= "<tr><td><strong>Tarjeta:</strong> </td><td>"  . $numTarjeta . "</td></tr>";
                 $mensaje .= "</table>";
@@ -59,7 +60,7 @@ class Email{
         }
     }
 
-    static function Formulario($idformulario,  $mensajeEncabezado, $asunto){
+    static function Formulario($idformulario,  $mensajeEncabezado, $estado){
         // smtpapl.correo.ice
         // puerto 25
         // ip 10.149.20.26
@@ -80,6 +81,8 @@ class Email{
             $datacenter->DataCenterporSala($formulario->idsala);
             // busca usuario tramitante          
             $usuario->CargarTramitanteForm($formulario->id);
+            //
+            $asunto= "Formulario <#$formulario->consecutivo> [$estado]";
             //email.
             ini_set('SMTP','smtpapl.correo.ice');
             $to = "ZZT OFICINA PROCESAMIENTO <ofproc1@ice.go.cr>; " . $usuario->email;
@@ -94,7 +97,8 @@ class Email{
             $mensaje .= "<tr style='background: #eee;'><td><strong>SALIDA:</strong> </td><td>". $formulario->fechasalida ."</td></tr>";
             $mensaje .= "<tr style='background: #eee;'><td><strong>SALA:</strong> </td><td>". $formulario->nombresala ."[". $datacenter->nombre  ."]</td></tr>";
             $mensaje .= "<tr style='background: #eee;'><td><strong>MOTIVO:</strong> </td><td>". $formulario->motivovisita ."</td></tr>";
-            $mensaje .= "<tr style='background: #eee;'><td><strong>RFC:</strong> </td><td>". $formulario->rfc ."</td></tr>";            
+            $mensaje .= "<tr style='background: #eee;'><td><strong>RFC:</strong> </td><td>". $formulario->rfc ."</td></tr>";
+            $mensaje .= "<tr style='background: #eee;'><td><strong>TRAMITANTE:</strong> </td><td>". $usuario->nombre ."</td></tr>";            
             $strfrm= "http://operacionesTI/BitacoraCDC/FormularioIngreso.php?MOD=". $formulario->id;
             $mensaje .= "<tr><td><strong>Link:</strong> </td><td> <a href=$strfrm>Formulario</a>  </td></tr>";                        
             $mensaje .= "</table>";

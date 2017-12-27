@@ -192,7 +192,7 @@ $rol=$_SESSION['rol'];
             
             $('#listavisitante').html("");
             $('#listavisitante').append("<table id='listaformulario'class='display'>");
-            var col="<thead><tr> <th>ID</th> <th>FECHA SOLICITUD</th> <th>MOTIVO</th> <th>ESTADO</th> <th>RFC</th> <th>MODIFICAR</th></tr></thead><tbody id='tableBody'></tbody>";
+            var col="<thead><tr> <th>ID</th> <th>FECHA INGRESO</th> <th>FECHA SOLICITUD</th> <th>MOTIVO</th> <th>ESTADO</th> <th>RFC</th> <th>MODIFICAR</th> </tr></thead><tbody id='tableBody'></tbody>";
             $('#listaformulario').append(col);
             // carga lista con datos.
             var data= JSON.parse(e);
@@ -200,6 +200,7 @@ $rol=$_SESSION['rol'];
             $.each(data, function(i, item) {
                 var row="<tr>"+
                     "<td>"+ item.consecutivo+"</td>" +
+                    "<td>"+ item.fechaingreso +"</td>"+
                     "<td>"+ item.fechasolicitud + "</td>"+
                     "<td>"+ item.motivovisita + "</td>"+
                     "<td>"+ item.estado + "</td>"+
