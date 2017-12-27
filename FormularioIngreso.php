@@ -43,8 +43,12 @@ $usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
-$estadoformulario = $_GET['ESTADO'];
 
+//ASIGNA EL ESTADO FINALIZADO SOLO EN FORMULARIOS MOD
+$estadoformulario = '1';
+if (isset($_GET['MOD']))
+    $estadoformulario = $_GET['ESTADO'];
+    
 ?>
 
 <html>
@@ -329,8 +333,8 @@ $estadoformulario = $_GET['ESTADO'];
         </div>
     </div>
 
-        <!-- MODAL NUEVO VISITANTE -->
-        <div id="ModalNuevoVisitante" class="modal">
+    <!-- MODAL NUEVO VISITANTE -->
+    <div id="ModalNuevoVisitante" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">                                
@@ -498,8 +502,7 @@ $estadoformulario = $_GET['ESTADO'];
         });
         $("#ModalNuevoVisitante").css({ display: "block" }); 
     }
-
-        
+    
     function validarForm(){
         ValidaCedulaUnica();
         //   
@@ -668,7 +671,7 @@ $estadoformulario = $_GET['ESTADO'];
                 idresponsable: idresponsable,
                 nombreautorizador: document.getElementById('txtautorizador').value,
                 nombretramitante: document.getElementById('txttramitante').value,
-                estado: $('input:radio[name=estadoformulario]:checked').val(),
+                estado: 0,
                 rfc: document.getElementById('txtrfc').value,
                 visitante: document.getElementById('visitantearray').value
             }
@@ -686,7 +689,7 @@ $estadoformulario = $_GET['ESTADO'];
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger'
             }).then(function () {
-                location.href= "FormularioIngreso.php?MOD=" + e;  
+                location.href= "FormularioIngreso.php?MOD=" + e + "&" + "ESTADO=0";  
             });    
                       
         })    
@@ -969,7 +972,6 @@ $estadoformulario = $_GET['ESTADO'];
             alert("Error al cargar visitantes Modal");
         });
     };
-
 
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     function ExcluyeVisitante() {     
