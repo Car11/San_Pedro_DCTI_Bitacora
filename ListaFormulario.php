@@ -149,7 +149,7 @@ $rol=$_SESSION['rol'];
         .done(function( e ) {
             // carga lista con datos.
             var formulario= JSON.parse(e);
-            location.href='FormularioIngreso.php?MOD='+formulario[0][0]+'&ESTADO='+formulario[0][1];
+            location.href='FormularioIngreso.php?MOD='+formulario[0][0];
         })    
             .fail(function(msg){
             alert("Error al carga id del formulario");

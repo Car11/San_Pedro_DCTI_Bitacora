@@ -14,8 +14,8 @@ if (!$sesion->estado) {
 
 //Formulario - Cargar Datos en Formulario Ingreso para Modificar
 include("class/Formulario.php");
-$formulario = new Formulario();
 $estadoformulario=0;
+$formulario = new Formulario();
 $id=0;
 $largo=0;
 $visitanteformulario=0;
@@ -43,11 +43,6 @@ $usuario = new Usuario();
 $usuario->Cargar();
 $user= $_SESSION['username'];
 $rol=$_SESSION['rol'];
-
-//ASIGNA EL ESTADO FINALIZADO SOLO EN FORMULARIOS MOD
-$estadoformulario = '1';
-if (isset($_GET['MOD']))
-    $estadoformulario = $_GET['ESTADO'];
     
 ?>
 
@@ -381,8 +376,15 @@ if (isset($_GET['MOD']))
     </div>
 
 <script type="text/javascript" language="javascript">
+    //DATOS RELEVANTES
+    var fecha_ingreso;
+    var fecha_salida;
+    var responsable;
+    var datacenter;
+    var sala;
+    var visitantes;
     //Estado Formulario
-    var estadoformulario = "<?php echo $estadoformulario;?>";
+    var estadoformulario = 0;
     // visitante
     var formReady = false;
     var id = "NULL";
@@ -415,10 +417,10 @@ if (isset($_GET['MOD']))
     $(document).ready( function () {  
         MuestraBotonCorrecto();
         ExcluyeVisitanteCarga();
-        MuestraEstados();
 
-        if(estadoformulario=='3')
-            SoloLectura();
+
+
+        MuestraEstados();
 
         if (existeid!=0){
             //MODIFICA FORMULARIO
@@ -689,7 +691,7 @@ if (isset($_GET['MOD']))
                 confirmButtonClass: 'btn btn-success',
                 cancelButtonClass: 'btn btn-danger'
             }).then(function () {
-                location.href= "FormularioIngreso.php?MOD=" + e + "&" + "ESTADO=0";  
+                location.href= "FormularioIngreso.php?MOD=" + e;  
             });    
                       
         })    
@@ -717,6 +719,7 @@ if (isset($_GET['MOD']))
         document.getElementById("pendiente").disabled = false;
         document.getElementById("aprobado").disabled = false;
         document.getElementById("denegado").disabled = false;
+        $('#txtresponsable').removeAttr('onclick');
     }
 
     //CARGA EL AUTORIZADOR AL FORMULARIO
@@ -1291,14 +1294,8 @@ if (isset($_GET['MOD']))
                   }
         })
         .done(function( e ) {
-            var rol = "<?php echo $rol ?>";
-            if (rol==1) 
-                location.href='ListaFormulario.php?INS=1';
-            else
-                $('#formularioenviado').show();
-                $('#principal').hide();
-            }
-        )    
+            location.href='ListaFormulario.php?INS=1';
+        })    
         .fail(function(msg){
             location.href='ListaFormulario.php?INS=0';
         });
@@ -1306,33 +1303,94 @@ if (isset($_GET['MOD']))
 
     //EVENTO DEL BOTON MODIFICAR FORMULARIO
     $(document).on('click', '#btnModificaFormulario', function (event) {
-        $.ajax({
-            type: "POST",
-            url: "class/Formulario.php",
-            data: {
-                    action: "Modificar",
-                    fechaingreso: document.getElementById('fechaingreso').value,
-                    fechasalida: document.getElementById('fechasalida').value,
-                    nombretramitante: document.getElementById('txttramitante').value,
-                    nombreautorizador: document.getElementById('txtautorizador').value,
-                    nombreresponsable: document.getElementById('txtresponsable').value,
-                    placavehiculo: document.getElementById('placavehiculo').value,
-                    detalleequipo: document.getElementById('detalleequipo').value,
-                    motivovisita: document.getElementById('motivovisita').value,
-                    estado: $('input:radio[name=estadoformulario]:checked').val(),
-                    nombresala: document.getElementById('selectsala').value,
-                    rfc: document.getElementById('txtrfc').value,
-                    id: idformulario,
-                    visitante: document.getElementById('visitantearray').value
-                  }
-        })
-        .done(function( e ) {
-            location.href='ListaFormulario.php?INS=1';
-        })    
-        .fail(function(msg){
-            alert("Error al Modificar Formulario");
-        });
+        var rol = "<?php echo $rol ?>";
+        var visitantes_str = document.getElementById('visitantearray').value;
+        var visitantes_actuales = visitantes_str.split(",");
+        var cont=0;
+        if(visitantes.length == visitantes_actuales.length)
+        {
+            for (x=0;x<visitantes.length;x++) 
+            { 
+                for (y=0;y<visitantes_actuales.length;y++) 
+                { 
+                    if (visitantes[x][0] == visitantes_actuales[y]) 
+                    { 
+                        cont++;       
+                    } 
+                } 
+            } 
+        }
+        if((fecha_ingreso != document.getElementById('fechaingreso').value ||
+           fecha_salida != document.getElementById('fechasalida').value ||
+           responsable != document.getElementById('txtresponsable').value ||
+           sala != document.getElementById('selectsala').value ||
+           visitantes.length != visitantes_actuales.length ||
+           cont != visitantes_actuales.length) && rol ==2)
+            ModificaFormularioTramitante();
+        else
+            ModificaFormularioAutorizador();
     });
+
+    //MODIFICA UN FORMULARIO REALIZADO POR UN AUTORIZADOR
+    function ModificaFormularioAutorizador(){
+        $.ajax({
+                type: "POST",
+                url: "class/Formulario.php",
+                data: {
+                        action: "Modificar",
+                        fechaingreso: document.getElementById('fechaingreso').value,
+                        fechasalida: document.getElementById('fechasalida').value,
+                        nombretramitante: document.getElementById('txttramitante').value,
+                        nombreautorizador: document.getElementById('txtautorizador').value,
+                        nombreresponsable: document.getElementById('txtresponsable').value,
+                        placavehiculo: document.getElementById('placavehiculo').value,
+                        detalleequipo: document.getElementById('detalleequipo').value,
+                        motivovisita: document.getElementById('motivovisita').value,
+                        estado: $('input:radio[name=estadoformulario]:checked').val(),
+                        nombresala: document.getElementById('selectsala').value,
+                        rfc: document.getElementById('txtrfc').value,
+                        id: idformulario,
+                        visitante: document.getElementById('visitantearray').value
+                    }
+            })
+            .done(function( e ) {
+                location.href='ListaFormulario.php?INS=1';
+            })    
+            .fail(function(msg){
+                alert("Error al Modificar Formulario");
+            });
+    }
+
+    //MODIFICA FORMULARIO TRAMITANTE EN CASO DE QUE SE CAMBIE UN DATO IMPORTANTE,
+    //SE CAMBIA EL ESTADO A PENDEINTE
+    function ModificaFormularioTramitante(){
+        $.ajax({
+                type: "POST",
+                url: "class/Formulario.php",
+                data: {
+                        action: "Modificar",
+                        fechaingreso: document.getElementById('fechaingreso').value,
+                        fechasalida: document.getElementById('fechasalida').value,
+                        nombretramitante: document.getElementById('txttramitante').value,
+                        nombreautorizador: document.getElementById('txtautorizador').value,
+                        nombreresponsable: document.getElementById('txtresponsable').value,
+                        placavehiculo: document.getElementById('placavehiculo').value,
+                        detalleequipo: document.getElementById('detalleequipo').value,
+                        motivovisita: document.getElementById('motivovisita').value,
+                        estado: 0,
+                        nombresala: document.getElementById('selectsala').value,
+                        rfc: document.getElementById('txtrfc').value,
+                        id: idformulario,
+                        visitante: document.getElementById('visitantearray').value
+                    }
+            })
+            .done(function( e ) {
+                location.href='ListaFormulario.php?INS=1';
+            })    
+            .fail(function(msg){
+                alert("Error al Modificar Formulario");
+            });    
+    }
 
     //CARGAR TODOS LOS CONTROLES CON LOS DATOS DEL FORMULARIO
     function CargarFormularioModificar(){
@@ -1362,10 +1420,6 @@ if (isset($_GET['MOD']))
             $('#detalleequipo').val(data[0]['detalleequipo']);
             $('#txtrfc').val(data[0]['rfc']);
             $('#selectdatacenter').val(data[0]['datacenter']);
-
-            //iddatacenter = $data[0]['idsala'];
-            //$('#').val($data[0]['id']);            
-            //$('#').val($data[0]['idresponsable']);
             
             if (data[0]['idestado']==0) {
             document.getElementById("pendiente").checked = true;   
@@ -1388,6 +1442,17 @@ if (isset($_GET['MOD']))
             $("#EnviaFormulario").css("background-color", "firebrick");
             $("#btnModificaFormulario").css("background-color", "firebrick");
             }
+            if(data[0]['idestado']==3){
+                SoloLectura();
+                estadoformulario = data[0]['idestado'];
+            }
+
+            //Datos importantes que no deben cambiar
+            fecha_ingreso = data[0]['fechaingreso'];
+            fecha_salida = data[0]['fechasalida'];
+            responsable = data[0]['nombreresponsable'];
+            datacenter = data[0]['datacenter'];
+            sala = data[0]['nombresala'];
 
         })    
         .fail(function(msg){
@@ -1412,6 +1477,7 @@ if (isset($_GET['MOD']))
             $('#tblvisitanteform').append(col);
             // carga lista con datos.
             var data= JSON.parse(e);
+            visitantes = data;
             // Recorre arreglo.
             $.each(data, function(i, item) {
                 var row="<tr class='fila'>"+
