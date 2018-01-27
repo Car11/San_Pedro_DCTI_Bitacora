@@ -180,8 +180,8 @@
 .labelradioformat{
     font-size: 20px;
     display:inline-block;
-    margin-left: 30px;
-    margin-top: 15px;  
+    /*margin-left: 30px;*/
+    /*margin-top: 15px;  */
     content: '\A'; 
     white-space: pre;
 }
@@ -274,7 +274,7 @@
     display:inline-block;
     font-family: fantasy;
     padding: 0px;
-    font-size: 40px;
+    font-size: 30px;
     color: aliceblue;
 }
 
@@ -294,7 +294,7 @@
 .inputreadonly {
     display: block;
     text-align: left;
-    width: 100%;
+    /*width: 100%;*/
     margin: 0 auto;
     border:none;
     padding: 0px;    
@@ -544,7 +544,7 @@ tr, thread{
 /*Lista Formularios*/
 #listavisitanteform{
     width: 95%;
-    height: 100%;
+    /*height: 100%;*/
     float: left;
     overflow: auto;
 }

@@ -75,17 +75,21 @@ if (isset($_SESSION['idformulario'])) {
 <head>
     <meta charset="UTF-8">
     <title>Control de Accesos</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/Estilo.css" rel="stylesheet" />
+    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
+    <link rel="stylesheet" href="css/datatables.css" type="text/css">  
     
     <script src="js/jquery.js" type="text/jscript"></script>
     <script src="js/jquery-ui.js" type="text/jscript"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" charset="utf8" src="js/datatables.js"></script>
     
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script>
     <script src="js/Funciones.js" languaje="javascript" type="text/javascript"></script>
-    
-    <link href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
-    <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"  rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/datatables.css">
 
 </head>
 
@@ -107,57 +111,65 @@ if (isset($_SESSION['idformulario'])) {
 </script>
 
 <body>
+<div class="container-fluid">
     <header>
-        <h1>Centros de Datos Corporativos</h1>        
-        <div id="logo"><img src="img/Logoice.png" height="75" onclick="onShowLogin()" > </div>  
-        <div id="fechahora"><span id="date"></span></div>
-        <div id="signin">
-            <span>Usuario: 
-                <?php
-                if ($sesion->estado) {
-                    print $_SESSION['username'];
-                } 
-                ?>
-            </span>
+        <div class="row" >             
+            <div class="col-md-2"  >
+                <div id="logo"><img src="img/Logoice.png" height="75" onclick="onShowLogin()" > </div>  
+                <div id="signin">
+                    <span>Usuario: 
+                        <?php
+                        if ($sesion->estado) {
+                            print $_SESSION['username'];
+                        } 
+                        ?>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-8">                
+                <h1 class="text-center">Centros de Datos Corporativos</h1>                     
+            </div>           
+            <div class="col-md-2">
+                <div id="fechahora"><span id="date"></span></div>
+            </div>
         </div>
-    </header>
-    
-    <div id="mensajetop">
-        <span id="textomensaje"></span>
+    </header>   
+    <div class="row" >  
+        <div id="mensajetop">
+            <span id="textomensaje"></span>
+        </div>
     </div>
-    
-    <aside>
-        
-    </aside>
+    <div class="row" >  
+        <aside></aside>
 
-    <section>
-        <div class="dialog-message" title="Tarjeta">
-            <p id="texto-mensaje">
-                Está realizando una salida de tarjeta?
-            </p>
-        </div>
+        <section>
+            <div class="dialog-message" title="Tarjeta">
+                <p id="texto-mensaje">
+                    Está realizando una salida de tarjeta?
+                </p>
+            </div>
 
-        <div id="form">
-            <h2>Cédula / Identificación</h2>
-            <form name="datos" id="datos" action="request/EnviaVisitante.php" method="POST">
-                <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
-                <input type="submit" class="nbtn_blue" value="Consultar" id="enviar" />
-            </form>
-        </div>
-    </section>
+            <div id="form">
+                <h2>Cédula / Identificación</h2>
+                <form name="datos" id="datos" action="request/EnviaVisitante.php" method="POST">
+                    <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
+                    <input type="submit" class="nbtn_blue" value="Consultar" id="enviar" />
+                </form>
+            </div>
+        </section>
 
-    <aside>
-        <div  id="IDsformulario" >
-            <!--ID DEL VISITANTE ACEPTADO EN EL formulario-->
-        </div>
-        <div id= "mensajespersonales"  >
-            <!--MENSAJES DE OPERACIONES-->            
-        </div>
-        
-    </aside>
+        <aside>
+            <div  id="IDsformulario" >
+                <!--ID DEL VISITANTE ACEPTADO EN EL formulario-->
+            </div>
+            <div id= "mensajespersonales"  >
+                <!--MENSAJES DE OPERACIONES-->            
+            </div>            
+        </aside>
+    </div> <!-- end row-->
 
-    <!-- MODAL formulario -->
-    <div class="modal" id="modal-index">
+     <!-- MODAL formulario -->
+     <div class="modal" id="modal-index">
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
@@ -248,6 +260,9 @@ if (isset($_SESSION['idformulario'])) {
     </div>
     <!--FINAL MODAL VISITANTE-->
 
+</div>
+
+   
 
 </body>
 
