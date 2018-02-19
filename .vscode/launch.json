@@ -1,27 +1,10 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
-        {
-            "name": "JS",
-            "type": "chrome",
-            "request": "launch",
-
-            "url": "http://localhost/san_pedro_dcti_bitacora/js/validaciones.js",
-
-            "sourceMaps": true,
-            "webRoot": "${workspaceRoot}",
-
-            "sourceMapPathOverrides": {
-            
-                "webpack:///./*":"${workspaceRoot}/*" 
-            }
-        },       
         {
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
-            "serverSourceRoot": "${workspaceRoot}/public",
             "port": 9000
         },
         {
@@ -30,7 +13,7 @@
             "request": "launch",
             "program": "${file}",
             "cwd": "${fileDirname}",
-            "port": 9005
+            "port": 9000
         }
     ]
 }

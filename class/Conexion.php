@@ -14,6 +14,9 @@ class DATA {
         else if (file_exists('../ini/config.ini')) {
             self::$config = parse_ini_file('../ini/config.ini',true); 
         }         
+        else if (file_exists('../../../ini/config.ini')) {
+            self::$config = parse_ini_file('../../../ini/config.ini',true); 
+        }         
     }  
 
     private static function Conectar(){
