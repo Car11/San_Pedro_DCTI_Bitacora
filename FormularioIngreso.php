@@ -50,239 +50,188 @@ $rol=$_SESSION['rol'];
 <head>
     <meta charset="UTF-8">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <title>Control de Accesos</title>      
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Accesos</title>       
     <!-- CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link href="css/Estilo.css" rel="stylesheet" />  
+    <link href="css/Estilo.css?v= <?php echo Globals::cssversion; ?>" rel="stylesheet" />  
     <link rel="stylesheet" href="css/datatables.css" type="text/css"/>        
     <link rel="stylesheet" href="css/Formulario.css" type="text/css"/>
     <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>    
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>    -->
     <!-- JS  -->
     <script src="js/jquery.js" type="text/jscript"></script>
  	<script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
-    <script src="js/bootstrap.min.js"></script>
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/sweetalert2.js"></script>
+    <!--<script src="js/bootstrap.min.js"></script>-->
 </head>
 <body> 
-<!DOCTYPE html>
-<div class="container-fluid">
-    <!-- HEADER   -->
     <header>
-        <div class="row">
-            <div class="col-md-2">
-                <div id="logo"><img src="img/Logoice.png" height="75"> </div>
-                <div id="signin">
-                    <span>Usuario: 
-                            <?php
-                            if ($sesion->estado) {
-                                print $_SESSION['username'];
-                            } 
-                            ?>
-                        </span>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <h1 class="text-center">FORMULARIO DE INGRESO</h1>
-            </div>
-            <div class="col-md-2">
-            </div>
-        </div>
+    <h1>FORMULARIO DE INGRESO</h1>        
+    <div id="logo"><img src="img/Logoice.png" height="75" ></div>
     </header>
-    <br>
-    <!-- CONTENT   -->
-    <!-- NAV -->
-    <div class="row">
-        <div class="col-md-1"> </div>
-
-        <div class="col-md-10">
-            <div id="superiornavegacion">
-                <div id="nuevo">
-                    <input type="button" id="btncopiar" class="nbtn_blue-sp-c" value="Copiar" onclick="Copiar()" ;>
+    <div id="general">
+        <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">       
+            <div id="izquierda">
+                <div id="superiorizq">                
                 </div>
-                <div id="atras">
-                    <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">
-                </div>
-                <div id="extra"></div>
+                <div id="medioizq">                                  
+                </div>    
             </div>
             <div id="formularioenviado">
                 <div id="mensajeform">
-                    <h1>FORMULARIO ENVIADO</h1>
-                    <h2>SERÁ NOTIFICADO VÍA CORREO DE SU APROBACIÓN</h2>
-                    <h2>Muchas Gracias!!!</h2>
+                <h1>FORMULARIO ENVIADO</h1>        
+                <h2>SERÁ NOTIFICADO VÍA CORREO DE SU APROBACIÓN</h2>
+                <h2>Muchas Gracias!!!</h2>
                 </div>
                 <div id="espacioform"></div>
             </div>
-        </div>
-
-        <div class="col-md-1"> </div>
-    </div>
-    <!-- FORM -->
-    <div id="form-container" class="form-container">
-        <form class="cbp-mc-form" method="POST" action="request/EnviaFormulario.php" onSubmit="return EnviaVisitante()">
-            <!-- ROW 1-->
-            <div class="row">
-                <div class="col-md-1"> </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label>
-                        <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field-form" value="" required/>
+            <div id="principal">
+                <div id="superiornavegacion">
+                    <div id="nuevo">   
+                    <input type="button" id="btncopiar" class="nbtn_blue-sp-c" value="Copiar" onclick="Copiar()";>   
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
-                        <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field-form" value="" required/>
+                    <div id="atras">
+                        <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás">   
                     </div>
+                    <div id="extra"></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="selectdatacenter" class="labelformat">Seleccione Data Center</label>
-                        <input type="text" id="selectdatacenter" name="selectsaladatacenter" placeholder="CLICK" class="input-field-form" readonly="readonly" value="" required/>
-                    </div>
-                </div>
-                <div class="col-md-1"> </div>
-            </div>
-            <!-- ROW 2-->
-            <div class="row">
-                <div class="col-md-1"> </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label>
-                        <input type="text" id="txtresponsable" name="txtresponsable" class="input-field-form" placeholder="CLICK" readonly="readonly" value="" required/>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="txttramitante" id="lbltxttramitante" class="labelformat">Tramitante</label>
-                        <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly" value="<?php if (!isset($_GET['ID']) && !isset($_GET['MOD'])) echo $usuario->nombre;?>" />
-                        <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label>
-                        <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" value="<?php if (!isset($_GET['ID']) || !isset($_GET['MOD']) && $rol==1) echo $usuario->nombre;?>" />
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="selectsala" class="labelformat">Seleccione la Sala</label>
-                        <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly" value="" required/>
-                    </div>
-                </div>
-                <div class="col-md-1"> </div>
-            </div>
-            <br>
-            <!-- ROW 3-->
-            <div class="row">
-                <div class="col-md-1"> </div>
-                <!-- LIST COLUMN -->
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div id="listavisitanteform" style="text-transform:uppercase">
-                            <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
+                <div id="superior">
+                    <div id="caja">
+                        <div class="cajainput">
+                            <label for="fechaingreso" class="labelformat">Fecha y hora Ingreso</label></br>
+                            <input type="datetime-local" id="fechaingreso" name="fechaingreso" class="input-field-form" 
+                            value="" required/>
                         </div>
+                        <div class="cajainput">
+                            <label for="txtresponsable" class="labelformat">Seleccione el Responsable</label></br>
+                            <input type="text" id="txtresponsable" name="txtresponsable" class="input-field-form" placeholder="CLICK" readonly="readonly"
+                            value="" required/>
+                        </div>
+                    </div>
+                    <div id="caja">
+                        <div class="cajainput">
+                            <label for="fechasalida" class="labelformat">Fecha y hora Salida</label>
+                            <input type="datetime-local" id="fechasalida" name="fechasalida" class="input-field-form" 
+                            value="" required/> 
+                        </div>
+                        <div class="cajainput">
+                            <label for="txttramitante" id="lbltxttramitante" class="labelformat">Tramitante</label>
+                            <input type="text" id="txttramitante" name="txttramitante" class="input-field-form" readonly="readonly"
+                            value="<?php if (!isset($_GET['ID']) && !isset($_GET['MOD'])) echo $usuario->nombre;?>"/>
+                            <label id="lblautorizador" for="txtautorizador" class="labelformat">Autorizador</label>
+                            <input type="text" id="txtautorizador" name="txtautorizador" class="input-field-form" readonly="readonly" 
+                            value="<?php if (!isset($_GET['ID']) || !isset($_GET['MOD']) && $rol==1) echo $usuario->nombre;?>"/>
+                        </div>
+                    </div>
+                    <div id="caja">
+                        <div id="cajainput_tramitante">
+                            <label for="selectdatacenter" class="labelformat">Seleccione Data Center</label></br>
+                            <input type="text" id="selectdatacenter" name="selectsaladatacenter" placeholder="CLICK" class="input-field-form" readonly="readonly"
+                            value="" required/>  
+                        </div>                   
+                        <div id="cajainput_autorizador">
+                            <label for="selectsala" class="labelformat">Seleccione la Sala</label></br>
+                            <input type="text" id="selectsala" name="selectsala" placeholder="CLICK" class="input-field-form" readonly="readonly"
+                            value="" required/>
+                        </div>
+                    </div>
+                </div>  
+                <div id="medio">
+                    <div id="tabla">
+                       <div id="distribuciontabla">
+                            <div id="listavisitanteform" style="text-transform:uppercase">
+                                <!-- CREA EL TABLE QUE CARGA LOS VISITANTES AL formulario-->
+                                
+                            </div>
                         <div id="btnagregarvisitante">
-                            <input type="button" id="btnagregavisitante" value="+">
+                            <input type="button" id="btnagregavisitante" value="+">  
                         </div>
-                        <!--<div id="distribuciontabla2"></div>-->
+                       </div>
+                       <div id="distribuciontabla2"></div>
                     </div>
-                </div>
-                <!-- FORM ID COLUMN -->
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <div class="col-md-8">
-                            <label class="labelformatnum">Formulario #</label>
+                    <div id="etiquetas">
+                        <div id="numeroformulario">
+                            <div id="cajanumform">
+                                <label class="labelformatnum">Formulario #</label>    
+                            </div>
+                            <div id="cajanumform2">
+                                <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" 
+                                value=""/>   
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <input type="text" id="lblnumeroform" name="lblnumeroform" class="inputreadonly" value="" />
+                        <div id="estadoformulario">
+                            <div id="estadosform">
+                                <form id="formularioestados">
+                                    <input type="radio" class="radioformat" id="pendiente" name="estadoformulario" value="0" checked>
+                                    <label class="labelradioformat">Pendiente</label>
+                                    </br>
+                                    <input type="radio" class="radioformat" id="aprobado" name="estadoformulario" value="1">
+                                    <label class="labelradioformat">Aprobado</label>
+                                    </br>
+                                    <input type="radio" class="radioformat" id="denegado" name="estadoformulario" value="2">
+                                    <label class="labelradioformat">Denegado</label>
+                                </form>     
+                            </div>
+                        </div>
+                        <div id="submitformulario">
+                            <input id="EnviaFormulario" class="cbp-mc-submit" type="submit" value="Enviar Formulario">
+                            <input type="button" id="btnInsertaFormulario" class="cbp-mc-submit" value="Insertar">
+                            <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">                            
+                            <input id="visitantearray" name="visitantearray" type="hidden">
+                            <input id="visitantelargo" name="visitantelargo" type="hidden">
+                            <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
+                            <input id="idformulario" name="idformulario" type="hidden" value=""
                         </div>
                     </div>
+                </div> 
+                <div id="inferior">
+                    <div id="cajade3">
 
-                    <div class="form-group">
-                        <form id="formularioestados">
-                            <div class="col-md-2">
-                                <input type="radio" class="radioformat" id="pendiente" name="estadoformulario" value="0" checked>
+                        <div class="cajainput2">
+                        <div class="positionlabel">
+                            <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
                             </div>
-                            <div class="col-md-10">
-                                <label class="labelradioformat">Pendiente</label>
+                            <div class="positioninput">
+                            <input type="text" id="placavehiculo" class="input-field-form" name="placavehiculo" 
+                            value="" 
+                            pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                             </div>
-                            <div class="col-md-2">
-                                <input type="radio" class="radioformat" id="aprobado" name="estadoformulario" value="1">
-                            </div>
-                            <div class="col-md-10">
-                                <label class="labelradioformat">Aprobado</label>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" class="radioformat" id="denegado" name="estadoformulario" value="2">
-                            </div>
-                            <div class="col-md-10">
-                                <label class="labelradioformat">Denegado</label>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- SUBMIT COLUMN -->
-                    <div class="form-group">
-                        <input id="EnviaFormulario" class="cbp-mc-submit" type="submit" value="Enviar Formulario">
-                        <input type="button" id="btnInsertaFormulario" class="cbp-mc-submit" value="Insertar">
-                        <input type="button" id="btnModificaFormulario" class="cbp-mc-submit" value="Modificar">
-                        <input id="visitantearray" name="visitantearray" type="hidden">
-                        <input id="visitantelargo" name="visitantelargo" type="hidden">
-                        <input id="visitanteexcluido" name="visitanteexcluido" type="hidden" value="">
-                        <input id="idformulario" name="idformulario" type="hidden" value="">
-                    </div>
-                </div>
+                        </div>      
 
-                <div class="col-md-1"> </div>
-
-            </div>
-
-            <!-- ROW 4-->
-            <div class="row">
-                <div class="col-md-1"> </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="placavehiculo" class="labelformat">Placas Vehículos</label>
-                        <input type="text" id="placavehiculo" class="input-field-form" name="placavehiculo" value="" pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales" />
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="detalleequipo" class="labelformat" rfc="detalleequipo">Detalle Equipo</label>
-                        <input type="text" id="detalleequipo" class="input-field-form" name="detalleequipo" value="" pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales" />
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="labelformat" for="txtrfc">RFC</label>
+                        <div class="cajainput2">
+                        <div class="positionlabel">
+                            <label for="detalleequipo" class="labelformat">Detalle Equipo</label>
+                            </div>
+                            <div class="positioninput">
+                            <input type="text" id="detalleequipo" class="input-field-form" name="detalleequipo" 
+                            value="" 
+                            pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="500" title="No se permiten caracteres especiales"/>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field-form" value="" pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales" />
+
+                        <div class="cajainput2">
+                            <div class="positionlabel">
+                                <label for="txtrfc" class="labelformat">RFC</label>
                             </div>
-                        </div>
+                            <div class="positioninput">
+                                <input type="text" id="txtrfc" name="txtrfc" placeholder="" class="input-field-form" 
+                                value="" 
+                                pattern="[\.,-_0-9áéíóúA-Za-z/\s/]*" maxlength="10" title="No se permiten caracteres especiales"/>    
+                                </div>
+                        </div>  
                     </div>
-                </div>
-                <div class="col-md-1"> </div>
-            </div>
-            <!-- ROW 5-->
-            <div class="row">
-                <div class="col-md-1"> </div>
-                <div class="col-md-10">
-                    <div class="form-group">
+                    <div id="cajainput3">
                         <label for="motivovisita" class="labelformat">Motivo Visita</label>
-                        <input type="text" id="motivovisita" name="motivovisita" class="input-field-form" value="" required pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales" />
+                        <input type="text" id="motivovisita" name="motivovisita" class="input-field-form"
+                        value="" required 
+                        pattern="[\.,-_0-9#áéíóúÁÉÍÓÚÑñA-Za-z/\s/]*" minlength="8" maxlength="160" title="No se permiten caracteres especiales"/>
                     </div>
-                </div>
-                <div class="col-md-1"> </div>
+                </div>  
             </div>
-
+            </div>
+            <div id="derecha"></div>
         </form>
-    </div>
-</div>
-
-    
+    </div>    
 
     <!-- MODAL RESPONSABLE -->
     <div id="ModalResponsable" class="modal">

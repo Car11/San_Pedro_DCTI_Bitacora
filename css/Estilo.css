@@ -72,20 +72,15 @@ h3 {
 
 
 /*Etiquetas estructurales*/
-.container-fluid{
-    background: #222222;
-    height: 100%;
-}
+
 header {
-    /*height: 120px;*/
+    height: 120px;
     background: #222222;
     /*border-style: solid;
     border-bottom-color: #343434;*/
-    border-bottom: 2px solid;
-    margin:0;
+    border: 2px solid;
     border-bottom-color: #0595B9;
     margin-bottom: 5px;
-    
 }
 
 #mensajetop, #mensajetop-secundario {
@@ -246,14 +241,14 @@ header {
 }
 
 section {
-    background: #29292A;
+    /*background: green;*/
     height: 700;
     width: 60%;
     float: left;
 }
 
 aside {
-    background: #29292A;
+    /*background: yellow;*/
     height: 700;
     width: 20%;
     float: left;
@@ -325,7 +320,7 @@ label {
     padding: 7px;
     outline: none;
     font-size: 28px;
-    font-family: "Gill Sans", sans-serif;
+    font-family: fantasy;
     color: #EDEDED;
     background: #555555;
 }
@@ -341,7 +336,7 @@ label {
     border:none;
     padding: 7px;    
     font-size: 40px;
-    font-family: "Gill Sans", sans-serif;
+    font-family: fantasy;
     color: #B8B8B8;    
     font-style: italic;
     background: none;
@@ -364,7 +359,7 @@ label {
     padding: 100px;
     outline: none;
     font-size: 28px;
-    font-family: fantasy, "Gill Sans", sans-serif;
+    font-family: fantasy;
     color: grey;
 }
 
@@ -523,17 +518,11 @@ input[type=checkbox] {
 }
 
 #logo {
-   /* position: absolute;
+    position: absolute;
     cursor: pointer;
     top: 0;
     left: 0;
-    margin: 20 0 0 30;*/
-/*
-    float: left;
-    width: 4rem;
-    height: 8rem;
-    background-color: #80bdff;
-    border-radius: .25rem;*/
+    margin: 20 0 0 30;
 }
 
 .login {
@@ -542,8 +531,6 @@ input[type=checkbox] {
     width: 350;
     margin: 0 auto;
     height: auto;
-
-
    /* 
     
     background: #58585a;
