@@ -491,7 +491,8 @@ class Visitante{
             from bitacora b inner join formulario f on f.id=b.idformulario
                 inner join visitante v on v.id=b.idvisitante    
                 inner join tarjeta t on t.id=b.idtarjeta
-            where entrada is not null and salida is null ';
+            where entrada is not null and salida is null 
+            ORDER BY tarjeta asc';
             $data= DATA::Ejecutar($sql);
             if($data)
                 return $data;
