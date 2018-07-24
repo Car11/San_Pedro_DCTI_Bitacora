@@ -62,9 +62,9 @@ $rol=$_SESSION['rol'];
  	<script src="js/datatables.js" type="text/javascript" charset="utf8"></script>
     <script src="js/Validaciones.js" languaje="javascript" type="text/javascript"></script> 
     <script src="js/sweetalert2.js"></script>
-    <!--<script src="js/bootstrap.min.js"></script>-->
+    <script src="js/moment.min.js"></script>
 </head>
-<body> 
+<body>
     <header>
     <h1>FORMULARIO DE INGRESO</h1>        
     <div id="logo"><img src="img/Logoice.png" height="75" ></div>
@@ -915,6 +915,8 @@ $rol=$_SESSION['rol'];
         document.getElementById("fechasalida").setAttribute("min", today);
         document.getElementById("fechaingreso").value = today;
         document.getElementById("fechasalida").value = salida;
+
+        // $("#fecha").append(moment().format('MMM DD YYYY, h:mm:ss a'));
     }
 
     //ESTABLECE LA FECHA DE HOY A LOS DATETIME LOCAL CUANDO SE MODIFICA UN FORMULARIO

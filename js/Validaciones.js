@@ -100,33 +100,12 @@ function onValidaFormulario() {
 }
 
 function ComparaFechas(Fecha_1,Fecha_2){
-    Ano1 = parseInt(Fecha_1.substring(0,4));
-    Ano2 = parseInt(Fecha_2.substring(0,4));    
-    Mes1 = parseInt(Fecha_1.substring(5,7));    
-    Mes2 = parseInt(Fecha_2.substring(5,7));
-    Dia1 = parseInt(Fecha_1.substring(8,10));
-    Dia2 = parseInt(Fecha_2.substring(8,10));
-    Hor1 = parseInt(Fecha_1.substring(11,13));
-    Hor2 = parseInt(Fecha_2.substring(11,13));
-    Min1 = parseInt(Fecha_1.substring(14,16));
-    Min2 = parseInt(Fecha_2.substring(14,16));
-
-    if(Ano1>Ano2)
+    //Resultado < 0 return false else return true, utilizar Diff
+    var ms = moment(Fecha_2,"DD/MM/YYYYTHH:mm:ss").diff(moment(Fecha_1,"DD/MM/YYYYTHH:mm:ss"));
+    if (ms<=0)
         return false;
     else
-        if(Mes1>Mes2)
-            return false;
-        else
-            if(Dia1>Dia2)
-                return false;
-            else
-                if(Ano1==Ano2 && Mes1==Mes2 && Dia1==Dia2 && Hor1>Hor2)
-                    return false;
-                else
-                    if(Ano1==Ano2 && Mes1==Mes2 && Dia1==Dia2 && Hor1==Hor2 && Min1>Min2)
-                        return false;
-                    else
-                        return true;
+        return true;
 }
 
 function onValidaResponsable() {
