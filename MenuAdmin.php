@@ -43,6 +43,7 @@ else if ($sesion->rol=="2")
                 <li><a href="ListaVisitantes.php">Visitantes</a></li>                
                 <!-- <li><a href="">Salas</a></li> -->
                 <li><a href="WebNOC.php">Web NOC</a></li>
+                <li id='logout'><a>Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -57,7 +58,19 @@ else if ($sesion->rol=="2")
     $('#logo').click(function(){
         location.href= 'index.php';
     });
+    $('#logout').click(function(){
+      $.ajax({
+        type: "POST",
+        url: "class/Sesion.php",
+        data: { 
+            accion: 'logout'
+        }
+    })
+    .done(function( ) {
+      location.href= 'index.php';
+    });
   });
+});
 </script>
 
 

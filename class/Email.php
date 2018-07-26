@@ -47,16 +47,16 @@ class Email{
                 //
                 if(!mail($to, $asunto, $mensaje,$headers))
                 {
-                    require_once("Log.php");  
-                    log::Add('ERROR', 'Ha ocurrido un error al realizar el envío de correo');
+                    //require_once("Log.php");  
+                    // log::Add('ERROR', 'Ha ocurrido un error al realizar el envío de correo');
                 }
             }            
         }     
         catch(Exception $e) {
             // no debe detener el proceso si no se envía el email.
             // log
-            require_once("Log.php");  
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar el envío de correo', $e->getMessage());
+            //require_once("Log.php");  
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar el envío de correo', $e->getMessage());
         }
     }
 
@@ -113,8 +113,8 @@ class Email{
         catch(Exception $e) {
             // no debe detener el proceso si no se envía el email.
             // log
-            require_once("Log.php");  
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar el envío de correo', $e->getMessage());
+            //require_once("Log.php");  
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar el envío de correo', $e->getMessage());
         }
     }
     

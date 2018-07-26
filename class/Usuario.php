@@ -18,9 +18,9 @@ class Usuario{
         $data = DATA::Ejecutar($sql,$param);
         if (count($data) ) {
             $this->idrol= $data[0]['idrol'];
-            log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
+            // log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
             return true;
-        }else {        
+        }else {
             return false;           
         }        
     }
@@ -32,14 +32,14 @@ class Usuario{
         //
         if (count($data) ) {
             $this->idrol= $data[0]['idrol'];
-        }else {        
+        }else {
             // Rol tramitante (2) por defecto si no existe en BD. Registra nuevo usuario tipo 2= TRAMITANTE.
             $this::AddUser(); 
             $this->idrol= 2; 
         }        
     }
 
-    function AddUser(){    
+    function AddUser(){
         $sql="INSERT INTO usuario (nombre, usuario, contrasena, idrol, email)
         VALUES (:nombre,:usuario, 'LDAP', '2' , :email)";
         $param= array(':nombre'=>utf8_encode($this->nombre), ':usuario'=>$this->usuario, ':email'=>$this->email);
@@ -47,8 +47,12 @@ class Usuario{
     }
 
     function ValidarUsuarioLDAP (){
-        error_reporting(0);
-        $adServer = "icetel.ice";
+        $user_domain= explode ('@', $this->usuario);
+        if(sizeof($user_domain)<2)
+            return false;
+        $dominio = $user_domain[1];
+        $this->usuario= $user_domain[0];
+        $adServer = $dominio;
         $ldapport = 3268;
         $ldap = ldap_connect($adServer, $ldapport);        
         $ldapUser = $this->usuario;
@@ -78,18 +82,18 @@ class Usuario{
                 $this->nombre = $info[$i]["sn"][0] . ' ' . $info[$i]["givenname"][0];
                 //
                 $this::BuscaRol();
-                //log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
+                //// log::Add('INFO', 'Inicio de sesión: '. $this->usuario);
                 return true;  
             }
             @ldap_close($ldap);
         } else {
-            log::Add('INFO', 'Inicio de sesión Inválida: '. $this->usuario);
+            // // log::Add('INFO', 'Inicio de sesión Inválida: '. $this->usuario);
             return false;  
         }
     }
 
     
-    function Cargar(){    
+    function Cargar(){
         $sql='SELECT nombre, contrasena, idrol, email FROM usuario WHERE usuario=:usuario';
         $param= array(':usuario'=>$_SESSION['username']);        
         $data = DATA::Ejecutar($sql,$param);
@@ -104,7 +108,7 @@ class Usuario{
         }        
     }
 
-    function CargarTramitanteForm($idformulario){    
+    function CargarTramitanteForm($idformulario){
         $sql='SELECT idtramitante , email , u.nombre
             FROM formulario f inner join usuario u on u.id=f.idtramitante
             WHERE f.id=:idformulario';
@@ -115,7 +119,7 @@ class Usuario{
             $this->nombre= $data[0]['nombre'];
             $this->email= $data[0]['email'];
             return true;
-        }else {        
+        }else {
             return false;           
         }        
     }

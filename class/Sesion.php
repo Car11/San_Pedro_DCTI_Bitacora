@@ -1,4 +1,10 @@
 <?php
+ if(isset($_POST["accion"])){
+	$sesion= new Sesion();
+	$sesion->Logout();
+ }
+	
+
 class Sesion{
 	public $estado=false;
 	public $username;
@@ -33,7 +39,7 @@ class Sesion{
         $this->estado = true;	
 	}
 	
-	public function Fin(){  /******************* PROBAR EL FINAL DEL LOGIN ****************************/
+	public function Logout(){
 		unset($_SESSION["username"]);
 		unset($this->username);
 		unset($_SESSION["rol"]);
