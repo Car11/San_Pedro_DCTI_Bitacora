@@ -1,6 +1,5 @@
 <?php
 if (!isset($_SESSION)) 
-if (!isset($_SESSION)) 
     session_start();
 // Sesion de usuario
 include("class/Sesion.php");
@@ -8,7 +7,7 @@ include_once('class/Globals.php');
 $sesion = new Sesion();
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
-    //header('Location: index.php');
+    //header('Location: Login.php');
     //exit;
 }
 else if ($sesion->rol=="2")
@@ -267,5 +266,4 @@ if (isset($_SESSION['idformulario'])) {
         // Captura estados del formulario. estado del formulario. Id del formulario
         MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->consecutivo; else print "NULL" ?>');  
     });
-     
 </script>

@@ -1,11 +1,29 @@
+var mouseX;
+var mouseY;
+var objData = [];
 
 $(document).ready( function () {
-    /*setInterval(function() {
+    setInterval(function() {
         Buscar_Proximo();
         Buscar_Ensitio();
-    }, 5000);   */
-  Buscar_Proximo();
-  Buscar_Ensitio();
+    }, 900000);   
+    Buscar_Proximo();
+    Buscar_Ensitio();
+    $(document).mousemove( function(e) {
+        mouseX = e.pageX; 
+        mouseY = e.pageY;
+    }); 
+    $('.dropDownMenu li#liberar').click(function(){
+        Liberar();
+    });
+});
+
+$(document).mouseup(function(e) 
+{
+    var container = $("#submenu");
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.hide();
+    }
 });
 
 function Datos_Proximo(e){
@@ -20,30 +38,7 @@ function Datos_Proximo(e){
             "<div class='bloq-noflex'>"+ item.nombre +"</div>"+
         "</div>";
         $('#proximo').append(row);
-    })
-    /*$('#proximo').append("<table id='tblLista_proximo'></table>");
-    var col= "<thead><tr> <th style='display:none;'>IDVISITANTE</th> <th style='display:none;'>IDFORMULARIO</th> "+
-        " <th class='encabezado'>FORMULARIO</th> <th class='encabezado'>FECHA INGRESO</th> <th class='encabezado'>CEDULA</th> <th class='encabezado'>NOMBRE</th>  <th class='encabezado'>EMPRESA</th> <th class='encabezado'>MOTIVO</th> <th class='encabezado'>RFC</th> </tr></thead>"+
-    "<tbody id='tableBody_proximo'>  </tbody>";
-    $('#tblLista_proximo').append(col); 
-    // recorre el arreglo.
-    // carga lista con datos.
-    // v.id as idvisitante ,f.id as idformulario, f.consecutivo, fechaingreso,nombre, cedula, motivovisita, rfc
-    var data= JSON.parse(e);
-    $.each(data, function(i, item) {
-        var row="<tr class='tarjeta'>"+
-            "<td style='display:none;' >" + item.idvisitante +"</td>" +
-            "<td style='display:none;' >"+ item.idformulario + "</td>"+
-            "<td class='bloq-normal'>"+ item.consecutivo + "</td>"+
-            "<td class='bloq-normal'>"+ item.fechaingreso + "</td>"+            
-            "<td class='bloq-normal'>"+ item.cedula +"</td>"+
-            "<td class='bloq-noflex'>"+ item.nombre +"</td>"+
-            // "<td class='bloq-normal'>"+ item.empresa +"</td>"+
-            // "<td class='bloq-normal'>"+ item.motivovisita +"</td>"+
-            // "<td class='bloq-noflex'>"+ item.rfc +"</td>"+
-        "</tr>";
-        $('#tableBody_proximo').append(row);
-    })*/
+    });
 };
 
 // Muestra errores en ventana
@@ -74,34 +69,30 @@ function Datos_Ensitio(e){
             "<div class='bloq-normal'>"+ item.consecutivo + "</div>"+
             "<div class='bloq-normal'>"+ item.entrada + "</div>"+
             "<div class='bloq-dif'>"+ item.tarjeta + "</div>"+   
-            "<div class='bloq-normal'>"+ item.cedula +"</div>"+
+            "<div class='bloq-normal cedula'>"+ item.cedula +"</div>"+
             "<div class='bloq-noflex'>"+ item.nombre +"</div>"+
+            "<div class='Bloq-noVisible idvisitante'>"+ item.idvisitante +"</div>"+
+            "<div class='Bloq-noVisible idformulario'>"+ item.idformulario +"</div>"+
+            "<div class='Bloq-noVisible idtarjeta'>"+ item.idtarjeta +"</div>"+
+            "<div class='Bloq-noVisible idbitacora'>"+ item.idbitacora +"</div>"+
         "</div>";
         $('#ensitio').append(row);
-    })    
-    /*$('#ensitio').append("<table id='tblLista_ensitio'></table>");
-    var col= "<thead><tr> <th style='display:none;'>IDVISITANTE</th> <th style='display:none;'>IDFORMULARIO</th> "+
-        " <th class='encabezado'>FORMULARIO</th> <th class='encabezado'>ENTRADA</th> <th class='encabezado'>TARJETA</th> <th class='encabezado'>CEDULA</th> <th class='encabezado'>NOMBRE</th>"+
-        "<tbody id='tableBody_ensitio'>  </tbody>";
-    $('#tblLista_ensitio').append(col); 
-    // recorre el arreglo.
-    // carga lista con datos.
-    var data= JSON.parse(e);
-    $.each(data, function(i, item) {
-        var row="<tr class='tarjeta'>"+            
-            "<td style='display:none;' >" + item.idvisitante +"</td>" +
-            "<td style='display:none;' >"+ item.idformulario + "</td>"+
-            "<td class='bloq-normal'>"+ item.consecutivo + "</td>"+
-            "<td class='bloq-normal'> "+ item.entrada + "</td>"+      
-            "<td class='bloq-dif'>"+ item.tarjeta + "</td>"+            
-            "<td class='bloq-normal'>"+ item.cedula +"</td>"+
-            "<td class='bloq-noflex'>"+ item.nombre +"</td>"+
-            //"<td>"+ item.empresa +"</td>"+
-            //"<td>"+ item.motivovisita +"</td>"+
-            //"<td>"+ item.rfc +"</td>"+
-        "</tr>";
-        $('#tableBody_ensitio').append(row);
-    })*/
+    });
+    //  
+    $('.bloq-dif').click(function(){
+        objData = new Object();
+        objData.numtarjeta = $(this).text();
+        objData.idvisitante = $(this).parent().find('.idvisitante')[0].textContent
+        objData.idformulario = $(this).parent().find('.idformulario')[0].textContent
+        objData.idtarjeta = $(this).parent().find('.idtarjeta')[0].textContent
+        objData.idbitacora = $(this).parent().find('.idbitacora')[0].textContent;
+        objData.cedula = $(this).parent().find('.cedula')[0].textContent;
+        //objData.push(item);
+        $('#submenu').css({'top':mouseY,'left':mouseX}).fadeIn('slow');
+    });
+    $('.dropDownMenu li').click(function(){
+        $('#submenu').fadeOut('slow');
+    });
 };
 
 function Buscar_Ensitio(){
@@ -114,6 +105,33 @@ function Buscar_Ensitio(){
     })
     .done(function( e ) {            
          Datos_Ensitio(e);
+    })    
+    .fail(muestraError);
+};
+
+function Liberar(){
+    $.ajax({
+        type: "POST",
+        url: "class/Bitacora.php",
+        data: { 
+            accion: 'salida',  
+            idBitacora: objData.idbitacora,    
+            numtarjeta: objData.numtarjeta,
+            idformulario: objData.idformulario,
+            idvisitante: objData.idvisitante,
+            idtarjeta: objData.idtarjeta,
+            cedula: objData.cedula
+        }
+    })
+    .done(function( e ) {
+        swal({
+            
+            type: 'success',
+            title: 'Good!',
+            showConfirmButton: false,
+            timer: 800
+        });      
+        Buscar_Ensitio();
     })    
     .fail(muestraError);
 };
