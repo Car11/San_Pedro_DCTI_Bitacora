@@ -62,7 +62,7 @@ class Cal{
                 return $data;
         }
         catch(Exception $e) {        
-            log::AddD('ERROR', 'Ha ocurrido un error CAL Cargar todos', $e->getMessage());
+            // log::AddD('ERROR', 'Ha ocurrido un error CAL Cargar todos', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }
@@ -83,7 +83,7 @@ class Cal{
             //if($data)                
             //else var_dump(http_response_code(500)); // error
         }catch(Exception $e) {        
-            log::AddD('ERROR', 'Ha ocurrido un error CAL SetActivity', $e->getMessage());
+            // log::AddD('ERROR', 'Ha ocurrido un error CAL SetActivity', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }
@@ -92,7 +92,7 @@ class Cal{
         try{            
             echo json_encode($this->CargarTodos());           
         }catch(Exception $e) {        
-            log::AddD('ERROR', 'Ha ocurrido un error CAL AddOperDay', $e->getMessage());
+            // log::AddD('ERROR', 'Ha ocurrido un error CAL AddOperDay', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }

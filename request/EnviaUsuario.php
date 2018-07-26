@@ -29,7 +29,7 @@
         }
         else //usuario denegado
         {
-            $sesion->Fin();
+            $sesion->logout();
             header('Location: ../Login.php?ID=invalid');
             exit;
         }

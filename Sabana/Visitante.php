@@ -10,7 +10,7 @@ class Visitante{
 	
 	function __construct(){
         require_once("../php/Conexion.php");
-        error_reporting(E_ALL);
+        // error_reporting(E_ALL);
         // Always in development, disabled in production
         ini_set('display_errors', 0);
     }

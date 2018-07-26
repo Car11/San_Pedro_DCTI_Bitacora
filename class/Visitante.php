@@ -88,7 +88,7 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarID');
             exit;
         }
@@ -131,7 +131,7 @@ class Visitante{
             exit;      
         }
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarIDTarjeta');
             exit;
         }     
@@ -204,7 +204,7 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarFormulario');
             exit;
         }                  
@@ -227,7 +227,7 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=ValidarIdPermisoAnual');
             exit;
         }
@@ -252,7 +252,7 @@ class Visitante{
         }
         catch(Exception $e) {
             unset($_SESSION['estado']);
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=validarIDVisitante');
             exit;
         }
@@ -270,7 +270,7 @@ class Visitante{
             } else echo "valida";
         }
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
         }
     }
     
@@ -292,7 +292,7 @@ class Visitante{
             else var_dump(http_response_code(500)); // error
         }     
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
@@ -321,7 +321,7 @@ class Visitante{
             else var_dump(http_response_code(500)); // error
         }     
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=conectar&id='.$e->getMessage());
             exit;
         }
@@ -347,7 +347,7 @@ class Visitante{
             return $data;            
         }
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }
@@ -372,7 +372,7 @@ class Visitante{
             return $data;
         }
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }
@@ -393,7 +393,7 @@ class Visitante{
             else return false;
         }
         catch(Exception $e){
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }
@@ -413,7 +413,7 @@ class Visitante{
             else var_dump(http_response_code(500)); // error 
         }
         catch(Exception $e) {            
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }
@@ -429,7 +429,7 @@ class Visitante{
             else var_dump(http_response_code(500)); // error
         }
         catch(Exception $e) {        
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());    
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());    
             header('Location: ../Error.php?w=conectar&id=');
             exit;
         }
@@ -455,7 +455,7 @@ class Visitante{
             //
             echo json_encode($result);
         } catch (Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            // log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             header('Location: ../Error.php?w=visitante-bitacora&id=');
             exit;
         }
@@ -473,11 +473,11 @@ class Visitante{
             if($data)
                 return $data;
             else {
-                //log::Add('ERROR', 'Ha ocurrido un error al INFO WEB NOC - Proximo');
+                //// log::Add('ERROR', 'Ha ocurrido un error al INFO WEB NOC - Proximo');
                 //var_dump(http_response_code(500)); // error
             }        
         } catch (Exception $e) {
-            log::AddD('ERROR', 'Ha ocurrido un error al INFO WEB NOC - Proximo', $e->getMessage());
+            // log::AddD('ERROR', 'Ha ocurrido un error al INFO WEB NOC - Proximo', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
             exit;
         }
@@ -496,12 +496,12 @@ class Visitante{
             if($data)
                 return $data;
             else {
-                //log::Add('ERROR', 'Ha ocurrido un error al INFO WEB NOC - en sitio');
+                //// log::Add('ERROR', 'Ha ocurrido un error al INFO WEB NOC - en sitio');
                 //var_dump(http_response_code(500)); // error
             }     
         
         } catch (Exception $e) {
-            log::AddD('ERROR', 'Ha ocurrido un error al INFO WEB NOC - en sitio', $e->getMessage());
+            // log::AddD('ERROR', 'Ha ocurrido un error al INFO WEB NOC - en sitio', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
             exit;
         }
