@@ -138,6 +138,21 @@ section {
     overflow: auto;
 }
 
+#submenu{
+    height: 60;
+    width: 10%;
+    float: left;
+    display:none;
+    background: #0595B9;
+    cursor: pointer;
+    position:absolute;
+    /* overflow: auto; */
+}
+
+.Bloq-noVisible{
+    display:none;
+}
+
 aside {
     /*background: yellow;*/
     height: 800;

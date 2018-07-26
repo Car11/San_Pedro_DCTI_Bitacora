@@ -1,5 +1,4 @@
 <?php 
-ini_set('display_errors', 0);
 if (!isset($_SESSION))
     session_start();
 
@@ -468,8 +467,8 @@ class Visitante{
             $sql='SELECT v.id as idvisitante ,f.id as idformulario, f.consecutivo, fechaingreso,nombre, cedula, empresa, motivovisita, rfc
                 from formulario f inner join visitanteporformulario vf on vf.idformulario=f.id
                 inner join visitante v on v.id=vf.idvisitante
-                where fechaingreso>now() and f.idestado=1
-                order by fechaingreso desc ';
+                where fechasalida > now()  and f.idestado=1
+                order by fechaingreso asc ';
             $data= DATA::Ejecutar($sql);
             if($data)
                 return $data;
@@ -487,12 +486,12 @@ class Visitante{
     // consulta para mostrar información en la web NOC en pantalla
     function Webnoc_ensitio(){
         try {
-            $sql='SELECT v.id as idvisitante ,  f.id as idformulario, f.consecutivo, b.entrada , t.consecutivo as tarjeta ,  cedula, nombre , empresa, motivovisita, rfc
+            $sql='SELECT v.id as idvisitante ,  f.id as idformulario, f.consecutivo, b.entrada , t.consecutivo as tarjeta ,  cedula, nombre , empresa, motivovisita, rfc, t.id as idtarjeta, b.id as idbitacora
             from bitacora b inner join formulario f on f.id=b.idformulario
                 inner join visitante v on v.id=b.idvisitante    
                 inner join tarjeta t on t.id=b.idtarjeta
             where entrada is not null and salida is null 
-            ORDER BY tarjeta asc';
+            ORDER BY f.consecutivo asc';
             $data= DATA::Ejecutar($sql);
             if($data)
                 return $data;

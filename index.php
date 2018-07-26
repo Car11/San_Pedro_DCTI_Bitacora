@@ -1,6 +1,5 @@
 <?php
 if (!isset($_SESSION)) 
-if (!isset($_SESSION)) 
     session_start();
 // Sesion de usuario
 include("class/Sesion.php");
@@ -8,8 +7,8 @@ include_once('class/Globals.php');
 $sesion = new Sesion();
 if (!$sesion->estado){
     $_SESSION['url']= explode('/',$_SERVER['REQUEST_URI'])[2];
-    //header('Location: index.php');
-    //exit;
+    header('Location: Login.php');
+    exit;
 }
 else if ($sesion->rol=="2")
     header('Location: ListaFormulario.php?username=' . $sesion->username); 
@@ -43,7 +42,7 @@ if ($estado=="buscar"){
     $visitantes= $visitante->CargarTodos();
 }
 // Busca información del formulario para desplegar en pantalla.
-if (isset($_SESSION['idformulario'])) {
+if (isset($_SESSION['idformulario'])) {     
     // Carga info del formulario.
     include("class/Formulario.php");
     $formulario= new Formulario();
@@ -92,23 +91,18 @@ if (isset($_SESSION['idformulario'])) {
 
 <script>
     this.onShowLogin= function () {
-        // valida el rol del usuario para mostrar el menu, el index o el formulario.
-        var rol= '<?php 
-            if(isset($_SESSION["rol"]))
-                print $_SESSION["rol"];
-            else echo null; 
-        ?>';  
-        var username= '<?php 
-            if(isset($_SESSION["username"]))
-                print $_SESSION["username"];
-            else echo null; 
-        ?>';  
-        //alert('r:' + rol);         
-        if(rol=='1')
-            location.href= 'MenuAdmin.php';
-        else if(rol=='2') // tramitante
-            location.href= 'ListaFormulario.php?username=' + username;
-        else location.href= 'MenuAdmin.php';
+        var login= '<?php print $sesion->estado; ?>';
+        if(login)
+        {
+            // valida el rol del usuario para mostrar el menu, el index o el formulario.
+            var rol= '<?php print $_SESSION["rol"]; ?>';  
+            var username= '<?php print $_SESSION["username"]; ?>';  
+            // alert('r:' + rol);          
+            if(rol=='1')
+                location.href= 'MenuAdmin.php';
+            else if(rol=='2') // tramitante
+                location.href= 'ListaFormulario.php?username=' + username;
+        }
     };  
 </script>
 
@@ -120,10 +114,9 @@ if (isset($_SESSION['idformulario'])) {
         <div id="signin">
             <span>Usuario: 
                 <?php
-                    if ($sesion->estado) {
-                        print $_SESSION['username'];
-                    } 
-                    else print 'Seguridad';
+                if ($sesion->estado) {
+                    print $_SESSION['username'];
+                } 
                 ?>
             </span>
         </div>
@@ -261,11 +254,10 @@ if (isset($_SESSION['idformulario'])) {
 </html>
 <script>
     $( document ).ready(function() {
-        $('#logo').click(onShowLogin);
         // captura mensajes en línea de estado de formularios temporales.
-        // CapturaMensajeFormulario();
+        CapturaMensajeFormulario();
         // Captura estados del formulario. estado del formulario. Id del formulario
         MensajeriaHtml('<?php print $estado; ?>', '<?php if($formulario!="NULL") print $formulario->consecutivo; else print "NULL" ?>');  
     });
-     
+    
 </script>

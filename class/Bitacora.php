@@ -7,6 +7,8 @@ if (isset($_POST['idvisitante'])) {
     //
     if(isset($_SESSION['bitacora']))
         $bitacora->id=$_SESSION['bitacora'];
+    if(isset($_POST['idBitacora']))
+        $bitacora->id=$_POST['idBitacora'];
     if(isset($_POST['cedula']))
         $bitacora->cedula=$_POST['cedula'];
     if (isset($_POST['idformulario'])) { 
@@ -69,12 +71,12 @@ class Bitacora{
                     echo "Bienvenid@ !!!"; 
                 }
                 else {
-                    log::Add('ERROR', 'Ha ocurrido un error al realizar la Asignacion de Tarjeta del Visitante. IDvisitante: ' . $this->idvisitante  );
+                    //log::Add('ERROR', 'Ha ocurrido un error al realizar la Asignacion de Tarjeta del Visitante. IDvisitante: ' . $this->idvisitante  );
                     var_dump(http_response_code(500)); // error ajax
                 }
             }
             else {
-                log::Add('ERROR', 'Ha ocurrido un error al realizar la Entrada del Visitante. IDvisitante: ' . $this->idvisitante  );
+                //log::Add('ERROR', 'Ha ocurrido un error al realizar la Entrada del Visitante. IDvisitante: ' . $this->idvisitante  );
                 var_dump(http_response_code(500)); // error ajax
             }
             // elimina variables de sesion.
@@ -90,13 +92,13 @@ class Bitacora{
                 unset($_SESSION['bitacora']);
         }     
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            //log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax            
         }
     }
 
 	function Salida(){
-        try {            
+        try {
            	date_default_timezone_set('America/Costa_Rica');
 	        $sql="UPDATE bitacora 
                 SET salida= :salida
@@ -108,17 +110,17 @@ class Bitacora{
                 $sql='update tarjeta set estado=0 where id=:idtarjeta';
                 $param= array(':idtarjeta'=>$this->idtarjeta);
                 $data = DATA::Ejecutar($sql,$param,true);     
-                if($data){    
+                if($data){
                     Email::Enviar($this->cedula, $this->idformulario , "Control de Acceso CDC", "NOTIFICACION DE SALIDA", $this->numtarjeta);           
                     echo "Salida Completa";
                 }
                 else {
-                    log::Add('ERROR', 'Ha ocurrido un error al liberar la tarjeta del Visitante. IDvisitante: ' . $this->idvisitante  );
+                    //log::Add('ERROR', 'Ha ocurrido un error al liberar la tarjeta del Visitante. IDvisitante: ' . $this->idvisitante  );
                     var_dump(http_response_code(500)); // error ajax
                 }
             }
             else {
-                log::Add('ERROR', 'Ha ocurrido un error al realizar la Salida del Visitante. IDvisitante: ' . $this->idvisitante  );
+                //log::Add('ERROR', 'Ha ocurrido un error al realizar la Salida del Visitante. IDvisitante: ' . $this->idvisitante  );
                 var_dump(http_response_code(500)); // error ajax
             }
             // elimina variables de sesion.
@@ -134,7 +136,7 @@ class Bitacora{
                 unset($_SESSION['bitacora']);
         }     
         catch(Exception $e) {
-            log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
+            //log::AddD('FATAL', 'Ha ocurrido un error al realizar la Entrada del Visitante', $e->getMessage());
             var_dump(http_response_code(500)); // error ajax
         }
     }
@@ -157,15 +159,15 @@ class Bitacora{
             if($data)
 			    return $data;	
             else {
-                log::Add('ERROR', 'Ha ocurrido un error al Consultar la bitacora.');
+                //log::Add('ERROR', 'Ha ocurrido un error al Consultar la bitacora.');
                 // muestra mensaje (ajax o html) del error.
                 $_SESSION['errmsg']= 'Problemas de Consulta';
                 header('Location: ../Error.php');
                 exit;
             }		
 		}catch(Exception $e) {
-            require_once("Log.php");  
-            log::AddD('FATAL', 'Ha ocurrido al Consultar la bitacora.', $e->getMessage());
+            //require_once("Log.php");  
+            //log::AddD('FATAL', 'Ha ocurrido al Consultar la bitacora.', $e->getMessage());
             $_SESSION['errmsg']= 'Problemas de Consulta';
             header('Location: ../Error.php');
             exit;

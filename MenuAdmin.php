@@ -53,14 +53,6 @@ else if ($sesion->rol=="2")
 </body>
 </html>
 
-<script>
-  $(document).ready( function () {        
-    $('#logo').click(function(){
-        location.href= 'index.php';
-    });
-  });
-</script>
-
 
 
 

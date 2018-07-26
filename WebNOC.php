@@ -9,10 +9,14 @@ include_once('class/Globals.php');
 <head>
     <meta charset="UTF-8">
     <title>Control de Accesos</title>
-    <link rel="stylesheet" href="css/Estilo.css?v=<?php echo Globals::cssversion; ?>" />
+    
     <script src="js/jquery.js" type="text/jscript"></script> 
-    <script src="js/Webnoc.js" type="text/jscript"></script>                   
+    <script src="js/Webnoc.js" type="text/jscript"></script>    
+    <script src="js/sweetalert2.js"></script>  
+    
+    <link href="css/Formulario.css" rel="stylesheet"/>
     <link href="css/Webnoc.css?v=<?php echo Globals::cssversion; ?>" rel="stylesheet" />
+    <link rel="stylesheet" href="css/sweetalert2.css" type="text/css"/>
 
 </head>
 <body>
@@ -26,9 +30,11 @@ include_once('class/Globals.php');
     </aside>
 
     <section>
-        <div id="superiornavegacion">                  
-            <div id="atras">
-                <input type="button" id="btnatras" class="nbtn_gray-sp-c" value="Atrás" onclick="location.href='MenuAdmin.php'";>   
+        <div id="superiornavegacion">
+            <div id="supnuevo"></div>
+            <div id="supbusca"></div>
+            <div id="supatras">
+                <input type="button" id="btnatras" class="cbp-mc-submit" value="Atrás"onclick="location.href='MenuAdmin.php'";>   
             </div>
         </div>
         <h3>Próximas Visitas</h3>
@@ -40,9 +46,16 @@ include_once('class/Globals.php');
         <!-- <h3>Sobretiempo</h3>
         <div id='sobretiempo'>            
         </div>-->
+        <div id='submenu'>
+            <ul class='dropDownMenu'>
+                <li id='liberar'>Liberar</li>
+                <li><a href='PoolTarjeta.php'>Ver Pool<a></li>
+            </ul>
+        </div>
     </section>
 
     <aside>        
+
     </aside>
     
 

@@ -98,10 +98,7 @@ $rol=$_SESSION['rol'];
         else
             if(insert==0)
                 muestraError();
-        $('#logo').click(function(){
-            location.href= 'index.php';
-        });
-        //
+        
         ActivaConsultaVisitante();
         //Da la apariencia del css datatable
         //CargarEstiloTablas();
