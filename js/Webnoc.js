@@ -1,11 +1,6 @@
 var mouseX;
 var mouseY;
 var objData = [];
-// var tarjetaSeleccionada;
-// var idformulario;
-// var idvisitante;
-// var idTarjeta;
-// var idBitacora;
 
 $(document).ready( function () {
     setInterval(function() {

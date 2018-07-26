@@ -41,7 +41,7 @@ else if ($sesion->rol=="2")
                   <li><a href="ResponsableMantenimiento.php">Responsables</a></li>
                 <li><a href="PoolTarjeta.php">Pool Tarjetas</a></li>
                 <li><a href="ListaVisitantes.php">Visitantes</a></li>                
-                <li><a href="">Salas</a></li>
+                <!-- <li><a href="">Salas</a></li> -->
                 <li><a href="WebNOC.php">Web NOC</a></li>
               </ul>
             </li>
@@ -52,6 +52,13 @@ else if ($sesion->rol=="2")
     
 </body>
 </html>
+<script>
+  $(document).ready( function () {        
+    $('#logo').click(function(){
+        location.href= 'index.php';
+    });
+  });
+</script>
 
 
 
