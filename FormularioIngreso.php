@@ -397,7 +397,7 @@ $rol=$_SESSION['rol'];
     var jSala=[];
     var jResponsable=[];
     var jVisitante=[]; 
-    var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) { echo count($visitanteformulario);} else {echo 0;}?>";
+    var longitudvisitanteform = "<?php if (isset($_GET['ID'])||isset($_GET['MOD'])) echo 1; else echo 0;?>";
     var idformulario = "<?php echo $idformulario;?>";
     var btnmod = <?php echo $btnmod;?>;
     var autorizador = "<?php echo $usuario->nombre;?>";
@@ -920,29 +920,29 @@ $rol=$_SESSION['rol'];
     }
 
     //ESTABLECE LA FECHA DE HOY A LOS DATETIME LOCAL CUANDO SE MODIFICA UN FORMULARIO
-    function FechaFormMod(){
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        var hh = today.getHours();
-        var min = today.getMinutes();
-        if(dd<10){
-            dd='0'+dd
-        } 
-        if(mm<10){
-            mm='0'+mm
-        } 
-        if(hh<10){
-            hh='0'+hh
-        }
-        if(min<10){
-            min='0'+min
-        }
-        today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
-        document.getElementById("fechaingreso").setAttribute("min", today);
-        document.getElementById("fechasalida").setAttribute("min", today);
-    }
+    // function FechaFormMod(){
+    //     var today = new Date();
+    //     var dd = today.getDate();
+    //     var mm = today.getMonth()+1; //January is 0!
+    //     var yyyy = today.getFullYear();
+    //     var hh = today.getHours();
+    //     var min = today.getMinutes();
+    //     if(dd<10){
+    //         dd='0'+dd
+    //     } 
+    //     if(mm<10){
+    //         mm='0'+mm
+    //     } 
+    //     if(hh<10){
+    //         hh='0'+hh
+    //     }
+    //     if(min<10){
+    //         min='0'+min
+    //     }
+    //     today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
+    //     document.getElementById("fechaingreso").setAttribute("min", today);
+    //     document.getElementById("fechasalida").setAttribute("min", today);
+    // }
 
     //ABRE EL MODAL EN EL BOTON (+), CONSTRUYE LA TABLA VISITANTE MODAL
     $('#btnagregavisitante').click(function() {
@@ -1023,7 +1023,7 @@ $rol=$_SESSION['rol'];
     //CONCATENA EL ARREGLO EN UN STRING, LO ASIGNA A UN TAG HIDDEN PARA PASAR POR POST
     function ExcluyeVisitanteCarga() {     
         //**********MODIFICAR
-        if(longitudvisitanteform!=0){        
+        if(longitudvisitanteform!=0){    
             $.ajax({
                 type: "POST",
                 url: "class/Formulario.php",
