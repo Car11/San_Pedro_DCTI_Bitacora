@@ -55,7 +55,7 @@
                     <h3>Usuario o Contraseña Inválido</h3>
                 </div>
             </div>
-            <h4>v 2.0</h4>     
+            <h4>v 2.0</h4>
         </div>
     </section>       
     
