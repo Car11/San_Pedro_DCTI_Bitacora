@@ -54,9 +54,9 @@
                 <div id="invalido">
                     <h3>Usuario o Contraseña Inválido</h3>
                 </div>
-            </div>     
+            </div>
+            <h4>v 2.0</h4>
         </div>
-        
     </section>       
     
     <aside></aside>
