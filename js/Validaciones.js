@@ -101,8 +101,10 @@ function onValidaFormulario() {
 
 function ComparaFechas(Fecha_1,Fecha_2){
     //Resultado < 0 return false else return true, utilizar Diff
-    var ms = moment(Fecha_2,"DD/MM/YYYYTHH:mm:ss").diff(moment(Fecha_1,"DD/MM/YYYYTHH:mm:ss"));
-    if (ms<=0)
+    var f1 = moment(Fecha_1);
+    var f2 = moment(Fecha_2);
+    var dif = f2.diff(f1,'minutes');
+    if (dif<=0)
         return false;
     else
         return true;
