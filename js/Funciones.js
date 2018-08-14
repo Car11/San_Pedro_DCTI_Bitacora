@@ -48,6 +48,7 @@ function inicio() {
     };
 
     $('#btnsalida').click(function() {
+        $('#btnsalida').attr("disabled", "disabled");
         $.ajax({
             type: "POST",
             url: "class/Bitacora.php",
@@ -71,6 +72,7 @@ function inicio() {
             $("#mensajetop").css("visibility", "visible");
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+            $("#btnsalida").removeAttr("disabled");
         })    
         .fail(function(e){
             modal.style.display = "none";
@@ -80,10 +82,12 @@ function inicio() {
             $("#mensajetop").css("visibility", "visible");
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+            $("#btnsalida").removeAttr("disabled");
         });
     });
 
      $('#btncontinuar').click(function() {
+        $('#btncontinuar').attr("disabled", "disabled");
         $.ajax({
             type: "POST",
             url: "class/Bitacora.php",
@@ -105,6 +109,7 @@ function inicio() {
             $("#mensajetop").css("visibility", "visible");
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+            $("#btncontinuar").removeAttr("disabled");
         })    
         .fail(function(e){
             modal.style.display = "none";
@@ -114,6 +119,7 @@ function inicio() {
             $("#mensajetop").css("visibility", "visible");
             $("#mensajetop").slideDown("slow");
             $("#mensajetop").slideDown("slow").delay(3000).slideUp("slow");
+            $("#btncontinuar").removeAttr("disabled");
         });
     });
 
