@@ -872,51 +872,52 @@ $rol=$_SESSION['rol'];
 
     //ESTABLECE LA FECHA DE HOY A LOS DATETIME LOCAL CUANDO SE CREA UN FORMULARIO NUEVO
     function FechaFormNuevo(){
-        var today = new Date();
-        var salida = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        var hh = today.getHours();
-        var hhs= today.getHours()+2;
-        var min = today.getMinutes();
+        // var today = new Date();
+        // var salida = new Date();
+        // var dd = today.getDate();
+        // var mm = today.getMonth()+1; //January is 0!
+        // var yyyy = today.getFullYear();
+        // var hh = today.getHours();
+        // var hhs= today.getHours()+2;
+        // var min = today.getMinutes();
 
-        if(dd<10){
-            dd='0'+dd
-        } 
-        if(mm<10){
-            mm='0'+mm
-        } 
-        if(hh<10){
-            hh='0'+hh
-        }
-        if(min<10){
-            min='0'+min
-        }
-        if(hhs<10){
-            hhs='0'+hhs
-        }
-        if(hhs==24){
-            hhs='00'
-        }
-        if(hhs==25){
-            hhs='01'
-        }
-        if(hhs==26){
-            hhs='02'
-        }
-        today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
-        //SUMA UN DIA A LA FECHA DE SALIDA 
-        if(hh>=22)
-            salida = yyyy+'-'+mm+'-'+(dd+1)+'T'+hhs+':'+min;
-        else
-            salida = yyyy+'-'+mm+'-'+dd+'T'+hhs+':'+min;
+        // if(dd<10){
+        //     dd='0'+dd
+        // } 
+        // if(mm<10){
+        //     mm='0'+mm
+        // } 
+        // if(hh<10){
+        //     hh='0'+hh
+        // }
+        // if(min<10){
+        //     min='0'+min
+        // }
+        // if(hhs<10){
+        //     hhs='0'+hhs
+        // }
+        // if(hhs==24){
+        //     hhs='00'
+        // }
+        // if(hhs==25){
+        //     hhs='01'
+        // }
+        // if(hhs==26){
+        //     hhs='02'
+        // }
+        // today = yyyy+'-'+mm+'-'+dd+'T'+hh+':'+min;
+        // //SUMA UN DIA A LA FECHA DE SALIDA 
+        // if(hh>=22)
+        //     salida = yyyy+'-'+mm+'-'+(dd+1)+'T'+hhs+':'+min;
+        // else
+        //     salida = yyyy+'-'+mm+'-'+dd+'T'+hhs+':'+min;
+        // document.getElementById("fechaingreso").value = today;
+        // document.getElementById("fechasalida").value = salida;
+        var today = moment().format('YYYY-MM-DD')+'T'+moment().format('HH:mm');
+        $('#fechaingreso').val(today);
+        $("#fechasalida").val(today);
         document.getElementById("fechaingreso").setAttribute("min", today);
         document.getElementById("fechasalida").setAttribute("min", today);
-        document.getElementById("fechaingreso").value = today;
-        document.getElementById("fechasalida").value = salida;
-
-        // $("#fecha").append(moment().format('MMM DD YYYY, h:mm:ss a'));
     }
 
     //ESTABLECE LA FECHA DE HOY A LOS DATETIME LOCAL CUANDO SE MODIFICA UN FORMULARIO
@@ -1419,6 +1420,8 @@ $rol=$_SESSION['rol'];
             var data= JSON.parse(e);
             $('#lblnumeroform').val(data[0]['consecutivo']);
             $('#motivovisita').val(data[0]['motivovisita']);
+            //Cargar por medio de moment.js la fecha con un valor por default militar
+
             $('#fechaingreso').val(data[0]['fechaingreso']);
             $('#fechasalida').val(data[0]['fechasalida']);
             $('#txttramitante').val(data[0]['nombretramitante']);
