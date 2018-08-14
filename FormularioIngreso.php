@@ -1288,6 +1288,7 @@ $rol=$_SESSION['rol'];
 
     //INSERTA UN FORMULARIO, SI ESTA CCORRECTO REDIRECCIONA A LISAT FORMULARIO
     $(document).on('click', '#btnInsertaFormulario', function (event) {
+        $('#btnInsertaFormulario').attr("disabled", "disabled");
         $.ajax({
             type: "POST",
             url: "class/Formulario.php",
@@ -1317,6 +1318,7 @@ $rol=$_SESSION['rol'];
 
     //EVENTO DEL BOTON MODIFICAR FORMULARIO
     $(document).on('click', '#btnModificaFormulario', function (event) {
+        $('#btnModificaFormulario').attr("disabled", "disabled");
         var rol = "<?php echo $rol ?>";
         var visitantes_str = document.getElementById('visitantearray').value;
         var visitantes_actuales = visitantes_str.split(",");
