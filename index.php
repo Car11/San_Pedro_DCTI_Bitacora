@@ -146,7 +146,7 @@ if (isset($_SESSION['idformulario'])) {
         <div id="form">
             <h2>Cédula / Identificación</h2>
             <form name="datos" id="datos" action="request/EnviaVisitante.php" method="POST">
-                <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS" onkeypress="return isNumber(event)" />
+                <input type="text" autofocus id="cedula" maxlength="20" class="input-field" name="cedula" placeholder="" title="Número de cédula separado con CEROS"  />
                 <input type="submit" class="nbtn_blue" value="Consultar" id="enviar" />
             </form>
         </div>

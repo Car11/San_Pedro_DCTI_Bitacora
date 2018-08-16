@@ -73,7 +73,7 @@ class Visitante{
     //
     function ValidaID(){
         try{
-            if(strlen($this->cedula)<=2)
+            if(strlen($this->cedula)<=4)
             {
                 $this::ValidaIDTarjeta();
             }

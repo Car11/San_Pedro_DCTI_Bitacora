@@ -146,7 +146,7 @@ function onValidaInicio() {
         });
         $("#cedula").focus();
         return false;
-    } if (cedula.length<=2) {
+    } if (cedula.length<=4) {
         // es una tarjeta.
         $('#texto-mensaje').text("Está realizando una salida de tarjeta?");
         MuestraMensajeTarjeta();

@@ -67,7 +67,7 @@ class DATA {
             } else {
                 self::$conn->rollback(); 
                 //require_once("Log.php");  
-                // log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL[02]', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );
+                // log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL[02]', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );/ log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL[02]', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );
                 return false;
             }
             
