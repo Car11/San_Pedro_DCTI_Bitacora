@@ -7,10 +7,15 @@ class DATA {
     private static $config="";
 
 	private static function ConfiguracionIni(){
+        // Always in development, disabled in production //
+        error_reporting(E_ALL);        
+        ini_set('display_errors', 1);
+        /*************************************************/
         require_once('Globals.php');
         if (file_exists('../../../../ini/config.ini')) {
             self::$config = parse_ini_file('../../../../ini/config.ini',true); 
-        }         
+        }        
+        else throw new Exception('Acceso denegado al Archivo de configuracion.',-1);   
     }  
 
     private static function Conectar(){
@@ -21,11 +26,10 @@ class DATA {
                 return self::$conn;
             }
         } catch (PDOException $e) {
-            //require_once("Log.php");  
-            // log::AddD('FATAL', 'Ha ocurrido al Conectar con la base de datos MySQL[01]', $e->getMessage());
-            $_SESSION['errmsg']= 'Problemas de Conexión';
-            error_log($e->getMessage());
-            exit;
+            throw new Exception($e->getMessage(),$e->getCode());
+        }
+        catch(Exception $e){
+            throw new Exception($e->getMessage(),$e->getCode());
         }
     }
     
@@ -59,19 +63,14 @@ class DATA {
                     return  $st->fetchAll();
                 else return $st;    
             } else {
-                self::$conn->rollback(); 
-                //require_once("Log.php");  
-                // log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL[02]', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );/ log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL[02]', 'code: ' . $st->errorInfo()[1] . ' msg: ' . $st->errorInfo()[2] );
-                return false;
-            }
-            
+                throw new Exception('Error al ejecutar.',00);
+            }             
         } catch (Exception $e) {
-            self::$conn->rollback(); 
-            //require_once("Log.php");  
-            // log::AddD('ERROR', 'Ha ocurrido al Ejecutar la sentencia SQL', $e->getMessage());
-            //$_SESSION['errmsg']= $e->getMessage();
-            error_log($e->getMessage());
-            exit;
+            if(isset(self::$conn))
+                self::$conn->rollback(); 
+            if(isset($st))
+                throw new Exception($st->errorInfo()[2],$st->errorInfo()[1]);
+            else throw new Exception($e->getMessage(),$e->getCode());
         }
     }
     

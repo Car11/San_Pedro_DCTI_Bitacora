@@ -71,9 +71,7 @@ class Formulario
     function __construct(){
         require_once("Conexion.php");
         require_once("Log.php");
-        //error_reporting(E_ALL);
-        // Always in development, disabled in production
-        //ini_set('display_errors', 1);
+        
     }
 
     //AGREGA EL FORMULARIO
@@ -97,8 +95,7 @@ class Formulario
                           ':rfc'=>$this->rfc);
             $result = DATA::Ejecutar($sql, $param);
             //Consultar el Maximo ID insertado
-            $maxid="SELECT id FROM formulario ORDER BY consecutivo DESC LIMIT 0,1";
-            
+            $maxid="SELECT id FROM formulario ORDER BY consecutivo DESC LIMIT 0,1";            
             //Captura el id del formulario
             $idformulario =DATA::Ejecutar($maxid);
             //Convierte el string en un arreglo
@@ -115,7 +112,11 @@ class Formulario
             exit;
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -176,7 +177,11 @@ class Formulario
             }
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
     
@@ -240,7 +245,11 @@ class Formulario
             exit;
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -311,7 +320,11 @@ class Formulario
             exit;
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
     
@@ -325,7 +338,11 @@ class Formulario
             return $result;
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -351,7 +368,11 @@ class Formulario
             }
         }catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
 
     }
@@ -396,7 +417,11 @@ class Formulario
             echo json_encode($data);
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -436,7 +461,11 @@ class Formulario
             return $data;
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -456,7 +485,11 @@ class Formulario
             echo json_encode($result);
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
     
@@ -469,7 +502,11 @@ class Formulario
         }
         catch(Exception $e){
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -505,9 +542,12 @@ class Formulario
                 error_log($e->getMessage());
             }
         } catch (Exception $e) {
-            $_SESSION['errmsg']= $e->getMessage();
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -528,7 +568,11 @@ class Formulario
             echo json_encode($data);	 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }    
     }
 
@@ -547,7 +591,11 @@ class Formulario
             echo json_encode($data);	 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -567,7 +615,11 @@ class Formulario
                 echo json_encode($data);	 
             } catch (Exception $e) {
                 error_log($e->getMessage());
-                exit;
+                header('HTTP/1.0 400 Bad error');
+                die(json_encode(array(
+                    'code' => $e->getCode() ,
+                    'msg' => 'Error al cargar la bodega'))
+                );
             }
         }
 
@@ -584,7 +636,11 @@ class Formulario
             echo json_encode($data);	 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }    
     }
 
@@ -603,7 +659,11 @@ class Formulario
             echo json_encode($data);	 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 
@@ -646,7 +706,11 @@ class Formulario
             return $data;
         } catch (Exception $e) {
             error_log($e->getMessage());
-            exit;
+            header('HTTP/1.0 400 Bad error');
+            die(json_encode(array(
+                'code' => $e->getCode() ,
+                'msg' => 'Error al cargar la bodega'))
+            );
         }
     }
 }
