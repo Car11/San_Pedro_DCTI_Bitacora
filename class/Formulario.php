@@ -324,7 +324,7 @@ class Formulario
             $result = DATA::Ejecutar($sql);
             return $result;
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -395,7 +395,7 @@ class Formulario
             //
             echo json_encode($data);
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -435,7 +435,7 @@ class Formulario
             //
             return $data;
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -455,7 +455,7 @@ class Formulario
             }        
             echo json_encode($result);
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -501,11 +501,11 @@ class Formulario
                     exit;
             } else {
                     $_SESSION['errmsg']= 'Formulario no registrado, comunicarse con operaciones TI';
-                header('Location: ../Error.php');
+                error_log($e->getMessage());
             }
         } catch (Exception $e) {
             $_SESSION['errmsg']= $e->getMessage();
-            header('Location: ../Error.php');
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -526,7 +526,7 @@ class Formulario
             }
             echo json_encode($data);	 
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }    
     }
@@ -545,7 +545,7 @@ class Formulario
             }
             echo json_encode($data);	 
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -565,7 +565,7 @@ class Formulario
                 }
                 echo json_encode($data);	 
             } catch (Exception $e) {
-                header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+                error_log($e->getMessage());
                 exit;
             }
         }
@@ -582,7 +582,7 @@ class Formulario
             }
             echo json_encode($data);	 
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }    
     }
@@ -601,7 +601,7 @@ class Formulario
             }
             echo json_encode($data);	 
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -644,7 +644,7 @@ class Formulario
             //
             return $data;
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
