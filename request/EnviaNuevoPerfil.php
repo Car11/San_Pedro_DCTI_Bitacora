@@ -8,21 +8,21 @@
         $visitante->cedula=$_POST['cedula'];
     }
     else {
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit;
     }
     if (isset($_POST['empresa'])) {
         $visitante->empresa=$_POST['empresa'];
     }
     else {
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit; 
     }
     if (isset($_POST['nombre'])) {
         $visitante->nombre=$_POST['nombre'];
     }
     else {
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit;
     }
     //Agrega el nuevo perfil y pide datos de ingreso, para notificación a OP.

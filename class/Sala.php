@@ -31,7 +31,7 @@ class Sala{
             echo json_encode($data);
         }     
         catch(Exception $e) {
-            header('Location: ../Error.php');
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -48,7 +48,7 @@ class Sala{
             echo json_encode($data);
         }     
         catch(Exception $e) {
-            header('Location: ../Error.php');
+            error_log($e->getMessage());
             exit;
         }
     }

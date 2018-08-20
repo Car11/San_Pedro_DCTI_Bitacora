@@ -32,7 +32,7 @@ class DataCenter{
             }
             echo json_encode($data);			
         }catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -49,7 +49,7 @@ class DataCenter{
             }
             echo json_encode($data);			
         }catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -68,7 +68,7 @@ class DataCenter{
             }
             return $data;
         }catch(Exception $e) {
-            header('Location: ../Error.php?id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }

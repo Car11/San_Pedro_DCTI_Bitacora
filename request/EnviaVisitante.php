@@ -6,7 +6,7 @@
         $visitante->cedula=$_POST['cedula'];        
     }
     else {
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit;
     }
     if (isset($_POST['visitanteexluido'])) {  

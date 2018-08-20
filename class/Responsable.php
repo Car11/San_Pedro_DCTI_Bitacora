@@ -57,7 +57,7 @@ class Responsable{
             exit;
         }     
         catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -75,7 +75,7 @@ class Responsable{
             exit;
         }     
         catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -93,7 +93,7 @@ class Responsable{
             }
             echo json_encode($data);			
 		}catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }		 	
     } 
@@ -111,7 +111,7 @@ class Responsable{
             }
             echo json_encode($data);			
         }catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }		 	
     } 
@@ -123,7 +123,7 @@ class Responsable{
 			$result = DATA::Ejecutar($sql);
 			return $result;			
 		}catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }		 	
     } 
@@ -140,7 +140,7 @@ class Responsable{
             $result = DATA::Ejecutar($sql,$param);
 			echo json_encode($result);			
 		}catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }		 	
 
@@ -156,7 +156,7 @@ class Responsable{
             
 			return $result;			
 		}catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }		 	
 	} 
@@ -168,7 +168,7 @@ class Responsable{
             $result = DATA::Ejecutar($sql,$param); 
 			echo json_encode($result);			
 		}catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -180,7 +180,7 @@ class Responsable{
             $result = DATA::Ejecutar($sql,$param); 
 			echo json_encode($result);			
 		}catch(Exception $e) {
-            header('Location: ../Error.php?w=visitante-bitacora&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }

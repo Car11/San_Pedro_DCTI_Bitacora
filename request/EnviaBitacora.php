@@ -14,7 +14,7 @@
         }
     }
     else {
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit;
     }
     if($bitacora->Entrada())
@@ -23,7 +23,7 @@
         exit;
     }
     else {
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit;
     }
 ?>

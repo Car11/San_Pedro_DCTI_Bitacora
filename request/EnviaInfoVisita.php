@@ -9,7 +9,7 @@
     }
     else {
         $_SESSION['errmsg']= "No post detalle.";
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit; 
     }
     //if (isset($_POST['sala'])) {        
@@ -18,7 +18,7 @@
     }
     else {
         $_SESSION['errmsg']= "No post sala.";
-        header('Location: ../Error.php');
+        error_log($e->getMessage());
         exit;
     }
     // agrega informacion de visita al formulario de ingreso y envia correo a Operación y espera respuesta

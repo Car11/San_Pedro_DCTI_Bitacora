@@ -162,14 +162,14 @@ class Bitacora{
                 //log::Add('ERROR', 'Ha ocurrido un error al Consultar la bitacora.');
                 // muestra mensaje (ajax o html) del error.
                 $_SESSION['errmsg']= 'Problemas de Consulta';
-                header('Location: ../Error.php');
+                error_log($e->getMessage());
                 exit;
             }		
 		}catch(Exception $e) {
             ////require_once("Log.php");  
             //log::AddD('FATAL', 'Ha ocurrido al Consultar la bitacora.', $e->getMessage());
             $_SESSION['errmsg']= 'Problemas de Consulta';
-            header('Location: ../Error.php');
+            error_log($e->getMessage());
             exit;
         }
     }

@@ -114,7 +114,7 @@ class Formulario
             header('Location:../ListaFormulario.php');
             exit;
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -175,7 +175,7 @@ class Formulario
                 echo $idformulario[0][0]; 
             }
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -239,7 +239,7 @@ class Formulario
             header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -310,7 +310,7 @@ class Formulario
             header('Location:../ListaFormulario.php');           
             exit;
         } catch (Exception $e) {
-            header('Location: ../Error.php?w=visitante-agregar&id='.$e->getMessage());
+            error_log($e->getMessage());
             exit;
         }
     }
@@ -350,7 +350,7 @@ class Formulario
                 return false;
             }
         }catch (Exception $e) {
-            header('Location: ../Error.php?w=formulario');
+            error_log($e->getMessage());
             exit;
         }
 
@@ -468,7 +468,8 @@ class Formulario
             $this->id= $data[0]['ID'];
         }
         catch(Exception $e){
-
+            error_log($e->getMessage());
+            exit;
         }
     }
 
