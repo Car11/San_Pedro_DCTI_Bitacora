@@ -8,8 +8,8 @@ class DATA {
 
 	private static function ConfiguracionIni(){
         // Always in development, disabled in production //
-        error_reporting(E_ALL);        
-        ini_set('display_errors', 1);
+        //error_reporting(E_ALL);        
+        ini_set('display_errors', 0);
         /*************************************************/
         require_once('Globals.php');
         if (file_exists('/var/ini/config.ini')) {
